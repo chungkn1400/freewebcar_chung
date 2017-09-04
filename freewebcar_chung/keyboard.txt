@@ -1,0 +1,13 @@
+AZERTYQW   => no changes
+AZERTYQW
+
+
+AZERTYQW   => example azerty->qwerty
+QWERTYAZ
+
+
+replace the 2 first line as wanted :
+ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890   => initial keys
+ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890   => new keys (change as you suits)
+
+
