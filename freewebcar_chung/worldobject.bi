@@ -30,7 +30,7 @@ Dim shared as single triumphx=48.8738,triumphy=2.2951,triumphz=-9999:
 'assemblee
 Dim shared as single assembleex=48.8602,assembleey=2.3211,asembleez=-9999:
 'pantheon
-Dim shared as single pantheonx=48.8463,pantheony=2.3463,pantheonz=-9999:
+Dim shared as single pantheonx=48.8463,pantheony=2.3462,pantheonz=-9999:
 'notredame
 Dim shared as single notredamex=48.853,notredamey=2.3499,notredamez=-9999:
 'jussieu
@@ -47,15 +47,16 @@ Dim Shared As Single tennisx=48.8295787,tennisy=2.198813,tennisz=-9999
 Dim Shared As Single londonx=51.5054564,londony=-0.0753565,londonz=-9999
 'stade de france
 Dim Shared As Single stade2x=48.9245,stade2y=2.36034,stade2z=-9999
-Dim Shared As Single klon=1
+Dim Shared As Single klon=1,klon1=1
 Function testworldobject(latx As single,lngx As Single)As Integer
 If testworld=0 Then Return 0
 'Var dlat=0.25*360/40000,dlon=dlat*klon
-Var dlat=(0.1*360/40000)*0.7,dlon=dlat*klon
+Var dlat=(0.1*360/40000)*0.8,dlon=dlat*klon
+Var dlat2=(0.1*360/40000)*0.65,dlon2=dlat2*klon
 If abs(latx-trocaderox)<dlat And abs(lngx-trocaderoy)<dlon then return 1 
 if abs(latx-assembleex)<dlat And abs(lngx-assembleey)<dlon then return 1 
-if abs(latx-triumphx)<dlat And abs(lngx-triumphy)<dlon then return 1 
-If abs(latx-pantheonx)<dlat And abs(lngx-pantheony)<dlon then return 1 
+if abs(latx-triumphx)<dlat2 And abs(lngx-triumphy)<dlon2 then return 1 
+If abs(latx-pantheonx)<dlat2 And abs(lngx-pantheony)<dlon2 then return 1 
 If abs(latx-notredamex)<dlat And abs(lngx-notredamey)<dlon then return 1 
 If abs(latx-jussieux)<dlat And abs(lngx-jussieuy)<dlon then return 1 
 If abs(latx-radiox)<dlat And abs(lngx-radioy)<dlon then return 1 
@@ -76,7 +77,7 @@ latm2=40.689249:lngm2=-74.0444999
 if abs(latx-latm2)<dlat And abs(lngx-lngm2)<dlon then return 1 ' libertystatuex=40.689249,libertystatuey=-74.0444999,libertystatuez=-9999:
 'Eiffel Tower
 latm2=48.85837:lngm2=2.2944810
-if abs(latx-latm2)<dlat and abs(lngx-lngm2)<dlon then return 1 ' eiffeltowerx=48.85837,eiffeltowery=2.2944810,eiffeltowerz=-9999:
+if abs(latx-latm2)<dlat*1.2 and abs(lngx-lngm2)<dlon*1.2 then return 1 ' eiffeltowerx=48.85837,eiffeltowery=2.2944810,eiffeltowerz=-9999:
 'Christ rio
 latm2=-22.951916:lngm2=-43.210487
 if abs(latx-latm2)<dlat and abs(lngx-lngm2)<dlon then return 1 ' christriox=-22.951916,christrioy=-43.210487,christrioz=-9999:
@@ -97,7 +98,7 @@ latm2=22.253985:lngm2=113.904984
 if abs(latx-latm2)<dlat and abs(lngx-lngm2)<dlon then return 1 ' buddahx=22.253985,buddahy=113.904984,buddahz=-9999:
 Return 0	
 End Function
-Declare Sub latlngtomxy(latxx As single,lngxx As Single ,ByRef mxx As Single,ByRef myy As Single)
+'Declare Sub latlngtomxy(latxx As single,lngxx As Single ,ByRef mxx As Single,ByRef myy As Single)
 Declare Sub latlngtomxy2(latxx As single,lngxx As Single ,ByRef mxx As Single,ByRef myy As Single)
 Declare Sub drawworldobjects()
 Dim Shared As Integer tdrawworld=1,iworld=0
@@ -134,6 +135,7 @@ If tdrawworld=0 Then dlat=999999:dlon=999999
 glenable gl_texture_2d
 gldisable gl_lighting
 glcolor3f(1,1,1)
+Var kscalexz=kscalex*1.25
 	iworld+=1:if Abs(lat-libertystatuex)<dlat And Abs(lng-libertystatuey)<dlon Then
       latlngtomxy2(libertystatuex,libertystatuey,x,y)
       size=1500
@@ -148,7 +150,7 @@ glcolor3f(1,1,1)
 			gltranslatef(x-dmx0,y-dmy0,z)
 			do1=-diro1(x-mx-dmx0,y-my-dmy0)+180
 			'glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			'glsphere(1000)
 			gltexcarre2rot(920,1500,do1)
 			glpopmatrix
@@ -169,7 +171,7 @@ glcolor3f(1,1,1)
 			gltranslatef(x-dmx0,y-dmy0,z)
 			do1=-diro1(x-mx-dmx0,y-my-dmy0)+180
 			'glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			'glsphere(1000)
 			gltexcarre2rot(1900,1900,do1)
 			glpopmatrix
@@ -190,7 +192,7 @@ glcolor3f(1,1,1)
 			gltranslatef(x-dmx0,y-dmy0,z)
 			do1=-diro1(x-mx-dmx0,y-my-dmy0)+180
 			'glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			'glsphere(1000)
 			gltexcarre2rot(4300,4300,do1)
 			glpopmatrix
@@ -211,7 +213,7 @@ glcolor3f(1,1,1)
 			gltranslatef(x-dmx0,y-dmy0,z)
 			do1=-diro1(x-mx-dmx0,y-my-dmy0)+180
 			'glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			'glsphere(1000)
 			gltexcarre2rot(1150,1800,do1)
 			glpopmatrix
@@ -232,7 +234,7 @@ glcolor3f(1,1,1)
 			gltranslatef(x-dmx0,y-dmy0,z)
 			do1=-diro1(x-mx-dmx0,y-my-dmy0)+180
 			'glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			'glsphere(1000)
 			gltexcarre2rot(3000,3000,do1)
 			glpopmatrix
@@ -253,7 +255,7 @@ If 1 Then' worldname="israel" Then
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcalllist(gizeh0list)
 			glpopmatrix
 		EndIf
@@ -267,7 +269,7 @@ If 1 Then' worldname="israel" Then
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcalllist(gizeh1list)
 			glpopmatrix
 		EndIf
@@ -281,7 +283,7 @@ If 1 Then' worldname="israel" Then
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcalllist(gizeh2list)
 			glpopmatrix
 		EndIf
@@ -295,7 +297,7 @@ If 1 Then' worldname="israel" Then
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcalllist(gizeh3list)
 			glpopmatrix
 		EndIf
@@ -313,7 +315,7 @@ If 1 Then' worldname="israel" Then
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcalllist(domerocklist)
 			glpopmatrix
 		EndIf
@@ -332,7 +334,7 @@ EndIf
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			drawbridge(size,bridgetext,bridgesidetext)
 			glpopmatrix
          gldisable gl_alpha_test
@@ -352,7 +354,7 @@ If worldname="°WestUSA" Then
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			drawbridge(size,bridgetext,bridgesidetext)
 			glpopmatrix
          gldisable gl_alpha_test
@@ -373,7 +375,7 @@ EndIf '/
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glscalef(0.5,1,0.5)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			drawbridge(size,bridgetext,bridgesidetext)
 			glpopmatrix
          gldisable gl_alpha_test
@@ -392,7 +394,7 @@ EndIf '/
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glscalef(0.6,1,0.6)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			drawbridge(size,bridge2text,bridgeside2text)
 			glpopmatrix
          gldisable gl_alpha_test
@@ -445,7 +447,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			'glsphere 400
 			glcalllist(eiffellist)
 			glpopmatrix
@@ -472,7 +474,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcalllist(triumphlist)
 			glpopmatrix
 		EndIf
@@ -492,7 +494,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcolor3f(0.8,0.8,0.8)
 			glcalllist(trocaderolist)
 			glpopmatrix
@@ -514,7 +516,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			'glcolor3f(0.8,0.8,0.8)
 			glcalllist(assembleelist)
 			glpopmatrix
@@ -537,7 +539,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcalllist(archelist)
 			glpopmatrix
 			glcolor3f(1,1,1)
@@ -558,7 +560,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcalllist(cnitlist)
 			glpopmatrix
 		EndIf 	
@@ -593,7 +595,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcolor3f(0.5,0.75,1)
 			drawbuilding1(size,170,170,1,x2,0.5,0.75,1)
 			gltranslatef(-300,-300,0)
@@ -609,7 +611,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcolor3f(1,1,1)
 			drawbuilding2(size,250,180,1,x2)
 			gltranslatef(-900,-900,0)
@@ -627,7 +629,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcolor3f(0.7,0.7,0.7)
 			drawbuilding2(220,size,size*0.27,1,x2,0.7,0.7,0.7)
 			glpopmatrix
@@ -650,7 +652,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcalllist(notredamelist)
 			glpopmatrix
 			glcolor3f(1,1,1)
@@ -672,7 +674,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcalllist(pantheonlist)
 			glpopmatrix
 			glcolor3f(1,1,1)
@@ -694,7 +696,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcalllist(jussieulist)
 			glpopmatrix
 			glcolor3f(1,1,1)
@@ -716,7 +718,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcalllist(radiolist)
 			glpopmatrix
 			glcolor3f(1,1,1)
@@ -738,7 +740,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcalllist(tennislist)
 			glpopmatrix
 			glcolor3f(1,1,1)
@@ -760,7 +762,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcalllist(stade2list)
 			glpopmatrix
 			glcolor3f(1,1,1)
@@ -779,7 +781,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcalllist(sacrecoeurlist)
 			glpopmatrix
 			'glcolor3f(1,1,1)
@@ -799,7 +801,7 @@ EndIf '/
 			glpushmatrix
 			gltranslatef(x-dmx0,y-dmy0,z)
 			glrotatef(do1,0,0,1)
-			glscalef(kscalex/k500,kscalex/k500,kscalex/k500)
+			glscalef(kscalex/k500,kscalex/k500,kscalexz/k500)
 			glcalllist(londonlist)
 			glbindtexture(gl_texture_2d,boattext)
 			gltranslatef(0,77,0)

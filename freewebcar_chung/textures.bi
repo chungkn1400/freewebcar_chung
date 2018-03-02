@@ -2,9 +2,11 @@
 Dim Shared As uint fueltext,roadtext,roadbandtext,roadarrowtext,roadarrow2text,lamplist,barrieretext,haietext
 Dim Shared As uint nathalietext,veroniquetext,christinetext,mywomantext,crosstext,onewaytext,parkingtext
 Dim Shared As uint railtext,crossrailtext,housetext,retrotext,roadlefttext,roadarrowlefttext,roadarrow2lefttext
-Dim Shared As uint cocacolatext
+Dim Shared As uint cocacolatext,marisoltext,lamplist2,lamplist3,oneway2text
+Dim Shared As uint mygltext(11)
 Sub resettextures()
 aviontext=0'("objects/c150.jpg")
+avionredtext=0'("objects/c150red.jpg")
 corsairtext=0'("objects/f4u.jpg")
 vg33text=0'("objects/vg33.jpg")
 zerotext=0'("objects/zero1.jpg")
@@ -21,12 +23,15 @@ fightertext=0
 fightertext2=0
 spaceshiptext=0
 ballontext=0
+boeing737text=0
+coptertext=0
 
         tronctext=0'("media/tronc.jpg")
         volanttext=0'("objects/volant.jpg",252)
         volanttext2=0'("objects/volant2.jpg",252)
         startext=0'("media/stars.jpg")
         sunsettext=0'("media/sun.jpg")
+        sunbacktext=0
         helicetext=0'("objects/helice.jpg",40,47)
         cockpittext1=0'("media/cockpit1.jpg",245)'252)
         cockpittext2=0'("media/cockpit2.jpg",237)'252)
@@ -60,11 +65,13 @@ ballontext=0
         hospitaltext=0
         fueltext=0
         raintext=0
+        raintext2=0
         cockpit1text=0
         cockpit2text=0
         cockpit3text=0
         cockpit4text=0
         cockpit5text=0
+        capottext=0
         roadtext=0
         roadbandtext=0
         roadarrowtext=0
@@ -78,9 +85,11 @@ ballontext=0
         veroniquetext=0
         christinetext=0
         cocacolatext=0
+        marisoltext=0
         mywomantext=0
         crosstext=0
         onewaytext=0
+        oneway2text=0
         parkingtext=0
         raindroptext=0
         essuieglacetext=0
@@ -89,7 +98,12 @@ ballontext=0
         housetext=0
         roctext=0
         c150cockpittext=0
+        c150phototext=0
+        c150grptext=0
+        boeing737cockpittext=0
+        boeing737phototext=0
         balloncockpittext=0
+        ballonphototext=0
         retrotext=0
         ladytext=0
         ladylefttext=0
@@ -123,9 +137,19 @@ ballontext=0
         shadowlamptext=0
         shadowroctext=0
         horsetext=0
+        handtext=0
+        snowtext=0
+        spottext=0
+        helentext=0
 
 End Sub
 Sub initlist()
+Dim As Integer i,j,k 
+
+agllist=glgenlists(1)	
+glnewlist agllist,GL_COMPILE
+glendlist
+	
 lamplist=glgenlists(1)
 glnewlist lamplist,GL_COMPILE
 glcolor3f(115/256,115/256,115/256)
@@ -136,6 +160,32 @@ glcylindre(2,2,91,4,4)
 gltranslatef(0,0,90)
 glcolor3f(200/256,200/256,200/256)
 glscalef(1.1,1,1)
+glcylindre(3.9,4,22,4,4)
+glendlist
+
+lamplist2=glgenlists(1)
+glnewlist lamplist2,GL_COMPILE
+glcolor3f(115/256,115/256,115/256)
+glcylindre(2,2,180,4,4)
+gltranslatef(0,0,179)
+glrotatef(45,-1,0,0)
+glcylindre(2,2,91,4,4)
+gltranslatef(0,0,90)
+glcolor3f(1,1,1)
+glscalef(1.32,1.2,1.2)
+glcylindre(3.9,4,22,4,4)
+glendlist
+
+lamplist3=glgenlists(1)
+glnewlist lamplist3,GL_COMPILE
+'glcolor3f(115/256,115/256,115/256)
+'glcylindre(2,2,180,4,4)
+gltranslatef(0,0,179)
+glrotatef(45,-1,0,0)
+'glcylindre(2,2,91,4,4)
+gltranslatef(0,0,90)
+glcolor3f(1,1,1)'200/256,200/256,200/256)
+glscalef(2.2,2,2)
 glcylindre(3.9,4,22,4,4)
 glendlist
 	
@@ -171,11 +221,53 @@ glnewlist horselist,gl_compile
 load3dssize("objects/horseheadlow.3ds",@"",@"",100)
 glendlist 
 
+webtext=guiloadtexture("media/road.jpg")
+roadtext=guiloadtexture("media/road.jpg",200,255)
+roadbandtext=guiloadtexture("media/roadband.jpg")
+roadarrowtext=guiloadtexture("media/roadarrow.jpg")
+roadarrow2text=guiloadtexture("media/roadarrow2.jpg")
+roadlefttext=guiloadtexture("media/roadleft.jpg")
+roadarrowlefttext=guiloadtexture("media/roadarrowleft.jpg")
+roadarrow2lefttext=guiloadtexture("media/roadarrow2left.jpg")
+barrieretext=guiloadtexture("media/barriere.jpg",150)
+haietext=guiloadtexture("media/haie.jpg",150)
+crosstext=guiloadtexture("media/cross.bmp",250)
+onewaytext=guiloadtexture("media/oneway.bmp",250)
+oneway2text=guiloadtexture("media/oneway2.bmp",250)
+parkingtext=guiloadtexture("media/parking.bmp",250)
+raindroptext=guiloadtexture("media/raindrop.jpg")
+essuieglacetext=guiloadtexture("media/essuie_glace.jpg",250)
+railtext=guiloadtexture("media/rail.jpg")
+crossrailtext=guiloadtexture("media/crossrail.bmp",250)
+housetext=guiloadtexture("media/house.jpg")
+
+churchtext=guiloadtexture("objects/town/church.jpg")
+shoptext=guiloadtexture("objects/town/shop.jpg")
+officialtext=guiloadtexture("objects/town/official.jpg")
+official2text=guiloadtexture("objects/town/official2.jpg",253)
+railstationtext=guiloadtexture("objects/town/railstation.jpg")
+hospitaltext=guiloadtexture("objects/town/hospital.jpg")
+fueltext=guiloadtexture("objects/town/fuel.jpg")
+
+           glbindtexture(gl_texture_2d,mywomantext)
+           glbindtexture(gl_texture_2d,marisoltext)
+           glbindtexture(gl_texture_2d,nathalietext)
+           glbindtexture(gl_texture_2d,veroniquetext)
+           glbindtexture(gl_texture_2d,christinetext)
+           glbindtexture(gl_texture_2d,cocacolatext)
+
+For i=0 To 11
+	If mygltext(i)<>0 Then guideletetexture(mygltext(i))
+	mygltext(i)=guiloadtexture(ExePath+"/media/image/glvideo"+Str(i)+".jpg")
+Next
 End Sub 
 Sub loadtextures(itext As uint Ptr)
-If itext=@webtext Then Exit Sub 
+If itext=@webtext Then *(itext)=guiloadtexture("media/road.jpg") 
 If itext=@aviontext then *(itext)=guiloadtexture("objects/c150.jpg")
+If itext=@avionredtext then *(itext)=guiloadtexture("objects/c150red.jpg")
 If itext=@ballontext then *(itext)=guiloadtexture("objects/ballon.jpg")
+If itext=@boeing737text then *(itext)=guiloadtexture("objects/737.jpg")
+If itext=@coptertext then *(itext)=guiloadtexture("objects/copter.jpg",250)
 'If itext=@corsairtext then *(itext)=guiloadtexture("objects/f4u.jpg")
 'If itext=@vg33text then *(itext)=guiloadtexture("objects/vg33.jpg")
 If itext=@zerotext then *(itext)=guiloadtexture("objects/zero1.jpg")
@@ -185,7 +277,7 @@ If itext=@zerotext then *(itext)=guiloadtexture("objects/zero1.jpg")
 'If itext=@spitfiretext then *(itext)=guiloadtexture("objects/spitfire_lowpoly2.jpg")
 'If itext=@spitfiretext2 then *(itext)=guiloadtexture("objects/spitfire_lowpoly22.jpg")
 'If itext=@bf109text then *(itext)=guiloadtexture("objects/bf109.jpg")
-'If itext=@p51dtext then *(itext)=guiloadtexture("objects/p51d.jpg")
+If itext=@p51dtext then *(itext)=guiloadtexture("objects/p51d.jpg")
 'If itext=@f14text then *(itext)=guiloadtexture("objects/f14_2.jpg")
 'If itext=@eurofightertext then *(itext)=guiloadtexture("objects/eurofighter.jpg")	
 'If itext=@fightertext then *(itext)=guiloadtexture("objects/fighter.jpg")	
@@ -193,10 +285,11 @@ If itext=@zerotext then *(itext)=guiloadtexture("objects/zero1.jpg")
 'If itext=@spaceshiptext then *(itext)=guiloadtexture("objects/spaceship.jpg")	
 
 'If itext=@tronctext then *(itext)=guiloadtexture("media/tronc.jpg")
-If itext=@volanttext then *(itext)=guiloadtexture("objects/volant.jpg",252)
-If itext=@volanttext2 then *(itext)=guiloadtexture("objects/volant2.jpg",252)
+If itext=@volanttext then *(itext)=guiloadtexture("objects/volant.jpg",220)
+If itext=@volanttext2 then *(itext)=guiloadtexture("objects/volant2.jpg",220)
 istars=2:If itext=@startext then *(itext)=guiloadtexture("media/stars"+Str(istars)+".jpg",80)
 If itext=@sunsettext then *(itext)=guiloadtexture("media/sun.jpg")
+If itext=@sunbacktext then *(itext)=guiloadtexture("media/sunback.jpg")
 If itext=@helicetext then *(itext)=guiloadtexture("objects/helice.jpg",40,47)
 If itext=@cockpittext1 then *(itext)=guiloadtexture("media/cockpit1.jpg",245)'252)
 If itext=@cockpittext2 then *(itext)=guiloadtexture("media/cockpit2.jpg",237)'252)
@@ -249,12 +342,14 @@ If itext=@railstationtext then *(itext)=guiloadtexture("objects/town/railstation
 If itext=@hospitaltext then *(itext)=guiloadtexture("objects/town/hospital.jpg")
 If itext=@fueltext then *(itext)=guiloadtexture("objects/town/fuel.jpg")
 If itext=@raintext then *(itext)=guiloadtexture("media/rain.jpg")
-If itext=@cockpit1text then *(itext)=guiloadtexture("media/cockpit/ford.jpg",250)
+If itext=@raintext2 then *(itext)=guiloadtexture("media/snowflakes.jpg")
+If itext=@cockpit1text then *(itext)=guiloadtexture("media/cockpit/ford.jpg",240)
 If itext=@cockpit2text then *(itext)=guiloadtexture("media/cockpit/fiat.jpg",250)
-If itext=@cockpit3text then *(itext)=guiloadtexture("media/cockpit/nissan.jpg",250)
-If itext=@cockpit4text then *(itext)=guiloadtexture("media/cockpit/malibuchevy.jpg",250)
-If itext=@cockpit5text then *(itext)=guiloadtexture("media/cockpit/cadillac.jpg",250)
-If itext=@roadtext then *(itext)=guiloadtexture("media/road.jpg")
+If itext=@cockpit3text then *(itext)=guiloadtexture("media/cockpit/nissan.jpg",240)
+If itext=@cockpit4text then *(itext)=guiloadtexture("media/cockpit/malibuchevy.jpg",240)
+If itext=@cockpit5text then *(itext)=guiloadtexture("media/cockpit/cadillac.jpg",240)
+If itext=@capottext then *(itext)=guiloadtexture("objects/capot.jpg",170,127)
+If itext=@roadtext then *(itext)=guiloadtexture("media/road.jpg",200,255)
 If itext=@roadbandtext then *(itext)=guiloadtexture("media/roadband.jpg")
 If itext=@roadarrowtext then *(itext)=guiloadtexture("media/roadarrow.jpg")
 If itext=@roadarrow2text then *(itext)=guiloadtexture("media/roadarrow2.jpg")
@@ -265,6 +360,7 @@ If itext=@barrieretext then *(itext)=guiloadtexture("media/barriere.jpg",150)
 If itext=@haietext then *(itext)=guiloadtexture("media/haie.jpg",150)
 If itext=@crosstext then *(itext)=guiloadtexture("media/cross.bmp",250)
 If itext=@onewaytext then *(itext)=guiloadtexture("media/oneway.bmp",250)
+If itext=@oneway2text then *(itext)=guiloadtexture("media/oneway2.bmp",250)
 If itext=@parkingtext then *(itext)=guiloadtexture("media/parking.bmp",250)
 If itext=@raindroptext then *(itext)=guiloadtexture("media/raindrop.jpg")
 If itext=@essuieglacetext then *(itext)=guiloadtexture("media/essuie_glace.jpg",250)
@@ -273,7 +369,12 @@ If itext=@crossrailtext then *(itext)=guiloadtexture("media/crossrail.bmp",250)
 If itext=@housetext then *(itext)=guiloadtexture("media/house.jpg")
 If itext=@roctext then *(itext)=guiloadtexture("objects/roc.jpg")
 If itext=@c150cockpittext then *(itext)=guiloadtexture("objects/c150cockpit2.jpg",250)
+If itext=@c150phototext then *(itext)=guiloadtexture("objects/c150photo.jpg",250)
+If itext=@c150grptext then *(itext)=guiloadtexture("objects/c150grp.jpg",250)
+If itext=@boeing737cockpittext then *(itext)=guiloadtexture("objects/superjet100.jpg",250)
+If itext=@boeing737phototext then *(itext)=guiloadtexture("objects/737photo.jpg",245)
 If itext=@balloncockpittext then *(itext)=guiloadtexture("objects/balloncockpit.jpg",250)
+If itext=@ballonphototext then *(itext)=guiloadtexture("objects/ballonphoto.jpg",250)
 If itext=@retrotext then *(itext)=guiloadtexture("objects/retrotexture.jpg")
 If itext=@ladytext then *(itext)=guiloadtexture("objects/lady/lady.jpg",250)
 If itext=@ladylefttext then *(itext)=guiloadtexture("objects/lady/ladyleft.jpg",250)
@@ -306,8 +407,14 @@ If itext=@shadowcitytext then *(itext)=guiloadtexture("media/shadowcity.bmp",250
 If itext=@shadowcitykmtext then *(itext)=guiloadtexture("media/shadowcitykm.bmp",250)
 If itext=@shadowlamptext then *(itext)=guiloadtexture("media/shadowlamp.bmp",250)
 If itext=@shadowroctext then *(itext)=guiloadtexture("media/shadowroc.bmp",250)
+If itext=@shadowc150text then *(itext)=guiloadtexture("media/shadowc150.jpg",250,110)
+If itext=@shadow737text then *(itext)=guiloadtexture("media/shadow737.jpg",250,110)
+If itext=@shadowballontext then *(itext)=guiloadtexture("media/shadowballon.jpg",250,110)
 If itext=@horsetext then *(itext)=guiloadtexture("objects/horseheadlow.jpg")
-If itext=@mywomantext Then
+If itext=@handtext then *(itext)=guiloadtexture("media/hand.jpg",252)
+If itext=@snowtext then *(itext)=guiloadtexture("media/grass_snow.jpg")
+If itext=@spottext then *(itext)=guiloadtexture("media/spot.jpg",100,0,3)
+If itext=@mywomantext Then 
 	If FileExists("woman/chateau22.jpg") Then
 		*(itext)=guiloadtexture("woman/chateau22.jpg")
 	Else 
@@ -316,8 +423,23 @@ If itext=@mywomantext Then
 EndIf
 If itext=@nathalietext then *(itext)=guiloadtexture("media/nathalie.jpg")
 If itext=@veroniquetext then *(itext)=guiloadtexture("media/veronique.jpg")
-If itext=@christinetext then *(itext)=guiloadtexture("media/christine.jpg")
-If itext=@cocacolatext then *(itext)=guiloadtexture("media/cocacola.jpg")
+If itext=@christinetext Then
+	If FileExists("media/alix1.jpg") Then
+		*(itext)=guiloadtexture("media/alix1.jpg")
+	ElseIf Rnd<0.5 Then 
+		*(itext)=guiloadtexture("media/christine.jpg")
+	Else 
+		*(itext)=guiloadtexture("media/womansmile.jpg")
+	EndIf
+EndIf
+If itext=@cocacolatext Then
+	If Rnd>0.5 Then 
+		*(itext)=guiloadtexture("media/jane.jpg")'cocacola.jpg")
+	Else 
+		*(itext)=guiloadtexture("media/alix.jpg")
+	EndIf
+EndIf
+If itext=@marisoltext then *(itext)=guiloadtexture("media/marisol.jpg")
 End Sub
 Dim Shared As uint dummytext
 Sub myglbindtexture(gltexture2d As uint,itext As uint Ptr)
@@ -329,8 +451,9 @@ glbindtexture0(gltexture2d,*(itext))
 End Sub
 
 
-Dim Shared As string typejpg,mapstyle,hostname,path,apikey,apikeystat
+Dim Shared As string typejpg,typepng,mapstyle,hostname,path,apikey,apikeystat,apikeybing
 typejpg="jpg-baseline"
+typepng="png"
 mapstyle="&style=feature:road%7Cvisibility:off&style=element:labels%7Cvisibility:off&style=element:geometry.stroke%7Cvisibility:off"
 hostname="maps.googleapis.com"
 lat=48.891977155490395   :lng=2.237673523003608  
@@ -358,9 +481,25 @@ If FileExists(ficapi) Then
   If apikey<>"" Then apikey="&key="+apikey
 EndIf
 apikeystat="&key=AIzaSyAnliCSQNwHgqO3vnAxug4u9LlHLkIfxe0"
+Dim Shared As Integer iapikey=999
+Function myapikey()As String
+	iapikey+=1
+	If iapikey>40 Then iapikey=0:Return apikeystat'keep this for my stats
+	Return apikey
+End Function
 If FileExists(ExePath+"/woman/girl2.jpg") Then
    apikeystat=apikey	
 EndIf
+Var ficapibing=ExePath+"/apikeybing.txt"
+apikeybing=""
+If FileExists(ficapibing) Then
+  file=FreeFile
+  Open ficapibing For Input As #file
+  If Not Eof(file) Then Line Input #file,ficin:apikeybing=trim(ficin)
+  Close #file
+  If apikeybing<>"" Then apikeybing="&key=%20"+apikeybing
+EndIf
+
 Function getpixbits(x As Integer,y As Integer)As UInteger
 	If x<1 Or x>bmpwebx Then Return 0
 	If y<1 Or y>bmpweby Then Return 0
@@ -370,13 +509,28 @@ End Function
 'Dim Shared As Single myworldx=0,myworldy=-145
 Declare Sub loadwebterrain(zoom1 As integer)
 Declare Sub loadwebterrainmap(zoom1 As integer)
-Dim Shared As Single dlat=0.1,dlon=0.1,kmxlat=1,latmx,lngmx',klon=1
+Dim Shared As Single dlat=0.1,dlon=0.1,latmx,lngmx,xweb0=999000,yweb0=999000,latweb0,lngweb0',klon=1
 Dim Shared As Integer webzoom=13
 Sub latlngtomxy(ByVal latxx As single,ByVal lngxx As Single ,ByRef mxx As Single,ByRef myy As Single)
+	If kmxlat<10 Then mxx=0:myy=0:Exit Sub 
+	If Abs(xweb0-xweb)<0.01 And Abs(yweb0-yweb)<0.01 Then		
+   	myy=yweb0+(latxx-latweb0)*kmxlat'latmx
+	   mxx=xweb0+(lngxx-lngweb0)*kmxlat/klon'lngmx
+	   'mxx=max(-9999999.0,min(9999999.0,mxx))
+	   'myy=max(-9999999.0,min(9999999.0,myy))
+	   Exit Sub
+	EndIf
 	Var lat0=lat,lng0=lng
 	mxytolatlng(xweb,yweb)
 	myy=yweb+(latxx-lat)*kmxlat'latmx
 	mxx=xweb+(lngxx-lng)*kmxlat/klon'lngmx
+   'mxx=max(-9999999.0,min(9999999.0,mxx))
+   'myy=max(-9999999.0,min(9999999.0,myy))
+	xweb0=xweb:yweb0=yweb
+	lngweb0=lng:latweb0=lat
+	'mxytolatlng(mx,my)
+	'myy=my+(latxx-lat)*kmxlat'latmx
+	'mxx=mx+(lngxx-lng)*kmxlat/klon'lngmx
 	'myy=(myyy-535+my)/2
 	'mxx=(mxxx+mx)/2
 	lat=lat0:lng=lng0 
@@ -455,12 +609,12 @@ Sub subsetmapautotextures(ByVal userdata As Any Ptr)
       updatetownwaynode()
       tloadwebtext2=3
 End Sub             
-Sub subsetmapautotextureszoom(ByVal userdata As Any Ptr)
+'Sub subsetmapautotextureszoom(ByVal userdata As Any Ptr)
       'loadwebtextzoom2()
-      setmapautotextures()
-      tloadwebtext2=0
-End Sub
-Dim Shared As Integer myred(256),mygreen(256),myblue(256)
+      'setmapautotextures()
+'      tloadwebtext2=0
+'End Sub
+Dim Shared As Integer myred(256),mygreen(256),myblue(256),mygreen2(256)
 For i=0 To 256
 	Var j=i'-128.0
 	Var jj=140'100
@@ -469,14 +623,30 @@ For i=0 To 256
 	Var p=Int(max2(0,min2(255,Int(j/k))))
 	Var kk=(jjj+256.0)/(jjj+Abs(j))
 	Var pp=Int(max2(0,min2(255,Int(j/kk))))
+	Var ppp=Int(max2(0,min2(255,Int(251-(251-pp)*0.8))))
 	myred(i)=p
 	mygreen(i)=pp
 	myblue(i)=p
+	If pp>54 Then
+		mygreen2(i)=ppp
+	Else
+		mygreen2(i)=pp
+	EndIf
+	'myred(i)=i
+	'mygreen(i)=i
+	'myblue(i)=i
 Next
-Dim Shared As Single t10=7,t11=0
+Dim Shared As Double t10=7,t11=0,t111,t222,t300=700
 Dim Shared As Integer tcancel=0,ttestroad=0
 Declare Sub loadwebtext3(zoom1 As Integer)
 Dim Shared As Double tloadwebtext0
+/'Function bmpdummy() As Any Ptr
+Dim As Integer i 
+For i=0 To 200
+	recvdata(i)=0
+Next
+Return Fl_JPEG_ImageMem("myjpgdummy", @recvdata(0))
+End Function '/
 Sub loadwebtext(ByVal userdata As Any Ptr)
 	'If tloadwebtext2=2 Then Exit Sub
 	tquitweb=0
@@ -487,10 +657,10 @@ Sub loadwebtext(ByVal userdata As Any Ptr)
 	Else
 		testworld=0
 	EndIf
-  	If Timer<tloadwebtext+t10-0.5 Then Sleep Int((tloadwebtext+t10-Timer)*1000)
+  	If Timer<tloadwebtext+t10-0.5 Then Sleep min2(t300,Int((tloadwebtext+t10-Timer)*1000))
    If Timer<tloadwebtext0+6.5 Then tloadwebtext2=0:Exit Sub 
    If tloadwebtext0<1000 Then tloadwebtext0=Timer
-	tloadwebtext=Timer+40
+	tloadwebtext=Timer+20
 	tloadwebtext2=2 
 	'Var k8=6
    Var aux=(8/40)/(4*k8*512*scalex)  
@@ -540,11 +710,12 @@ Sub loadwebtext(ByVal userdata As Any Ptr)
 	EndIf 
 	dxweb1=100000*1500/max(1,worldmx0-worldmx)
 	dyweb1=100000*1500/max(1,worldmy0-worldmy)
+	If tbing=1 And plane>0 And car=0 Then dxweb1*=0.5:dyweb1*=0.5
    'size=563
    'dxweb1=size*(2^(20-zoom1))
    'dyweb1=size*(2^(20-zoom1))
    'guinotice Str(dyweb1)+" / "+Str(dxweb1)'18000000 37500
-	klon=dlon/max(0.000001,dlat)
+	klon1=dlon/max(0.000001,dlat)
 	lat0=lat:lng0=lng
   	mxytolatlng(mx+dmx0,my+dmy0)
   	Var latmx0=lat,lngmy0=lng
@@ -567,21 +738,84 @@ If zoom1>=13 Then
 	mapstyle3="&style=feature:road%7Cvisibility:on&style=element:labels%7Cvisibility:off&style=element:geometry.stroke%7Cvisibility:off"
 EndIf
 path="/maps/api/staticmap?center="+Str(lat)+","+Str(lng)+"&zoom="+Str(zoom1)+"&scale="+Str(scale)+"&size="+Str(size)+"x"+Str(size)+"&maptype=hybrid&format="+typejpg+mapstyle3
+If tgoogle=1 Then path="/maps/api/staticmap?center="+Str(lat)+","+Str(lng)+"&zoom="+Str(zoom1)+"&scale="+Str(scale)+"&size="+Str(size)+"x"+Str(size)+"&maptype=terrain&format="+typejpg+mapstyle3
 'path="/maps/api/staticmap?center="+Str(lat)+","+Str(lng)+"&zoom="+Str(zoom1)+"&scale="+Str(scale)+"&size="+Str(size)+"x"+Str(size)+"&maptype=terrain&format="+typejpg+mapstyle
 'path="/maps/api/staticmap?center="+Str(lat)+","+Str(lng)+"&zoom="+Str(6)+"&scale="+Str(1)+"&size="+Str(256)+"x"+Str(256)+"&maptype=terrain&format="+typejpg+mapstyle
 If mapdisplay=5 Then
  path="/maps/api/staticmap?center="+Str(lat)+","+Str(lng)+"&zoom="+Str(zoom1)+"&scale="+Str(scale)+"&size="+Str(size)+"x"+Str(size)+"&maptype=hybrid&format="+typejpg	
 EndIf
-Var iretry=0
+Var iretry=9
 retry1:
-Var hostname="maps.googleapis.com"
-Var webidata=httppost(hostname,path+apikey)
+If tbing=1 Then
+ 'http://dev.virtualearth.net/REST/v1/Imagery/Map/aerial/47.619048,-122.35384/15?mapSize=500,500&key=%20Aq0npnXsrnwL9eY3rCUQsJZJJedr8Za9hIH-XsWnppaizf92DYjKS1syE9K3HqVr	
+ Var hostname="dev.virtualearth.net"
+ 'Var apikeybing="&key=%20Aq0npnXsrnwL9eY3rCUQsJZJJedr8Za9hIH-XsWnppaizf92DYjKS1syE9K3HqVr"
+ Var msize=Int(scale*size)
+ 'path="/REST/v1/Imagery/Map/aerial/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=png"
+ If plane=0 Or car>0 Then
+ 	path="/REST/v1/Imagery/Map/Aerial/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1+1)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg"
+ Else 
+   path="/REST/v1/Imagery/Map/Aerial/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1+2)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg"
+ EndIf 
+ If googleerror=0 Then 
+	webidata=httppost(hostname,path+apikeybing)
+	'guinotice Str(webidata)+" "+Str(msize)
+	'Var i=0,mwtext=""
+	'For i=0 To 6'00
+	'	mwtext+=Chr(recvdata(i))
+	'Next
+	'If Left(mwtext,4)<>"ÿØÿà" Then guinotice "ÿØÿà"
+	'If Left(mwtext,4)<>"‰PNG" Then guinotice "‰PNG"
+	'guinotice Left(mwtext,600)
+ Else
+	webidata=0
+ EndIf 
+Else 
+ Var hostname="maps.googleapis.com"
+ If googleerror=0 Then 
+	webidata=httppost(hostname,path+myapikey)
+ Else
+	webidata=0
+ EndIf 
+EndIf 
+If webidata>2 Then'And tbing=1 Then
+	'guinotice Str(Asc("ÿ"))+" "+Str(Asc("Ù"))+"  "+Str(&hD9)+" "+Str(recvdata(webidata-1))'217
+	'recvdata(webidata-1)=0 '=>crash
+	If recvdatagoogle(webidata-1)<>217 Or recvdatagoogle(webidata-2)<>255 Then
+		If auxtest>0.001 Then guinotice "error jpg end"
+		webidata=0
+	EndIf
+EndIf '/ 
+If webidata=0 Then 
+   Dim As Integer i 
+   For i=0 To 200
+   	recvdatagoogle(i)=0
+   Next
+EndIf
 'auxvar3=webidata
 If webidata<-15 Or tquitweb=1 Then tloadwebtext=Timer:tloadwebtext2=0:Exit Sub
 
-Var bmp=Fl_JPEG_ImageMem("myjpg"+Str(Int(size*scale)), @recvdata(0))
+'Var bmp=Fl_JPEG_ImageMem(0, @recvdata(0))
+'Var bmp=LoadRGBAMemory(@recvdata(0),12500000) 
+Var mem=FreeImage_OpenMemory(@recvdatagoogle(cdatagoogle),12500000)' as FIMEMORY Ptr
+Var fifjpeg=fif_jpeg'fif_jpeg
+'If tbing=0 Then fifjpeg=fif_png
+Var bmp0=FreeImage_LoadFromMemory(fifjpeg, mem, 0)
+'Var bmp0=FreeImage_LoadFromMemory(fif_png, mem, 0)
+Var bmp=freeimage_convertto32bits(bmp0)
+freeimage_flipvertical(bmp)
+freeimage_unload(bmp0)
+Var w=freeimage_getwidth(bmp)
+Var h=freeimage_getheight(bmp)
+Var d=freeimage_getbpp(bmp)\8
+Var buffjpg=FreeImage_Getbits(bmp)
+'guinotice Str(w)+" "+Str(h)
+'Var buffjpg1=@(FreeImage_Getbits(bmp)[0]):guinotice Str(buffjpg1-buffjpg)
+/'Var bmp=Fl_JPEG_ImageMem("myjpg"+Str(Int(size*scale)), @recvdata(0))
 'Var bmp=Fl_png_ImageMem("myjpg", @recvdata(0),webidata)
 If bmp=0 Then 
+	guinotice "bmp=0"
+	bmp=bmpdummy()
 	'tloadwebtext=Timer:tloadwebtext2=0:Exit Sub 	
 EndIf
 Var w = Fl_ImageW(bmp) ' width
@@ -590,14 +824,23 @@ Var d = Fl_ImageD(bmp) ' depth
 var p = Fl_ImageLD(bmp) ' pitch
 var c = Fl_ImageCount(bmp) ' image count
 Var buffjpg = Fl_ImageData(bmp)[0] ' pixel buffer
+'/
 'auxvar3=w+1
+'guinotice Str(bmp)+"  "+Str(webidata)+"  "+Str(w)+"  "+Str(h)
+Var kw=w/(2*size),kh=h/(2*size)
 If w<100 Or h<100 Or w<>2*size Or h<>2*size Then
    'Fl_ImageDelete(bmp)
-   If iretry<5 Then iretry+=1:Sleep 3000:GoTo retry1
-   guinotice "error load webtext"
-   Sleep 2000
+   If iretry<5 Then
+      'Fl_ImageDelete(bmp)
+      freeimage_unload(bmp)
+      freeimage_closememory(mem)
+      guinotice "error load webtext "+Str(bmp)+" idata="+Str(webidata)+" w="+Str(w)+" h="+Str(h)
+   	iretry+=1:Sleep 3000:GoTo retry1
+   EndIf
+   Sleep t300'2000
 	'tloadwebtext=Timer+1:tloadwebtext2=0
 	guierror=1
+	If kw>0.1 And Abs(kw-kh)<0.001 Then guierror=2
 	w=2*size:h=2*size
 	'Exit Sub 
 EndIf
@@ -632,38 +875,67 @@ guigetbmpXY(bmpwebdc,bmpwebx,bmpweby)
 'bitblt(bmpdc,0,0,bmpx,bmpy,bmp2dc,0,0,srccopy)
 Dim As uint pix,k,r,g,b,a:Dim As uint i
 If UBound(webpicbits)<bmpwebx*bmpweby Then
-	'guinotice "redim"
+	If auxtest>0.6 Then guinotice "redim"
 	ReDim As uint webpicbits(1 To bmpwebx*bmpweby)
 	ReDim As uint webpicbits0(1 To bmpwebx*bmpweby)
 EndIf
   'GetBitmapBits hbmp,bmpx*bmpy*4,@PicBits(1)
   k=0:a=255 Shl 24
+  Var kk=0.01,k1=Int(kk)
   For i=1 To min2(bmpwebx*bmpweby,UBound(webpicbits))
-    If guierror=0 then   
-     r=(buffjpg[k])
+    If guierror=0 Then   
+     b=(buffjpg[k])
      g=(buffjpg[k+1])
-     b=(buffjpg[k+2])
+     r=(buffjpg[k+2])
      k+=d
+    ElseIf guierror=2 Then
+     k1=Int(kk):kk+=kw
+     k=k1*d
+     b=(buffjpg[k])
+     g=(buffjpg[k+1])
+     r=(buffjpg[k+2])
+    Else 	
+     r=70:g=160:b=70
     EndIf  
 	 webpicbits0(i)=a+(r Shl 16)+(g Shl 8)+(b)
+    If tgoogle=2 And b>80 And g>80 And g>b+10 And b>r Then g=mygreen2(g) Else g=mygreen(g)'buffjpg[k+1])
     r=myred(r)'buffjpg[k])
-    g=mygreen(g)'buffjpg[k+1])
     b=myblue(b)'buffjpg[k+2])
     'k+=d
+    If tgoogle=1 Then 
+     If r<b+15 And r>160 And g>160 And b>160 Then
+    	 r-=160:b-=160:g-=100
+     ElseIf tgoogle=1 And g>r+20 And g>b+20 Then'forest
+    	 r=0:b=0:g*=0.5
+     EndIf
+    EndIf  
+
 	 webpicbits(i)=a+(r Shl 16)+(g Shl 8)+(b)
   Next
-Fl_ImageDelete(bmp)
+'Fl_ImageDelete(bmp)
+freeimage_unload(bmp)
+freeimage_closememory(mem)
 guierror=0
 
-  If (mz-mzsol0)<1400 And mapdisplay<>5 Then
-  	  Sleep 1000:loadwebtext3(zoom1):ttestroad=1
+  If (mz-mzsol0)<20000 And mapdisplay<>5 Then
+  	  Sleep t300'1000
+  	  If tbing=1 And plane>0 And car=0 Then
+  	  	loadwebtext3(zoom1+1):ttestroad=1
+  	  Else 
+  	  	loadwebtext3(zoom1):ttestroad=1
+  	  EndIf
   Else
   	  ttestroad=0
   EndIf
   SetBitmapBits hbmpweb,bmpwebx*bmpweby*4,@webPicBits(1)
 freelockterrainbmp()
-If testworld=1 Then Sleep 1000:loadwebterrain(zoom1)
-Sleep 1000
+If testworld=1 Then
+	Sleep t300'1000
+	getlockterrain2()
+	loadwebterrain(zoom1)
+	freelockterrain()
+EndIf
+Sleep t300'1000
 tloadwebtext2=1  
 'If tquitweb=1 Then tloadwebtext2=0:tloadwebtext=0
 End Sub
@@ -675,6 +947,44 @@ Dim Shared As Byte testtree(1200,1200)
 Dim Shared As UByte testtreer(1200,1200),testtreeg(1200,1200),testtreeb(1200,1200)
 Dim Shared As Integer testtreedx=563*2+1,testtreedy=563*2+1
 Dim Shared As Single testtreexweb,testtreeyweb
+Sub setterrainroadwater()
+Dim As Integer i,j,k,n,ii,jj,ix,iy
+Var di=1
+Var ki=testroaddx/512
+Var kj=testroaddy/512
+Var zwater=(waterz-4)/scalez
+'waterz=hwater0*scalez+4
+Var zwater1=(waterz-4)/scalez+0.03
+Var zwater0=zwater+0.01
+For i=2 To 512-2
+	ix=Int(i*ki)
+	For j=2 To 512-2
+	  If terrain22(i,j)>zwater0 Then 
+	   iy=Int(j*kj)
+	   Var test=0
+		If testroad(ix,iy)=3 Then'water
+			test=1
+		ElseIf testroad(ix+1,iy)=3 Then'water
+			test=1
+		elseIf testroad(ix,iy+1)=3 Then'water
+			test=1
+		elseIf testroad(ix+1,iy+1)=3 Then'water
+			test=1
+		EndIf
+		If test=1 Then 
+			var zz=zwater1+Int((terrain22(i,j)-zwater)/5.0)*5.0
+			terrain22(i,j)=zz
+			terrain22(i+1,j)=zz
+			terrain22(i-1,j)=zz
+			terrain22(i,j+1)=zz
+			terrain22(i,j-1)=zz
+			terrain22(i+1,j+1)=zz
+			terrain22(i-1,j-1)=zz
+		EndIf
+	  EndIf 	
+	Next
+Next
+End Sub
 Sub loadwebtext3(zoom1 As Integer)
 scale=2:size=563':kxweb=(1-512/563)/2'Int(512/(1-0.12))'512
 'If (mz-mzsol0)<500 Then scale=1
@@ -689,16 +999,45 @@ path="/maps/api/staticmap?center="+Str(lat)+","+Str(lng)+"&zoom="+Str(zoom1)+"&s
 If mapdisplay=5 Then
  'path="/maps/api/staticmap?center="+Str(lat)+","+Str(lng)+"&zoom="+Str(zoom1)+"&scale="+Str(scale)+"&size="+Str(size)+"x"+Str(size)+"&maptype=roadmap&format="+typejpg	
 EndIf
-Var iretry=0
+Var iretry=9
 retry2:
 Var hostname="maps.googleapis.com"
-Var webidata=httppost(hostname,path+apikey)
+If googleerror=0 Then 
+	webidata=httppost(hostname,path+myapikey)
+Else
+	webidata=0
+EndIf 
+If webidata>2 Then
+	'guinotice Str(Asc("ÿ"))+" "+Str(Asc("Ù"))+"  "+Str(&hD9)+" "+Str(recvdata(webidata-1))'217
+	If recvdatagoogle(webidata-1)<>217 Or recvdatagoogle(webidata-2)<>255 Then
+		If auxtest>0.001 Then guinotice "error jpg end"
+		webidata=0
+	EndIf
+EndIf 
+If webidata=0 Then 
+   Dim As Integer i 
+   For i=0 To 200
+   	recvdatagoogle(i)=0
+   Next
+EndIf
 'auxvar3=webidata
 If webidata<-15 Or tquitweb=1 Then tloadwebtext=Timer:tloadwebtext2=0:Exit Sub
 
-Var bmp=Fl_JPEG_ImageMem("myjpg3"+Str(Int(size*scale)), @recvdata(0))
+Var mem=FreeImage_OpenMemory(@recvdatagoogle(cdatagoogle),12500000)' as FIMEMORY Ptr
+Var bmp0=FreeImage_LoadFromMemory(fif_jpeg, mem, 0)
+Var bmp=freeimage_convertto32bits(bmp0)
+freeimage_flipvertical(bmp)
+freeimage_unload(bmp0)
+Var w=freeimage_getwidth(bmp)
+Var h=freeimage_getheight(bmp)
+Var d=freeimage_getbpp(bmp)\8
+Var buffjpg=FreeImage_Getbits(bmp)
+/'Var bmp=Fl_JPEG_ImageMem(0, @recvdata(0))
+'Var bmp=Fl_JPEG_ImageMem("myjpg3"+Str(Int(size*scale)), @recvdata(0))
 'Var bmp=Fl_png_ImageMem("myjpg", @recvdata(0),webidata)
 If bmp=0 Then 
+	guinotice "bmp=0"
+	bmp=bmpdummy()
 	'tloadwebtext=Timer:tloadwebtext2=0:Exit Sub 	
 EndIf
 Var w = Fl_ImageW(bmp) ' width
@@ -707,16 +1046,23 @@ Var d = Fl_ImageD(bmp) ' depth
 var p = Fl_ImageLD(bmp) ' pitch
 var c = Fl_ImageCount(bmp) ' image count
 Var buffjpg = Fl_ImageData(bmp)[0] ' pixel buffer
-'auxvar3=w+1
+'/
 If w<100 Or h<100 Or w<>2*size Or h<>2*size Then
    'Fl_ImageDelete(bmp)
-   If iretry<5 Then iretry+=1:Sleep 3000:GoTo retry2
-   guinotice "error load webtext3"
-   Sleep 2000
+   If iretry<5 Then
+      'Fl_ImageDelete(bmp)
+      freeimage_unload(bmp)
+      freeimage_closememory(mem)
+      guinotice "error load webtext3"
+   	iretry+=1:Sleep 3000:GoTo retry2
+   EndIf
+   Sleep t300'2000
    guierror=1
    w=2*size:h=2*size
 	'tloadwebtext=timer+1:tloadwebtext2=0
-	Exit Sub 
+   'freeimage_unload(bmp)
+   'freeimage_closememory(mem)
+	'Exit Sub 
 EndIf
 'Dim As hbitmap hbmp
 'Dim As hdc bmpdc
@@ -749,7 +1095,7 @@ guigetbmpXY(bmpwebdc,bmpwebx,bmpweby)
 '/
 Dim As uint pix,k,r,g,b,a,argb,argb2,argb3:Dim As uint i
 If UBound(webpicbits)<bmpwebx*bmpweby Then
-	'guinotice "redim"
+	If auxtest>0.6 Then guinotice "redim"
 	ReDim As uint webpicbits(1 To bmpwebx*bmpweby)
 	ReDim As uint webpicbits0(1 To bmpwebx*bmpweby)
 EndIf
@@ -762,8 +1108,10 @@ EndIf
   r=128+32:g=128+16:b=0 
   argb3=a+(r Shl 16)+(g Shl 8)+(b)
   If testroaddx<bmpwebx Or testroaddy<bmpweby Then 
-    guinotice "testroaddx error !"
-    Fl_ImageDelete(bmp)
+    guinotice "testroaddx error ! "+Str(bmpwebx)+" "+Str(bmpweby)
+    'Fl_ImageDelete(bmp)
+    freeimage_unload(bmp)
+    freeimage_closememory(mem)
     Exit Sub    
     'testroaddx=bmpwebx:testroaddy=bmpweby
     'ReDim As Byte testroad(testroaddx,testroaddy)
@@ -779,11 +1127,13 @@ EndIf
   	 	iroad=0:jroad+=1
   	 EndIf
   	 If guierror=0 Then 
-     r=(buffjpg[k])
+     b=(buffjpg[k])
      g=(buffjpg[k+1])
-     b=(buffjpg[k+2])
+     r=(buffjpg[k+2])
      k+=d
-    EndIf  
+    Else  
+     r=70:g=170:b=70
+  	 EndIf  
     testroadr(iroad,jroad)=r
     testroadg(iroad,jroad)=g
     testroadb(iroad,jroad)=b
@@ -803,7 +1153,9 @@ EndIf
   testroadyweb=yweb1
   If testtreedx<bmpwebx Or testtreedy<bmpweby Then 
     guinotice "testtreedx error !"
-    Fl_ImageDelete(bmp)
+    'Fl_ImageDelete(bmp)
+    freeimage_unload(bmp)
+    freeimage_closememory(mem)
     Exit Sub    
     'testtreedx=bmpwebx:testtreedy=bmpweby
     'ReDim As Byte testtree(testtreedx,testtreedy)
@@ -817,21 +1169,28 @@ EndIf
   'dr=8:dg=8:db=8
   Var g70=mygreen(70),g10=mygreen(10),g120=mygreen(120)
   g70=70:g10=10:g120=120
+  g70=90
   Var r1=70,g1=60,b1=51
   For itree2=0 To testtreedx Shr 1
   	For jtree2=0 To testtreedy Shr 1
   		testtree(itree2,jtree2)=0
   	Next
   Next
+  Var rr2=rr,gg2=gg,bb2=bb
+  Var rrr2=rrr,ggg2=ggg,bbb2=bbb
+  'zoom1 13,14,15
   For i=1 To min2(bmpwebx*bmpweby,UBound(webpicbits))
   	 itree+=1
   	 If itree>=testtreedx Then
   	 	itree=0:jtree+=1
   	 EndIf
   	 Var pix=webpicbits0(i)'webpicbits(i)
-  	 rrr=rr:rr=r
-  	 ggg=gg:gg=g
-  	 bbb=bb:bb=b
+  	  rrr2=rr2:rr2=rrr
+  	  ggg2=gg2:gg2=ggg
+  	  bbb2=bb2:bb2=bbb
+  	  rrr=rr:rr=r
+  	  ggg=gg:gg=g
+  	  bbb=bb:bb=b
     r=(pix Shr 16)And 255
     g=(pix Shr 8)And 255
     b=pix And 255
@@ -839,13 +1198,19 @@ EndIf
     testtreeg(itree,jtree)=g
     testtreeb(itree,jtree)=b
     testtree(itree,jtree)=0
+   If tgoogle=2 Then 
     Var test1=0,drr=dr,dgg=dg,dbb=db
     If (Abs(r-r1)<10 And Abs(g-g1)<10 And Abs(b-b1)<10) Then
     	test1=1
     	drr=2:dgg=2:dbb=2
     EndIf
+    'If (Abs(r-64)<10 And Abs(g-71)<10 And Abs(b-54)<10) Then
+    	'test1=1
+    	'drr=2:dgg=2:dbb=2
+    'EndIf
     'If (g>r*1.12 and g>b*1.02 and g<g70 and g>g10) Then
-    If (g>r*1.08 and g>b*1.04 and g<g70 and g>g10) Or test1=1 Then
+    'If (g>r*1.08 and g>b*1.04 and g<g70 and g>g10) Or test1=1 Then
+    If (g>r*1.01 and g>b*1.04 and g<g70 and g>g10) Or test1=1 Then
 		 If Abs(rr-r)>drr Or Abs(gg-g)>dgg Or Abs(bb-b)>dbb Then
 		 	If testroad(itree,jtree)=0 And testroad(itree+1,jtree)=0 And testroad(itree,jtree+1)=0 And _
 		 	   testroad(itree+1,jtree+1)=0 And testroad(itree+2,jtree)=0 And testroad(itree,jtree+2)=0 Then
@@ -881,11 +1246,24 @@ EndIf
 		 	EndIf
 		 EndIf 	
     EndIf
+   ElseIf tgoogle=1 Then
+   	r=myred(r)
+   	g=mygreen(g)
+   	b=myblue(b)
+   	If (r>b+15 Or r<160 Or g<160 Or b<160) And g>r+20 And g>b+20 Then'forest
+    	   'r=0:b=0:g*=0.5
+		   testtree(itree Shr 1,jtree Shr 1)=1
+      Else 	
+  	   	'testtree(itree Shr 1,jtree Shr 1)=0
+  	   EndIf 	
+   EndIf
   Next
   testtreexweb=xweb1
   testtreeyweb=yweb1
   'guinotice Str(ntree)	
-Fl_ImageDelete(bmp)
+'Fl_ImageDelete(bmp)
+freeimage_unload(bmp)
+freeimage_closememory(mem)
 guierror=0
 	
 End Sub
@@ -907,7 +1285,7 @@ Return testroad(i,j)
 End Function
 Function gettestroadtree(x As Single,y As Single)As Integer
 Dim As Integer i,j,k
-If ttestroad=0 Then Return 0 
+If ttestroad=0 Then Return 1'Return 0 
 	Var k06=kxweb,k66=1-k06-k06
 	'Var tyy=k06+k66*(y-yweb+dyweb-512)*0.5/dyweb
 	Var tyy=0.5+k66*(y-testroadyweb)*0.5/dyweb
@@ -947,8 +1325,8 @@ Sub loadwebtextzoom(ByVal userdata As Any Ptr)
 	Else
 		testworld=0
 	EndIf
-  	If Timer<tloadwebtext+t10-1 Then Sleep Int((tloadwebtext+t10-Timer)*1000)
-	tloadwebtext=Timer+60
+  	If Timer<tloadwebtext+t10-1 Then Sleep min2(t300,Int((tloadwebtext+t10-Timer)*1000))
+	tloadwebtext=Timer+20
 	tloadwebtext2=2 
 	'Var k8=6
    Var aux=(8/40)/(4*k8*512*scalex)  
@@ -965,12 +1343,24 @@ Sub loadwebtextzoom(ByVal userdata As Any Ptr)
 	Dim As Integer webzoom1=max2(zoom,webzoom)
 	If x960>2000 Then webzoom1=max2(zoom-1,webzoom-1)
 	webzoom1=max2(6,webzoom1+dzoom)
-	If dkzoom>1.1 Then
+	If dkzoom>6.1 Then
+		If ntownnear>10 Then
+			webzoom1=17
+		Else
+			webzoom1=16
+		EndIf
+	ElseIf dkzoom>1.1 Then
 		If ntownnear>10 Then
 			webzoom1=16
 		Else
 			webzoom1=15
 		EndIf
+	ElseIf dkzoom>0.9 Then
+		webzoom1=13
+	ElseIf dkzoom>0.1 Then
+		webzoom1=10
+	ElseIf dkzoom<0.1 Then
+		webzoom1=6
 	EndIf
 	lat0=lat:lng0=lng
   	mxytolatlng(xwebzoom1,ywebzoom1)
@@ -984,17 +1374,45 @@ mapstyle3="&style=feature:road%7Cvisibility:on&style=element:labels%7Cvisibility
 path="/maps/api/staticmap?center="+Str(lat1)+","+Str(lng1)+"&zoom="+Str(webzoom1)+"&scale="+Str(scale)+"&size="+Str(size)+"x"+Str(size)+"&maptype=hybrid&format="+typejpg+mapstyle3
 'path="/maps/api/staticmap?center="+Str(lat)+","+Str(lng)+"&zoom="+Str(zoom1)+"&scale="+Str(scale)+"&size="+Str(size)+"x"+Str(size)+"&maptype=terrain&format="+typejpg+mapstyle
 'path="/maps/api/staticmap?center="+Str(lat)+","+Str(lng)+"&zoom="+Str(6)+"&scale="+Str(1)+"&size="+Str(256)+"x"+Str(256)+"&maptype=terrain&format="+typejpg+mapstyle
-Var iretry=0
+Var iretry=9
 retry3:
 Var hostname="maps.googleapis.com"
-Var webidata=httppost(hostname,path+apikeystat)
-apikeystat=apikey
+If googleerror=0 Or tinittown0>1 Then 
+	webidata=httppost(hostname,path+myapikey)
+Else
+	webidata=0
+EndIf 
+If webidata>2 Then
+	'guinotice Str(Asc("ÿ"))+" "+Str(Asc("Ù"))+"  "+Str(&hD9)+" "+Str(recvdata(webidata-1))'217
+	If recvdatagoogle(webidata-1)<>217 Or recvdatagoogle(webidata-2)<>255 Then
+		If auxtest>0.001 Then guinotice "error jpg end"
+		webidata=0
+	EndIf
+EndIf 
+If webidata=0 Then 
+   Dim As Integer i 
+   For i=0 To 200
+   	recvdatagoogle(i)=0
+   Next
+EndIf
 'auxvar3=webidata
 If webidata<-15 Or tquitweb=1 Then tloadwebtext=Timer:tloadwebtext2=0:Exit Sub
 
-Var bmp=Fl_JPEG_ImageMem("myjpgzoom", @recvdata(0))
+Var mem=FreeImage_OpenMemory(@recvdatagoogle(cdatagoogle),12500000)' as FIMEMORY Ptr
+Var bmp0=FreeImage_LoadFromMemory(fif_jpeg, mem, 0)
+Var bmp=freeimage_convertto32bits(bmp0)
+freeimage_flipvertical(bmp)
+freeimage_unload(bmp0)
+Var w=freeimage_getwidth(bmp)
+Var h=freeimage_getheight(bmp)
+Var d=freeimage_getbpp(bmp)\8
+Var buffjpg=FreeImage_Getbits(bmp)
+/'Var bmp=Fl_JPEG_ImageMem(0, @recvdata(0))
+'Var bmp=Fl_JPEG_ImageMem("myjpgzoom", @recvdata(0))
 'Var bmp=Fl_png_ImageMem("myjpg", @recvdata(0),webidata)
 If bmp=0 Then 
+	guinotice "bmp=0"
+	bmp=bmpdummy()
 	'tloadwebtext=Timer:tloadwebtext2=0:Exit Sub 	
 EndIf
 Var w = Fl_ImageW(bmp) ' width
@@ -1003,12 +1421,17 @@ Var d = Fl_ImageD(bmp) ' depth
 var p = Fl_ImageLD(bmp) ' pitch
 var c = Fl_ImageCount(bmp) ' image count
 Var buffjpg = Fl_ImageData(bmp)[0] ' pixel buffer
-'auxvar3=w+1
+'/
 If w<100 Or h<100 Or w<>1*size Or h<>1*size Then
    'Fl_ImageDelete(bmp)
-   If iretry<5 Then iretry+=1:Sleep 3000:GoTo retry3
-   guinotice "error load terrainzoom"
-   Sleep 2000
+   If iretry<5 Then
+      'Fl_ImageDelete(bmp)
+      freeimage_unload(bmp)
+      freeimage_closememory(mem)
+      guinotice "error load terrainzoom"
+   	iretry+=1:Sleep 3000:GoTo retry3
+   EndIf
+   Sleep t300'2000
    guierror=1
    w=size:h=size
 	'tloadwebtext=Timer+1:tloadwebtext2=0
@@ -1022,7 +1445,7 @@ Dim As uint x,y,bmpx,bmpy,itexture
 'If guiwindc0=0 Then guiwindc0=getdc(0)
 'guiwindc0=0'guiopenglwindc
 'hbmp=guiloadbmpdib("bmp/bmp256x256.bmp")
-getlockterrainbmp()
+getlockterrainbmp2()
 If bmpwebzoomdc<>0 Then
   deletedc(bmpwebzoomdc)
   bmpwebzoomdc=0
@@ -1051,20 +1474,24 @@ EndIf
   k=0:a=255 Shl 24
   For i=1 To bmpwebzoomx*bmpwebzoomy'UBound(picbits)
     If guierror=0 Then  
-     r=buffjpg[k]
+     b=buffjpg[k]
      g=buffjpg[k+1]
-     b=buffjpg[k+2]
+     r=buffjpg[k+2]
      k+=d
+    Else  
+     r=70:g=170:b=70
     EndIf  
 	 webzoompicbits(i)=a+(r Shl 16)+(g Shl 8)+(b)
   Next
   SetBitmapBits hbmpwebzoom,bmpwebzoomx*bmpwebzoomy*4,@webzoomPicBits(1)
   freelockterrainbmp()
-Fl_ImageDelete(bmp)	
+'Fl_ImageDelete(bmp)	
+freeimage_unload(bmp)
+freeimage_closememory(mem)
 guierror=0
 
 'If tquitweb=1 Then tloadwebtext2=0:Exit Sub 
-Sleep 1000
+Sleep t300'1000
 tloadwebtext2=4
  
 End Sub
@@ -1076,7 +1503,9 @@ Dim Shared As Single xweb10=0,yweb10=0,dxweb10=1,dyweb10=1
 Dim Shared As Double tloadwebmap=0
 Sub loadwebmap()
 	If tloadwebtext2=2 Then Exit Sub
-	If Timer<tloadwebmap+t10-0.5 Then Sleep Int((tloadwebmap+t10-Timer)*1000)
+	getlockterrain()
+	tloadwebtext2=2
+	If Timer<tloadwebmap+t10-0.5 Then Sleep min2(t300,Int((tloadwebmap+t10-Timer)*1000))
    tloadwebmap=Timer
 	Var lat0=lat,lng0=lng
 	'Var k8=6
@@ -1110,11 +1539,13 @@ Sub loadwebmap()
 	EndIf 
 	dxweb10=100000*1500.0/max(100,worldmx0-worldmx)
 	dyweb10=100000*1500.0/max(100,worldmy0-worldmy)
-	Sleep 1000
+	Sleep t300'1000
 	loadwebterrain(zoom1)
-	Sleep 1000
+	Sleep t300'1000
 	terraintomap()
 	lat=lat0:lng=lng0
+	tloadwebtext2=0
+	freelockterrain()
 End Sub
 Sub subloadwebmap(ByVal userdata As Any Ptr)
    guinotice("loadmap")
@@ -1134,15 +1565,44 @@ Dim As Integer size=512
 Var mapstyle2="&style=element:labels%7Cvisibility:off&style=feature:administrative%7Celement:geometry%7Cvisibility:off&style=feature:administrative.land_parcel%7Cvisibility:off&style=feature:administrative.neighborhood%7Cvisibility:off&style=feature:poi%7Cvisibility:off&style=feature:road%7Cvisibility:off&style=feature:road%7Celement:labels.icon%7Cvisibility:off&style=feature:transit%7Cvisibility:off" 
 'Var path2="/maps/api/staticmap?center="+Str(lat)+","+Str(lng)+"&zoom="+Str(zoom1-1)+"&scale="+Str(1)+"&size="+Str(size)+"x"+Str(size)+"&maptype=terrain&format="+typejpg+mapstyle2
 Var path2="/maps/api/staticmap?center="+Str(lat)+","+Str(lng)+"&zoom="+Str(zoom1-3)+"&scale="+Str(1)+"&size="+Str(size)+"x"+Str(size)+"&maptype=terrain&format="+typejpg+mapstyle2
-Var iretry=0
+Var iretry=9
 retry4:
 Var hostname="maps.googleapis.com"
-Var webidata=httppost(hostname,path2+apikey)
+If googleerror=0 Then 
+	webidata=httppost(hostname,path2+myapikey)
+Else
+	webidata=0
+EndIf 
+If webidata>2 Then
+	'guinotice Str(Asc("ÿ"))+" "+Str(Asc("Ù"))+"  "+Str(&hD9)+" "+Str(recvdata(webidata-1))'217
+	If recvdatagoogle(webidata-1)<>217 Or recvdatagoogle(webidata-2)<>255 Then
+		If auxtest>0.001 Then guinotice "error jpg end"
+		webidata=0
+	EndIf
+EndIf 
+If webidata=0 Then 
+   Dim As Integer i 
+   For i=0 To 200
+   	recvdatagoogle(i)=0
+   Next
+EndIf
 'auxvar3=webidata
 If webidata<-15 Or tquitweb=1 Then tloadwebtext=Timer:tloadwebtext2=0:Exit Sub
 
-Var bmp=Fl_JPEG_ImageMem("myjpg2"+Str(size), @recvdata(0))
+Var mem=FreeImage_OpenMemory(@recvdatagoogle(cdatagoogle),12500000)' as FIMEMORY Ptr
+Var bmp0=FreeImage_LoadFromMemory(fif_jpeg, mem, 0)
+Var bmp=freeimage_convertto32bits(bmp0)
+freeimage_flipvertical(bmp)
+freeimage_unload(bmp0)
+Var w=freeimage_getwidth(bmp)
+Var h=freeimage_getheight(bmp)
+Var d=freeimage_getbpp(bmp)\8
+Var buffjpg=FreeImage_Getbits(bmp)
+/'Var bmp=Fl_JPEG_ImageMem(0, @recvdata(0))
+'Var bmp=Fl_JPEG_ImageMem("myjpg2"+Str(size), @recvdata(0))
 If bmp=0 Then 
+	guinotice "bmp=0"
+	bmp=bmpdummy()
 	'tloadwebtext=Timer+1:tloadwebtext2=0:Exit Sub 	
 EndIf
 Var w = Fl_ImageW(bmp) ' width
@@ -1151,12 +1611,17 @@ Var d = Fl_ImageD(bmp) ' depth
 var p = Fl_ImageLD(bmp) ' pitch
 var c = Fl_ImageCount(bmp) ' image count
 Var buffjpg = Fl_ImageData(bmp)[0] ' pixel buffer
-'auxvar3=w+1
+'/
 If w<100 Or h<100 Or w<>1*size Or h<>1*size Then
    'Fl_ImageDelete(bmp)
-   If iretry<5 Then iretry+=1:Sleep 3000:GoTo retry4
-   guinotice "error load webterrain"
-   Sleep 1000
+   If iretry<5 Then
+      'Fl_ImageDelete(bmp)
+      freeimage_unload(bmp)
+      freeimage_closememory(mem)
+      guinotice "error load webterrain"
+   	iretry+=1:Sleep 3000:GoTo retry4
+   EndIf
+   Sleep t300'1000
    guierror=1':quit=1
    'tloadwebtext=Timer+1:tloadwebtext2=0
 	'Exit Sub 
@@ -1167,7 +1632,7 @@ EndIf
 Dim As uint x,y,bmpx,bmpy
 x=w:y=h
 bmpx=x:bmpy=y
-getlockterrain2()
+'getlockterrain2()
 If bmpwebx2*bmpweby2<bmpx*bmpy Then 
  bmpwebx2=bmpx:bmpweby2=bmpy
  ReDim As uint webpicr(1 To bmpx*bmpy)
@@ -1181,9 +1646,9 @@ k=0:a=255 Shl 24
 'bmpy=min2(bmpy,512)
 For i=1 To bmpx*bmpy
   If guierror=0 Then 
-    webpicr(i)=buffjpg[k]
+    webpicb(i)=buffjpg[k]
     webpicg(i)=buffjpg[k+1]
-    webpicb(i)=buffjpg[k+2]
+    webpicr(i)=buffjpg[k+2]
     k+=d
 	 'Var rr=32
 	 'if(b>r*1.4 And abs(r-176)<rr and abs(g-208)<rr and abs(b-254)<rr)Then
@@ -1191,12 +1656,19 @@ For i=1 To bmpx*bmpy
 	 'Else
 	 '	terrain(i,j)=-60+dhmareemax+5
 	 'EndIf
+  Else 	 
+    webpicr(i)=70
+    webpicg(i)=170
+    webpicb(i)=70
   EndIf 	 
 Next
-freelockterrain()
-Fl_ImageDelete(bmp)
+'freelockterrain()
+'Fl_ImageDelete(bmp)
+freeimage_unload(bmp)
+freeimage_closememory(mem)
 guierror=0
 
+'guinotice "srtm "+Str(toksrtm)
 If toksrtm>=1 And tinternet>=3 Then
 	testloadsrtm()
 	If msgsrtm<>"" Then
@@ -1207,7 +1679,7 @@ EndIf
 
 	
 End Sub
-Sub loadwebtext2old()
+Sub loadwebtext2old_()
 Dim As uint itexture
 'If webtext>0 Then
    'deletedc(bmpwebdc)
@@ -1351,6 +1823,7 @@ If water(i,j)=1 Then
 	EndIf
 	Exit Sub 
 EndIf
+getlockterrainbmp2()
      	ipix=1+bmpwebx*(xx-xweb+dxweb)/(dxweb+dxweb)
      	jpix=1+bmpweby*(-yy+yweb+dyweb)/(dyweb+dyweb)
      	pix=getpixbits(jpix,ipix)
@@ -1376,6 +1849,7 @@ EndIf
      	  terrain22(i,j)=max(terrain22(i,j),-60+dhmareemax+0.1)
      	  water(i,j)=0
      	EndIf
+   freelockterrainbmp()  	
 End Sub
 Function hrgb(r As Integer,g As Integer,b As Integer)As Single
 Dim As Single h
@@ -1446,13 +1920,13 @@ EndIf'/
 		Var lngx=mylngweb+mydlngweb*(xx-myxweb)/mydxweb
 		MercatorLatLngtosrtmlatlng(latx,lngx)
 		'Var hsrtm=max(-0.0,0.4*(getsrtmheight(srtmlat,srtmlng)-14))
-		Var hsrtm=max(-0.0,(getsrtmheight(srtmlat,srtmlng)-14))
+		Var hsrtm=max(-0.0,0.8*(getsrtmheight(srtmlat,srtmlng)-14))
      	If test=0 Then
      	  Var h=0.0'max(0,(r+g)/2-b)*2'4'*0.1
 		  If testhsrtm=0 Then
 		  	h=hrgb(r,g,b)'120*4000*(g+g-b-r)/(30+r*r+g*g+b*b)
 		  Else
-		  	h=0.7*hrgb(r,g,b)
+		  	h=hrgb(r,g,b)*0.2'0.7
 		  EndIf
 		  'h=max(0.0,min(256.0,h))
      	  h=h+hsrtm-60+dhmareemax+0.1
@@ -1587,20 +2061,8 @@ Sleep 500
 End Sub
 Dim Shared As Integer quit2=0
 Function subflyto(lat1 As Single,lng1 As Single)As Integer 
-	If tloadwebtext2=2 Or tinittown<>0 Then
-		Var i=0
-		quit2=1:tquitweb=1
-		For i=1 To 20
-			Sleep 500
-			If tloadwebtext2<>2 And tinittown=0 Then Exit For
-		Next
-		If tloadwebtext2=2 Or tinittown<>0 Then 
-		  guinotice("i am busy , try later")
-		  quit2=0:tquitweb=0
-		  Return 0
-		EndIf  
-	EndIf
-	tloadwebtext2=2
+ 	If waitbusy()=0 Then Return 0 
+ 	tloadwebtext2=2
 	tinittown=1
 	subflyto0(lat1,lng1)
 	Sleep 500
@@ -1611,45 +2073,46 @@ Function subflyto(lat1 As Single,lng1 As Single)As Integer
 	tmapchanged=1
 	Return 1
 End Function 
-Sub subgeocoding0()
+Function subgeocoding0() As Integer 
 Dim As Integer i,j,k
 Dim As String text
-If testworld=0 Then Exit Sub
+If testworld=0 Or tquitweb=1 Then Return 0
 resp="" 
 prompt("fly to : enter a location name",resp)
 resp=Trim(resp)
-If resp="" Then Exit Sub
+If resp="" Then Return 0
 replace(resp," ","%20")
+If tquitweb=1 Then Return 0 
 tquitweb=0
 Var hostname="nominatim.openstreetmap.org"
 Var path="/search?format=json&q="+resp+"&limit=1"
 Var webidata=httppost(hostname,path)
-If webidata<10 Then guinotice("not found !","geocoding"):Exit Sub
+If webidata<10 Then guinotice("not found !","geocoding"):Return 0
 text=""
 For i=0 To min2(webidata,1000)
 	If recvdata(i)=0 Then Exit For
 	text+=Chr(recvdata(i))
 Next
 j=InStr(text,"""lat"":")
-If j<1 Then Exit Sub 
+If j<1 Then Return 0
 text=Mid(text,j+6)
 j=InStr(text,"""")
 text=Mid(text,j+1)
 j=InStr(text,"""")
-If j<1 Then Exit Sub 
+If j<1 Then Return 0 
 Var lat1=Val(Left(text,j-1))
 j=InStr(text,"""lon"":")
-If j<1 Then Exit Sub
+If j<1 Then Return 0
 text=Mid(text,j+6)
 j=InStr(text,"""")
 text=Mid(text,j+1)
 j=InStr(text,"""")
-If j<1 Then Exit Sub
+If j<1 Then Return 0
 Var lng1=Val(Left(text,j-1))
 lat=lat1:lng=lng1
 mx=0:my=0:dmx0=0:dmy0=0:xweb=0:yweb=0:xweb1=xweb-1000000:yweb1=0
 latlngtoworldxy(lat,lng,worldx,worldy)
-If Abs(worldx)>535 Or Abs(worldy)>276 Then Exit sub
+If Abs(worldx)>535 Or Abs(worldy)>276 Then Return 0
 myworldx=worldx:myworldy=worldy
 tinittown0=2
 lattown=lat:lngtown=lng
@@ -1659,6 +2122,9 @@ resetmxweb()
 resetbridge()
 resettownwaynode()
 resetfuel()
+timeinit=Timer 
+resetsrtm()
+resetterrain()
 nshop=999
 If car>0 Then volume=1500
 icombomap=1
@@ -1666,31 +2132,30 @@ selectcomboindex("win.map",icombomap)
 xweb1=-999999
 xweb11=-999999 
 Sleep 500
-End Sub
+Return 1
+End Function 
 Sub subgeocoding()
-	If tloadwebtext2=2 Or tinittown<>0 Then
-		Var i=0
-		quit2=1:tquitweb=1
-		For i=1 To 20
-			Sleep 500
-			If tloadwebtext2<>2 And tinittown=0 Then Exit For
-		Next
-		If tloadwebtext2=2 Or tinittown<>0 Then 
-		  guinotice("i am busy , try later")
-		  quit2=0:tquitweb=0
-		  Exit Sub
-		EndIf  
-	EndIf
+   If waitbusy()=0 Then Exit Sub 
 	tloadwebtext2=2
 	tinittown=1
-	subgeocoding0()
-	initterrain3
+	If subgeocoding0()=1 Then
+		initterrain3
+   	tmapchanged=1
+   	
+		itownp=0
+      resetaeroway()
+      resetmxweb()
+      resettownwaynode()
+      resetfuel()
+	EndIf
 	Sleep 500
 	tinittown=0
 	tloadwebtext2=0
-	tloadwebtext=0
+	tloadwebtext=Timer 
 	quit2=0:tquitweb=0
-	tmapchanged=1
+
+tloadwebtext2=0
+
 End Sub
 Sub subscaletown0
 Dim As Single x
@@ -2008,9 +2473,9 @@ Function formatwebtext3(text0 As String)As String 'getnodes
 	Var text2=nextdata(wtext2,":",",")
 	Return text2
 End Function
-Const As Integer mynnode=3000,nrecentid=1000
+Const As Integer mynnode=4000,nrecentid=2000,naskwayid=90
 Dim Shared As Integer myinode=0,mynasknode=180+220,myiasknode=0,myiasknode2=0,myiasknode3=0,irecentid=0,myiaskway=0
-Dim Shared As int64 mynodeid(mynnode),myasknodeid(mynasknode),recentid(nrecentid),myaskwayid(30)
+Dim Shared As int64 mynodeid(mynnode),myasknodeid(mynasknode),recentid(nrecentid),myaskwayid(naskwayid)
 Dim Shared As Single mylat(mynnode),mylon(mynnode)
 For i=0 To mynnode
 	mynodeid(i)=0
@@ -2041,15 +2506,30 @@ Sub addrecentid(ByVal id As int64)
 End Sub
 Sub addmynode(id As int64,latx As Single,lngx  As Single)
 Dim As Integer i,j,k	
-Var dlatx=20*360/40000,dlonx=dlatx*klon
+'Var dlatx=20*360.0/40000,dlonx=dlatx*klon
+'auxvar=myinode+0.1:auxtest=0.3
+j=myinode
 For i=1 To mynnode
-	If mynodeid(i)=id Then Exit Sub
+	If mynodeid(j)=id Then Exit Sub
+	j-=1:If j<1 Then j=mynnode
 Next
-For i=1 To mynnode+1
-	myinode+=1:If myinode>mynnode Then myinode=1
-   If Abs(mylat(myinode)-latmx)>dlatx Then Exit For
-   If Abs(mylon(myinode)-lngmx)>dlonx Then Exit For	
-Next
+/'j=myinode
+For i=1 To mynnode
+	j-=1:If j<1 Then j=mynnode
+   If Abs(mylat(j)-latmx)>dlatx Then
+   	mynodeid(j)=id
+   	mylat(j)=latx
+   	mylon(j)=lngx
+   	Exit Sub
+   EndIf
+   If Abs(mylon(j)-lngmx)>dlonx Then	
+   	mynodeid(j)=id
+   	mylat(j)=latx
+   	mylon(j)=lngx
+   	Exit Sub
+   EndIf
+Next '/
+myinode+=1:If myinode>mynnode Then myinode=1
 mynodeid(myinode)=id
 mylat(myinode)=latx
 mylon(myinode)=lngx	
@@ -2092,6 +2572,12 @@ For i=1 To 18
 	aerowayname(i)=nearaerowayname(i):aerowaylat(i)=nearaerowaylat(i):aerowaylon(i)=nearaerowaylon(i)
 	If aerowaylat(i)>-89 Then iaeroway=i
 Next
+Sub resetaddwaynodebuild()
+Dim As Integer i
+For i=0 To nway
+	addwaynodebuild(i)=0
+Next
+End Sub
 Dim Shared As Integer nbroad
 Declare Sub setioverpass()
 Declare Function formatname(text0 As String)As String
@@ -2225,6 +2711,19 @@ For i=1 To 18
 Next
 End Sub
 Dim Shared As Single aerowayxweb,aerowayyweb
+Function testnearairport(x As Single,y As Single,dist As Single=8000)As Integer
+Dim As Integer i 
+For i=1 To naeroway
+  	If aerowaylat(i)>-89 Then
+     If Abs(aerowayx(i)-x)<dist Then
+     	If Abs(aerowayy(i)-y)<dist Then
+     		Return 1
+     	EndIf
+     EndIf
+  	EndIf
+Next
+Return 0	
+End Function
 Sub drawaeroways()
 Dim As Integer i,j,k,test 
 Dim As Single dlat=70*360/40000,dlon=dlat*klon,x,y,z,do1,size
@@ -2460,7 +2959,7 @@ End Sub
 End Sub '/
 Const As Integer nnodei=800
 Dim Shared As int64 nodeiid(nnodei)
-Dim Shared As Integer inodei
+Dim Shared As Integer inodei,tnodei(nnodei)
 Dim Shared As String nodeitype(nnodei),nodeiname(nnodei)
 Dim Shared As Single nodeilat(nnodei),nodeilon(nnodei)
 Sub addfuel(id As int64,lati As Single,loni As Single,do1 As single)
@@ -2511,6 +3010,7 @@ nodeilat(inodei)=lati
 nodeilon(inodei)=loni
 nodeitype(inodei)=typei
 nodeiname(inodei)=namei
+tnodei(inodei)=0
 End Sub
 Dim Shared As String testnamei
 Function testtypenodei(latmin As Single,latmax As Single,lonmin As Single,lonmax As Single,latlonmax As Single)As String
@@ -2538,7 +3038,10 @@ For i=1 To nnodei
 						Exit For 
 					EndIf
 				Next
+			ElseIf tnodei(j)>0 Then
+				Return ""
 			EndIf
+			tnodei(j)=1
 			testnamei=nodeiname(j)
 			Return nodeitype(j)
 		EndIf
@@ -2547,10 +3050,11 @@ For i=1 To nnodei
 Next
 Return ""
 End Function
-Dim Shared As Integer taddbridge,irelation
-Dim Shared As int64 relationwayid(100)
-Dim Shared As String relationname(100)
-Declare Sub addbridges(latx As Single,lngx As Single,latx2 As Single,lngx2 As Single)
+Dim Shared As Integer taddbridge,irelation,irelationway(100)
+Dim Shared As int64 relationwayid(100,20)
+Dim Shared As String relationname(100),relationcolor(100)
+Dim Shared As Single relationheight(100),relationheightmin(100)
+Declare Sub addbridges(latx As Single,lngx As Single,latx2 As Single,lngx2 As Single,name0 As string)
 Sub getways2(text0 As String)'getways
 	Dim As Integer i,j,k,test,ii
 	Dim As int64 id,wayid
@@ -2564,7 +3068,7 @@ Sub getways2(text0 As String)'getways
 	'printmsg "wtext0="+wtext0
 	split(wtext0,",")
 	'printmsgsplit()
-   If nsplit<2 Then setioverpass():If auxtest>0.78 Then guinotice Left(text0,500)
+   'If nsplit<2 Then setioverpass():If auxtest>0.81 Then guinotice Left(text0,800)
 	nway2=nsplit
 	nway20=nway2
 	myiasknode=0
@@ -2574,16 +3078,102 @@ Sub getways2(text0 As String)'getways
 	nshop0=nshop
 	nshop=0
 	'auxvar6=inodei:auxtest=1
+	For i=1 To nnodei
+		tnodei(i)=0
+	Next
+	For i=1 To 100
+		irelationway(i)=0
+	Next
+	If nsplit<1 Then Sleep 4000:Exit Sub 
 	For i=1 To nsplit
 	 If quit2=1 Then Exit For 
 	 wtext1=wsplit(i)'nextdata(wtext0,"{","}")
+	 'If InStr(wtext1,"3793528")>0 then guinotice left(wtext1,400)
 	 If InStr(wtext1,"""relation""")>0 Then
 	 	If irelation>=100 then Exit For
-	 	wtext2=nextwords(wtext1,"""way""")
-	   Var rwayid=Val(nextdata0(wtext2,":",","))
-	   Var rname=""
-	   If rwayid>0 Then
-	    wtext2=wtext1
+	 	irelation+=1
+	 	'For j=1 To 20
+	   '  	  relationwayid(irelation,j)=0	 		
+	 	'Next
+	 	irelationway(irelation)=0
+	 	wtext2=wtext1
+	 	'If auxtest<0.5 Then auxtest=0.6:guinotice Left(wtext2,400)
+	 	For j=1 To 100
+	 	  If irelationway(irelation)>=20 Then Exit For	
+	 	  wtext2=nextwords(wtext2,"""way""")
+	     If wtext2="" Then Exit For
+	     Dim As int64 rwayid=Val(nextdata0(wtext2,":",","))
+	     If rwayid=0 Then Exit For 
+	     wtext2=nextwords(wtext2,"""role""")
+	     If wtext2="" Then Exit For 
+	     Var rrole=nextdata0(wtext2,"""","""")
+	     If rrole="outer" Then'Or rrole="part" Then
+	     	  irelationway(irelation)+=1
+	     	  relationwayid(irelation,irelationway(irelation))=rwayid
+	     EndIf 	  
+	 	Next j  
+	 	 'auxvar2=max(irelationway(irelation),auxvar2)
+	    wtext2=nextdata(wtext1,"{","}")
+	    Var test=0
+	    Var rwayheight=0
+	    wtext3=nextwords(wtext2,"""building:levels""")
+	    If wtext3<>"" Then
+	 	  rwayheight=Val(nextdata0(wtext3,"""",""""))*40:test=1
+	    Else
+	     wtext3=nextwords(wtext2,"""building:height""")
+        If wtext3<>"" Then
+	 	   rwayheight=Val(nextdata0(wtext3,"""",""""))*14:test=1
+	     Else
+	      wtext3=nextwords(wtext2,"""height""")
+         If wtext3<>"" Then
+	 	     rwayheight=Val(nextdata0(wtext3,"""",""""))*14:test=1
+	      Else
+	        wtext3=nextwords(wtext2,"""levels""")
+           If wtext3<>"" Then
+	 	       rwayheight=Val(nextdata0(wtext3,"""",""""))*40:test=1   	
+           EndIf
+         EndIf   
+        EndIf
+       EndIf  
+	    Var test2=0
+	    Var rwayheightmin=0
+	    wtext3=nextwords(wtext2,"""building:min_level""")
+	    If wtext3<>"" Then
+	 	  rwayheightmin=Val(nextdata0(wtext3,"""",""""))*40:test2=1
+	    Else
+	     wtext3=nextwords(wtext2,"""building:min_height""")
+        If wtext3<>"" Then
+	 	   rwayheightmin=Val(nextdata0(wtext3,"""",""""))*14:test2=1
+	     Else
+	      wtext3=nextwords(wtext2,"""min_height""")
+         If wtext3<>"" Then
+	 	     rwayheightmin=Val(nextdata0(wtext3,"""",""""))*14:test2=1
+	      Else
+	        wtext3=nextwords(wtext2,"""min_level""")
+           If wtext3<>"" Then
+	 	       rwayheightmin=Val(nextdata0(wtext3,"""",""""))*40:test2=1   	
+           EndIf
+         EndIf   
+        EndIf
+	    EndIf  
+	    Var testcolor=0
+	    Var rwaycolor=""
+	    wtext3=nextwords(wtext2,"""building:colour""")
+	    If wtext3<>"" Then
+	 	  rwaycolor=(nextdata0(wtext3,"""","""")):testcolor=1
+	    Else
+	     wtext3=nextwords(wtext2,"""building:facade:colour""")
+        If wtext3<>"" Then
+	 	   rwaycolor=(nextdata0(wtext3,"""","""")):testcolor=1
+	     Else
+	      wtext3=nextwords(wtext2,"""colour""")
+         If wtext3<>"" Then
+	 	     rwaycolor=(nextdata0(wtext3,"""","""")):testcolor=1
+         EndIf   
+        EndIf
+	    EndIf  
+	    rwayheightmin=min(500.0,rwayheightmin)
+	    Var rname=""	
 	    wtext3=nextwords(wtext2,"""name:en""")
 	    If wtext3<>"" Then
 	 	  rname=formatname(nextdata0(wtext3,"""",""""))
@@ -2599,32 +3189,33 @@ Sub getways2(text0 As String)'getways
 	       	wtext3=nextwords(wtext2,"""alt_name""")
 	         If wtext3<>"" Then
 	 	         rname=formatname(nextdata0(wtext3,"""",""""))
-	         Else
-	         	Continue For 
 	         EndIf 	
 	       EndIf   
 	     EndIf 	
 	    EndIf
-	 	 If rname<>"" Then
-	 	      irelation+=1 
-	 	      relationwayid(irelation)=rwayid
-	 	   	relationname(irelation)=rname
-      	   'If auxtest<0.1 Then auxtest=0.15:guinotice rname
-	    EndIf
-	 	EndIf  
-	 EndIf
-	Next i  
+	 	 'If InStr(rname,"Tour Total")>0 Then
+       '	   guinotice rname+" h="+Str(rwayheight)+" i="+Str(irelationway(irelation))
+       '	   'guinotice "wayid="+Str(relationwayid(irelation,irelationway(irelation)))
+	 	 'EndIf
+	 	 relationname(irelation)=rname
+	 	 relationheight(irelation)=rwayheight
+	 	 relationheightmin(irelation)=rwayheightmin
+	 	 relationcolor(irelation)=rwaycolor
+	 EndIf  
+	Next i 
 	For i=1 To nsplit
 	 If quit2=1 Then Exit For
 	 waytype(i)=""
 	 wayname(i)=""
 	 wtext1=wsplit(i)'nextdata(wtext0,"{","}")
-	 If InStr(wtext1,"""relation""")>0 Then Continue For 
+    If InStr(wtext1,"""relation""")>0 Then Continue For 
 	 wtext2=nextwords(wtext1,"""id""")
 	 wayid=Val(nextdata0(wtext2,":",","))
 	 waynodeid(i)=0
-	 'If testrecentid(wayid) Then Continue For 
- 	 'If wayid=53691705 Then guinotice "ok"
+	 Var testrecent=testrecentid(wayid)
+	 If testrecent And tmassload=1 Then Continue For 
+    'If InStr(wtext1,"284893655")>0 Then guinotice "ok"
+ 	 'If wayid=176985151 Then guinotice "ok"
 	 Var trunway=0
 	 wtext4=nextwords(wtext1,"""aeroway"":")
 	 If wtext4<>"" Then
@@ -2696,11 +3287,17 @@ Sub getways2(text0 As String)'getways
 	      EndIf 
 	      waylat(i)=-91
 	      waylon(i)=-181	
-	      If trunway=0 Then Continue For 
-	 	ElseIf InStr(wtext1,"""building"":")<=0 Then  
+	      If trunway=0 Then
+	 		  If waytype(i)<>"terminal" Or InStr(wtext1,"""building"":")<=0 Then
+	      	 Continue For
+	        EndIf  	  
+	      EndIf
+	 	ElseIf InStr(wtext1,"""building"":")<=0 And trunway=0 Then  
 	      waylat(i)=-91
 	      waylon(i)=-181	
-	 	   If trunway=0 Then Continue For
+	 	   'If trunway=0 Then
+	 	   	Continue For
+	 	   'EndIf
 	 	EndIf    
 	 EndIf
     If InStr(wtext1,"""node""")>0 Then
@@ -2767,6 +3364,7 @@ Sub getways2(text0 As String)'getways
 	         waylon(i)=-181	
 	         Continue For 
     EndIf
+    var testaskhighway=0
  	 wtext4=nextwords(wtext1,"""nodes"":")
 	 waynode(i)=Val(nextdata0(wtext4,"[",","))
 	 id=waynode(i)
@@ -2776,7 +3374,14 @@ Sub getways2(text0 As String)'getways
      	If j>0 Then
   	    waylat(i)=mylat(j)
  	  	 waylon(i)=mylon(j)
-	   Else 
+     	Else
+     	 If InStr(wtext1,"""highway""")>1 Or trunway=1 Then
+  	  	     	If myiasknode<mynasknode Then
+  	  	     		'myiasknode+=1
+  	  	     		'myasknodeid(myiasknode)=id
+  	  	     		testaskhighway=1
+  	  	     	EndIf     	 	
+     	 EndIf
 	    waylat(i)=-91
 	    waylon(i)=-181	
      	EndIf 
@@ -2787,7 +3392,7 @@ Sub getways2(text0 As String)'getways
 	   waylat(i)=latnode(j)
 	   waylon(i)=lonnode(j)
 	 EndIf 
-	 If waylat(i)>-90 Then 
+	 If waylat(i)>-90 Or testaskhighway=1 Then 
 	  waydo1(i)=0
 	  /'If tendofdata=0 Then
 	  	  Var nodeid1=Val(nextdata0(wtext4,",",","))
@@ -2821,7 +3426,7 @@ Sub getways2(text0 As String)'getways
      Var testhospital=0
      Var testschool=0
      Var testparking=0
-     Var testrail=0
+     Var testrail=0,testbuilding=0
 	  wtext2=nextwords(wtext1,"""tags"":")
 	  If wtext2<>"" And InStr(wtext2,"""bridge""")>1 Then
 	  	  wayheight(i)=0
@@ -2868,19 +3473,38 @@ Sub getways2(text0 As String)'getways
  	  	     EndIf
 	  	    Next dj 
 	  	    wayheight(i)=0'4000
-	  	    getlocktown(0)
-	  	    If k>100000 Then
-	  	    	 k-=100000
-	  	    	 addbridges(waylat(i),waylon(i),mylat(k),mylon(k))
-	  	    ElseIf k>0 Then
-	  	    	 addbridges(waylat(i),waylon(i),latnode(k),lonnode(k))
-	  	    EndIf
-	  	    freelocktown(0)
+	  	    If k>0 Then 
+	         Var rname=""
+      	   wtext3=nextwords(wtext2,"""name:en""")
+	         If wtext3<>"" Then
+	 	         rname=formatname(nextdata0(wtext3,"""",""""))
+	         Else 
+	            wtext3=nextwords(wtext2,"""int_name""")
+	            If wtext3<>"" Then
+	 	            rname=formatname(nextdata0(wtext3,"""",""""))
+	            Else
+	               wtext3=nextwords(wtext2,"""name""")
+	               If wtext3<>"" Then
+	 	               rname=formatname(nextdata0(wtext3,"""",""""))
+	               EndIf 	
+	            EndIf   
+	         EndIf
+	  	      wayname(i)=rname
+	  	      getlocktown(0)
+	  	      If k>100000 Then
+	  	    	  k-=100000
+	  	    	  addbridges(waylat(i),waylon(i),mylat(k),mylon(k),wayname(i))
+	  	      ElseIf k>0 Then
+	  	    	  addbridges(waylat(i),waylon(i),latnode(k),lonnode(k),wayname(i))
+	  	      EndIf
+	  	      freelocktown(0)
+	  	    EndIf 'k>0 
  	     EndIf
  	     If taddbridge=1 Or InStr(wtext2,"""highway""")<1 Then Continue For
  	  EndIf  
+     'If InStr(wtext1,"284893655")>0 Then guinotice "ok"
+     Var layer=0
 	  If wayid>0 Then'wtext2<>"" Then
- 	   'If wayid=53691705 Then guinotice "ok"
 	  	If trunway=1 Then
 	  		testhighway=1
 	  	ElseIf InStr(wtext2,"""railway""")>0 Then
@@ -2889,7 +3513,7 @@ Sub getways2(text0 As String)'getways
 	  		waytype(i)="rail"
 	  		wtext5=nextwords(wtext2,"""layer"":")
 	  		If wtext5<>"" Then
-	 	      Var layer=Val(nextdata0(wtext5,"""",""""))
+	 	      layer=Val(nextdata0(wtext5,"""",""""))
 	 	      If layer<-0.5 Or layer>0.5 Then
 	 	      	waynodeid(i)=0:Continue For 
 	 	      EndIf
@@ -2902,31 +3526,46 @@ Sub getways2(text0 As String)'getways
 	 	   Var oneway=nextdata0(wtext5,"""","""")
 	 	   If oneway="yes" Or oneway="true" Or oneway="1" Then testoneway=1
   	 	   If InStr(wtext2,"""parking_aisle""")>0 Then testparking=1
+	  		wtext5=nextwords(wtext2,"""layer"":")
+	  		If wtext5<>"" Then
+	 	      layer=Val(nextdata0(wtext5,"""",""""))
+	  		EndIf
   	 	   nbroad+=1
 	   ElseIf InStr(wtext2,"""place_of_worship""")>0 Then
 	   	testchurch=1
+	   	testbuilding=1 
 	   ElseIf InStr(wtext2,"""shop""")>0 Then
 	   	testshop=1
 	   	nshop+=1
-	   ElseIf InStr(wtext2,"""railway""")>0 Then
-	   	testrailstation=1 
+	   	testbuilding=1 
+	  	ElseIf InStr(wtext2,"""railway""")>0 Then
+	   	testrailstation=1
+	   	testbuilding=1 
 	   ElseIf InStr(wtext2,"""station""")>0 Then
 	   	testrailstation=1 
-	   ElseIf InStr(wtext2,"""hospital""")>0 Then
+	   	testbuilding=1 
+	  	ElseIf InStr(wtext2,"""hospital""")>0 Then
 	   	testhospital=1 
+	   	testbuilding=1 
 	  	ElseIf InStr(wtext2,"""school""")>0 Then
 	   	testschool=1
+	   	testbuilding=1 
 	  	ElseIf InStr(wtext2,"""university""")>0 Then
 	   	testschool=1
+	   	testbuilding=1 
 	  	ElseIf InStr(wtext2,"""amenity""")>0 Then
 	   	testofficial=1
+	   	testbuilding=1 
 	   EndIf 
-	   Var test=0,test2=0,testcolor=0
+	   Var test=0,test2=0,testcolor=0,testname=0
 	   If testhighway=1 Then
 	   	wayheight(i)=getroadh(LCase(waytype(i)))
 	   	If testoneway=1 Then wayheight(i)+=1000
 	   	If testparking=1 Then wayheight(i)+=2000
-	   Else 
+	   Else
+	    'If InStr(wtext2,"""building""")>0 Then
+	    	testbuilding=1	
+	    'EndIf
 	    wtext2=nextdata(wtext2,"{","}")
 	    test=0
 	    wtext3=nextwords(wtext2,"""building:levels""")
@@ -2983,48 +3622,83 @@ Sub getways2(text0 As String)'getways
 	 	     waycolor(i)=(nextdata0(wtext3,"""","""")):testcolor=1
          EndIf   
         EndIf
-	    EndIf  
-	   EndIf
-	   If test2=1 Then wayheightmin(i)=min(500.0,wayheightmin(i))
-	   If test=1  And wayheight(i)>50 Then
-	  	  waytheight(i)=1:If wayheight(i)<1 Then wayheight(i)=2000:nerr+=1000000:EndIf  
-	   ElseIf test2=1 Then
-	   	if wayheightmin(i)>1 And wayheight(i)<4000 Then
-	   		waytheight(i)=1
-	   	EndIf
-	   EndIf
+	    EndIf
+	   EndIf  
 	   'wayname(i)=""
+	   testname=0
 	   wtext3=nextwords(wtext2,"""name:en""")
 	   If wtext3<>"" Then
-	 	  wayname(i)=formatname(nextdata0(wtext3,"""",""""))
+	 	  wayname(i)=formatname(nextdata0(wtext3,"""",""""))':testname=1
 	   Else 
 	     wtext3=nextwords(wtext2,"""int_name""")
 	     If wtext3<>"" Then
-	 	    wayname(i)=formatname(nextdata0(wtext3,"""",""""))
+	 	    wayname(i)=formatname(nextdata0(wtext3,"""",""""))':testname=1
 	     Else
 	       wtext3=nextwords(wtext2,"""name""")
 	       If wtext3<>"" Then
-	 	      wayname(i)=formatname(nextdata0(wtext3,"""",""""))
+	 	      wayname(i)=formatname(nextdata0(wtext3,"""",""""))':testname=1
 	 	    Else 
 	       	wtext3=nextwords(wtext2,"""alt_name""")
 	         If wtext3<>"" Then
-	 	         wayname(i)=formatname(nextdata0(wtext3,"""",""""))
+	 	         wayname(i)=formatname(nextdata0(wtext3,"""",""""))':testname=1
 	 	      Else 
 	       	   If testhighway=1 Then wtext3=nextwords(wtext2,"""ref""")
 	            If wtext3<>"" Then
-	 	            wayname(i)=formatname(nextdata0(wtext3,"""","""")) 
-	            ElseIf irelation>0 Then 
+	 	            wayname(i)=formatname(nextdata0(wtext3,"""",""""))' :testname=1
+	            /'ElseIf irelation>0 Then 
    	         	For j=1 To irelation
 	            		If wayid=relationwayid(j) Then
 	            			wayname(i)=relationname(j)
 	                    'If auxtest<0.4 Then auxtest=0.35:guinotice wayname(i)
 	             		EndIf
-   	         	Next
+   	         	Next '/
    	         EndIf 	
 	         EndIf 	
           EndIf   
 	     EndIf 	
 	   EndIf
+	   If wayname(i)<>"" Then testname=1
+	   'If testbuilding And InStr(LCase(wayname(i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
+	   If testhighway=0 And (test=0 Or test2=0 Or testcolor=0 Or testname=0) Then
+	   'If testhighway=0 And testbuilding=0 And (test=0 Or test2=0 Or testcolor=0 Or testname=0) Then
+	   	'auxvar+=1:auxtest=0.5
+   	   Var wayirelation=0
+	   	For j=1 To irelation
+	   		 For k=1 To irelationway(j)
+	   		   If relationwayid(j,k)=wayid Then
+	   		  	  'auxvar+=1:auxtest=0.5
+	   			  wayirelation=j:Exit For,For 
+	   		   EndIf
+	   		 Next
+	   	Next
+	   	If wayirelation>0 Then
+	   		If test=0 Then wayheight(i)=relationheight(wayirelation)':auxvar2+=1
+	   		If test2=0 Then wayheightmin(i)=relationheightmin(wayirelation)':auxvar2+=1
+	   		If testcolor=0 Then waycolor(i)=relationcolor(wayirelation)':auxvar2+=1
+	   		If testname=0 Then wayname(i)=relationname(wayirelation)':auxvar2+=1
+	   		'If InStr(wayname(i),"Tour Total")>0 Then guinotice Str(i)
+	   		'If wayid=229142768 Then guinotice "wayheight= "+Str(wayheight(i)) 
+	   		wayheight(i)=max(70.0,wayheight(i))
+	   		If wayheight(i)>50 Then test=1
+	   		If wayheightmin(i)>0.1 Then test2=1
+	   		If waycolor(i)<>"" Then testcolor=1
+	   		If wayname(i)<>"" Then testname=1
+	   		'auxtest=0.7
+	   	ElseIf testbuilding=0 Then'And testhighway=0 then	   	
+ 	         iwaynode(i)=0:waynodeid(i)=0 
+            Continue For
+	      EndIf
+	   EndIf
+	    'If InStr(LCase(wayname(i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
+	    If waytype(i)="terminal" Then wayheight(i)=max(100.0,wayheight(i))
+	    If test2=1 Then wayheightmin(i)=min(500.0,wayheightmin(i))
+	    If test=1  And wayheight(i)>50 Then
+	  	   waytheight(i)=1':If wayheight(i)<1 Then wayheight(i)=2000:nerr+=1000000:EndIf  
+	    ElseIf test2=1 Then
+	   	if wayheightmin(i)>1 And wayheight(i)<4000 Then
+	   		waytheight(i)=1
+	   	EndIf
+	    EndIf 	
 	   Var testtype=0
 	   if testhighway=1 Then waytheight(i)=100:testtype=1
 	   if testchurch=1 Then waytheight(i)=4:testtype=1
@@ -3035,6 +3709,13 @@ Sub getways2(text0 As String)'getways
 	   if testschool=1 Then waytheight(i)=10:testtype=1
 	   wayred=0:waygreen=0:wayblue=0
 	   If testcolor=1 Then setwayrgb(waycolor(i))':guinotice waycolor(i)+" "+Str(waytheight(i))
+	   If layer<>0 And testhighway=1 Then 
+	   	testcolor=1:wayred=1:waygreen=layer:wayblue=0
+	   ElseIf testhighway=1 Then 
+	   	wayred=min(0.9,wayred)
+	   Else 
+	   	layer=0
+	   EndIf
 	   wayr(i)=wayred:wayg(i)=waygreen:wayb(i)=wayblue
  	   wtext3=nextdata(wtext4,"[","]")
  	   split2(wtext3,",")
@@ -3044,20 +3725,38 @@ Sub getways2(text0 As String)'getways
  	   If nsplit2>=3 Or (nsplit2>=2 And testhighway=1) Then
  	     	 'id=Val(wsplit2(1))
  	     	 waynodeid(i)=wayid'id
- 	     	 Dim As Single kx,dkx=1
- 	       If nsplit2>(nwaynode) Then dkx=(nsplit2-1)/(nwaynode-1)
+ 	     	 Dim As Single kx,dkx=1,k40=0.0,k0=0
+ 	     	 Dim As Integer i40=0,j40=0
+	       'If InStr(LCase(wayname(i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
+ 	       If nsplit2>(nwaynode) And testrail=0 Then
+ 	       	dkx=(nsplit2-1)/(nwaynode-1)
+ 	     	 	'If Str(wayid)="79152373" Then auxvar+=1:auxtest=0.8:auxvar2=wayheight(i)-h40
+ 	       	If wayheight(i)>h40 And testhighway<>1 Then
+ 	       		i40=setitown40(wayid)
+  	 				'townid40(i40)=wayid
+	            'If InStr(LCase(wayname(i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
+  	 				'auxvar=itown40:auxvar2=i40:auxtest=0.75
+ 	     	 		'If Str(wayid)="79152373" Then auxvar+=1000:auxtest=0.8:auxvar2=i40
+ 	       	ElseIf testhighway=1 Then
+ 	       		i40=setitown40(wayid) 	       		
+ 	       	EndIf
+ 	       EndIf
+ 	       'auxvar=itown40:auxtest=0.3
  	       'If nsplit2>2 Then dkx=(nsplit2)/(2)
  	       iwaynode(i)=0
  	       Var tasknode=0
+      	 Var loni=0.0,lati=0.0
+      	 j40=0:k=0
  	     	 For kx=1 To nsplit2+0.5 step dkx
- 	     	 	k=Int(kx+0.01)
+ 	     	 	k0=k
+ 	     	 	k=Int(kx+0.01)+0.001
  	     	 	id=Val(wsplit2(k))
  	     	 	j=getinode(id)
  	     	 	Var tmynode=0
  	     	 	If j>0 Then
- 	     	 		If trunway=1 Or testrail=1 Then addmynode(id,latnode(j),lonnode(j))
+ 	     	 		If i40>0 Or testschool=1 Or trunway=1 Or testrail=1 Then addmynode(id,latnode(j),lonnode(j))
             Else 
- 	     	 		If trunway=0 And testhighway=0 And testrail=0 Then
+ 	     	 		If i40=0 And testschool=0 And trunway=0 And testhighway=0 And testrail=0 And waytype(i)<>"terminal" Then
  	     	 			iwaynode(i)=0:waynodeid(i)=0
  	     	 			Continue For,For
  	     	 		Else
@@ -3065,6 +3764,7 @@ Sub getways2(text0 As String)'getways
  	     	 			j=mygetinode(id)
  	     	 			If j<=0 Then 
  	     	 			 tasknode=1
+ 	     	 			 If testrecent Then Continue For,For 
      	  	     	    If myiasknode<mynasknode Then
     	  	     		   myiasknode+=1
     	  	     		   myasknodeid(myiasknode)=id
@@ -3072,13 +3772,13 @@ Sub getways2(text0 As String)'getways
      	  	     	   EndIf  
  	     	 		EndIf
  	     	 	EndIf
+ 	     	 	'If Str(wayid)="79152373" Then auxvar+=1:auxtest=0.8:auxvar2=tasknode
  	     	 	If tasknode=1 Then
  	     	 	   iwaynode(i)=0:waynodeid(i)=0 
                Continue For
  	     	 	EndIf
  	     	 	Var iwaynodei=min2(nwaynode,iwaynode(i)+1)
  	     	 	iwaynode(i)=iwaynodei
- 	     	 	Var loni=0.0,lati=0.0
  	     	 	If tmynode=0 Then 
  	     	 	   loni=lonnode(j)
  	     	 	   lati=latnode(j)
@@ -3089,6 +3789,41 @@ Sub getways2(text0 As String)'getways
  	     	 	waynodex(i,iwaynodei)=loni
  	     	 	waynodey(i,iwaynodei)=lati
  	     	 	'If Str(wayid)="53691705" Then guinotice  Str(lati- 49.3598128)+"  "+Str(0.010*360/40000)'loni-0.0627624)
+ 	     	 	'If Str(wayid)="79152373" Then auxvar+=1:auxtest=0.8:auxvar2=i40
+ 	     	 	If i40>0 Then
+ 	     	 		'If Str(wayid)="79152373" Then auxvar+=1:auxtest=0.8
+ 	     	 		j40=iwaynodei
+ 	     	 		If j40>0 And j40<=n40 Then
+ 	     	 		 k40=(k0+k)*0.5+0.01
+ 	     	 		 If j40=1 Or k40<k0+1.001 Or k40>k-0.001 or k40>nsplit2-0.001 Then
+ 	     	 			knode40(i40,j40)=0
+ 	     	 			townnodex40(i40,j40)=0
+ 	     	 			townnodey40(i40,j40)=0
+ 	     	 			townixy40(i40)=1
+ 	     	 		 Else
+ 	     	 			knode40(i40,j40)=j40
+      	     	 	Dim As int64 id40=Val(wsplit2(Int(k40)))
+ 	          	 	Var jj=getinode(id40)
+ 	     	 			If jj>0 Then
+ 	     	 				'Var dxy=Abs(latnode(jj)-townnodelat40(i40,j40))
+ 	     	 				'If dxy<0.00000011 Then dxy=Abs(lonnode(jj)-townnodelon40(i40,j40))/klon
+ 	     	 				'If dxy>0.0000001 Then  	     	 				
+ 	     	 				'If dxy<0.000000011 Then dxy=Abs(lonnode(jj)-townnodelon40(i40,j40))/klon
+ 	     	 				'If dxy>0.00000001 Then  	     	 				
+ 	     	 				  townnodelon40(i40,j40)=lonnode(jj)
+ 	     	 				  townnodelat40(i40,j40)=latnode(jj)
+ 	     	 				  townnodex40(i40,j40)=0
+ 	     	 				  townnodey40(i40,j40)=0
+ 	     	 				  townixy40(i40)=1
+ 	     	 				  'latlngtomxy(latnode(jj),lonnode(jj),townnodex40(i40,j40),townnodey40(i40,j40)) 
+ 	     	 			     knode40(i40,j40)=j40
+ 	     	 				'Else
+ 	     	 				  'auxvar+=1:auxtest=0.8
+ 	     	 				'EndIf 
+ 	     	 			EndIf
+ 	     	 		 EndIf 
+ 	     	 		EndIf
+ 	     	 	EndIf
  	     	 	If testtype=0 Then
  	     	 		If latmin>lati Then latmin=lati
  	     	 		If latmax<lati Then latmax=lati
@@ -3096,15 +3831,21 @@ Sub getways2(text0 As String)'getways
  	     	 		If lonmax<loni Then lonmax=loni:latlonmax=lati
  	     	 	EndIf
  	     	 Next
+ 	     	 waylat(i)=(waylat(i)+lati)*0.5
+ 	     	 waylon(i)=(waylon(i)+loni)*0.5
+	       'If InStr(LCase(wayname(i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
+  	 		 'If Str(wayid)="79152373" Then auxvar+=1000:auxtest=0.8
  	     	 If tasknode=1 Then
- 	     	 	If myiaskway<30 Then
+ 	     	 	If myiaskway<naskwayid Then
  	     	 		myiaskway+=1:myaskwayid(myiaskway)=wayid
  	     	 	EndIf
  	     	 	Continue For 
  	     	 EndIf
+	       'If InStr(LCase(wayname(i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
+  	 		 'If Str(wayid)="79152373" Then auxvar+=1000:auxtest=0.8
  	     	 If iwaynode(i)<2 Or (iwaynode(i)<3 And testhighway=0) Then
  	     	 	iwaynode(i)=0:waynodeid(i)=0
- 	     	 ElseIf testtype=0 Then 
+ 	     	 ElseIf testtype=0 And wayheightmin(i)<1 Then 
  	     	 	Var typei=testtypenodei(latmin,latmax,lonmin,lonmax,latlonmax)
  	     	 	If typei<>"" Then
 	            'if testhighway=1 Then waytheight(i)=100:testtype=1
@@ -3117,8 +3858,9 @@ Sub getways2(text0 As String)'getways
 	            'If testschool=1 Then waytheight(i)=10:testtype=1
 	            If testtype=1 And wayname(i)="" Then wayname(i)=testnamei
  	     	 	EndIf
- 	     	 EndIf
+ 	     	 EndIf	 
  	   EndIf
+	   'If InStr(LCase(wayname(i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
  	     'If iwaynode(i)>0 Then	auxvar6+=1
  	     /'If nsplit2>=4 And 0 Then
  	  	    id=Val(wsplit2(nsplit2/4+0.1))
@@ -3157,7 +3899,7 @@ Sub getways2(text0 As String)'getways
  	  	  	   waywidth(i)=max(waywidth(i),Abs(waylon(i)-lonnode(j))*kmxlat/(klon))
  	  	    EndIf
   	     EndIf 
-	   EndIf '/     
+	  EndIf  '/    
 	  EndIf
 	 EndIf  
 	Next i 
@@ -3285,15 +4027,32 @@ Sub getways2bridge(text0 As String)'getways
  	  	     EndIf
 	  	    Next dj 
 	  	    wayheight(i)=0'4000
-	  	    getlocktown(0)
-	  	    If k>100000 Then
-	  	    	 k-=100000
-	  	    	 addbridges(waylat(i),waylon(i),mylat(k),mylon(k))
-	  	    ElseIf k>0 Then
-	  	    	 addbridges(waylat(i),waylon(i),latnode(k),lonnode(k))
-	  	    EndIf
-	  	    freelocktown(0)
-	  	    
+	  	    If k>0 Then 
+	         Var rname=""
+      	   wtext3=nextwords(wtext2,"""name:en""")
+	         If wtext3<>"" Then
+	 	         rname=formatname(nextdata0(wtext3,"""",""""))
+	         Else 
+	            wtext3=nextwords(wtext2,"""int_name""")
+	            If wtext3<>"" Then
+	 	            rname=formatname(nextdata0(wtext3,"""",""""))
+	            Else
+	               wtext3=nextwords(wtext2,"""name""")
+	               If wtext3<>"" Then
+	 	               rname=formatname(nextdata0(wtext3,"""",""""))
+	               EndIf 	
+	            EndIf   
+	         EndIf
+	  	      wayname(i)=rname
+	  	      getlocktown(0)
+	  	      If k>100000 Then
+	  	    	   k-=100000
+	  	    	   addbridges(waylat(i),waylon(i),mylat(k),mylon(k),wayname(i))
+	  	      ElseIf k>0 Then
+	  	    	   addbridges(waylat(i),waylon(i),latnode(k),lonnode(k),wayname(i))
+	  	      EndIf
+	  	      freelocktown(0)
+	  	    EndIf 'k>0
  	     EndIf
  	    EndIf  
  	  EndIf    
@@ -3329,7 +4088,7 @@ Function formatname(text0 As String)As String
 		EndIf
 	Next
 	if tok=0 then return ""
-	Return Trim(text)
+	Return Left(Trim(text),40)
 End Function
 Dim Shared As String countrycode
 Sub getreverse(text0 As String)'getways
@@ -3407,12 +4166,17 @@ For ij=0 To ntown
 		townwaynodeg(ij,i)=0
 		townwaynodeb(ij,i)=0
 		townwayname(ij,i)=""
+		towni40(ij,i)=0
 		ttsetterrain(ij,i)=0
-		For j=0 To nwaynode
-			townwaynodex(ij,i,j)=0
-			townwaynodey(ij,i,j)=0
-			townwaynodeo1(ij,i,j)=999
-		Next
+		'For j=0 To nwaynode
+		'	townwaynodex(ij,i,j)=0
+		'	townwaynodey(ij,i,j)=0
+		'	townwaynodeo1(ij,i,j)=999
+		'Next
+		townalloc(ij,i)=0
+		ReDim As Single (townwaynodexyo1(ij,i).x)(0)
+		ReDim As Single (townwaynodexyo1(ij,i).y)(0)
+		ReDim As Single (townwaynodexyo1(ij,i).o1)(0)
 	Next
 Next
 resetrecentid()
@@ -3432,12 +4196,17 @@ For ij=0 To ntown
 		townwaynodeg2(ij,i)=0
 		townwaynodeb2(ij,i)=0
 		townwayname2(ij,i)=""
+		towni402(ij,i)=0
 		ttsetterrain2(ij,i)=0
-		For j=0 To nwaynode
-			townwaynodex2(ij,i,j)=0
-			townwaynodey2(ij,i,j)=0
-			townwaynodeo12(ij,i,j)=999
-		Next
+		'For j=0 To nwaynode
+		'	townwaynodex2(ij,i,j)=0
+		'	townwaynodey2(ij,i,j)=0
+		'	townwaynodeo12(ij,i,j)=999
+		'Next
+		townalloc2(ij,i)=0
+		ReDim As Single (townwaynodexyo12(ij,i).x)(0)
+		ReDim As Single (townwaynodexyo12(ij,i).y)(0)
+		ReDim As Single (townwaynodexyo12(ij,i).o1)(0)
 	Next
 Next
 resetrecentid()
@@ -3497,12 +4266,16 @@ Dim As Integer i,j,k,ij,di,dj
  	fuelx(i)+=dxcopy
  	fuely(i)+=dycopy
  Next
+ For i=1 To nship
+ 	airshipx(i)+=dxcopy
+ 	airshipy(i)+=dycopy
+ Next
  'subsettupdate()
  For i=-100 To 612
  	For j=-100 To 612
  		Var ii=i-di,jj=j-dj
  		If ii<-100 Or ii>612 Or jj<-100 Or jj>612 Then
- 			terrain22(i,j)=waterz-2
+ 			terrain22(i,j)=waterz-4'2
  			water2(i,j)=1
  		Else
  			terrain22(i,j)=terrain(ii,jj)
@@ -3517,24 +4290,80 @@ Dim As Integer i,j,k,ij,di,dj
 		water(i,j)=water2(i,j)
  	Next
  Next
-End Sub 
-Sub updatetownwaynode()
-Dim As Integer ij,i,j,n
-'getlockterrain2()
+End Sub
+Dim Shared As Single testmz0,testmzsol0
+Sub testresetmz0()
+Dim As Integer i,j,k,ij,n
+ If plane=0 Or car>0 Or tinittown0>0 Then
+   testmz0=mz:testmzsol0=mzsol0
+ 	Exit Sub 
+ EndIf
+ If Abs(testmz0-testmzsol0-(mz-mzsol0))<90 Or Abs(testmz0-testmzsol0)<10 Or time2<tcrashz+10 Then
+   testmz0=mz:testmzsol0=mzsol0
+ 	Exit Sub 
+ EndIf
+ Var dzcopy=(testmz0-testmzsol0)-(mz-mzsol0)
+ mz+=dzcopy:mz1+=dzcopy
+ testmzsol0=mz-(testmz0-testmzsol0)
+ testmz0=mz
+ For i=1 To narbre
+ 	arbrez(i)+=dzcopy
+ Next
+ For i=1 To nbuisson
+ 	buissonz(i)+=dzcopy
+ Next
+ For i=1 To nroc
+ 	rocz(i)+=dzcopy
+ Next
+ For i=1 To nlady
+ 	ladyz(i)+=dzcopy
+ Next
+ For i=1 To ncow
+ 	cowz(i)+=dzcopy
+ Next
+ For i=1 To nairport
+ 	airportz(i)+=dzcopy
+ Next
+ For i=1 To nfuel
+ 	fuelz(i)+=dzcopy
+ Next
+ For i=1 To nship
+ 	airshipz(i)+=dzcopy
+ Next 
+
+/'getlockterrain()
 For ij=0 To ntown2
 	n=townnwaynode(ij)
 	If n>0 Then
 	 getlocktown(ij)
 	 For i=1 To n
-		For j=1 To towniwaynode(ij,i)
-			townwaynodez(ij,i)=getterrainheight2(townwaynodex(ij,i,1)-dmx0,townwaynodey(ij,i,1)-dmy0)
-		Next 	
+		If townwaynodez(ij,i)>-99990 Then
+			townwaynodez(ij,i)+=dzcopy
+		EndIf	
 	 Next
 	 freelocktown(ij)
 	EndIf  
 Next
-'freelockterrain()
+freelockterrain() '/
+End Sub 
+Sub updatetownwaynode()
+Dim As Integer ij,i,j,n
+getlockterrain22()
+For ij=0 To ntown2
+	n=townnwaynode(ij)
+	If n>0 Then
+	 getlocktown(ij)
+	 For i=1 To n
+		'For j=1 To towniwaynode(ij,i)
+			townwaynodez(ij,i)=getterrainheight2(townwaynodex(ij,i,1)-dmx0,townwaynodey(ij,i,1)-dmy0)
+		'Next 	
+	 Next
+	 freelocktown(ij)
+	EndIf  
+Next
+freelockterrain22()
 End Sub
+Declare Function testbridge(latx As Single,lngx As Single)As Integer
 Sub addtownwaynode(ij As Integer,k As Integer)
 Dim As Integer i,j,n,p
 Dim As Single mxweb,myweb',mxweb2,myweb2,mxweb3,myweb3
@@ -3545,21 +4374,42 @@ If n>=ntownnode Then
 	townnwaynode(ij)=n
 	'Exit Sub
 EndIf
+'If InStr(LCase(wayname(k)),"ge henri")>0 Then auxvar+=1000:auxtest=0.72
 id=waynodeid(k)
-If waytheight(k)=100 Then'road
+If id=0 Then Exit Sub 
+If waytheight(k)=100 Or tmassload=1 Then'road
 	If testrecentid(id) Then Exit Sub 
-   addrecentid(id)
-endif    
+   'addrecentid(id)
+endif 
+'If Str(id)="79152373" Then auxvar+=1:auxtest=0.8
 p=0
 For i=1 To n
 	id0=townwaynodeid(ij,i)
-	If id0=0 Or towniwaynode(ij,i)<2 Or (id=id0 And (waytheight(k)=100 Or addwaynodebuild(k)=100))Then
+	If id0=0 Or towniwaynode(ij,i)<2 Or (id=id0)Then' And (waytheight(k)=100 Or addwaynodebuild(k)=100))Then
 		If p=0 Then p=i:'auxvar+=0.00001
-		If id=id0 Then p=i:Exit For 
+		'If id=id0 Then p=i:Exit For 
 	EndIf
+   If id=id0 Then  
+     If (townwaynodevie(ij,i)<14 Or auxtest>0.1) And kmxlat>10 Then
+   	  townwaynodevie(ij,i)+=1'15
+   	  p=i:Exit For
+     EndIf    	
+   EndIf
 	If id=id0 Then
       'townwaynodez(ij,i)=-999999
-      p=i
+     p=i
+             'If Str(id)="79152373" Then auxvar+=1000:auxtest=0.8
+   			'If waytheight(k)=100 Then 
+   			 Var i40=towni40(ij,i)
+   			 towni40(ij,i)=max2(0,i40)
+   			 'If i40>0 Then
+   				'townixy40(i40)=1
+             	'For j=0 To n40
+		         '   townnodex40(i40,j)=0
+		         '   townnodey40(i40,j)=0
+             	'Next
+   			 'EndIf
+   			'EndIf  
    			townwaynodeh(ij,i)=wayheight(k)
    			If wayname(k)<>"" Or Rnd<0.2 Then townwayname(ij,i)=wayname(k)
             If addwaynodebuild(k)>0 Then
@@ -3586,7 +4436,10 @@ For i=1 To n
    				townwaynodebuild(ij,i)=100'highway
    				'townwaynodez(ij,i)=mzsol0
    				townwaynodeh(ij,i)=wayheight(k)
-   			ElseIf waytheight(k)=4 Then
+   				townwaynoder(ij,i)=wayr(k)
+   				townwaynodeg(ij,i)=wayg(k)
+   				townwaynodeb(ij,i)=wayb(k)
+            ElseIf waytheight(k)=4 Then
    				townwaynodebuild(ij,i)=12'church
    			ElseIf waytheight(k)=5 Then
    				townwaynodebuild(ij,i)=13'shop
@@ -3616,7 +4469,8 @@ If n>=ntownnode And p=0 Then
 			p=i:Exit For
 		EndIf
 	Next
- EndIf 	
+ EndIf
+ If p=0 Then Exit Sub  
 EndIf
  
 Var ij2=ij-1
@@ -3714,6 +4568,11 @@ if p>0 then i=p
 'j=Int(iwaynode(k)*0.51)
 Var latweb=(waynodey(k,1))'+waynodey(k,j))/2
 Var lngweb=(waynodex(k,1))'+waynodex(k,j))/2
+if testbridge(latweb,lngweb)=1 Then
+	townwaynodeid(ij,i)=0
+	towniwaynode(ij,i)=0
+	Exit Sub 
+EndIf
 'mxweb=mx+dmx0:myweb=my+dmy0
 'mxweb=xweb:myweb=yweb
 'mxytolatlng(mxweb,myweb)
@@ -3724,18 +4583,24 @@ latlngtomxy(latweb,lngweb,mxweb,myweb)
 If i>ntownnode Then
 	Var co1=cos1,si1=sin1
 	Var dxx=co1*(mxweb-mx-dmx0)+si1*(myweb-my-dmy0)
-	Var d400=-400,d2000=2000
+	Var d400=-400,d2000=500
 	If waytheight(k)=100 Or addwaynodebuild(k)=100 Then d400=-5000:d2000=0
 	If dxx>d400 Then
-	 dxx+=d2000
+	 dxx=max(0.0,dxx)+d2000
+	 Var j0=0
 	 For j=1 To ntownnode
+	 	If townwaynodebuild(ij,j)=100 Then Continue For 
 		Var dxxx=co1*(townwaynodex(ij,j,1)-mx-dmx0)+si1*(townwaynodey(ij,j,1)-my-dmy0)
 		If dxxx<-400 Or dxxx>dxx Then
+			j0=j
 			If townwaynodebuild(ij,j)<10 And townwaynodeh(ij,j)<300 Then
 				p=j:i=j:Exit For 
 			EndIf
 		EndIf
 	 Next
+	 If i>ntownnode And j0>0 Then
+	 	If waytheight(k)=100 Or addwaynodebuild(k)=100 Then p=j0:i=j0 
+	 EndIf
 	EndIf  
 EndIf 	
 If i>ntownnode Then
@@ -3743,6 +4608,17 @@ If i>ntownnode Then
 EndIf
 'myy=yweb+(latxx-lat)*kmxlat'latmx
 'mxx=xweb+(lngxx-lng)*kmxlat/klon'lngmx 
+'If waytheight(k)=100 Then
+ Var i40=towni40(ij,i)
+ towni40(ij,i)=max2(0,i40)
+ 'If i40>0 Then
+	'townixy40(i40)=1
+	'For j=0 To n40
+	'	townnodex40(i40,j)=0
+	'	townnodey40(i40,j)=0
+	'Next
+ 'EndIf
+'EndIf  
 townwaynodeid(ij,i)=id
 iwaynode(k)=min2(nwaynode,iwaynode(k))
 towniwaynode(ij,i)=iwaynode(k)
@@ -3771,7 +4647,10 @@ townwayname(ij,i)=wayname(k)
    			ElseIf waytheight(k)=100 Then
    				townwaynodebuild(ij,i)=100'highway
    				townwaynodeh(ij,i)=wayheight(k)
-   			ElseIf waytheight(k)=4 Then
+   				townwaynoder(ij,i)=wayr(k)
+   				townwaynodeg(ij,i)=wayg(k)
+   				townwaynodeb(ij,i)=wayb(k)
+            ElseIf waytheight(k)=4 Then
    				townwaynodebuild(ij,i)=12'church
    			ElseIf waytheight(k)=5 Then
    				townwaynodebuild(ij,i)=13'shop
@@ -3790,8 +4669,8 @@ townwayname(ij,i)=wayname(k)
       			townwaynodebuild(ij,i)=1+(id Mod 3)'Int(Rnd*3)
       		EndIf 	
 townwaynodez(ij,i)=-999999
-latweb=lat:lngweb=lng
-latlngtomxy(latweb,lngweb,mxweb,myweb)
+'latweb=lat:lngweb=lng
+'latlngtomxy(latweb,lngweb,mxweb,myweb)
 For j=1 To iwaynode(k)
 	'latlngtomxy(waynodey(k,j),waynodex(k,j),mxx,myy)
 	''townwaynodex(ij,i,j)=mxweb+(waynodex(k,j)-lngweb)*(mxweb2-mxweb)/0.00114
@@ -3799,7 +4678,13 @@ For j=1 To iwaynode(k)
 	townwaynodex(ij,i,j)=mxweb+(waynodex(k,j)-lngweb)*kmxlat/klon
 	townwaynodey(ij,i,j)=myweb+(waynodey(k,j)-latweb)*kmxlat
 Next
+townwaynodesize40(ij,i)=0
 townnwaynode(ij)=max2(i,n)
+'If Str(id)="79152373" Then auxvar+=1:auxtest=0.8
+'If waytheight(k)=100 Or (tmassload=1 And iwaynode(k)<nwaynode) Then'road
+	'If testrecentid(id) Then Exit Sub 
+   addrecentid(id)
+'endif    
 End Sub
 Dim Shared As Single townzsol
 Const As Integer nshadow=12000
@@ -4003,7 +4888,7 @@ Sub mygltexquad (ByVal x1 As Single,ByVal y1 As Single,ByVal z1 As Single,_
              ByVal x2 As Single,ByVal y2 As Single,ByVal z2 As Single,_
              ByVal x3 As Single,ByVal y3 As Single,ByVal z3 As Single,_
              ByVal x4 As Single,ByVal y4 As Single,ByVal z4 As Single,_ 
-             ByVal tx As Single=1,ByVal ty As Single=1,ByVal tx0 As Single=0)
+             ByVal tx As Single=1,ByVal ty As Single=1,ByVal tx0 As Single=0,ByVal tagl As Integer=0)
 Dim As Integer i,j,k,i1,i2,j1,j2,test=0
 If testposx0=1 Then 
 rotavionpx((x1)-mx,(y1)-my,max(0.0,z1-mz))
@@ -4065,7 +4950,7 @@ If taddshadowquad=1 And thmin=0 Then 'scaleview>0.9 And testtownshow=1 And tisha
    '	testtrunk=1
    'EndIf 
    'If buildrottype=1 Then
-   	addshadowquad(x1,y1,townzsol+9,x2,y2,townzsol+9,(z3-townzsol)*1.2,1)
+   	If tnightshadow=0 Then addshadowquad(x1,y1,townzsol+9,x2,y2,townzsol+9,(z3-townzsol)*1.2,1)
    'Else 
    '	addshadowquad(x2,y2,townzsol+9,x1,y1,townzsol+9,(z3-townzsol)*1.2,1)
    'EndIf
@@ -4087,7 +4972,8 @@ EndIf
 EndIf 'testposx
 testmygltexquad=1
 testmygltexquad0=1 
-'If mytnormal=0 Then 
+'If mytnormal=0 Then
+If tagl=0 Then     
  glBegin GL_QUADS
  glTexCoord2f tx0,0
  glVertex3f x1,y1,z1
@@ -4098,6 +4984,18 @@ testmygltexquad0=1
  glTexCoord2f tx0,ty
  glVertex3f x4,y4,z4
  glEnd
+Else
+ aglbegin GL_QUADS
+ agltexcoord2f tx0,0
+ aglvertex3f x1,y1,z1
+ agltexcoord2f tx0+tx,0
+ aglvertex3f x2,y2,z2
+ agltexcoord2f tx0+tx,ty
+ aglvertex3f x3,y3,z3
+ agltexcoord2f tx0,ty
+ aglvertex3f x4,y4,z4
+ aglend
+EndIf  
 /'Else
  glBegin GL_QUADS
  'glnormal3f mynormalx,mynormaly,mynormalz
@@ -4160,6 +5058,7 @@ End Sub
 Sub drawshadow()
 Dim As Integer i,j,k 
 tlight=0:If tnight=0 Then tlight=1
+'If tdark=1 Then tnight=0:tlight=1
 talpha=0.35
 If mz>mzsol00+1400 Then Exit Sub 
 If tshadow=0 Or (ishadow=0 And ishadowtree=0 And ishadowtree2=0 And ishadowlady=0) Then Exit Sub
@@ -4305,6 +5204,14 @@ gldisable(gl_cull_face)
 glStencilFunc(GL_always, 1, 255)
 glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE)'stencil fail,stencil ok,stencil+depth ok
 'glColorMask(GL_true, GL_true, GL_true, GL_true)
+If mz<mzsol0+2500 Then
+  glAlphaFunc(gl_gequal,50/254)
+  glbindtexture(gl_texture_2d,cloudtext)
+  For i=1 To ncloud2
+	  drawcloudshadow(i)
+  Next
+  glAlphaFunc(gl_less,50/254)
+EndIf
 drawshadowtree()
 drawshadowtree2()
 drawshadowlady()
@@ -4323,8 +5230,14 @@ glEnable GL_BLEND
 glBlendFunc GL_zero,GL_src_ALPHA
 glpushmatrix
 glcolor4f(0.6,0.6,0.6,0.6)
-glplacecursor(xmax/2,ymax/2,-40)
-glcarre(50)
+'glplacecursor(xmax/2,ymax/2,-40)
+'glcarre(50)
+gldisable gl_depth_test
+glenable gl_texture_2D
+tcolorshadow=1
+drawterrain2()
+tcolorshadow=0
+glenable gl_depth_test
 glpopmatrix
 gldisable(GL_STENCIL_TEST)
 'glStencilFunc(GL_GEQUAL, 1, &hFF)
@@ -4333,7 +5246,11 @@ gldisable(GL_STENCIL_TEST)
 'glStencilMask(&hFF)
 gldisable gl_cull_face
 gldisable gl_blend
-gldisable gl_lighting
+If tdark=1 Then
+	glenable gl_lighting
+Else 	
+	gldisable gl_lighting
+EndIf
 gldisable gl_normalize
 glenable gl_texture_2d
 glenable gl_depth_test
@@ -4342,7 +5259,7 @@ glDepthMask(GL_true)
 glcolor4f(1,1,1,1)
 glpopmatrix 
 End Sub
-Sub drawshadow_old()
+/'Sub drawshadow_old()
 Dim As Integer i,j,k 
 tlight=0
 talpha=0.35
@@ -4498,7 +5415,7 @@ gldisable(GL_STENCIL_TEST)
 'glStencilMask(&hFF)
 gldisable gl_cull_face
 gldisable gl_blend
-gldisable gl_lighting
+If tdark=1 Then glenable gl_lighting
 gldisable gl_normalize
 glenable gl_texture_2d
 glenable gl_depth_test
@@ -4552,64 +5469,131 @@ Var ktx=tx*0.5/x
  glsphere 70
  lat=lat0:lng=lng0
 glcolor3f(1,1,1)
-End Sub
+End Sub '/  
 Dim Shared As String drawbuildname
 Dim Shared As uint drawbuildtext
-Dim Shared As Single drawbuildtx=1,drawbuildty=1
+Dim Shared As Single drawbuildtx=1,drawbuildty=1,dr30000=15000
+Dim Shared As Integer hlight3=2
+Declare Sub drawbuildingnode40(ij As Integer,i As Integer,dist As Single=1,r As Single=-1,g As Single=0,b As Single=0)
 Sub drawbuildingnode(ij As Integer,i As Integer,dist As Single=1,r As Single=-1,g As Single=0,b As Single=0)
 Dim As Single x,y,z,z1,h,tx,ty,z0,xx,yy,xmin,ymin,xmax,ymax,xmid,ymid,tx0,x0,y0,hmin
 Dim As Integer j,n,k
+'If taglcompile>1 Then Exit Sub
+'If InStr(LCase(townwayname(ij,i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
+If tlayer<-0.1 Then Exit Sub 
+Var i40=0
+If kmxlat>10 Then i40=towni40(ij,i)
+'If Str(townwaynodeid(ij,i))="79152373" And i40>0 Then auxtest=0.8:auxvar2=i40+0.1
+If i40>0 Then
+  If townixy40(i40)>nwaynode then	
+	 drawbuildingnode40(ij,i,dist,r,g,b)
+	 Exit Sub
+  EndIf  	 
+EndIf
 h=max(20.0,townwaynodeh(ij,i))
+'If InStr(townwayname(ij,i),"Tour Total")>0 Then auxvar=h:auxtest=0.3
 If h>4000 Then
 	If thmin=1 Then
 		hmin=Int(h/4000):h=h-4000*hmin
-	Else 
-		Exit Sub 
+	Else
+		hmin=0
+		'Exit Sub 
 	EndIf
 EndIf
+avgbuildh+=h:navgbuildh+=1
 Var h0=setbuildh(h)
+'If InStr(townwayname(ij,i)," Henri")>0 Then auxvar+=0:h0=3000:auxtest=0.8:auxtext=townwayname(ij,i)
 h=h0'*scalexyh
+hmin=setbuildh(hmin)
 n=towniwaynode(ij,i)
-If n<2 Then Exit Sub 
+If n<2 Then Exit Sub
+If (Int(i+time2) Mod 10)=1 Then
+ If testweb=0 And time2>max(ttonneau,timeinit)+20 Then
+   Var x=townwaynodex(ij,i,1)
+   Var y=townwaynodey(ij,i,1)
+	If Abs(townwaynodez(ij,i)-getterrainheight(x,y))>15 Then
+		ttonneau=Timer 
+		testweb=1
+	EndIf
+ EndIf 
+EndIf
+i40=0
+Var rr=r,gg=g,bb=b
+If n>=nwaynode Then
+	i40=towni40(ij,i)
+	If i40=0 Then
+		i40=getolditown40(townwaynodeid(ij,i))
+		If i40=0 Then i40=-1
+		towni40(ij,i)=i40
+		If i40>0 Then
+			town40ij(i40)=ij
+			town40iji(i40)=i
+		EndIf
+	EndIf
+   'If Str(townwaynodeid(ij,i))="79152373" Then auxtest=0.8:auxvar4=i40
+EndIf
+If i40>0 Then
+	If auxtest>0.69 Then rr=1:gg=0.5:bb=0'h=2000:h0=h
+EndIf
+Var tterminal=0:If townwaynodebuild(ij,i)=11 Then tterminal=1
 Var sizei=townwaynodesize(ij,i)
-If sizei>3900 Then h0=45:h=42
+If sizei>3900*(100+h)/140 And tterminal=0 Then h0=45:h=42
 x=200:y=200
-Var t800=800.0
-If hmin>10 Then t800=-hmin
+Var t800=min(800.0,sizei*0.5)'0.35)
+If hmin>10 Then t800=-hmin'*0.84
 z=h+townwaynodez(ij,i):z1=z+20:z0=-t800+z-h
 tx=drawbuildtx*x/150:ty=drawbuildty*(h0+t800)/120'(z-z0)/(120)
 If h>240 Then ty/=scalexy
 Var ktx=tx*0.5/x
 glenable(gl_texture_2d)
 testmygltexquad=0
-Var tnight1=tnight
+Var tnight1=(tnight Or tdark)
+hlight3=2
+If heure>0 And heure<4.5 Then hlight3=3
+If heure>1.5 And heure<3 Then hlight3=5
 If drawbuildtext<>building3text Then tnight1=0
-If (Int(h)Mod 5)<2  Then tnight1=0
-If tnight1=1 And vie>0 Then
+If (Int(h)Mod 6)<hlight3  Then tnight1=0
+If tnight1=1 Then'And vie>0 Then
 	gldisable gl_alpha_test
-	glcolor3f(1,1,0.6)
+	gldisable gl_lighting
+	glcolor3f(1,1,0.84)
    glbindtexture(gl_texture_2d,whitetext)
    'glpushmatrix
    'glscalef(0.9,0.9,0.99)
  x=townwaynodex(ij,i,1)-dmx0
  y=townwaynodey(ij,i,1)-dmy0
- x=mx+1.01*(x-mx)
- y=my+1.01*(y-my)
+ x=mx+1.02*(x-mx)
+ y=my+1.02*(y-my)
  x0=x:y0=y
  tx=0:tx0=0
+ Var z1=z-10
  For j=2 To n
+ 	/'If i40>0 Then
+ 		If knode40(i40,j)=j Then
+      	xx=x:yy=y
+ 	      x=gettownnodex40(i40,j)
+ 	      y=gettownnodey40(i40,j)
+         x=mx+1.01*(x-mx)
+         y=my+1.01*(y-my)
+ 	      mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0 ',1
+ 		EndIf
+ 	EndIf '/
  	xx=x:yy=y
  	x=townwaynodex(ij,i,j)-dmx0
  	y=townwaynodey(ij,i,j)-dmy0
-   x=mx+1.01*(x-mx)
-   y=my+1.01*(y-my)
- 	mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0
+   x=mx+1.02*(x-mx)
+   y=my+1.02*(y-my)
+ 	If Abs(xx-x)+Abs(yy-y)<dr30000 Then
+ 		mygltexquad xx,yy,z0, x,y,z0, x,y,z1, xx,yy,z1, tx,ty,tx0 ',1
+ 	EndIf
  Next
  xx=x:yy=y
  x=x0:y=y0
  tx0+=tx
  'tx=ktx*Sqr((x-xx)*(x-xx)+(y-yy)*(y-yy))
- mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0
+ If Abs(xx-x)+Abs(yy-y)<dr30000 Then
+ 	mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0 ',1
+ EndIf
    glcolor3f(1,1,1)
    'glscalef(1,1,1)
    'glpopmatrix 
@@ -4617,12 +5601,12 @@ EndIf
 If tnight1=1 Then
    glenable gl_alpha_test
  	'glAlphaFunc(gl_greater,50/254)
- 	glAlphaFunc(gl_less,50/254)
+ 	glalphafunc(gl_less,50/254)
 EndIf
  'glcolor3f(1,1,1)
  'glEnable GL_BLEND
  'glBlendFunc GL_one_minus_SRC_ALPHA,GL_SRC_ALPHA
- If tnight=0 And tlight=1 Then
+ If (tnight=0 And tlight=1)Or tdark=1 Then
  	glenable(gl_lighting)
  	glenable(gl_normalize)
  	mytnormal=1
@@ -4630,6 +5614,7 @@ EndIf
  	mytnormal=0
  EndIf
  If dist>-13400 And tnight1=1 Then 
+ 	  talpha=1
      glbindtexture(gl_texture_2d,building32text)
      'glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_nearest)'linear)
      'glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST)'nomipmap
@@ -4637,13 +5622,22 @@ EndIf
      'glbindtexture(gl_texture_2d,building3text)
      glbindtexture(gl_texture_2d,drawbuildtext)
  EndIf 
- If r>-0.1 Then
- 	glcolor4f(r,g,b,talpha)
+ If rr>-0.1 Then
+ 	glcolor4f(rr,gg,bb,talpha)
  Else
  	glcolor4f(1,1,1,talpha)
  EndIf
+ Var ixy40=0
  x=townwaynodex(ij,i,1)-dmx0
  y=townwaynodey(ij,i,1)-dmy0
+ If i40>0 Then
+   ixy40+=1
+   townx40(i40,ixy40)=x
+   towny40(i40,ixy40)=y
+ EndIf   
+ 'If InStr(townwayname(ij,i)," Henri")>0 Then
+ '	If InStr(townwayname(ij,i),"Lycee")>0 Then auxvar+=1:auxvar2=x-mx:auxtest=0.8
+ 'EndIf
  x0=x:y0=y
  tx=0:tx0=0
  xmin=x:ymin=y:xmax=x:ymax=y
@@ -4693,20 +5687,40 @@ EndIf
  		buildrottype=-1
  	EndIf
  EndIf
+ Var dr=1.0
+ 'If Str(townwaynodeid(ij,i))="79152373" Then auxtest=0.8:auxvar5=i40
  For j=2 To n
- 	xx=x:yy=y
- 	x=townwaynodex(ij,i,j)-dmx0
- 	y=townwaynodey(ij,i,j)-dmy0
+
+
+ 	If i40>0 Then
+ 		Var jj=j
+ 		If knode40(i40,jj)=jj Then
+ 	     	'If townwaynodeid(ij,i)=79152373 Then auxvar6=ixy40
+      	'xx=x:yy=y
+ 	      Var xxx=gettownnodex40(i40,jj)
+ 	      Var yyy=gettownnodey40(i40,jj)
+ 	      'mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0 ',1
+   If Abs(xxx)<0.1 Or Abs(yyy)<0.1 Then'Or Abs(xxx-x)+Abs(yyy-y)>10000 Then
+     'knode40(i40,jj)=0
+  	  ixy40=0:townixy40(i40)=1
+  	  i40=0 
+   ElseIf ixy40<n40-1 Then 
+     'If Str(townwaynodeid(ij,i))="79152373" Then auxvar+=10:auxtest=0.8
+     ixy40+=1
+     townx40(i40,ixy40)=xxx
+     towny40(i40,ixy40)=yyy
+   EndIf     
+   /'      
  	mynormalx=yy-y:mynormaly=x-xx:mynormalz=0.0
  	'If buildrottype=-1 Then mynormalx=-mynormalx:mynormaly=-mynormaly':glcolor3f(1,0,0)
    If mytnormal Then glnormal3f mynormalx,mynormaly,mynormalz
  	xmin=min(x,xmin):ymin=min(y,ymin)
  	xmax=max(x,xmax):ymax=max(y,ymax)
  	tx0+=tx
- 	Var dr=Sqr((x-xx)*(x-xx)+(y-yy)*(y-yy))
+ 	dr=Sqr((x-xx)*(x-xx)+(y-yy)*(y-yy))
  	tx=ktx*dr
-	mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0
- 	If dl>1 And j>=jname Then
+	mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0', 1
+/' 	If dl>1 And j>=jname Then
  		Var dr1=dr
  		Var xj=x,yj=y
  		If dr1<dl And buildrottype=1 Then 
@@ -4781,7 +5795,109 @@ EndIf
  	         glcolor4f(1,1,1,talpha)
          EndIf
  		EndIf    
+ 	EndIf 
+ 	'/
+ 	EndIf '/ 
+
+ 		EndIf
  	EndIf
+ 	
+
+ 	xx=x:yy=y
+ 	x=townwaynodex(ij,i,j)-dmx0
+ 	y=townwaynodey(ij,i,j)-dmy0
+   If i40>0 Then
+     ixy40+=1
+     townx40(i40,ixy40)=x
+     towny40(i40,ixy40)=y
+   EndIf   
+ 	mynormalx=yy-y:mynormaly=x-xx:mynormalz=0.0
+ 	'If buildrottype=-1 Then mynormalx=-mynormalx:mynormaly=-mynormaly':glcolor3f(1,0,0)
+   If mytnormal Then glnormal3f mynormalx,mynormaly,mynormalz
+ 	xmin=min(x,xmin):ymin=min(y,ymin)
+ 	xmax=max(x,xmax):ymax=max(y,ymax)
+ 	tx0+=tx
+ 	dr=Sqr((x-xx)*(x-xx)+(y-yy)*(y-yy))
+ 	tx=ktx*dr
+	If dr<dr30000 Then mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0', 1
+ 	If dl>1 And j>=jname Then
+ 		Var dr1=dr
+ 		Var xj=x,yj=y
+ 		If dr1<dl And buildrottype=1 Then 
+ 		 For k=j+1 To min2(n,j+Int(n*0.33))
+ 			If dr1>dl Then Exit For 
+ 	      Var xk=townwaynodex(ij,i,k)
+ 	      Var yk=townwaynodey(ij,i,k)
+ 			Var dxy=(xk-x)*(y-yy)-(yk-y)*(x-xx)
+ 			Var drk=Sqr((xk-xx)*(xk-xx)+(yk-yy)*(yk-yy))
+ 			If dxy<0 And dxy>-drk*dr*0.2 Then
+ 				dr1=drk
+ 				xj=xk:yj=yk
+ 				If dr1>dl Then Exit For 
+ 			Else
+ 				Exit For 
+ 			EndIf
+ 		 Next
+ 		EndIf  
+ 		If dr1<dl And buildrottype=-1 Then 
+ 		 For k=j+1 To min2(n,j+Int(n*0.33))
+ 			If dr1>dl Then Exit For 
+ 	      Var xk=townwaynodex(ij,i,k)
+ 	      Var yk=townwaynodey(ij,i,k)
+ 			Var dxy=(xk-x)*(y-yy)-(yk-y)*(x-xx)
+ 			Var drk=Sqr((xk-xx)*(xk-xx)+(yk-yy)*(yk-yy))
+ 			If dxy>0 And dxy<drk*dr*0.2 Then
+ 			   dr1=drk
+ 			   xj=xk:yj=yk
+ 			   If dr1>dl Then Exit For 
+ 			Else
+ 				Exit For 
+ 			EndIf
+ 		 Next
+ 		EndIf 
+ 		If dr1>dl Then 
+ 		   If drawbuildtext=shoptext Or sizei>1500 Then
+ 		      jname+=n*0.25
+ 		   Else    	
+ 		   	jname+=n*0.5
+ 		   EndIf
+ 			glpushmatrix
+         If buildrottype=1 Then
+            'gltranslatef(xx-(yj-y)*0.12*dl/dr1,yy+(xj-x)*0.12*dl/dr1,z-2-dh)
+            gltranslatef(xx+(yj-y)*30/dr1,yy-(xj-x)*30/dr1,z-2-dh)
+            Var do1=diro1((xj-xx),(yj-yy))
+            glrotatef(do1-90,0,0,1)
+         	gltranslatef(1.5,5,0)
+         Else
+            'gltranslatef(xx-(yj-y)*0.12*dl/dr1,yy+(xj-x)*0.12*dl/dr1,z-2-dh)
+            gltranslatef(xx-(yj-y)*30/dr1,yy+(xj-x)*30/dr1,z-2-dh)
+            Var do1=diro1((xj-xx),(yj-yy))
+            glrotatef(do1-90,0,0,1)
+         	gltranslatef(-1.5,5+dl,0)
+         	glrotatef(180,0,0,1)
+         EndIf
+   	   glcolor3f(0,1,0)
+         gldrawtext3D(text,dh)
+         If text2<>"" Then
+         	gltranslatef(0,0,-dh)
+         	gldrawtext3D(text2,dh)
+         EndIf
+         If text3<>"" Then
+         	gltranslatef(0,0,-dh)
+         	gldrawtext3D(text3,dh)
+         EndIf
+         testname=1
+         glpopmatrix 
+         glbindtexture(gl_texture_2D,drawbuildtext)			 
+         If r>-0.1 Then
+ 	         glcolor4f(rr,gg,bb,talpha)
+         Else
+ 	         glcolor4f(1,1,1,talpha)
+         EndIf
+ 		EndIf    
+ 	EndIf
+
+ 	
  Next
  If testname=0 And drawbuildname<>"" Then
  	townnametype(ij,i)=1
@@ -4789,61 +5905,102 @@ EndIf
  If Abs(x-x0)+Abs(y-y0)>0.00001 Then 
   xx=x:yy=y
   x=x0:y=y0
+  If i40>0 Then
+    ixy40+=1
+    townx40(i40,ixy40)=x
+    towny40(i40,ixy40)=y
+  EndIf   
   tx0+=tx
-  tx=ktx*Sqr((x-xx)*(x-xx)+(y-yy)*(y-yy))
-  mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0
+  Var dr=Sqr((x-xx)*(x-xx)+(y-yy)*(y-yy))
+  tx=ktx*dr
+  If dr<dr30000 Then mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0', 1
  EndIf 
  xmid=(xmin+xmax)/2
  ymid=(ymin+ymax)/2
+ If i40>0 Then
+ 	townixy40(i40)=ixy40
+ 	If ixy40>nwaynode Then
+ 		townwaynodesize40(ij,i)=0
+      'If Str(townwaynodeid(ij,i))="79152373" Then auxvar+=10000:auxtest=0.8':auxvar6=ixy40
+ 	EndIf
+ EndIf
  Var dxy=max(xmax-xmin,ymax-ymin)
  If dxy<300 Then
- 	If h>dxy*1.75 Then townwaynodeh(ij,i)=dxy*1.75+4000*Int(hmin+0.5)
+ 	'If h>dxy*1.75 Then townwaynodeh(ij,i)=dxy*1.75+4000*Int(hmin+0.5)
+ 	If h>dxy*7 Then townwaynodeh(ij,i)=dxy*7+4000*Int(hmin+0.5)
  EndIf
-If testmygltexquad=1 And sizei<3900 Then  
- Var dz=max(0.0,z)
+If testmygltexquad=1 And h0>46 Then  
+ Var dz=max(0.0,z),troof=1
  If h<200*(1-dz/(700+dz)) And sizei<1500 Then'z<200 Then
- 	z1=z+24+(max(0,Abs(xmax-xmin)-200)+max(0,(ymax-ymin)-200))*0.051:glcolor4f(0.9,0.3,0.4,talpha)
+ 	'z1=z+24+(max(0,Abs(xmax-xmin)-200)+max(0,(ymax-ymin)-200))*0.051:glcolor4f(0.9,0.3,0.4,talpha)
+ 	z1=z+24+min(max(0,Abs(xmax-xmin)-200),max(0,abs(ymax-ymin)-200))*0.1:glcolor4f(0.9,0.3,0.4,talpha)
  Else
+ 	troof=0
    glcolor4f( 0.4,0.35,0.4,talpha)
  EndIf 
  gldisable GL_alpha_test
  gldisable(gl_texture_2d)
- gldisable gl_lighting
+ If tdark=1 Then
+   glenable(gl_lighting)
+   glenable gl_normalize
+ Else
+   gldisable(gl_lighting)
+   'gldisable gl_normalize
+ EndIf   
  x=x0'townwaynodex(ij,i,1)
  y=y0'townwaynodey(ij,i,1)
- glbegin(gl_triangle_fan)
- glvertex3f(xmid,ymid,z1)
- glvertex3f(x,y,z)
+'If troof=1 Or mz>z Then 
+ If troof=1 Then  
+   glbegin(gl_triangle_fan)
+   glvertex3f(xmid,ymid,z1)
+ Else
+ 	glbegin(gl_polygon)
+ EndIf 	
+ If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	glvertex3f(x,y,z)
+ EndIf
  For j=2 To n
  	'xx=x:yy=y
  	x=townwaynodex(ij,i,j)-dmx0
  	y=townwaynodey(ij,i,j)-dmy0
  	'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
- 	glvertex3f(x,y,z)
+ 	If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 		glvertex3f(x,y,z)
+ 	EndIf
  Next
  'xx=x:yy=y
  x=x0:y=y0
  'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
- glvertex3f(x,y,z)
+ If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	glvertex3f(x,y,z)
+ EndIf
  glend()
+'EndIf  
 If hmin>10 Then
  glcolor3f( 0.55,0.55,0.7)
  x=x0'townwaynodex(ij,i,1)
  y=y0'townwaynodey(ij,i,1)
- glbegin(gl_triangle_fan)
- glvertex3f(xmid,ymid,z0)
- glvertex3f(x,y,z0)
+ 'glbegin(gl_triangle_fan)
+ 'glvertex3f(xmid,ymid,z0)
+ glbegin(gl_polygon)
+ If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	glvertex3f(x,y,z0)
+ EndIf
  For j=2 To n
  	'xx=x:yy=y
  	x=townwaynodex(ij,i,j)-dmx0
  	y=townwaynodey(ij,i,j)-dmy0
  	'gltriangle xx,yy,z0, xmid,ymid,z0, x,y,z0
- 	glvertex3f(x,y,z0)
+   If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+   	glvertex3f(x,y,z0)
+   EndIf
  Next
  'xx=x:yy=y
  x=x0:y=y0
  'gltriangle xx,yy,z0, xmid,ymid,z0, x,y,z0
- glvertex3f(x,y,z0)
+ If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	glvertex3f(x,y,z0)
+ EndIf
  glend()
 EndIf
 EndIf 'testmygltexquad
@@ -4852,23 +6009,427 @@ glenable(gl_texture_2d)
 If tnight1=1 Then
 	gldisable gl_alpha_test
 EndIf
-gldisable gl_lighting
-gldisable(gl_normalize)
+'gldisable gl_lighting
+'gldisable(gl_normalize)
+End Sub
+Function getsizei40(ij As Integer,i As Integer)As Single
+Dim As Integer j,k
+Dim As Single dxmax=-599999,dymax=-599999,dxmin=599999,dymin=599999,dx,dy 
+Var i40=0
+If kmxlat>10 Then i40=towni40(ij,i)
+If i40>0 Then
+  If townixy40(i40)>nwaynode then	
+     Var ixy40=townixy40(i40)
+     For j=1 To ixy40	 
+ 	    dx=townx40(i40,j)
+ 	    dy=towny40(i40,j)
+ 	    dxmax=max(dxmax,dx)
+ 	    dymax=max(dymax,dy)
+ 	    dxmin=min(dxmin,dx)
+ 	    dymin=min(dymin,dy)
+	  Next  
+	  Return ((dxmax-dxmin)+(dymax-dymin))*0.7
+  EndIf  	 
+EndIf
+Return 0
+End Function
+Sub drawbuildingnode40(ij As Integer,i As Integer,dist As Single=1,r As Single=-1,g As Single=0,b As Single=0)
+Dim As Single x,y,z,z1,h,tx,ty,z0,xx,yy,xmin,ymin,xmax,ymax,xmid,ymid,tx0,x0,y0,hmin
+Dim As Integer j,n,k
+'If taglcompile>1 Then Exit Sub 
+h=max(20.0,townwaynodeh(ij,i))
+'If InStr(townwayname(ij,i),"Tour Total")>0 Then auxvar=h:auxtest=0.3
+If h>4000 Then
+	If thmin=1 Then
+		hmin=Int(h/4000):h=h-4000*hmin
+	Else 
+		hmin=0
+		'Exit Sub 
+	EndIf
+EndIf
+avgbuildh+=h:navgbuildh+=1
+Var h0=setbuildh(h)
+h=h0'*scalexyh
+hmin=setbuildh(hmin)
+n=towniwaynode(ij,i)
+If n<2 Then Exit Sub
+If (Int(i+time2) Mod 10)=1 Then
+ If testweb=0 And time2>max(ttonneau,timeinit)+20 Then
+   Var x=townwaynodex(ij,i,1)
+   Var y=townwaynodey(ij,i,1)
+	If Abs(townwaynodez(ij,i)-getterrainheight(x,y))>15 Then
+		ttonneau=Timer 
+		testweb=1
+	EndIf
+ EndIf 
+EndIf
+Var i40=0,rr=r,gg=g,bb=b
+If n>=nwaynode Then
+	i40=towni40(ij,i)
+	If i40=0 Then
+		i40=getolditown40(townwaynodeid(ij,i))
+		If i40=0 Then i40=-1
+		towni40(ij,i)=i40
+		If i40>0 Then
+			town40ij(i40)=ij
+			town40iji(i40)=i
+		EndIf
+	EndIf
+EndIf
+If i40>0 Then
+	If auxtest>0.59 Then rr=1:gg=0:bb=0'h=2000:h0=h
+Else
+	Exit Sub 
+EndIf
+Var ixy=townixy40(i40)
+If ixy<2 Then Exit Sub 
+n=ixy
+Var tterminal=0:If townwaynodebuild(ij,i)=11 Then tterminal=1
+Var sizei=townwaynodesize(ij,i)
+If sizei>3900*(100+h)/140 And tterminal=0 Then h0=45:h=42
+x=200:y=200
+Var t800=min(800.0,sizei*0.5)'0.35)
+If hmin>10 Then t800=-hmin'*0.84
+z=h+townwaynodez(ij,i):z1=z+20:z0=-t800+z-h
+tx=drawbuildtx*x/150:ty=drawbuildty*(h0+t800)/120'(z-z0)/(120)
+If h>240 Then ty/=scalexy
+Var ktx=tx*0.5/x
+glenable(gl_texture_2d)
+testmygltexquad=0
+Var tnight1=(tnight or tdark)
+If drawbuildtext<>building3text Then tnight1=0
+If (Int(h)Mod 6)<hlight3  Then tnight1=0
+If tnight1=1 Then'And vie>0 Then
+	gldisable gl_alpha_test
+	gldisable gl_lighting
+	glcolor3f(1,1,0.84)
+   glbindtexture(gl_texture_2d,whitetext)
+   'glpushmatrix
+   'glscalef(0.9,0.9,0.99)
+ x=townx40(i40,1)-dmx0
+ y=towny40(i40,1)-dmy0
+ x=mx+1.02*(x-mx)
+ y=my+1.02*(y-my)
+ x0=x:y0=y
+ tx=0:tx0=0
+ Var z1=z-10
+ For j=2 To n
+ 	xx=x:yy=y
+ 	x=townx40(i40,j)-dmx0
+ 	y=towny40(i40,j)-dmy0
+   x=mx+1.02*(x-mx)
+   y=my+1.02*(y-my)
+ 	If Abs(xx-x)+Abs(yy-y)<dr30000 Then
+ 		mygltexquad xx,yy,z0, x,y,z0, x,y,z1, xx,yy,z1, tx,ty,tx0 ',1
+ 	EndIf
+ Next
+ xx=x:yy=y
+ x=x0:y=y0
+ tx0+=tx
+ 'tx=ktx*Sqr((x-xx)*(x-xx)+(y-yy)*(y-yy))
+ If Abs(xx-x)+Abs(yy-y)<dr30000 Then
+ 	mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0 ',1
+ EndIf
+   glcolor3f(1,1,1)
+   'glscalef(1,1,1)
+   'glpopmatrix 
+EndIf    
+If tnight1=1 Then
+   glenable gl_alpha_test
+ 	'glAlphaFunc(gl_greater,50/254)
+ 	glalphafunc(gl_less,50/254)
+EndIf
+ 'glcolor3f(1,1,1)
+ 'glEnable GL_BLEND
+ 'glBlendFunc GL_one_minus_SRC_ALPHA,GL_SRC_ALPHA
+ If (tnight=0 And tlight=1)Or tdark=1 Then
+ 	glenable(gl_lighting)
+ 	glenable(gl_normalize)
+ 	mytnormal=1
+ Else
+ 	mytnormal=0
+ EndIf
+ If dist>-13400 And tnight1=1 Then 
+     glbindtexture(gl_texture_2d,building32text)
+     'glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_nearest)'linear)
+     'glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST)'nomipmap
+ Else 
+     'glbindtexture(gl_texture_2d,building3text)
+     glbindtexture(gl_texture_2d,drawbuildtext)
+ EndIf 
+ If rr>-0.1 Then
+ 	glcolor4f(rr,gg,bb,talpha)
+ Else
+ 	glcolor4f(1,1,1,talpha)
+ EndIf
+ x=townx40(i40,1)-dmx0
+ y=towny40(i40,1)-dmy0
+ x0=x:y0=y
+ tx=0:tx0=0
+ xmin=x:ymin=y:xmax=x:ymax=y
+ 'If drawbuildname<>"" Then
+ Var text=Left(drawbuildname,40)
+ Var text2=""
+ Var text3=""
+ Var testname=0
+ 'Var dh=min(60.0,5+(h)*0.05)
+ Var dh=min(80.0,5+(h)*0.07)
+ Var dl=Len(text)*dh*0.47
+ Var len2=Len(text)*34/dh
+ If dh>30 Then
+ 	If townnametype(ij,i)=1 Then
+ 		len2*=0.66
+ 	EndIf
+ 	Var instr1=InStr(text," ")
+ 	If instr1>len2 Then
+ 		text2=Trim(Mid(text,instr1+1))
+ 		text=Trim(Left(text,instr1-1))
+ 		dl=max(Len(text),Len(text2))*dh*0.47
+ 	Else 
+ 	   Var instr2=InStr(Mid(text,instr1+1)+" "," ")
+ 		text2=Trim(Mid(text,instr1+instr2))
+ 		text=Trim(Left(text,instr1+instr2-1))
+ 		dl=max(Len(text),Len(text2))*dh*0.47
+ 		Var instr3=InStr(text2," ")
+ 		If instr3>len2 Then
+ 			text3=Trim(Mid(text2,instr3+1))
+ 			text2=Trim(Left(text2,instr3-1))
+ 			dl=max(Len(text),Len(text2))
+ 			dl=max(dl,Len(text3))*dh*0.47
+ 		EndIf
+ 	EndIf    
+ EndIf
+ If dl>len2 And dl<len2*2 Then
+ 	dh*=len2/dl:dl=len2
+ EndIf
+ Var jname=2
+ buildrottype=1
+ If dl>1 Then
+ 	Var xn=townx40(i40,n*0.9)
+ 	Var yn=towny40(i40,n*0.9)
+ 	Var x2=townx40(i40,n*0.30)
+ 	Var y2=towny40(i40,n*0.30)
+ 	If (xn-x2)*(y2-y)-(yn-y2)*(x2-x)>0 Then
+ 		buildrottype=-1
+ 	EndIf
+ EndIf
+ Var dr=1.0
+ For j=2 To n
+
+
+ 	xx=x:yy=y
+ 	x=townx40(i40,j)
+ 	y=towny40(i40,j)
+ 	mynormalx=yy-y:mynormaly=x-xx:mynormalz=0.0
+ 	'If buildrottype=-1 Then mynormalx=-mynormalx:mynormaly=-mynormaly':glcolor3f(1,0,0)
+   If mytnormal Then glnormal3f mynormalx,mynormaly,mynormalz
+ 	xmin=min(x,xmin):ymin=min(y,ymin)
+ 	xmax=max(x,xmax):ymax=max(y,ymax)
+ 	tx0+=tx
+ 	dr=Sqr((x-xx)*(x-xx)+(y-yy)*(y-yy))
+ 	tx=ktx*dr
+	If dr<dr30000 Then mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0', 1
+ 	If dl>1 And j>=jname Then
+ 		Var dr1=dr
+ 		Var xj=x,yj=y
+ 		If dr1<dl And buildrottype=1 Then 
+ 		 For k=j+1 To min2(n,j+Int(n*0.33))
+ 			If dr1>dl Then Exit For 
+ 	      Var xk=townx40(i40,k)
+ 	      Var yk=towny40(i40,k)
+ 			Var dxy=(xk-x)*(y-yy)-(yk-y)*(x-xx)
+ 			Var drk=Sqr((xk-xx)*(xk-xx)+(yk-yy)*(yk-yy))
+ 			If dxy<0 And dxy>-drk*dr*0.2 Then
+ 				dr1=drk
+ 				xj=xk:yj=yk
+ 				If dr1>dl Then Exit For 
+ 			Else
+ 				Exit For 
+ 			EndIf
+ 		 Next
+ 		EndIf  
+ 		If dr1<dl And buildrottype=-1 Then 
+ 		 For k=j+1 To min2(n,j+Int(n*0.33))
+ 			If dr1>dl Then Exit For 
+ 	      Var xk=townx40(i40,k)
+ 	      Var yk=towny40(i40,k)
+ 			Var dxy=(xk-x)*(y-yy)-(yk-y)*(x-xx)
+ 			Var drk=Sqr((xk-xx)*(xk-xx)+(yk-yy)*(yk-yy))
+ 			If dxy>0 And dxy<drk*dr*0.2 Then
+ 			   dr1=drk
+ 			   xj=xk:yj=yk
+ 			   If dr1>dl Then Exit For 
+ 			Else
+ 				Exit For 
+ 			EndIf
+ 		 Next
+ 		EndIf 
+ 		If dr1>dl Then 
+ 		   If drawbuildtext=shoptext Or sizei>1500 Then
+ 		      jname+=n*0.25
+ 		   Else    	
+ 		   	jname+=n*0.5
+ 		   EndIf
+ 			glpushmatrix
+         If buildrottype=1 Then
+            'gltranslatef(xx-(yj-y)*0.12*dl/dr1,yy+(xj-x)*0.12*dl/dr1,z-2-dh)
+            gltranslatef(xx+(yj-y)*30/dr1,yy-(xj-x)*30/dr1,z-2-dh)
+            Var do1=diro1((xj-xx),(yj-yy))
+            glrotatef(do1-90,0,0,1)
+         	gltranslatef(1.5,5,0)
+         Else
+            'gltranslatef(xx-(yj-y)*0.12*dl/dr1,yy+(xj-x)*0.12*dl/dr1,z-2-dh)
+            gltranslatef(xx-(yj-y)*30/dr1,yy+(xj-x)*30/dr1,z-2-dh)
+            Var do1=diro1((xj-xx),(yj-yy))
+            glrotatef(do1-90,0,0,1)
+         	gltranslatef(-1.5,5+dl,0)
+         	glrotatef(180,0,0,1)
+         EndIf
+   	   glcolor3f(0,1,0)
+         gldrawtext3D(text,dh)
+         If text2<>"" Then
+         	gltranslatef(0,0,-dh)
+         	gldrawtext3D(text2,dh)
+         EndIf
+         If text3<>"" Then
+         	gltranslatef(0,0,-dh)
+         	gldrawtext3D(text3,dh)
+         EndIf
+         testname=1
+         glpopmatrix 
+         glbindtexture(gl_texture_2D,drawbuildtext)			 
+         If r>-0.1 Then
+ 	         glcolor4f(rr,gg,bb,talpha)
+         Else
+ 	         glcolor4f(1,1,1,talpha)
+         EndIf
+ 		EndIf    
+ 	EndIf
+
+ 	
+ Next
+ If testname=0 And drawbuildname<>"" Then
+ 	townnametype(ij,i)=1
+ EndIf
+ If Abs(x-x0)+Abs(y-y0)>0.00001 Then 
+  xx=x:yy=y
+  x=x0:y=y0
+  tx0+=tx
+  Var dr=Sqr((x-xx)*(x-xx)+(y-yy)*(y-yy))
+  tx=ktx*dr
+  If dr<dr30000 Then mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0', 1
+ EndIf 
+ xmid=(xmin+xmax)/2
+ ymid=(ymin+ymax)/2
+ Var dxy=max(xmax-xmin,ymax-ymin)
+ If dxy<300 Then
+ 	'If h>dxy*1.75 Then townwaynodeh(ij,i)=dxy*1.75+4000*Int(hmin+0.5)
+ 	If h>dxy*7 Then townwaynodeh(ij,i)=dxy*7+4000*Int(hmin+0.5)
+ EndIf
+If testmygltexquad=1 And h0>46 Then  
+ Var dz=max(0.0,z),troof=1
+ If h<200*(1-dz/(700+dz)) And sizei<1500 Then'z<200 Then
+ 	'z1=z+24+(max(0,Abs(xmax-xmin)-200)+max(0,(ymax-ymin)-200))*0.051:glcolor4f(0.9,0.3,0.4,talpha)
+ 	z1=z+24+min(max(0,Abs(xmax-xmin)-200),max(0,abs(ymax-ymin)-200))*0.1
+ 	glcolor4f(1,0.2,0.23,talpha)
+ Else
+ 	troof=0
+   'glcolor4f( 0.4,0.35,0.4,talpha)
+   glcolor4f( 0.4,0.45,0.4,talpha)
+ EndIf 
+ If auxtest>0.0051 Then glcolor4f(1,0,0,talpha)
+ gldisable GL_alpha_test
+ gldisable(gl_texture_2d)
+ If tdark=1 Then
+   glenable(gl_lighting)
+   glenable gl_normalize
+ Else
+   gldisable(gl_lighting)
+   'gldisable gl_normalize
+ EndIf   
+ x=x0'townwaynodex(ij,i,1)
+ y=y0'townwaynodey(ij,i,1)
+'If troof=1 Or mz>z Then  
+ If troof=1 Then  
+   glbegin(gl_triangle_fan)
+   glvertex3f(xmid,ymid,z1)
+ Else
+ 	glbegin(gl_polygon)
+ EndIf 	
+ If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	glvertex3f(x,y,z)
+ EndIf
+ For j=2 To n
+ 	'xx=x:yy=y
+ 	x=townx40(i40,j)-dmx0
+ 	y=towny40(i40,j)-dmy0
+ 	'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
+   If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+   	glvertex3f(x,y,z)
+   EndIf
+ Next
+ 'xx=x:yy=y
+ x=x0:y=y0
+ 'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
+ If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	glvertex3f(x,y,z)
+ EndIf
+ glend()
+'EndIf  
+If hmin>10 Then
+ glcolor3f( 0.55,0.55,0.7)
+ x=x0'townwaynodex(ij,i,1)
+ y=y0'townwaynodey(ij,i,1)
+ 'glbegin(gl_triangle_fan)
+ 'glvertex3f(xmid,ymid,z0)
+ glbegin(gl_polygon)
+ If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	glvertex3f(x,y,z0)
+ EndIf
+ For j=2 To n
+ 	'xx=x:yy=y
+ 	x=townx40(i40,j)-dmx0
+ 	y=towny40(i40,j)-dmy0
+ 	'gltriangle xx,yy,z0, xmid,ymid,z0, x,y,z0
+   If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+   	glvertex3f(x,y,z0)
+   EndIf
+ Next
+ 'xx=x:yy=y
+ x=x0:y=y0
+ 'gltriangle xx,yy,z0, xmid,ymid,z0, x,y,z0
+ If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	glvertex3f(x,y,z0)
+ EndIf
+ glend()
+EndIf
+EndIf 'testmygltexquad
+glcolor3f(1,1,1)
+glenable(gl_texture_2d)
+If tnight1=1 Then
+	gldisable gl_alpha_test
+EndIf
+'gldisable gl_lighting
+'gldisable(gl_normalize)
 End Sub
 Sub drawbuildingnodefast(ij As Integer,i As Integer,dist As Single=1,r As Single=-1,g As Single=0,b As Single=0)
 Dim As Single x,y,z,z1,h,tx,ty,z0,xx,yy,xmin,ymin,xmax,ymax,xmid,ymid,tx0,x0,y0,hmin
 Dim As Integer j,n,jj
 Dim As Single jx,di
+If tlayer<-0.1 Then Exit Sub 
+'If taglcompile>1 Then Exit Sub
 h=max(20.0,townwaynodeh(ij,i))
 If h>4000 Then
 	If thmin=1 Then
 		hmin=Int(h/4000):h=h-4000*hmin
 	Else 
-		Exit Sub 
+		hmin=0
+		'Exit Sub 
 	EndIf
 EndIf
 Var h0=setbuildh(h)
 h=h0'*scalexyh
+hmin=setbuildh(hmin)
 n=towniwaynode(ij,i)
 If n<=4 Then
 	di=1.001
@@ -4876,23 +6437,35 @@ Else
 	di=n/4.0+0.001
 EndIf
 If n<2 Then Exit Sub 
+If (Int(i+time2) Mod 10)=1 Then
+ If testweb=0 And time2>max(ttonneau,timeinit)+20 Then
+   Var x=townwaynodex(ij,i,1)
+   Var y=townwaynodey(ij,i,1)
+	If Abs(townwaynodez(ij,i)-getterrainheight(x,y))>15 Then
+		ttonneau=Timer 
+		testweb=1
+	EndIf
+ EndIf 
+EndIf
+Var tterminal=0:If townwaynodebuild(ij,i)=11 Then tterminal=1
 Var sizei=townwaynodesize(ij,i)
-If sizei>3900 Then h0=45:h=42
+If sizei>3900*(100+h)/140 And tterminal=0 Then h0=45:h=42
 x=200:y=200
-Var t800=800.0
-If hmin>10 Then t800=-hmin
+Var t800=min(800.0,sizei*0.5)'0.35)
+If hmin>10 Then t800=-hmin'*0.84
 z=h+townwaynodez(ij,i):z1=z+20:z0=-t800+z-h
 tx=drawbuildtx*x/150:ty=drawbuildty*(h0+t800)/120'(z-z0)/(120)
 If h>240 Then ty/=scalexy
 Var ktx=tx*0.5/x
 glenable(gl_texture_2d)
 testmygltexquad=0
-Var tnight1=tnight
+Var tnight1=(tnight Or tdark)
 If drawbuildtext<>building3text Then tnight1=0
-If (Int(h)Mod 5)<2  Then tnight1=0
-If tnight1=1 And vie>0 Then
+If (Int(h)Mod 6)<hlight3  Then tnight1=0
+If tnight1=1 Then'And vie>0 Then
 	gldisable gl_alpha_test
-	glcolor3f(1,1,0.6)
+	gldisable gl_lighting
+	glcolor3f(1,1,0.84)
    glbindtexture(gl_texture_2d,whitetext)
    'glscalef(0.9,0.9,0.99)
  x=townwaynodex(ij,i,1)-dmx0
@@ -4902,6 +6475,7 @@ If tnight1=1 And vie>0 Then
  x0=x:y0=y
  tx=0:tx0=0
  jx=1.001
+ Var z1=z-10
  For jj=2 To n
  	jx+=di
  	j=Int(jx)
@@ -4911,25 +6485,29 @@ If tnight1=1 And vie>0 Then
  	y=townwaynodey(ij,i,j)-dmy0
    x=mx+1.005*(x-mx)
    y=my+1.005*(y-my)
- 	mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0
+ 	If Abs(xx-x)+Abs(yy-y)<dr30000 Then
+ 		mygltexquad xx,yy,z0, x,y,z0, x,y,z1, xx,yy,z1, tx,ty,tx0', 1
+ 	EndIf
  Next
  xx=x:yy=y
  x=x0:y=y0
  tx0+=tx
  'tx=ktx*Sqr((x-xx)*(x-xx)+(y-yy)*(y-yy))
- mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0
+ If Abs(xx-x)+Abs(yy-y)<dr30000 Then
+ 	mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0', 1
+ EndIf
    glcolor3f(1,1,1)
    'glscalef(1,1,1) 
 EndIf    
 If tnight1=1 Then
    glenable gl_alpha_test
  	'glAlphaFunc(gl_greater,50/254)
- 	glAlphaFunc(gl_less,50/254)
+ 	glalphafunc(gl_less,50/254)
 EndIf
  'glcolor3f(1,1,1)
  'glEnable GL_BLEND
  'glBlendFunc GL_one_minus_SRC_ALPHA,GL_SRC_ALPHA
- If tnight=0 And tlight=1 Then'And fpsmoy>11 Then
+ If (tnight=0 And tlight=1)Or tdark=1 Then'And fpsmoy>11 Then
  	glenable(gl_lighting)
  	glenable(gl_normalize)
  	mytnormal=1
@@ -5014,7 +6592,7 @@ EndIf
  	tx0+=tx
  	Var dr=Sqr((x-xx)*(x-xx)+(y-yy)*(y-yy))
  	tx=ktx*dr
- 	mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0
+ 	If dr<dr30000 Then mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0', 1
  	If dl>1 And dr>dl And jj>=jname Then
 	   	jname+=n*0.5/di
  			glpushmatrix
@@ -5050,31 +6628,46 @@ EndIf
   xx=x:yy=y
   x=x0:y=y0
   tx0+=tx
-  tx=ktx*Sqr((x-xx)*(x-xx)+(y-yy)*(y-yy))
-  mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0
+  Var dr=Sqr((x-xx)*(x-xx)+(y-yy)*(y-yy))
+  tx=ktx*dr
+  If dr<dr30000 Then mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0', 1
  EndIf 
  xmid=(xmin+xmax)/2
  ymid=(ymin+ymax)/2
  Var dxy=max(xmax-xmin,ymax-ymin)
  If dxy<300 Then
- 	If h>dxy*1.75 Then townwaynodeh(ij,i)=dxy*1.75+4000*Int(hmin+0.5)
+ 	'If h>dxy*1.75 Then townwaynodeh(ij,i)=dxy*1.75+4000*Int(hmin+0.5)
+ 	If h>dxy*7 Then townwaynodeh(ij,i)=dxy*7+4000*Int(hmin+0.5)
  EndIf
-If testmygltexquad=1 And sizei<3900 Then  
- Var dz=max(0.0,z)
+If testmygltexquad=1 And h0>46 Then  
+ Var dz=max(0.0,z),troof=1
  If h<200*(1-dz/(700+dz)) And sizei<1500 Then'z<200 Then
  'If z<200 Then
- 	z1=z+24+(max(0,Abs(xmax-xmin)-200)+max(0,(ymax-ymin)-200))*0.051:glcolor4f(0.9,0.3,0.4,talpha)
+ 	'z1=z+24+(max(0,Abs(xmax-xmin)-200)+max(0,(ymax-ymin)-200))*0.051:glcolor4f(0.9,0.3,0.4,talpha)
+ 	z1=z+24+min(max(0,Abs(xmax-xmin)-200),max(0,abs(ymax-ymin)-200))*0.1:glcolor4f(0.9,0.3,0.4,talpha)
  Else
+ 	troof=0
    glcolor4f( 0.4,0.35,0.4,talpha)
  EndIf 
  gldisable GL_alpha_test
  gldisable(gl_texture_2d)
- gldisable gl_lighting
+ If tdark=1 Then
+   glenable(gl_lighting)
+   glenable gl_normalize
+ Else
+   gldisable(gl_lighting)
+   'gldisable gl_normalize
+ End If   
  x=x0'townwaynodex(ij,i,1)
  y=y0'townwaynodey(ij,i,1)
- jx=1.001
- glbegin(gl_triangle_fan)
- glvertex3f(xmid,ymid,z1)
+ jx=1.001 
+'If troof=1 Or mz>z Then  
+ If troof=1 Then  
+   glbegin(gl_triangle_fan)
+   glvertex3f(xmid,ymid,z1)
+ Else
+ 	glbegin(gl_polygon)
+ EndIf 	
  glvertex3f(x,y,z)
  For jj=2 To n
  	jx+=di
@@ -5091,17 +6684,19 @@ If testmygltexquad=1 And sizei<3900 Then
  'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
  glvertex3f(x,y,z)
  glend()
+'EndIf 'mz 
 EndIf 'testmygltexquad 
 glcolor3f(1,1,1)
 glenable(gl_texture_2d)
 If tnight1=1 Then
 	gldisable gl_alpha_test
 EndIf
-gldisable gl_lighting
-gldisable(gl_normalize)
+'gldisable gl_lighting
+'gldisable(gl_normalize)
 End Sub
 Dim Shared As Single txroad
 Declare Sub drawmxy(mxx As Single,myy As Single)
+Dim Shared As Integer myibridge1
 Sub testroadautopilot(xx As Single,yy As Single,zz As Single,x As Single,y As Single,z As Single,r As Single,tbridge As Integer=0)
  Var mx1=mx+cos1*v*7,my1=my+sin1*v*7
  Var mx2=mx+cos1*v*4,my2=my+sin1*v*4
@@ -5109,6 +6704,7 @@ Sub testroadautopilot(xx As Single,yy As Single,zz As Single,x As Single,y As Si
  Var toneway=0,tparking=0
  If r>2000 Then r-=2000:tparking=1
  If r>1000 Then r-=1000:toneway=1
+ If typeautopilot=0 Or typeautopilot=1 Then toneway=0
  	Var dx=x-xx,dy=y-yy
    Var dr=max(0.1,Sqr(dx*dx+dy*dy))
    Var co1=r*dx/dr,si1=r*dy/dr
@@ -5116,28 +6712,41 @@ Sub testroadautopilot(xx As Single,yy As Single,zz As Single,x As Single,y As Si
    If Abs(dxy)<dr*(r+d60road) Then
       Var dxx=(mx3-xx)*dx+(my3-yy)*dy
       Var r05=(r+d05road)*0.75,r005=r05
-      If tbridge=1 Then r005=dr*0.19
+      If tbridge=1 Then r005=dr*0.21:r05=r005'*0.19
       If dxx>-r005*dr And dxx<(dr+r005)*(dr) Then mytestroad3=1
       dxx=(mx2-xx)*dx+(my2-yy)*dy
       If dxx>-r005*dr And dxx<(dr+r005)*(dr) Then
-         If Abs(dxy)<dr*r And dxx>-r05*dr And dxx<(dr+r05)*(dr) Then
+         If Abs(dxy)<dr*r*(1+tbridge*2) And dxx>-r05*dr And dxx<(dr+r05)*(dr) Then
             mytestroad2=1
             If tbridge=1 Then
-            	If Abs(cos1*co1+sin1*si1)>r*0.95 Then
-                  mytestbridge=1
-                  'v=min(19.0,max(v,dr/400))
-            		Var dmx=mx-xx,dmy=my-yy
-            		Var dz=zz+(z-zz)*(dmx*co1+dmy*si1)/(r*dr)
-            		mzbridge=dz
+            	Var dco1=(cos1*co1+sin1*si1)
+            	If Abs(dco1)>r*0.7 Then
+                  soundvoyage(1)
+                  If Abs(dco1)>r*0.9 Then
+                  	mytestbridge=1
+                     'v=min(19.0,max(v,dr/400))
+            		   Var dmx=mx-xx,dmy=my-yy
+            		   Var dmxx=(dmx*co1+dmy*si1)/(r*dr)
+           		   	Var dz=zz+(z-zz)*(dmxx)
+            		   If dmxx<0 And dmxx>-0.21 Then
+           		   	   Var dzz=min((zz-mzsol00)*0.8,dr*0.012)
+            		   	dz=zz+(dmxx/0.21)*(dzz)
+            		   ElseIf dmxx>1 And dmxx<1.21 Then
+            		   	Var dzz=min((z-mzsol00)*0.8,dr*0.012)
+            		   	dz=z-((dmxx-1)/0.21)*(dzz)
+            		   EndIf
+            		   mzbridge=dz+6.5
+                  EndIf
             		'Var drx=max(0.1,Sqr(dmx*dmx+dmy*dmy))
-            		If dxy>dr*r*0.65 then mx-=si1*0.5:my+=co1*0.5
-            		If dxy<-dr*r*0.65 Then mx+=si1*0.5:my-=co1*0.5
+            		If dxy>dr*r*0.265 then mx-=si1*0.4:my+=co1*0.4:o1+=1.5*Sgn(dco1)
+            		If dxy<-dr*r*0.265 Then mx+=si1*0.4:my-=co1*0.4:o1-=1.5*Sgn(dco1)
+            	   myibridge=myibridge1
             	EndIf
             EndIf
          EndIf
          Var kcos1=(cos1*co1+sin1*si1)
          If tbridge=1 Then  
-          If Abs(kcos1)<r*0.7 Then
+          If Abs(kcos1)<r*0.607 Then
          	If Abs(mx-xx)>r005 Or Abs(my-yy)>r005 Then
          		If Abs(mx-x)>r005 Or Abs(my-y)>r005 Then
          			Exit Sub 
@@ -5152,13 +6761,13 @@ Sub testroadautopilot(xx As Single,yy As Single,zz As Single,x As Single,y As Si
    			dxx=max(0.0001,dxx-dxx*0.1*kdxy)
    		Else 
    			dxx=min(-0.0001,dxx-dxx*0.1*kdxy)
-   			If toneway=1 Then dxx*=0.2
+   			If toneway=1 And dxx<-0.0005 Then dxx*=0.2
    		EndIf
    		If tbridge=1 Then dxx*=6
    		If Abs(dxx)>Abs(dxautopilot) Then
    		  dxautopilot=dxx
    		  dyautopilot=dxy/(dr*(r+d60road))
-   		  If tbridge=0 Then 
+   		  If tbridge=0 and tautopilot=2 Then 
    		   If cos1*(mx1-xx)+sin1*(my1-yy)<0 Then
    		    If cos1*(mx1-x)+sin1*(my1-y)<0 Then
    		    	 dyautopilot=Sgn(dyautopilot)
@@ -5175,16 +6784,18 @@ Function gettestnearroad(x As Single,y As Single,dist As Single=0)As Integer
 Dim As Integer i
 Dim As Single dx,dy,r,dr,co1,si1,dxx
 'If plane>0 And car=0 Then Return 0
-For i=1 To inearroad
-	r=rnearroad(i)+dist
-	If r<9.1 Then Continue For 'rail
-	dr=drnearroad(i)
-	dx=x-xnearroad(i)
+For i=1 To inearroad0
+	r=rnearroad0(i)
+	If r<9.1 Then r=17'Continue For 'rail
+	If r>2.5*30 Then r+=30'runway	
+	r+=dist
+	dr=drnearroad0(i)
+	dx=x-xnearroad0(i)
 	If Abs(dx)<(r+r+dr) Then
-		dy=y-ynearroad(i)
+		dy=y-ynearroad0(i)
 		If Abs(dy)<(r+r+dr) Then
-			co1=co1nearroad(i)
-			si1=si1nearroad(i)
+			co1=co1nearroad0(i)
+			si1=si1nearroad0(i)
 			If Abs(dx*si1-dy*co1)<r*(r+30) Then
 				dxx=dx*co1+dy*si1
 				If dxx>-r*(r+r) And dxx<(r+r+dr)*r Then Return 1
@@ -5194,23 +6805,28 @@ For i=1 To inearroad
 Next
 Return 0
 End Function
-Function gettestnear0road(x As Single,y As Single)As Integer
+Function gettestnear0road(x As Single,y As Single,layer As Integer=0,inear0 As Integer=0)As Integer
 Dim As Integer i
 Dim As Single dx,dy,r,dr,co1,si1,dxx
 'If plane>0 And car=0 Then Return 0
-For i=1 To inear0road
-	r=rnear0road(i)
-	If r<9.1 Then Continue For 'rail
-	dr=drnear0road(i)
-	dx=x-xnear0road(i)
+Var d30=40.0'30.0':If layer<-0.9 Then d30=20
+For i=1 To inear0road0
+	r=rnear0road0(i)
+	'If r<9.1 Or layernear0road0(i)>layer+0.1 Or (inear0>0 And Abs(i-inear0)<=3) Then Continue For 'rail
+	If r<9.1 Then r=17
+	If layernear0road0(i)>layer+0.1 Or (inear0>0 And Abs(i-inear0)<=3) Then Continue For 'rail
+	If r>2.5*30 Then r+=30'runway	
+	dr=drnear0road0(i)
+	dx=x-xnear0road0(i)
 	If Abs(dx)<(r+r+dr) Then
-		dy=y-ynear0road(i)
+		dy=y-ynear0road0(i)
 		If Abs(dy)<(r+r+dr) Then
-			co1=co1near0road(i)
-			si1=si1near0road(i)
-			If Abs(dx*si1-dy*co1)<r*(r+30) Then
+			co1=co1near0road0(i)
+			si1=si1near0road0(i)
+			If Abs(dx*si1-dy*co1)<r*(r+d30) Then
 				dxx=dx*co1+dy*si1
-				If dxx>-r*(r+r) And dxx<(r+r+dr)*r Then Return 1
+				'If dxx>-r*(r+r) And dxx<(r+r+dr)*r Then Return 1
+				If dxx>-r*(r) And dxx<(r+dr)*r Then Return 1
 			EndIf
 		EndIf
 	EndIf
@@ -5218,22 +6834,49 @@ Next
 Return 0
 End Function
 'Dim Shared As Integer irandomnearroad(20),nrandomnearroad
-Function getrandomnearroad(x As Single,y As Single,n0 As Integer,nco1 As Single,nsi1 As Single)As Integer
+Function getrandomnearroad(x As Single,y As Single,n0 As Integer,nco1 As Single,nsi1 As Single,ddr0 As Single=0,tback As Integer=0)As Integer
 Dim As Integer i,j,n,idxxx
 Dim As Single dx,dy,r,dr,co1,si1,dxx,dxxx
 'If plane>0 And car=0 Then Return 0
 Var ddr=0.0
-If n0<0 Then ddr=500
 n=0:zroad=-999999:dxxx=0:idxxx=0
-If myncari=0 And n0>0 And n0<=inearroad Then
-  If onewaynearroad(n0)=1 Then
+If n0<0 Then
+	ddr=500
+ElseIf myncari=0 Then 
+ If plane>0 And car=0 Then
+ 	ddr=320
+ ElseIf n0>0 And n0<=inearroad Then
+  If onewaynearroad(n0)=1 And typeautopilot=1 Then
    co1=co1nearroad(n0)
 	si1=si1nearroad(n0)
-   If nco1*co1+nsi1*si1<0 Then ddr=60.0
-  EndIf 
+   'If nco1*co1+nsi1*si1<0 Then
+   If cos1*co1+sin1*si1<0 Then
+   	If typeautopilot=1 Then'Or (Int(time2)Mod 15)<=2 Then
+   		ddr=75.0
+   	Else 
+    		ddr=20.0'15.0
+   	EndIf
+   EndIf
+  EndIf
+ EndIf  
 EndIf
+If ddr0>0.001 And ddr<ddr0 Then ddr=ddr0
+ddr+=distback
+If tback=1 Then ddr=ddr0
+Var tlayern=0.0
+If myncari=0 Then tlayern=tlayer
 For i=1 To inearroad
+	Var ttunnel=0
+	If myncari=0 Then 
+	 If Abs(layernearroad(i)-tlayern)>0.7 Then
+		ttunnel=1
+		'If layernearroad(i)<-0.1 And tlayern>-0.4 Then Continue For
+	 ElseIf Abs(tlayern)>0.4 Then
+		ttunnel=2
+	 EndIf
+	EndIf 
 	r=rnearroad(i)
+	Var r0=r
 	If r<9.1 Then Continue For 'rail
 	r+=ddr	
 	dr=drnearroad(i)+ddr
@@ -5246,24 +6889,30 @@ For i=1 To inearroad
 			If Abs(dx*si1-dy*co1)<(r+0.30) Then
 				dxx=dx*co1+dy*si1
 				If dxx>-(r) And dxx<(dr) Then
-				  Var dcos1=nco1*co1+nsi1*si1	
-				  If n=0 Or onewaynearroad(i)=0 Or (dcos1)>0.1 Then  	
+				  Var dcos1=nco1*co1+nsi1*si1
+				  If dcos1>0 Then dcos1+=0.1 Else dcos1-=0.1
+				  If myncari=0 Then dcos1+=(avgco1*co1+avgsi1*si1-dcos1)*0.3	
+				  If n=0 Or (onewaynearroad(i)=0 Or typeautopilot=0) Or (dcos1)>0.1 Then  	
 					irandomnearroad(n)=i
 					n+=1:If n>=400 Then Exit For
 					If i=n0 Then
-						If Rnd<0.5 Then Return n0
+						'If Rnd<0.5 Then Return n0
 					   irandomnearroad(n)=i
 					   n+=1:If n>=400 Then Exit For
 					EndIf
+					If ttunnel=1 Then dcos1*=0.01
+					If ttunnel=2 Then dcos1*=100
 					If myncari=0 Or tcarpolice=1 Then
-                If dxxx<Abs(dcos1) Then
-               	dxxx=Abs(dcos1)
+                If dxxx<Abs(dcos1)*(5+r0) Then
+               	dxxx=Abs(dcos1)*(5+r0)
                	idxxx=i
                 EndIf
 					 dcos1=avgco1*co1+avgsi1*si1
+					 If ttunnel=1 Then dcos1*=0.01
+					 If ttunnel=2 Then dcos1*=100
 					 Var dsin1=sin1*avgco1-cos1*avgsi1
 					 Var dsi1=sin1*co1-cos1*si1
-					 if abs(dcos1)<0.92 and dsin1*dsi1>0 Then dcos1=0 
+					 if abs(dcos1)<0.92 and dsin1*dsi1>0.01 Then dcos1=0 
 					 If Abs(dcos1)>0.5 Then
 					   irandomnearroad(n)=i
 					   n+=1:If n>=400 Then Exit For						
@@ -5297,10 +6946,19 @@ For i=1 To inearroad
 		EndIf
 	EndIf
 Next
+If tback=1 And n=0 Then Return 0
 nrandomnearroad=n
-If (n=0 or dxxx>0.97) And idxxx>0 Then Return idxxx
+If typeautopilot=1 Then 
+	If (n=0 or dxxx>0.97*30) And idxxx>0 Then Return idxxx
+Else 
+	If (n=0 or dxxx>0.985*30) And idxxx>0 Then Return idxxx
+EndIf
 If n=0 Then Return 0
 'If Rnd<0.8 And idxxx>0 Then Return idxxx
+For i=1 To 50
+	Var nn=irandomnearroad(Int(n*Rnd))
+	If Abs(layernearroad(nn)-tlayern)<0.4 Then Return nn
+Next
 Return irandomnearroad(Int(n*Rnd))
 End Function
 Function getrandomnearroad0(x As Single,y As Single,n0 As Integer,nco1 As Single,nsi1 As Single)As Integer
@@ -5376,8 +7034,6 @@ nrandomnearroad=n
 If n=0 Then Return 0
 Return irandomnearroad(Int(n*Rnd))
 End Function
-Dim Shared As Single rnearroad0(nnearroad),drnearroad0(nnearroad),xnearroad0(nnearroad),ynearroad0(nnearroad)
-Dim Shared As Single co1nearroad0(nnearroad),si1nearroad0(nnearroad)
 Sub copynearroad0()
 Dim As Integer i,j
 inearroad0=inearroad
@@ -5388,6 +7044,18 @@ For i=1 To inearroad0
 	ynearroad0(i)=ynearroad(i)
 	co1nearroad0(i)=co1nearroad(i)
 	si1nearroad0(i)=si1nearroad(i)
+	layernearroad0(i)=layernearroad(i)
+Next
+inear0road0=inear0road
+inear0road20=inear0road2
+For i=1 To inear0road0
+	rnear0road0(i)=rnear0road(i)
+	drnear0road0(i)=drnear0road(i)
+	xnear0road0(i)=xnear0road(i)
+	ynear0road0(i)=ynear0road(i)
+	co1near0road0(i)=co1near0road(i)
+	si1near0road0(i)=si1near0road(i)
+	layernear0road0(i)=layernear0road(i)
 Next
 End Sub
 Function getcrossnearroad(x As Single,y As Single,co11 As Single=99,si11 As Single=99)As Integer
@@ -5436,6 +7104,53 @@ If testrail=1 Then Return 2
 If n>2 Then Return 1
 Return 0
 End Function
+Function getcrossnear0road(x As Single,y As Single,co11 As Single=99,si11 As Single=99,r0 As Single=0)As Integer
+Dim As Integer i,n,j
+Dim As Single dx,dy,r,dr,co1,si1,dxx
+'If plane>0 And car=0 Then Return 0
+If max(Abs(x-mx-dmx0),Abs(y-my-dmy0))>distnearroad Then Return 0
+n=0:j=0
+Var trail=0,testrail=0
+For i=1 To inear0road0
+	r=rnear0road0(i)
+	If r<9.1 Then
+		trail=1:r=100
+	Else
+		trail=0
+	EndIf
+	r+=r0
+	dr=drnear0road0(i)
+	dx=x-xnear0road0(i)
+	If Abs(dx)<(r+r+dr) Then
+		dy=y-ynear0road0(i)
+		If Abs(dy)<(r+r+dr) Then
+			co1=co1near0road0(i)
+			si1=si1near0road0(i)
+			If Abs(dx*si1-dy*co1)<r*(r+5) Then
+				dxx=dx*co1+dy*si1
+				If dxx>-r*(r) And dxx<(r+dr)*r Then
+				   If co11<90 And trail=1 Then
+					  Var xx=xnear0road0(i)+dr*co1/(r+r)
+					  Var yy=ynear0road0(i)+dr*si1/(r+r)
+					  If (xx-x)*co11+(yy-y)*si11<0.5*max(Abs(xx-x),Abs(yy-y)) Then
+					  	  Continue For 
+					  EndIf
+					  If Abs(co1*si11-si1*co11)<0.12*r Then
+					  	  continue for 
+					  EndIf
+				   EndIf
+					n+=1
+					If trail=1 Then testrail=1
+					'If n>2 Then Return 1+trail
+				EndIf
+			EndIf
+		EndIf
+	EndIf
+Next
+If testrail=1 Then Return 2
+If n>2 Then Return 1
+Return 0
+End Function
 'Const As Integer nreverse=100
 'Dim Shared As Integer ireverse
 'Dim Shared As Single latreverse,lngreverse,latreversei(nreverse),lngreversei(nreverse)
@@ -5447,34 +7162,108 @@ Dim Shared As Integer ttestcross(ntown,ntownnode),ttestcross2(ntown,ntownnode),t
 Dim Shared As Integer ttaddoneway(ntown,ntownnode)
 Declare Sub setcitykm1(latx As single,lngx As Single,co1 As Single,si1 As Single)
 Sub resetttsetterrain()
-Dim As Integer ij,i
+Dim As Integer ij,i,j
 For ij=1 To ntown2
 	For i=1 To ntownnode
 		ttsetterrain(ij,i)=0
 	Next
 Next
+For i=-100 To 612
+	For j=-100 To 612
+		tsetterrain(i,j)=0
+	Next
+Next
 End Sub
+Dim Shared As Single distrunway4000
 Sub drawroadnode(ij As Integer,i As Integer)
 Dim As Single x,y,z,z1,h,tx,ty,z0,xx,yy,tx0,x0,y0,xx0,yy0,x1,y1,xx1,yy1,r,dr,dx,dy,co1,si1,ddx0,ddy0,ddx1,ddy1,hr
 dim as single co10,si10,zz0,zz1
-Dim As Integer j,n,jj,toneway=0,tparking=0,trail=0
-h=4'8
+Dim As Integer j,n,jj,toneway=0,tparking=0,trail=0,trunway=0,taddspot=0,tmainway=0
+'If taglcompile>1 Then 
+'	Exit sub
+'EndIf
+Var i40=0,ixy40=0,t40=0,tcolor=0,rcolor=0.515,gcolor=rcolor,bcolor=rcolor
+If kmxlat>10 Then i40=towni40(ij,i)
+If i40>0 Then
+  If townixy40(i40)>nwaynode then	
+	 t40=1
+	 tcolor=1
+	 'drawbuildingnode40(ij,i,dist,r,g,b)
+	 'Exit Sub
+  EndIf  	 
+EndIf
+Dim As Integer layer=0
+Var zlayer=0.0
+tcolor=0
+'If (i Mod 4)=0 Then tcolor=1
+If auxtest>0.0071 And tcolor=1 Then rcolor=1:gcolor=0:bcolor=0
+If townwaynoder(ij,i)>0.91 and towniwaynode(ij,i)>2 Then
+	layer=1:If townwaynodeg(ij,i)<-0.5 Then layer=-1'$$
+	If layer<-0.9 Then
+		zlayer=-100
+		If tlayer0>-0.4 Then zlayer=1
+	EndIf
+	If layer>0.9 Then zlayer=80
+	tcolor=1:rcolor=0.3:gcolor=1:bcolor=0.4
+EndIf
+h=2'4'8
 hr=-0.2
-n=towniwaynode(ij,i)
-If n<2 Then Exit Sub 
+If t40=0 Then
+ n=towniwaynode(ij,i)
+ If n<2 Then Exit Sub 
+ i40=0
+ If n>=nwaynode Then
+	i40=towni40(ij,i)
+	If i40=0 Then
+		i40=getolditown40(townwaynodeid(ij,i))
+		If i40=0 Then i40=-1
+		towni40(ij,i)=i40
+		If i40>0 Then
+			town40ij(i40)=ij
+			town40iji(i40)=i
+		EndIf
+	EndIf
+ EndIf
+Else
+ n=townixy40(i40)
+ If n<2 Then Exit Sub 
+EndIf
 r=max(5.0,townwaynodeh(ij,i))
 If r>2000 Then r-=2000:tparking=1
 If r>1000 Then r-=1000:toneway=1
 If r<0.3*30 Then trail=1
+If r>4*30 then trunway=1
+If r>2.5*30 And trunway=0 Then tmainway=1 
+If r<29 And layer>0 Then layer=0:zlayer=0:rcolor=0.5:gcolor=0.6:bcolor=1'tcolor=0
+If tdark=1 Then
+   glenable(gl_lighting)
+   glenable gl_normalize
+   If trunway=1 Then taddspot=1
+Else
+   gldisable(gl_lighting)
+   'gldisable gl_normalize
+End If   
 h-=max(0.0,(2.8*30-r)*0.005)
 Var ttsetterrainij=ttsetterrain(ij,i)
 ttsetterrain(ij,i)=1 
 Var taddtree=0,taddlamp=0,taddbarriere=0,taddhaie=0,taddnathalie=0,taddcity=0,cityname1="",cityname2=""
-Var taddcitykm=0,taddcross=0,taddcross2=0,taddoneway=0,taddrail=0,taddrail2=0
-xx=townwaynodex(ij,i,1)
-yy=townwaynodey(ij,i,1)
-x=townwaynodex(ij,i,n)
-y=townwaynodey(ij,i,n)
+Var taddcitykm=0,taddcross=0,taddcross2=0,taddoneway=0,taddrail=0,taddrail2=0,taddoneway2=0
+If t40=0 Then 
+ xx=townwaynodex(ij,i,1)
+ yy=townwaynodey(ij,i,1)
+ x=townwaynodex(ij,i,n)
+ y=townwaynodey(ij,i,n)
+ If i40>0 Then
+   ixy40+=1
+   townx40(i40,ixy40)=xx
+   towny40(i40,ixy40)=yy
+ EndIf
+Else
+ xx=townx40(i40,1)
+ yy=towny40(i40,1)
+ x=townx40(i40,n)
+ y=towny40(i40,n)
+EndIf  
 Var id=townwaynodeid(ij,i)
 dx=x-xx:dy=y-yy
 dr=max(0.0001,Sqr(dx*dx+dy*dy))
@@ -5484,7 +7273,7 @@ If distxy7000<d7000 Then
 If ttsetterrainij=0 And distxy7000<dr*0.5+2000 Then subsettupdate() 
 If r>1.15*30 And r<2.5*30 Then taddtree=1
 If r>2.5*30 And r<3*30 Then taddlamp=1
-If r>1.15*30 And r<2.5*30 And n>=3 Then taddnathalie=1  
+If r>1.15*0.7*30 And r<2.95*30 And n>=3 Then taddnathalie=1  
 co1=dx/dr:si1=dy/dr
 If r>0.6*30 And r<2.5*30 Then
  If r<2.0*30 Or (id And 1) Then
@@ -5502,11 +7291,11 @@ If r>0.6*30 And r<2.5*30 Then
   	If taddbarriere=1 Then taddtree=0
   EndIf 	
    If (Int(id*0.1)And 1) And r>1.15*30 Then taddtree=1
-   If taddbarriere=0 And r>0.9*30 Then
+   If taddbarriere=0 And r>0.9*30 And r<2.1*30 Then
    	If (Int(id*0.01)mod 3)>0 And dr<3000 Then taddbarriere=0:taddhaie=1 
    EndIf
    If dr<900 Then taddbarriere=0:taddhaie=0
-   If dr<400 Then taddnathalie=0
+   If dr<300 Then taddnathalie=0
  EndIf   
 EndIf
 If r>0.9*30 And r<3*30 And dr>300 Then
@@ -5522,9 +7311,12 @@ If r>0.9*30 And r<3*30 And dr>300 Then
 	EndIf
 	lat=lat0:lng=lng0
 EndIf 	
+If tdttestcross=1 And r>0.9*30 Then 
+	testcross=getcrossnearroad(x,y,co1,si1)
+EndIf
 If r>0.9*30 And r<2.5*30 And tparking=0 Then
   If tdttestcross=1 Then 
-	testcross=getcrossnearroad(x,y,co1,si1)
+	'testcross=getcrossnearroad(x,y,co1,si1)
 	If testcross=1 And dr>700 Then
 		taddcross=1
 		If toneway=1 And dr>900 Then 
@@ -5552,7 +7344,8 @@ If r>0.9*30 And r<2.5*30 And tparking=0 Then
    	If testcross2=1 And dr>700 Then taddcross2=1
    	If testcross2=2 Then taddrail2=1
 	EndIf
-  EndIf 	
+  EndIf 
+  If toneway=1 And taddcross2=1 And r<2*30 Then taddoneway2=1
 EndIf
 If r>1.15*30 And r<3*30 And dr>900 And tparking=0 and (n>7 Or dr>4000) Then
 	taddcitykm=1
@@ -5573,10 +7366,10 @@ If trail=1 Then
 	r=0.7*30
 	ktx=tx*1.5/x
 EndIf
-glenable(gl_texture_2d)
- gldisable(gl_lighting)
+ glenable(gl_texture_2d)
  'glbindtexture(gl_texture_2d,building3text)
  Var r65=50.0
+ If trunway=1 Then r65=999
  If trail=0 Then
  	If r<999+r65 Then
  		drawbuildtext=roadtext
@@ -5588,10 +7381,17 @@ glenable(gl_texture_2d)
  	h+=0.15
  EndIf
  glbindtexture(gl_texture_2d,drawbuildtext) 
- xx=townwaynodex(ij,i,1)-dmx0
- yy=townwaynodey(ij,i,1)-dmy0
- x=townwaynodex(ij,i,2)-dmx0
- y=townwaynodey(ij,i,2)-dmy0
+ If t40=0 Then
+  xx=townwaynodex(ij,i,1)-dmx0
+  yy=townwaynodey(ij,i,1)-dmy0
+  x=townwaynodex(ij,i,2)-dmx0
+  y=townwaynodey(ij,i,2)-dmy0
+ Else
+  xx=townx40(i40,1)
+  yy=towny40(i40,1)
+  x=townx40(i40,2)
+  y=towny40(i40,2)
+ EndIf 
  dx=x-xx:dy=y-yy
  dr=max(0.0001,Sqr(dx*dx+dy*dy))
  co1=r*dx/dr:si1=r*dy/dr
@@ -5621,6 +7421,1409 @@ glenable(gl_texture_2d)
  Var mx1=mx+cos1*v*7,my1=my+sin1*v*7
  Var mx2=mx+cos1*v*4,my2=my+sin1*v*4
  Var mx3=mx+cos1*v*15,my3=my+sin1*v*15
+ Dim As Single dddx0,dddy0,dddx,dddy,ddxx,ddyy,ddx,ddy
+ For j=2 To n
+   
+ 	If i40>0 And t40=0 Then
+ 		Var jj=j
+ 		If knode40(i40,jj)=jj Then
+ 	     	'If townwaynodeid(ij,i)=79152373 Then auxvar6=max(auxvar6,jj)
+      	'xx=x:yy=y
+ 	      Var xxx=gettownnodex40(i40,jj)
+ 	      Var yyy=gettownnodey40(i40,jj)
+ 	      'mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0 ',1
+   If Abs(xxx)<0.1 Or Abs(yyy)<0.1 Or Abs(xxx-x)+Abs(yyy-y)>20000 Then
+     knode40(i40,jj)=0
+  	  ixy40=0:townixy40(i40)=1
+  	  i40=0 
+   ElseIf ixy40<n40-1 Then 
+     ixy40+=1
+     townx40(i40,ixy40)=xxx
+     towny40(i40,ixy40)=yyy
+   EndIf   
+ 		EndIf
+ 	EndIf  	
+
+   Var ttunnel=0
+   If layer<-0.1 And tlayer0>-0.1 Then
+   	If (j>2 and j<n) Then
+   		ttunnel=1
+   	Else
+   		ttunnel=2
+   	EndIf
+   EndIf
+
+ 	xx=x:yy=y
+ 	If t40=0 Then
+ 	 x=townwaynodex(ij,i,j)-dmx0
+ 	 y=townwaynodey(ij,i,j)-dmy0
+    If i40>0 Then
+      ixy40+=1
+      townx40(i40,ixy40)=x
+      towny40(i40,ixy40)=y
+    EndIf
+   Else
+    x=townx40(i40,j)
+    y=towny40(i40,j)
+ 	EndIf
+ 	dx=x-xx:dy=y-yy
+   dr=max(0.1,Sqr(dx*dx+dy*dy))
+   co1=r*dx/dr:si1=r*dy/dr
+   Var xco1=dx/dr,xsi1=dy/dr
+ 	Var r60=r
+ 	If j>=3 And j<=n-1 And tlayer0>0.4 And layer>0.99 Then
+ 		If Timer>timelayer-2.5 Then
+ 		   r60+=r+r
+ 		   var dmx=mx-xx,dmy=my-yy
+   		If Abs(xsi1*dmx-xco1*dmy)<r60 Then
+   		   Var dmxx=xco1*dmx+xsi1*dmy
+   		   If dmxx>-r60 Then
+   		   	If dmxx<dr+r60 Then
+   		   	   tlayer=1
+   		   	   tlayer2=0
+   		   	   timelayer=Timer+2
+   		   	endif    
+   		   EndIf
+   		EndIf
+ 		EndIf 
+ 	EndIf 	
+ 	/'ElseIf j<=3 Or j>=n-1 And Abs(layer)>0.99 Then
+    If layer>0 And tlayer>-0.1 And tlayer2>-0.1 Then
+     If Timer>timelayer-2 Then 	
+    	r60+=r+r+r+r
+   	If j<=2 Or j>=n Then
+   		If Abs(mx+mx-x-xx)<r60 Then
+   		   If Abs(my+my-y-yy)<r60 Then
+   		   	Var ttlayer2=0.5*layer
+   		   	If Abs(ttlayer2-tlayer2)<0.7 Then
+   		   	  Var dx=xco1,dy=xsi1',dr=Sqr(dx*dx+dy*dy)
+   		   	  If j>=n Then dx=-dx:dy=-dy
+   		   	  If cos1*dx+sin1*dy>0.906 Then 	
+   		   		 timelayer=Timer+2.1
+   		   		 tlayer2=ttlayer2
+       		   	 If Abs(tlayer)<0.4 Then tlayer=layer
+       		     EndIf 	
+       		   EndIf 	
+   		   EndIf
+   		EndIf
+   	ElseIf (tlayer2)>0.4 And layer>0.4 Then  	
+   		If Abs(mx+mx-x-xx)<r60 Then
+   			If Abs(my+my-y-yy)<r60 Then
+   		   	  Var dx=xco1,dy=xsi1',dr=Sqr(dx*dx+dy*dy)
+   		   	  If j>=n-1 Then dx=-dx:dy=-dy
+   		   	  If cos1*dx+sin1*dy>0.906 Then 	
+   				     tlayer=layer:timelayer=Timer+2.1
+   				  EndIf    
+   			EndIf
+   		EndIf
+   	EndIf
+     EndIf '/ 	
+    /'Elseif layer<0 And tlayer0<0.4 And tlayer0>-0.4 And time2>timelayer+7 Then          
+   	r60*=1.4
+   	If j=2 Then
+   		If Abs(mx-x)<r60 Then
+   		   If Abs(my-y)<r60 Then
+   		   	Var ttlayer2=0.5*layer
+   		   	If Abs(ttlayer2-tlayer2)<0.7 Then
+   		   	  Var dx=x-xx,dy=y-yy,dr=Sqr(dx*dx+dy*dy)
+   		   	  If cos1*dx+sin1*dy>dr*0.7 Then 	
+   		   		 timelayer=Timer-6
+   		   		 tlayer2=ttlayer2
+       		   	 tlayer=layer
+       		     EndIf 	 
+       		   EndIf 	
+   		   EndIf
+   		EndIf
+   	EndIf 	
+   	If j=n Then
+   		If Abs(mx-xx)<r60 Then
+   		   If Abs(my-yy)<r60 Then
+   		   	Var ttlayer2=0.5*layer
+   		   	If Abs(ttlayer2-tlayer2)<0.7 Then
+   		   	  Var dx=x-xx,dy=y-yy,dr=Sqr(dx*dx+dy*dy)
+   		   	  If cos1*dx+sin1*dy>dr*0.7 Then 	
+   		   		 timelayer=Timer-6
+   		   		 tlayer2=ttlayer2
+       		   	 tlayer=layer
+       		     EndIf 	 
+       		   EndIf 	
+   		   EndIf
+   		EndIf
+   	EndIf 	
+    ElseIf layer<0 And tlayer0<-0.4 And time2>timelayer+7 Then
+    	r60*=1.4
+   	If j=2 Then
+   		If Abs(mx-xx)<r60 Then
+   		   If Abs(my-yy)<r60 Then
+   		   	Var ttlayer2=0
+   		   	'If Abs(ttlayer2-tlayer2)<0.7 Then
+   		   	  Var dx=x-xx,dy=y-yy',dr=Sqr(dx*dx+dy*dy)
+   		   	  If cos1*dx+sin1*dy<0 Then 	
+   		   		 timelayer=Timer
+   		   		 tlayer2=ttlayer2
+       		   	 tlayer=0
+       		     EndIf 	 
+       		   'EndIf 	
+   		   EndIf
+   		EndIf
+   	EndIf
+   	If j=n Then
+   		If Abs(mx-x)<r60 Then
+   		   If Abs(my-y)<r60 Then
+   		   	Var ttlayer2=0
+   		   	'If Abs(ttlayer2-tlayer2)<0.7 Then
+   		   	  Var dx=x-xx,dy=y-yy',dr=Sqr(dx*dx+dy*dy)
+   		   	  If cos1*dx+sin1*dy<0 Then 	
+   		   		 timelayer=Timer
+   		   		 tlayer2=ttlayer2
+       		   	 tlayer=0
+       		     EndIf 	 
+       		   'EndIf 	
+   		   EndIf
+   		EndIf
+   	EndIf '/
+   '  EndIf  	
+   'EndIf
+   'If plane=0 Or car>0 Then 
+    Var tnear=0,testcrossjj=0
+    Var dxxx=xx-mx,d100=30+r+r+r+dr
+    'If Abs(dxxx-distnearroad)<d100 Or Abs(dxxx+distnearroad)<d100 Then
+    If Abs(dxxx)<distnearroad+d100 Then
+   	/'If inearroad<nnearroad Then
+   		inearroad+=1
+   		xnearroad(inearroad)=xx
+   		ynearroad(inearroad)=yy
+   		rnearroad(inearroad)=r
+   		drnearroad(inearroad)=dr
+   		co1nearroad(inearroad)=co1
+   		si1nearroad(inearroad)=si1
+   	EndIf
+    Else'/ 	
+      Var dyyy=yy-my
+      'If Abs(dyyy-distnearroad)<d100 Or Abs(dyyy+distnearroad)<d100 Then
+      If Abs(dyyy)<distnearroad+d100 Then
+   	   If Abs(dxxx)<920+d100 And Abs(dyyy)<920+d100 Then'And trail=0 Then
+   	   	tnear=1
+   	   EndIf
+   	   If inearroad<nnearroad Then'And trail=0 Then
+   	   	inearroad+=1
+   		   xnearroad(inearroad)=xx
+   		   ynearroad(inearroad)=yy
+   		   If trail=0 Then
+   		   	rnearroad(inearroad)=r
+   		   Else
+   		   	rnearroad(inearroad)=9
+   		   EndIf
+   		   drnearroad(inearroad)=dr
+   		   co1nearroad(inearroad)=co1
+   		   si1nearroad(inearroad)=si1
+   		   onewaynearroad(inearroad)=toneway
+   		   namenearroad(inearroad)=townwayname(ij,i)
+   		   idnearroad(inearroad)=Str(townwaynodeid(ij,i))
+   		   inearroad2+=r*dr/(40*200)
+   		   ijnearroad(inearroad)=ij
+   		   iinearroad(inearroad)=i
+            layernearroad(inearroad)=layer
+            /'If townwaynoder(ij,i)>0.91 Then
+      	      If townwaynodeg(ij,i)<-0.5 Then
+      	      	layernearroad(inearroad)=-1'$$$
+      	      Else
+      	      	If r>40 Then
+      	      		layernearroad(inearroad)=1
+      	      	Else
+      	      		layernearroad(inearroad)=0
+      	      	EndIf
+      	      EndIf
+            Else
+            	layernearroad(inearroad)=0
+            EndIf '/
+   	   EndIf
+   	   Var dxxxx=x-mx,dyyyy=y-my
+   	   If (Abs(dxxx)<500+d100 And Abs(dyyy)<500+d100)Or(Abs(dxxxx)<500+d100 And Abs(dyyyy)<500+d100) Then
+    	    If inear0road<nnear0road Then'And trail=0 Then
+    	    	tnear=2
+   	   	inear0road+=1
+   		   Var xx0=xnear0road(inear0road)
+   		   Var yy0=ynear0road(inear0road)
+   		   xnear0road(inear0road)=xx
+   		   ynear0road(inear0road)=yy
+   		   If trail=0 Then
+   		   	rnear0road(inear0road)=r
+   		   Else
+   		   	rnear0road(inear0road)=9
+   		   EndIf
+   		   drnear0road(inear0road)=dr
+   		   co1near0road(inear0road)=co1
+   		   si1near0road(inear0road)=si1
+   		   onewaynear0road(inear0road)=toneway
+      	   layernear0road(inear0road)=layer
+      	   If Abs(xx-xx0)+Abs(yy-yy0)<1 Then
+      	   	testcrossjj=0
+      	   Else
+      	   	testcrossjj=1
+      	   EndIf
+            /'If townwaynoder(ij,i)>0.91 Then
+      	      If townwaynodeg(ij,i)<-0.5 Then
+      	      	layernear0road(inear0road)=-1
+      	      Else
+      	      	layernear0road(inear0road)=1
+      	      EndIf
+            Else
+            	layernear0road(inear0road)=0
+            EndIf '/
+    	    EndIf
+   	   EndIf
+      EndIf    
+    EndIf 
+   'EndIf
+   'If j>3 And j<n-1 And layer<0 And tlayer0>-0.1 Then'mz>mzsol0-5 Then
+   '	z0+=zlayer:z1+=zlayer
+   '	Continue For  
+   'EndIf 
+   'If j>3 And j<n-1 And layer>=0 And tlayer0<-0.1 Then'mz>mzsol0-5 Then
+   '	z0+=zlayer:z1+=zlayer
+   '	Continue For  
+   'EndIf
+   If tnear=2 Then 
+    Var dxy=(mx1-xx)*dy-(my1-yy)*dx
+    If Abs(dxy)<dr*(r+d60road) Then
+      Var dxx=(mx3-xx)*dx+(my3-yy)*dy
+      Var r05=(r*0.5+d05road)*0.75
+      If dxx>-r05*dr And dxx<(dr+r05)*(dr) Then mytestroad3=1
+      dxx=(mx2-xx)*dx+(my2-yy)*dy
+      If dxx>-r05*dr And dxx<(dr+r05)*(dr) Then
+         If Abs(dxy)<dr*r Then
+            mytestroad2=1
+         EndIf
+   		dxx=(cos1*co1+sin1*si1)*1.75/(20+r)
+   		Var kdxy=dxy/(dr*(r+d60road))
+  			dxx*=(1.5+Abs(kdxy))/(1+Abs(kdxy))
+   		If dxx>0 Then
+   			dxx=max(0.0001,dxx-dxx*0.1*kdxy)
+   		Else 
+   			dxx=min(-0.0001,dxx-dxx*0.1*kdxy)
+   			If toneway=1 Then dxx*=0.05
+   		EndIf
+   		If Abs(dxx)>Abs(dxautopilot) Then
+   		  dxautopilot=dxx
+   		  dyautopilot=dxy/(dr*(r+d60road))
+   		  If cos1*(mx1-xx)+sin1*(my1-yy)<-r Then
+   		    If cos1*(mx1-x)+sin1*(my1-y)<-r Then
+   		    	 dyautopilot=Sgn(dyautopilot)
+   		    EndIf              		  	
+   		  EndIf
+   		  co1autopilot=co1
+   		  si1autopilot=si1
+   		EndIf
+      EndIf
+    EndIf 
+   EndIf
+ 	'tx0+=tx
+ 	'tx=ktx*dr
+ 	xx0=px0:yy0=py0
+ 	xx1=px1:yy1=py1
+   x0=x-si1:y0=y+co1
+   x1=x+si1:y1=y-co1
+   If j=n Then
+   	x0+=co1:y0+=si1
+   	x1+=co1:y1+=si1
+   EndIf
+   If j<=2 Then 
+    px0=xx0:px1=xx1:py0=yy0:py1=yy1
+    'Var dist=max(Abs(px0-mx-dmx0),Abs(py0-my-dmy0))
+    if ttsetterrainij Then'dist<1900 Or dist>2100 Then'600 
+       z0=getterrainheight(px0,py0)+h 
+       z1=getterrainheight(px1,py1)+h
+    Else  
+      'z0=getterrainheight(px0,py0)+h
+      'z1=getterrainheight(px1,py1)+h
+       z0=setterrainheight((px0+px1)*0.5,(py0+py1)*0.5,xco1,xsi1,trunway)+h
+       z1=z0
+    EndIf
+    Var drr=Abs(px0-x0)+Abs(py0-y0)+Abs(px1-x1)+Abs(py1-y1)
+    'If dist>3000*kdistroad Then Continue For 
+   Else 
+     pxx0=px0:pyy0=py0:pxx1=px1:pyy1=py1
+     px0=xx-si1:py0=yy+co1
+     px1=xx+si1:py1=yy-co1
+     zz0=z0:zz1=z1
+     Var drr=Abs(px0-pxx0)+Abs(py0-pyy0)+Abs(px1-pxx1)+Abs(py1-pyy1)
+     If drr>r*0.1 Then
+     Var dist=max(Abs(xx-mx-dmx0),Abs(yy-my-dmy0))	
+     If ttsetterrainij Or layer<>0 Then'dist<1900 Or dist>2100 Then'600 
+       z0=getterrainheight(px0,py0)+h 
+       z1=getterrainheight(px1,py1)+h
+     Else  
+       z0=setterrainheight(xx,yy,xco1,xsi1,trunway)+h
+       z1=z0
+     EndIf
+     If j>=2 And j<=n Then z0+=zlayer:z1+=zlayer
+     'If dist>3000*kdistroad Then Continue for
+      'z0=min(z0,zmax):z1=min(z1,zmax)
+      tx=drr*0.5/r
+      If trail=0 Then
+      	If r<r65 Then
+      		drawbuildtext=roadtext
+      	Else
+      		drawbuildtext=roadlefttext
+      	EndIf
+      Else 
+      	drawbuildtext=railtext
+      EndIf
+      If tcolor Then glcolor3f(rcolor,gcolor,bcolor)
+      glbindtexture(gl_texture_2d,drawbuildtext)
+      testmygltexquad=0
+      If ttunnel<>1 and (ttunnel=0 or (j=2 or j=n))Then 
+   		gltexquad pxx0,pyy0,zz0, px0,py0,z0, px1,py1,z1+hr, pxx1,pyy1,zz1+hr, tx,ty,tx0	
+   	   If Abs(layer)<0.4 And tlayer0>-0.1 Then 
+   	    glcolor3f(0,1,0)
+   	    glbindtexture(gl_texture_2d,webtext)
+   	    Var t4=7.0,t8=5.0
+     	    gltexquad pxx0,pyy0,zz0, px0,py0,z0, px0-t4*xsi1,py0+t4*xco1,z0-t8, pxx0-t4*xsi1,pyy0+t4*xco1,zz0-t8, tx,0.092,tx0,0.5
+     	    gltexquad pxx1,pyy1,zz1, px1,py1,z1, px1+t4*xsi1,py1-t4*xco1,z1-t8, pxx1+t4*xsi1,pyy1-t4*xco1,zz1-t8, tx,0.092,tx0,0.5
+   	    glcolor3f(1,1,1)
+          glbindtexture(gl_texture_2d,drawbuildtext)
+         EndIf  
+      EndIf
+   	testmygltexquad=1
+   	testmygltexquad0=1
+   	tx0+=tx 
+     EndIf 	  	
+   EndIf 
+   'Var zmax=mzsol0+100*scalez
+   'z0=min(z0,zmax):z1=min(z1,zmax)
+   'If (n=2 and j=2 And dr<450) Then
+   '	layer=0
+   'EndIf
+   Var di=1,di0=1
+   If layer<>0 And j=n Or j=2 Then
+      di=max2(1,Int(dr/70)):di0=max2(1,min2(15,di/2))
+   Else 
+      di=max2(1,Int(dr/150)):di0=max2(1,min2(15,di/2))
+   EndIf
+   ddx0=(x0-px0)/di
+   ddy0=(y0-py0)/di
+   ddx1=(x1-px1)/di
+   ddy1=(y1-py1)/di
+   tx=ktx*dr/di
+   Var pxx=(px0+px1)*0.5,pyy=(py0+py1)*0.5
+   dddx0=ddxx:dddy0=ddyy
+   ddxx=(ddx0+ddx1)*0.5:ddyy=(ddy0+ddy1)*0.5
+   dddx=(ddxx-dddx0)/di0
+   dddy=(ddyy-dddy0)/di0
+   ddx=(dddx0-ddxx)*0.5
+   ddy=(dddy0-ddyy)*0.5
+   Var kdd=10.0/max(Abs(ddx)+Abs(ddy),10.0)
+   dddx*=kdd:dddy*=kdd:ddx*=kdd:ddy*=kdd
+   For jj=1 To di
+   	pxx0=px0:pyy0=py0:pxx1=px1:pyy1=py1
+   	px0+=ddx0:py0+=ddy0:px1+=ddx1:py1+=ddy1
+      zz0=z0:zz1=z1
+      pxx+=ddxx:pyy+=ddyy
+      If jj<di0 and jj>1 Then  
+        px0+=ddx:py0+=ddy:px1+=ddx:py1+=ddy
+        pxx+=ddx:pyy+=ddy
+        ddx+=dddx:ddy+=dddy
+      ElseIf jj>(di-di0) And jj<di Then  
+        px0+=ddx:py0+=ddy:px1+=ddx:py1+=ddy
+        pxx+=ddx:pyy+=ddy
+        ddx-=dddx:ddy-=dddy
+      ElseIf jj=di Then 
+        px0=x0:py0=y0:px1=x1:py1=y1
+        pxx=(x0+x1)*0.5:pyy=(y0+y1)*0.5	
+      EndIf    
+     Var dist=max(Abs(pxx-mx-dmx0),Abs(pyy-my-dmy0))
+     If ttsetterrainij Or layer<>0 Then'dist<1900 Or dist>2100 Then'600 
+      z0=getterrainheight(px0,py0)+h 
+      z1=getterrainheight(px1,py1)+h
+     Else  
+      z0=setterrainheight(pxx,pyy,xco1,xsi1,trunway)+h
+      z1=z0
+     EndIf
+     If layer<>0 Then
+     	  Var dzlayer=zlayer
+     	  if j=n Then
+     	  	If jj>=di Then dzlayer=0
+     	  EndIf  	
+     	  z0+=dzlayer:z1+=dzlayer
+     EndIf
+     'If trunway=0 and tmainway=0 Then
+     	'If dist>min(12000.0,4000+(mz-mzsol0)*2.5) Then Continue For
+     'Else 
+     	If dist>distrunway4000 Then Continue For
+     'EndIf
+      'z0=min(z0,zmax):z1=min(z1,zmax)
+      Var dz=0.0
+      Var txx=tx
+      If trail=0 Then 
+       If j=2 And jj=1 Then
+      	drawbuildtext=roadbandtext
+      	glbindtexture(gl_texture_2d,drawbuildtext)
+      	tx0=0.7:txx=1.4:dz=-0.1
+       ElseIf j=n And jj=di Then 
+      	drawbuildtext=roadbandtext
+      	glbindtexture(gl_texture_2d,drawbuildtext)
+      	tx0=0.3:txx=1.4:dz=-0.1
+       ElseIf j>2 And j<n And (jj Mod 8)=5 and r>29 Then 
+      	If toneway=0 Then
+      	  If r<r65 Then
+      		drawbuildtext=roadarrowtext
+      	  Else
+      		drawbuildtext=roadarrowlefttext
+      	  EndIf
+      	Else 
+      	  If r<r65 Then
+      		drawbuildtext=roadarrow2text
+      	  Else
+      		drawbuildtext=roadarrow2lefttext
+      	  EndIf
+      	EndIf
+      	glbindtexture(gl_texture_2d,drawbuildtext)
+      	tx0=0:txx=1.4
+       ElseIf r<r65 And drawbuildtext<>roadtext Then 	
+      	drawbuildtext=roadtext
+      	glbindtexture(gl_texture_2d,drawbuildtext)
+       ElseIf r>=r65 And drawbuildtext<>roadlefttext Then 	
+      	drawbuildtext=roadlefttext
+      	glbindtexture(gl_texture_2d,drawbuildtext)
+       EndIf 
+      EndIf
+      If tcolor Then glcolor3f(rcolor,gcolor,bcolor)
+      If tcolor And j=n And jj=di Then glcolor3f(rcolor,gcolor,1)
+      testmygltexquad=0
+   	If dr<dr30000 And ttunnel<>1 And (ttunnel=0 Or (j=2 And jj=1) Or (j=n And jj=di)) Then
+   		gltexquad pxx0,pyy0,dz+zz0, px0,py0,dz+z0, px1,py1,dz+z1+hr, pxx1,pyy1,dz+zz1+hr, txx,ty,tx0
+   	   If Abs(layer)<0.4 And tlayer0>-0.1 Then 
+     	    glcolor3f(0,1,0)
+          glbindtexture(gl_texture_2d,webtext)
+     	    Var t4=7.0,t8=5.0
+     	    gltexquad pxx0,pyy0,dz+zz0, px0,py0,dz+z0, px0-t4*xsi1,py0+t4*xco1,dz+z0-t8, pxx0-t4*xsi1,pyy0+t4*xco1,dz+zz0-t8, txx,0.092,tx0,0.5
+     	    gltexquad pxx1,pyy1,dz+zz1, px1,py1,dz+z1, px1+t4*xsi1,py1-t4*xco1,dz+z1-t8, pxx1+t4*xsi1,pyy1-t4*xco1,dz+zz1-t8, txx,0.092,tx0,0.5
+   	    glcolor3f(1,1,1)
+          glbindtexture(gl_texture_2d,drawbuildtext)
+         EndIf  
+   	EndIf
+   	testmygltexquad=1
+   	testmygltexquad0=1
+   	'gltexquad xx0,yy0,z0, x0,y0,z0, x1,y1,z, xx1,yy1,z, tx,ty,tx0
+   	'glpushmatrix
+   	'gltranslatef(px0,py0,z0)
+   	'If j=n And jj=di Then gltexsphere(40,4,4)
+   	'glpopmatrix
+   If tcolor Then glcolor3f(1,1,1)
+   If dr>dr30000 Then Continue For 
+   If layer<0 And ttunnel<>1 Then
+     If (((j=2 And jj=1)Or(j=n And jj=di))Or tlayer0<-0.4) Then
+         drawbuildtext=roadtext
+         glbindtexture(gl_texture_2d,roadtext)
+         If tlayer0>-0.4 Then glcolor3f(0.5,1,0.8)
+         Var dzz=dz:If tlayer0>-0.4 Then dzz-=86'89
+         Var test=0
+         If tlayer0<-0.4 Then test=gettestnear0road((px0*1.3-0.3*px1),(py0*1.3-0.3*py1),-1,inear0road)
+         If test=0 Then
+      	   gltexquad pxx0,pyy0,dzz+zz0, px0,py0,dzz+z0, px0,py0,dzz+z1+hr+100, pxx0,pyy0,dzz+zz1+hr+100, txx,ty,tx0
+         EndIf 
+         'If gettestnear0road((pxx1+px1)*0.5,(pyy1+py1)*0.5,-1,inear0road)=0 Then
+         	gltexquad pxx1,pyy1,dzz+zz0, px1,py1,dzz+z0, px1,py1,dzz+z1+hr+100, pxx1,pyy1,dzz+zz1+hr+100, txx,ty,tx0
+         'EndIf 
+         If j=2 And jj=1 Then
+           glcolor3f(0.3,0.4,1)
+           Var co01=co1*0.03,si01=si1*0.03
+   	     gltexquad pxx0+si01,pyy0-co01,dzz+zz0, pxx0-si01,pyy0+co01,dzz+zz0, pxx0-si01,pyy0+co01,dzz+z1+hr+100, pxx0+si01,pyy0-co01,dzz+zz1+hr+100, txx,ty,tx0
+           gltexquad pxx1-si01,pyy1+co01,dzz+zz0, pxx1+si01,pyy1-co01,dzz+z0,  pxx1+si01,pyy1-co01,dzz+z1+hr+100, pxx1-si01,pyy1+co01,dzz+zz1+hr+100, txx,ty,tx0         	
+           glcolor3f(1,1,1)
+         EndIf
+         If j=n And jj=di Then         	
+           glcolor3f(0.3,0.4,1)
+           Var co01=co1*0.03,si01=si1*0.03
+   	     gltexquad px0+si01,py0-co01,dzz+zz0, px0-si01,py0+co01,dzz+zz0, px0-si01,py0+co01,dzz+z1+hr+100, px0+si01,py0-co01,dzz+zz1+hr+100, txx,ty,tx0
+           gltexquad px1+si01,py1-co01,dzz+zz0, px1+si01,py1-co01,dzz+z0,  px1+si01,py1-co01,dzz+z1+hr+100, px1+si01,py1-co01,dzz+zz1+hr+100, txx,ty,tx0         	
+           glcolor3f(1,1,1)
+         EndIf
+         If (j=2 And jj=1)Or(j=n And jj=di) Then
+           Var dt2=2:If id=idlayer Or id=idlayer0 Then dt2=-1	
+           If Timer>timelayer-dt2 Then
+         	Var drr=r*2.8,dxx=0.0
+         	If j=2 And jj=1 Then dxx=Abs(mx+mx-pxx0-pxx1)
+         	If j=n And jj=di Then dxx=Abs(mx+mx-px0-px1)
+         	If dxx<drr Then
+         		Var dyy=0.0
+         	   If j=2 And jj=1 Then dyy=Abs(my+my-pyy0-pyy1)
+         	   If j=n And jj=di Then dyy=Abs(my+my-py0-py1)
+         		If dyy<drr Then
+         			dxx=cos1*co1+sin1*si1
+         			If tlayer0>-0.4 And tlayer0<0.4 Then
+         				If (j=2 And dxx>r*0.8)Or(j=n And dxx<-r*0.8) Then
+         					tlayer=-1:idlayer0=0:idlayer=0:timelayer=Timer+5
+         				EndIf
+         			ElseIf tlayer0<-0.4 Then 
+         				If (j=2 And dxx<-r*0.3)Or(j=n And dxx>r*0.3) Then
+         					tlayer=0:idlayer0=idlayer:idlayer=id:timelayer=Timer+1.8'+5 
+         				EndIf
+         			EndIf
+         		EndIf
+         	EndIf
+           EndIf 	
+         EndIf
+     EndIf  
+   EndIf
+   If layer>0 Then
+     If (((j=2 And jj=1)Or(j=n And jj=di))) Then
+     	     Var dt2=2:If id=idlayer Or id=idlayer0 Then dt2=-1
+           If Timer>timelayer-dt2 Then
+         	Var drr=r*4,dxx=0.0
+         	If j=2 And jj=1 Then dxx=Abs(mx+mx-pxx0-pxx1)
+         	If j=n And jj=di Then dxx=Abs(mx+mx-px0-px1)
+         	If dxx<drr Then
+         		Var dyy=0.0
+         	   If j=2 And jj=1 Then dyy=Abs(my+my-pyy0-pyy1)
+         	   If j=n And jj=di Then dyy=Abs(my+my-py0-py1)
+         		If dyy<drr Then
+         			dxx=cos1*co1+sin1*si1
+         			If tlayer0>-0.4 And tlayer0<0.4 Then
+         				If (j=2 And dxx>r*0.5)Or(j=n And dxx<-r*0.5) Then
+         					tlayer=1:idlayer0=0:timelayer=Timer+5'2.9'2.1
+         				EndIf
+         			ElseIf tlayer0>0.4 Then 
+         				If (j=2 And dxx<-r*0.4)Or(j=n And dxx>r*0.4) Then
+         					tlayer=0:idlayer0=idlayer:idlayer=id:timelayer=Timer+1.8'+2.1 
+         				EndIf
+         			EndIf
+         		EndIf
+         	EndIf
+           EndIf 	
+     EndIf  
+   EndIf
+   If testmygltexquad=1 And trail=0 And layer=0 Then 
+     If taddspot=1 And j>1 And j<max2(n,3) And (jj Mod 7)=2 Then
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+      	gldisable gl_texture_2d
+      	gldisable gl_lighting
+      	glpushmatrix
+   	   Var sc=15.0
+   	   Var px=px1+si1*0.15
+   	   Var py=py1-co1*0.15
+   	   gltranslatef(px,py,z1+sc*1.4)
+   	   'Var doo1=diro1(px-mx,py-my)
+   	   'glrotatef(doo1,0,0,1)
+   	   'glrotatef(45,1,0,0)
+   	   'glcarre2(sc,sc)
+   	   'glscalef(sc,sc,sc)
+   	   glsphere(sc,4,2)
+   	   gltranslatef(px0-px1-si1*0.3,py0-py1+co1*0.3,z0-z1)
+   	   glsphere(sc,4,2)
+   	   'glpopmatrix
+   	   'glpushmatrix
+   	   'px=px0-si1*0.15
+   	   'py=py0+co1*0.15
+   	   'gltranslatef(px,py,z0+sc*1.4)
+   	   'doo1=diro1(px-mx,py-my)
+   	   'glrotatef(doo1,0,0,1)
+   	   'glrotatef(45,1,0,0)
+   	   'glcarre2(sc,sc)
+     	   glpopmatrix 
+         glenable gl_texture_2d
+         glenable gl_lighting  
+      EndIf 
+      Var tcross=1:If testcross<>0 And ((j=2 And jj<=2)Or(j=n And jj>=di-1))Then tcross=0
+      Var testcross2=0
+      If tnear=2 And jj<100 And r>0.9*30 And tcross=1 Then 
+       If testcrossjj=0 Then
+      	 testcross2=testcrossnear0road(inear0road,jj)
+       Else
+     	    testcross2=getcrossnear0road((px1),(py1),co1,si1,30)
+     	    testcrossnear0road(inear0road,jj)=testcross2
+       EndIf 
+      EndIf
+      If testcross2<>0 Then tcross=0
+      If tcross And taddtree=1 And (jj And 2) And ((j>2 And j<n)Or(jj>1 And jj<di)) Then
+       Var dist=max(Abs(px1-mx),Abs(py1-my))
+       If dist<4000 Then 	
+         glenable gl_alpha_test
+         glalphafunc(gl_less,1/254)
+         drawbuildtext=arbretext(1)
+         glbindtexture(gl_texture_2d,arbretext(1))	
+      	glpushmatrix
+   	   Var dz1=z1+(z1-z0)*0.5*0.5
+   	   Var dzz1=zz1+(zz1-zz0)*0.5*0.5
+   	   Var xxx=(px1+pxx1+si1)*0.5,yyy=(py1+pyy1-co1)*0.5,zzz=(dz1+dzz1)*0.5-2
+   	   gltranslatef(xxx,yyy,zzz)
+   	   If taddsauterelle=1 Then addsauterelle(xxx,yyy,zzz)
+   	   Var sc=0.6
+   	   glscalef(sc,sc,sc)
+   	   glrotatef(Int(px1+pxx1)And 255,0,0,1)
+   	   drawarbre()
+     	   glpopmatrix 
+     	   gldisable gl_alpha_test
+     	   If taddshadowtree=1 And dist<1200 Then addshadowtree2(xxx,yyy,zzz,1)
+     	 EndIf        	
+      ElseIf tcross And taddlamp=1 Then
+       If (max(Abs(px1-mx),Abs(py1-my))<3000 Or (tmainway=1 And (jj Mod 3)=2))And(dist<4000 Or tdark=1) Then 
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+      	gldisable gl_texture_2d
+      	glpushmatrix
+   	   Var dz1=z1+(z1-z0)*0.5*0.15
+   	   Var dzz1=zz1+(zz1-zz0)*0.5*0.15
+   	   gltranslatef(px1+(pxx1-px1)*0.3+si1*0.15,py1+(pyy1-py1)*0.3-co1*0.15,dz1+(dzz1-dz1)*0.3)
+   	   If taddshadowpanel=1 And dist<4000 Then
+   	   	addshadowpanel(px1+(pxx1-px1)*0.3+si1*0.15,py1+(pyy1-py1)*0.3-co1*0.15,shadowlamptext,do1)
+   	   EndIf
+   	   glrotatef(do1,0,0,1)
+   	   Var sc=0.28
+   	   glscalef(sc,sc,sc)
+   	   If tdark=1 Then gldisable gl_lighting
+   	   If dist<4000 Then
+   	   	If tdark=0 Then 
+   	   		glcalllist(lamplist)
+   	   	Else
+   	   		glcalllist(lamplist2)
+   	   	EndIf
+   	   ElseIf tdark=1 Then 
+   	   	glcalllist(lamplist3)
+   	   EndIf
+   	   If tdark=1 Then glenable gl_lighting
+     	   glpopmatrix 
+         glenable gl_texture_2d  
+       EndIf
+      EndIf  
+      If tcross And taddlamp=0 And taddbarriere=1 And ((j>2 And j<n)Or(jj>1 And jj<di)) Then
+       If max(Abs(px1-mx),Abs(py1-my))<3000 Then 	
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+         glenable gl_alpha_test
+         glalphafunc(gl_less,50/254)
+         drawbuildtext=barrieretext
+         glbindtexture(gl_texture_2d,barrieretext)	
+      	glpushmatrix
+   	   Var dz1=z1+(z1-z0)*0.5
+   	   Var dzz1=zz1+(zz1-zz0)*0.5
+   	   gltranslatef(px1*0.25+pxx1*0.75+si1,py1*0.25+pyy1*0.75-co1,dz1*0.25+dzz1*0.75-1)
+   	   If taddshadowquad=1 Then
+   	   	Var xx=px1*0.25+pxx1*0.75+si1,yy=py1*0.25+pyy1*0.75-co1,zz=0'dz1*0.75+dzz1*0.25-1
+   	   	Var d25=30.0/(r)
+   	   	myshadowtext=barrieretext
+   	      addshadowquad(xx-d25*co1,yy-d25*si1,zz,xx+co1*d25,yy+si1*d25,zz,15,2)
+   	      myshadowtext=0   	   	
+   	   EndIf
+   	   glrotatef(do1+90,0,0,1)
+   	   Var dz=(zz1-z1)*0.5*60/(dr/di)
+   	   gltexcarre2dz(60,15,dz)
+   	   glrotatef(90,0,0,1)
+   	   gltranslatef(28,0,dz)
+   	   gltexcarre2(2,15,0.2)
+   	   gltranslatef(-56,0,-dz-dz)
+   	   gltexcarre2(2,15,0.2)
+     	   glpopmatrix
+      	glpushmatrix
+   	   gltranslatef(px1*0.75+pxx1*0.25+si1,py1*0.75+pyy1*0.25-co1,dz1*0.75+dzz1*0.25-1)
+   	   If taddshadowquad=1 Then
+   	   	Var xx=px1*0.75+pxx1*0.25+si1,yy=py1*0.75+pyy1*0.25-co1,zz=0'dz1*0.75+dzz1*0.25-1
+   	   	Var d25=30.0/(r)
+   	   	myshadowtext=barrieretext
+   	      addshadowquad(xx-d25*co1,yy-d25*si1,zz,xx+co1*d25,yy+si1*d25,zz,15,2)   	   	
+   	   	myshadowtext=0
+   	   EndIf
+   	   glrotatef(do1+90,0,0,1)
+   	   'Var dz=(zz1-z1)*0.5*60/(dr/di)
+   	   gltexcarre2dz(60,15,dz)
+   	   glrotatef(90,0,0,1)
+   	   gltranslatef(28,0,dz)
+   	   gltexcarre2(2,15,0.2)
+   	   gltranslatef(-56,0,-dz-dz)
+   	   gltexcarre2(2,15,0.2)
+     	   glpopmatrix 
+     	   gldisable gl_alpha_test
+     	 EndIf        	
+      ElseIf tcross And taddlamp=0 And taddhaie=1 And ((j>2 And j<n)Or(jj>1 And jj<di)) Then
+       If max(Abs(px1-mx),Abs(py1-my))<3000 Then 	
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+         glenable gl_alpha_test
+         glalphafunc(gl_less,50/254)
+         drawbuildtext=haietext
+         glbindtexture(gl_texture_2d,haietext)
+         'glcolor3f(0.5,0.8,0.5)	 
+      	glpushmatrix
+   	   Var dz1=z1+(z1-z0)*0.5
+   	   Var dzz1=zz1+(zz1-zz0)*0.5
+   	   gltranslatef(px1*0.25+pxx1*0.75+si1,py1*0.25+pyy1*0.75-co1,dz1*0.25+dzz1*0.75-1)
+   	   If taddshadowquad=1 Then
+   	   	Var xx=px1*0.25+pxx1*0.75+si1,yy=py1*0.25+pyy1*0.75-co1,zz=0'dz1*0.25+dzz1*0.75-1
+   	   	Var d25=25.0/(r)
+   	      addshadowquad(xx-d25*co1,yy-d25*si1,zz,xx+co1*d25,yy+si1*d25,zz,20,2)   	   	
+   	   EndIf
+   	   glrotatef(do1+90,0,0,1)
+   	   Var dz=(zz1-z1)*0.5*50/(dr/di)
+   	   gltexcarre2dz(50,20,dz)
+   	   gltranslatef(6,0,0)
+   	   gltexcarre2dz(50,20,dz)
+   	   glrotatef(90,0,0,1)
+   	   gltranslatef(23,3,dz)
+   	   gltexcarre2(6,20,1)
+   	   gltranslatef(-46,0,-dz-dz)
+   	   gltexcarre2(6,20,1)
+     	   glpopmatrix
+      	glpushmatrix
+   	   gltranslatef(px1*0.75+pxx1*0.25+si1,py1*0.75+pyy1*0.25-co1,dz1*0.75+dzz1*0.25-1)
+   	   If taddshadowquad=1 Then
+   	   	Var xx=px1*0.75+pxx1*0.25+si1,yy=py1*0.75+pyy1*0.25-co1,zz=0'dz1*0.75+dzz1*0.25-1
+   	   	Var d25=25.0/(r)
+   	      addshadowquad(xx-d25*co1,yy-d25*si1,zz,xx+co1*d25,yy+si1*d25,zz,20,2)   	   	
+   	   EndIf
+   	   glrotatef(do1+90,0,0,1)
+   	   'Var dz=(zz1-z1)*0.5*50/(dr/di)
+   	   gltexcarre2dz(50,20,dz)
+   	   gltranslatef(6,0,0)
+   	   gltexcarre2dz(50,20,dz)
+   	   glrotatef(90,0,0,1)
+   	   gltranslatef(23,3,dz)
+   	   gltexcarre2(6,20,1)
+   	   gltranslatef(-46,0,-dz-dz)
+   	   gltexcarre2(6,20,1)
+     	   glpopmatrix 
+     	   glcolor3f(1,1,1)
+     	   gldisable gl_alpha_test
+     	 EndIf        	
+      EndIf
+      Var testnathalie=0
+      If tcross And taddnathalie=1 Then 
+         If (j=Int(n/2) Or (j=Int(n*0.18)And j>2 And taddcitykm=0)) And jj=2 Then
+         	testnathalie=1
+         ElseIf n>12 Then 
+            If (j=Int(n*0.7)) And jj=2 Then
+         	    testnathalie=1
+            EndIf     
+         EndIf
+      EndIf 	
+      If testnathalie=1 Then  
+       Var dist=max(Abs(px1-mx),Abs(py1-my))
+       If dist<4000 Then 	
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+         glcolor3f(1,1,1)
+         gldisable gl_texture_2d	 
+      	glpushmatrix
+   	   Var dz1=z1+(z1-z0)*0.5*1.4
+   	   Var dzz1=zz1+(zz1-zz0)*0.5*1.4
+   	   gltranslatef(px1*0.5+pxx1*0.5+si1*1.4,py1*0.5+pyy1*0.5-co1*1.4,dz1*0.5+dzz1*0.5-1)
+    	   If taddshadowpanel=1 Then addshadowpanel(px1*0.5+pxx1*0.5+si1*1.4,py1*0.5+pyy1*0.5-co1*1.4,shadowcitytext)
+   	   glrotatef(do1-190,0,0,1)
+   	   glcylindre(1,1,5.3,4,2)
+   	   glcolor3f(1,1,1)
+   	   gltranslatef(0,0,5)
+   	   glenable gl_texture_2d
+   	   If dist<distnathalie Then nathaliex=px1:nathaliey=py1
+         If Int(px1/100)And 1 Then 
+          If Int(py1/100)And 1 Then
+          	if do1woman<350 And (Int(px1/40)Mod 3)=2 Then 
+               drawbuildtext=mywomantext
+               glbindtexture(gl_texture_2d,mywomantext)
+               If dist<distnathalie Then distnathalie=dist:namenathalie="christine"
+          	Else
+               drawbuildtext=marisoltext
+               glbindtexture(gl_texture_2d,marisoltext)
+               If dist<distnathalie Then distnathalie=dist:namenathalie="marisol"
+          	EndIf 	
+          Else 
+            drawbuildtext=nathalietext
+            glbindtexture(gl_texture_2d,nathalietext)
+            If dist<distnathalie Then distnathalie=dist:namenathalie="nathalie"
+          EndIf  
+         ElseIf (Int(px1/40)Mod 3)=1 Then  
+           drawbuildtext=veroniquetext
+           glbindtexture(gl_texture_2d,veroniquetext)
+           If dist<distnathalie Then distnathalie=dist:namenathalie="veronique"
+         ElseIf (Int(px1/40)And 1) Then  
+           drawbuildtext=christinetext
+           glbindtexture(gl_texture_2d,christinetext)
+           If dist<distnathalie Then distnathalie=dist:namenathalie="valerie"'"christine"
+         Else  
+           drawbuildtext=cocacolatext
+           glbindtexture(gl_texture_2d,cocacolatext)
+           If dist<distnathalie Then distnathalie=dist:namenathalie="jane"'"cocacola"
+         EndIf
+         'glbindtexture(gl_texture_2d,onewaytext)
+         'glcolor4f(0.14,0.14,0.14,1)
+         'glenable gl_alpha_test
+         'glAlphaFunc(gl_less,10/254)
+         If drawbuildtext=mywomantext Then
+         	gltexrotcarre2(35,41,do1woman)
+         Else 	
+         	gltexcarre2(35,41)
+         	If drawbuildtext=cocacolatext Then
+         		gltranslatef(-1,0,0)
+         		gltexcarre2(-35,41)
+         	EndIf
+         EndIf
+         'glcolor4f(1,1,1,1)
+         'gldisable gl_alpha_test
+         /'gltranslatef(1,-17,37)
+         Var lat0=lat,lng0=lng
+         mxytolatlng(px1+dmx0,py1+dmy0)
+         Var lati=lat,lngi=lng
+         lat=lat0:lng=lng0
+         Var jreverse=getreversei(lati,lngi) 
+         If jreverse>0 Then gldrawtext3D(Left(namereversei(jreverse),14),5)
+         '/
+         glpopmatrix
+       EndIf
+      EndIf  
+      If taddcross=1 And (j=n) And jj=di Then 
+       If max(Abs(pxx1-mx),Abs(pyy1-my))<4000 Then 	
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+         glcolor4f(1,1,1,1)
+         gldisable gl_texture_2d	 
+      	glpushmatrix
+   	   'Var dz1=z1+(z1-z0)*0.5*0.3
+   	   Var dzz1=zz1+(zz1-zz0)*0.5*0.3
+   	   gltranslatef(pxx1-co1+si1*0.3,pyy1-si1-co1*0.3,dzz1-1)
+   	   If taddshadowpanel=1 Then addshadowpanel(pxx1-co1+si1*0.3,pyy1-si1-co1*0.3,shadowcrosstext)
+   	   glrotatef(do1-190,0,0,1)
+   	   glcylindre(0.75,0.75,20.3,4,2)
+   	   glcolor4f(1,1,1,1)
+   	   gltranslatef(0,0,20)
+   	   glenable gl_texture_2d
+         drawbuildtext=crosstext
+         glbindtexture(gl_texture_2d,crosstext)
+         glenable gl_alpha_test
+         glalphafunc(gl_less,100/254)
+         gltexcarre2(15,15)
+         gltranslatef(-0.3,0,1)
+         glcolor4f(0.06,0.06,0.06,1)
+         gltexcarre2(12,12)
+         glcolor4f(1,1,1,1)
+         gldisable gl_alpha_test
+         glpopmatrix
+       EndIf
+      EndIf  
+      If taddcross2=1 And (j=2) And jj=1 Then 
+       If max(Abs(px0-mx),Abs(py0-my))<4000 Then 	
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+         glcolor4f(1,1,1,1)
+         gldisable gl_texture_2d	 
+      	glpushmatrix
+   	   Var dz1=z0+(z0-z1)*0.5*0.3
+   	   'Var dzz1=zz1+(zz1-zz0)*0.5*0.3
+   	   gltranslatef(px0+co1-si1*0.3,py0+si1+co1*0.3,dz1-1)
+   	   If taddshadowpanel=1 Then addshadowpanel(px0+co1-si1*0.3,py0+si1+co1*0.3,shadowcrosstext)
+   	   glrotatef(do1-190+180,0,0,1)
+   	   glcylindre(0.75,0.75,20.3,4,2)
+   	   glcolor4f(1,1,1,1)
+   	   gltranslatef(0,0,20)
+   	   glenable gl_texture_2d
+         drawbuildtext=crosstext
+         glbindtexture(gl_texture_2d,crosstext)
+         glenable gl_alpha_test
+         glalphafunc(gl_less,100/254)
+         gltexcarre2(15,15)
+         gltranslatef(-0.3,0,1)
+         glcolor4f(0.06,0.06,0.06,1)
+         gltexcarre2(12,12)
+         glcolor4f(1,1,1,1)
+         gldisable gl_alpha_test
+         glpopmatrix
+       EndIf
+      EndIf  
+      If taddrail=1 And (j=n) And jj=di Then 
+       If max(Abs(pxx1-mx),Abs(pyy1-my))<4000 Then 	
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+         glcolor4f(1,1,1,1)
+         gldisable gl_texture_2d	 
+      	glpushmatrix
+   	   'Var dz1=z1+(z1-z0)*0.5*0.3
+   	   Var dzz1=zz1+(zz1-zz0)*0.5*0.3
+   	   gltranslatef(pxx1-co1+si1*0.3,pyy1-si1-co1*0.3,dzz1-1)
+   	   If taddshadowpanel=1 Then addshadowpanel(pxx1-co1+si1*0.3,pyy1-si1-co1*0.3,shadowcrosstext)
+   	   glrotatef(do1-190,0,0,1)
+   	   glcylindre(0.75,0.75,20.3,4,2)
+   	   glcolor4f(1,1,1,1)
+   	   gltranslatef(0,0,20)
+   	   glenable gl_texture_2d
+         drawbuildtext=crossrailtext
+         glbindtexture(gl_texture_2d,crossrailtext)
+         glenable gl_alpha_test
+         glalphafunc(gl_less,100/254)
+         gltexcarre2(15,15)
+         gltranslatef(-0.3,0,1)
+         glcolor4f(0.06,0.06,0.06,1)
+         gltexcarre2(12,12)
+         glcolor4f(1,1,1,1)
+         gldisable gl_alpha_test
+         glpopmatrix
+       EndIf
+      EndIf  
+      If taddrail2=1 And (j=2) And jj=1 Then 
+       If max(Abs(px0-mx),Abs(py0-my))<4000 Then 	
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+         glcolor4f(1,1,1,1)
+         gldisable gl_texture_2d	 
+      	glpushmatrix
+   	   Var dz1=z0+(z0-z1)*0.5*0.3
+   	   'Var dzz1=zz1+(zz1-zz0)*0.5*0.3
+   	   gltranslatef(px0+co1-si1*0.3,py0+si1+co1*0.3,dz1-1)
+   	   If taddshadowpanel=1 Then addshadowpanel(px0+co1-si1*0.3,py0+si1+co1*0.3,shadowcrosstext)
+   	   glrotatef(do1-190+180,0,0,1)
+   	   glcylindre(0.75,0.75,20.3,4,2)
+   	   glcolor4f(1,1,1,1)
+   	   gltranslatef(0,0,20)
+   	   glenable gl_texture_2d
+         drawbuildtext=crossrailtext
+         glbindtexture(gl_texture_2d,crossrailtext)
+         glenable gl_alpha_test
+         glalphafunc(gl_less,100/254)
+         gltexcarre2(15,15)
+         gltranslatef(-0.3,0,1)
+         glcolor4f(0.06,0.06,0.06,1)
+         gltexcarre2(12,12)
+         glcolor4f(1,1,1,1)
+         gldisable gl_alpha_test
+         glpopmatrix
+       EndIf
+      EndIf  
+      If tparking=1 And ((j Mod 2)=0) And j<n And jj=1 Then 
+       If max(Abs(px0-mx),Abs(py0-my))<4000 Then 	
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+         glcolor4f(1,1,1,1)
+         gldisable gl_texture_2d	 
+      	glpushmatrix
+   	   Var dz1=z1+(z1-z0)*0.5*0.3
+   	   'Var dzz1=zz1+(zz1-zz0)*0.5*0.3
+   	   gltranslatef(px1+si1*0.3,py1-co1*0.3,dz1-1)
+   	   If taddshadowpanel=1 Then addshadowpanel(px1+si1*0.3,py1-co1*0.3,shadowparkingtext)
+   	   glrotatef(do1-190+180,0,0,1)
+   	   glcylindre(0.75,0.75,20.3,4,2)
+   	   glcolor4f(1,1,1,1)
+   	   gltranslatef(0,0,20)
+   	   glenable gl_texture_2d
+         drawbuildtext=parkingtext
+         glbindtexture(gl_texture_2d,parkingtext)
+         glenable gl_alpha_test
+         glalphafunc(gl_less,100/254)
+         gltexcarre2(15,15)
+         gltranslatef(-0.3,0,0)
+         gltexcarre2(-15,15)
+         glcolor4f(1,1,1,1)
+         gldisable gl_alpha_test
+         glpopmatrix
+       EndIf
+      EndIf  
+      If taddoneway=1 And (j=n) And jj=di Then 
+       If max(Abs(pxx0-mx),Abs(pyy0-my))<4000 Then 	
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+         glcolor4f(1,1,1,1)
+         gldisable gl_texture_2d	 
+      	glpushmatrix
+   	   'Var dz1=z1+(z1-z0)*0.5*0.3
+   	   Var dzz1=zz0+(zz0-zz1)*0.5*0.3
+   	   gltranslatef(pxx0-co1-si1*0.3,pyy0-si1+co1*0.3,dzz1-1)
+   	   If taddshadowpanel=1 Then addshadowpanel(pxx0-co1-si1*0.3,pyy0-si1+co1*0.3,shadowonewaytext)
+   	   glrotatef(do1-190+180,0,0,1)
+   	   glcylindre(0.75,0.75,20.3,4,2)
+   	   glcolor4f(1,1,1,1)
+   	   gltranslatef(0,0,20)
+   	   glenable gl_texture_2d
+         drawbuildtext=onewaytext
+         glbindtexture(gl_texture_2d,onewaytext)
+         glenable gl_alpha_test
+         glalphafunc(gl_less,100/254)
+         gltexcarre2(10.5,10.5)
+         gltranslatef(-0.3,0,1)
+         glcolor4f(0.06,0.06,0.06,1)
+         gltexcarre2(8.2,8.2)
+         glcolor4f(1,1,1,1)
+         gldisable gl_alpha_test
+         glpopmatrix
+       EndIf
+      EndIf  
+      If (taddoneway2=1) And (j=2) And jj=2 Then 
+       If max(Abs(pxx0-mx),Abs(pyy0-my))<4000 Then 	
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+         glcolor4f(1,1,1,1)
+         gldisable gl_texture_2d	 
+      	glpushmatrix
+   	   'Var dz1=z1+(z1-z0)*0.5*0.3
+   	   Var dzz1=zz0+(zz0-zz1)*0.5*0.3
+   	   gltranslatef(pxx0+co1*0.4-si1*0.3,pyy0+si1*0.4+co1*0.3,dzz1-1)
+   	   If taddshadowpanel=1 Then addshadowpanel(pxx0+co1*0.4-si1*0.3,pyy0+si1*0.4+co1*0.3,shadowparkingtext)
+   	   glrotatef(do1-190,0,0,1)
+   	   glcylindre(0.75,0.75,20.3,4,2)
+   	   glcolor4f(1,1,1,1)
+   	   gltranslatef(0,0,20)
+   	   glenable gl_texture_2d
+         drawbuildtext=oneway2text
+         glbindtexture(gl_texture_2d,oneway2text)
+         glenable gl_alpha_test
+         glalphafunc(gl_less,100/254)
+         gltexcarre2(10.5,10.5)
+         gltranslatef(-0.3,0,1)
+         glcolor4f(0.06,0.06,0.06,1)
+         gltexcarre2(8.2,8.2)
+         glcolor4f(1,1,1,1)
+         gldisable gl_alpha_test
+         glpopmatrix
+         gldisable gl_texture_2d	 
+      	glpushmatrix
+   	   'Var dz1=z1+(z1-z0)*0.5*0.3
+   	   dzz1=zz1+(zz1-zz0)*0.5*0.3
+   	   gltranslatef(pxx1+co1*0.4+si1*0.3,pyy1+si1*0.4-co1*0.3,dzz1-1)
+   	   If taddshadowpanel=1 Then addshadowpanel(pxx1+co1*0.4+si1*0.3,pyy1+si1*0.4-co1*0.3,shadowparkingtext)
+   	   glrotatef(do1-190,0,0,1)
+   	   glcylindre(0.75,0.75,20.3,4,2)
+   	   glcolor4f(1,1,1,1)
+   	   gltranslatef(0,0,20)
+   	   glenable gl_texture_2d
+         drawbuildtext=oneway2text
+         glbindtexture(gl_texture_2d,oneway2text)
+         glenable gl_alpha_test
+         glalphafunc(gl_less,100/254)
+         gltexcarre2(10.5,10.5)
+         gltranslatef(-0.3,0,1)
+         glcolor4f(0.06,0.06,0.06,1)
+         gltexcarre2(8.2,8.2)
+         glcolor4f(1,1,1,1)
+         gldisable gl_alpha_test
+         glpopmatrix
+       EndIf
+      EndIf  
+      If tcross And taddcity=1 And (j=max2(1,Int(n/3))) And jj=2 And cityname2<>"" Then 
+       If max(Abs(px1-mx),Abs(py1-my))<4000 Then 
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+         glcolor3f(1,1,1)
+         gldisable gl_texture_2d	 
+      	glpushmatrix
+   	   Var dz1=z1+(z1-z0)*0.5*1.1
+   	   Var dzz1=zz1+(zz1-zz0)*0.5*1.1
+   	   gltranslatef(px1*0.5+pxx1*0.5+co1+si1*1.1,py1*0.5+pyy1*0.5+si1-co1*1.1,dz1*0.5+dzz1*0.5-1)
+    	   If taddshadowpanel=1 Then addshadowpanel(px1*0.5+pxx1*0.5+co1+si1*1.1,py1*0.5+pyy1*0.5+si1-co1*1.1,shadowcitytext)
+   	   glrotatef(do1-190,0,0,1)
+   	   glscalef(1.2,1.2,1.2)
+   	   glcylindre(1,1,9.3,4,2)
+   	   glcolor3f(0,0,0.8)
+   	   gltranslatef(0,0,9)
+   	   Var ltext=min2(18,Len(cityname2))
+         glcarre2(36*ltext/14,8)
+         gltranslatef(1,-17*ltext/14,2)
+   	   glcolor3f(1,1,1)
+   	   glenable gl_texture_2d
+         drawbuildtext=nathalietext
+         gldrawtext3D(Left(cityname2,ltext),5)
+         glpopmatrix
+   	   glcolor3f(1,1,1)
+       EndIf
+      EndIf  
+      If tcross And taddcity=1 And (j=max2(1,Int(n/3))) And jj=2 And cityname1<>"" And toneway=0 Then 
+       If max(Abs(px0-mx),Abs(py0-my))<4000 Then 
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+         glcolor3f(1,1,1)
+         gldisable gl_texture_2d	 
+      	glpushmatrix
+   	   Var dz0=z0+(z0-z1)*0.5*1.1
+   	   Var dzz0=zz0+(zz0-zz1)*0.5*1.1
+   	   gltranslatef(px0*0.5+pxx0*0.5-si1*1.1,py0*0.5+pyy0*0.5+co1*1.1,dz0*0.5+dzz0*0.5-1)
+   	   If taddshadowpanel=1 Then addshadowpanel(px0*0.5+pxx0*0.5-si1*1.1,py0*0.5+pyy0*0.5+co1*1.1,shadowcitytext)
+   	   glrotatef(do1-190+180,0,0,1)
+   	   glscalef(1.2,1.2,1.2)
+   	   glcylindre(1,1,9.3,4,2)
+   	   glcolor3f(0,0,0.8)
+   	   gltranslatef(0,0,9)
+   	   Var ltext=min2(18,Len(cityname1))
+         glcarre2(36*ltext/14,8)
+         gltranslatef(1,-17*ltext/14,2)
+   	   glcolor3f(1,1,1)
+   	   glenable gl_texture_2d
+         drawbuildtext=nathalietext
+         gldrawtext3D(Left(cityname1,ltext),5)
+         glpopmatrix
+   	   glcolor3f(1,1,1)
+       EndIf
+      EndIf  
+      If tcross And taddcitykm=1 And (j=max2(2,Int(n/4))) And jj=2 Then
+       If max(Abs(px1-mx),Abs(py1-my))<4000 Then 
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+         glcolor3f(1,1,1)
+         gldisable gl_texture_2d	 
+      	glpushmatrix
+   	   Var dz1=z1+(z1-z0)*0.5*1.2
+   	   Var dzz1=zz1+(zz1-zz0)*0.5*1.2
+   	   gltranslatef(px1*0.5+pxx1*0.5-co1+si1*1.2,py1*0.5+pyy1*0.5-si1-co1*1.2,dz1*0.5+dzz1*0.5-1)
+    	   If taddshadowpanel=1 Then addshadowpanel(px1*0.5+pxx1*0.5-co1+si1*1.2,py1*0.5+pyy1*0.5-si1-co1*1.2,shadowcitykmtext)
+   	   glrotatef(do1-190,0,0,1)
+   	   glscalef(1.2,1.2,1.2)
+   	   glcylindre(1,1,9.3,4,2)
+   	   glcolor3f(0,0,0.8)
+   	   gltranslatef(0,0,9)
+         glcarre2(37,38)
+         gltranslatef(1,-17.5,32)
+   	   glcolor3f(1,1,1)
+   	   glenable gl_texture_2d
+         drawbuildtext=nathalietext
+         If citynamekm1<>"" Then 
+           gldrawtext3D(Left(UCase(citynamekm1),10),5)
+           Var k26=27.5+(3-Len(citykm1))*2
+           gltranslatef(0,k26,0)
+           gldrawtext3D(citykm1,5)
+           gltranslatef(0,-k26,-7)
+         EndIf 
+         If citynamekm2<>"" Then 
+           gldrawtext3D(Left(citynamekm2,10),5)
+           Var k26=27.5+(3-Len(citykm2))*2
+           gltranslatef(0,k26,0)
+           gldrawtext3D(citykm2,5)
+           gltranslatef(0,-k26,-7)
+         EndIf 
+         If citynamekm3<>"" Then 
+           gldrawtext3D(Left(citynamekm3,10),5)
+           Var k26=27.5+(3-Len(citykm3))*2
+           gltranslatef(0,k26,0)
+           gldrawtext3D(citykm3,5)
+         EndIf 
+         glpopmatrix
+   	   glcolor3f(1,1,1)
+       EndIf
+      EndIf
+   EndIf 'testmygltexquad   
+      tx0+=tx
+   Next
+ Next
+ If i40>0 And t40=0 Then
+ 	townixy40(i40)=ixy40
+ EndIf
+ txroad=tx0:If txroad>100 Then txroad-=100
+glcolor3f(1,1,1)
+glenable(gl_texture_2d)
+If tdark=1 Then
+  	glenable(gl_lighting)
+   glenable(gl_normalize)
+   tnight=0:tlight=1
+Else
+   gldisable(gl_lighting)
+   gldisable(gl_normalize)
+EndIf   
+'gldisable(gl_lighting)
+End Sub
+Sub drawroadnode_agl(ij As Integer,i As Integer)
+Dim As Single x,y,z,z1,h,tx,ty,z0,xx,yy,tx0,x0,y0,xx0,yy0,x1,y1,xx1,yy1,r,dr,dx,dy,co1,si1,ddx0,ddy0,ddx1,ddy1,hr
+dim as single co10,si10,zz0,zz1
+Dim As Integer j,n,jj,toneway=0,tparking=0,trail=0,trunway=0,taddspot=0,tmainway=0
+If taglcompile>1 Then 
+	Exit sub
+EndIf
+h=4'8
+hr=-0.2
+n=towniwaynode(ij,i)
+If n<2 Then Exit Sub 
+r=max(5.0,townwaynodeh(ij,i))
+If r>2000 Then r-=2000:tparking=1
+If r>1000 Then r-=1000:toneway=1
+If r<0.3*30 Then trail=1
+If r>4*30 then trunway=1
+If r>2.5*30 And trunway=0 Then tmainway=1 
+If tdark=1 Then
+   aglenable(gl_lighting)
+   aglenable gl_normalize
+   If trunway=1 Then taddspot=1
+Else
+   agldisable(gl_lighting)
+   'agldisable gl_normalize
+End If   
+h-=max(0.0,(2.8*30-r)*0.005)
+Var ttsetterrainij=ttsetterrain(ij,i)
+ttsetterrain(ij,i)=1 
+Var taddtree=0,taddlamp=0,taddbarriere=0,taddhaie=0,taddnathalie=0,taddcity=0,cityname1="",cityname2=""
+Var taddcitykm=0,taddcross=0,taddcross2=0,taddoneway=0,taddrail=0,taddrail2=0,taddoneway2=1
+xx=townwaynodex(ij,i,1)
+yy=townwaynodey(ij,i,1)
+x=townwaynodex(ij,i,n)
+y=townwaynodey(ij,i,n)
+Var id=townwaynodeid(ij,i)
+dx=x-xx:dy=y-yy
+dr=max(0.0001,Sqr(dx*dx+dy*dy))
+Var d7000=dr*0.5+7000
+Var distxy7000=max(Abs((xx+x)*0.5-dmx0-mx),Abs((yy+y)*0.5-dmy0-my))
+If distxy7000<d7000 Then 
+If ttsetterrainij=0 And distxy7000<dr*0.5+2000 Then subsettupdate() 
+If r>1.15*30 And r<2.5*30 Then taddtree=1
+If r>2.5*30 And r<3*30 Then taddlamp=1
+If r>1.15*0.7*30 And r<2.95*30 And n>=3 Then taddnathalie=1  
+co1=dx/dr:si1=dy/dr
+If r>0.6*30 And r<2.5*30 Then
+ If r<2.0*30 Or (id And 1) Then
+  If tdttestcross=1 then	
+   If gettestroadtree((xx+x)*0.5+si1*200,(yy+y)*0.5-co1*200)=4 Then'cowland
+   	taddtree=0:taddbarriere=1
+   ElseIf gettestroadtree(xx*0.25+x*0.75+si1*200,yy*0.25+y*0.75-co1*200)=4 Then'cowland
+   	taddtree=0:taddbarriere=1
+   ElseIf gettestroadtree(xx*0.75+x*0.25+si1*200,yy*0.75+y*0.25-co1*200)=4 Then'cowland
+   	taddtree=0:taddbarriere=1
+   EndIf
+   ttaddbarriere(ij,i)=taddbarriere
+  Else
+  	taddbarriere=ttaddbarriere(ij,i)
+  	If taddbarriere=1 Then taddtree=0
+  EndIf 	
+   If (Int(id*0.1)And 1) And r>1.15*30 Then taddtree=1
+   If taddbarriere=0 And r>0.9*30 Then
+   	If (Int(id*0.01)mod 3)>0 And dr<3000 Then taddbarriere=0:taddhaie=1 
+   EndIf
+   If dr<900 Then taddbarriere=0:taddhaie=0
+   If dr<300 Then taddnathalie=0
+ EndIf   
+EndIf
+If r>0.9*30 And r<3*30 And dr>300 Then
+	Var lat0=lat,lng0=lng
+	mxytolatlng(xx,yy)
+	Var j1=getreversei(lat,lng)
+	If j1>0 Then cityname1=namereversei(j1)
+	mxytolatlng(x,y)
+	Var j2=getreversei(lat,lng)
+	If j2>0 Then cityname2=namereversei(j2)
+	If cityname1<>cityname2 Then
+	   taddcity=1
+	EndIf
+	lat=lat0:lng=lng0
+EndIf 	
+If r>0.9*30 And r<2.5*30 And tparking=0 Then
+  If tdttestcross=1 Then 
+	testcross=getcrossnearroad(x,y,co1,si1)
+	If testcross=1 And dr>700 Then
+		taddcross=1
+		If toneway=1 And dr>900 Then 
+			taddoneway=1
+		EndIf
+	EndIf
+	If testcross=2 Then taddrail=1
+	If dr>900 Or testcross<>1 Then  
+		testcross2=getcrossnearroad(xx,yy,-co1,-si1)
+   	If testcross2=1 And dr>700 Then taddcross2=1:taddoneway2=1
+   	If testcross2=2 Then taddrail2=1
+	EndIf
+	ttestcross(ij,i)=testcross
+	ttestcross2(ij,i)=testcross2
+	ttaddoneway(ij,i)=taddoneway
+  Else
+	testcross=ttestcross(ij,i)
+	If testcross=1 And dr>700 Then
+		taddcross=1
+		taddoneway=ttaddoneway(ij,i)
+	EndIf 
+	If testcross=2 Then taddrail=1
+	If dr>900 Or testcross<>1 Then  
+    	testcross2=ttestcross2(ij,i)
+   	If testcross2=1 And dr>700 Then taddcross2=1:taddoneway2=1
+   	If testcross2=2 Then taddrail2=1
+	EndIf
+  EndIf 	
+EndIf
+If r>1.15*30 And r<3*30 And dr>900 And tparking=0 and (n>7 Or dr>4000) Then
+	taddcitykm=1
+	Var lat0=lat,lng0=lng
+	mxytolatlng(xx,yy)
+	Var latx=lat,lngx=lng
+	lat=lat0:lng=lng0
+	citynamekm1="":citynamekm2="":citynamekm3=""
+	setcitykm1(latx,lngx,co1,si1)
+	If citynamekm1="" And citynamekm2="" And citynamekm3="" Then taddcitykm=0
+EndIf
+EndIf 
+x=200:y=200
+tx=1'drawbuildtx*x/150
+ty=1'drawbuildty*(h0)/120'(z-z0)/(120)
+Var ktx=tx*0.5/x
+If trail=1 Then
+	r=0.7*30
+	ktx=tx*1.5/x
+EndIf
+ aglenable(gl_texture_2d)
+ 'glbindtexture(gl_texture_2d,building3text)
+ Var r65=50.0
+ If trunway=1 Then r65=999
+ If trail=0 Then
+ 	If r<999+r65 Then
+ 		drawbuildtext=roadtext
+ 	Else
+ 		drawbuildtext=roadlefttext
+ 	EndIf
+ Else
+ 	drawbuildtext=railtext
+ 	h+=0.15
+ EndIf
+ aglbindtexture(gl_texture_2d,drawbuildtext) 
+ xx=townwaynodex(ij,i,1)-dmx0
+ yy=townwaynodey(ij,i,1)-dmy0
+ x=townwaynodex(ij,i,2)-dmx0
+ y=townwaynodey(ij,i,2)-dmy0
+ dx=x-xx:dy=y-yy
+ dr=max(0.0001,Sqr(dx*dx+dy*dy))
+ co1=r*dx/dr:si1=r*dy/dr
+ x=xx:y=yy
+/' aglpushmatrix
+ agltranslatef(x-dmx0,y-dmy0,mzsol0)
+ aglcolor3f(1,0,0)
+ agltexsphere(60,8,8)
+ aglpopmatrix
+ aglpushmatrix
+ x=townwaynodex(ij,i,n)
+ y=townwaynodey(ij,i,n)
+ agltranslatef(x-dmx0,y-dmy0,mzsol0)
+ aglcolor3f(1,1,1)
+ agltexsphere(20,8,8)
+ aglpopmatrix 
+ 'Exit sub
+ x=xx:y=yy
+ '/
+ x0=x-si1-co1:y0=y+co1-si1
+ x1=x+si1-co1:y1=y-co1-si1
+ tx=0:tx0=txroad
+ Dim As single px0,pxx0,py0,pyy0,px1,pxx1,py1,pyy1
+ px0=x0:px1=x1:py0=y0:py1=y1
+ 'If n=nwaynode Then aglcolor3f(1,0,0) 
+ 'If n=2 Then aglcolor3f(0,1,0)
+ Var mx1=mx+cos1*v*7,my1=my+sin1*v*7
+ Var mx2=mx+cos1*v*4,my2=my+sin1*v*4
+ Var mx3=mx+cos1*v*15,my3=my+sin1*v*15
+ Dim As Single dddx0,dddy0,dddx,dddy,ddxx,ddyy,ddx,ddy
  For j=2 To n
  	xx=x:yy=y
  	x=townwaynodex(ij,i,j)-dmx0
@@ -5647,10 +8850,10 @@ glenable(gl_texture_2d)
       Var dyyy=yy-my
       'If Abs(dyyy-distnearroad)<d100 Or Abs(dyyy+distnearroad)<d100 Then
       If Abs(dyyy)<distnearroad+d100 Then
-   	   If Abs(dxxx)<920+d100 And Abs(dyyy)<920+d100 And trail=0 Then
+   	   If Abs(dxxx)<920+d100 And Abs(dyyy)<920+d100 Then'And trail=0 Then
    	   	tnear=1
    	   EndIf
-   	   If inearroad<nnearroad Then
+   	   If inearroad<nnearroad Then'And trail=0 Then
    	   	inearroad+=1
    		   xnearroad(inearroad)=xx
    		   ynearroad(inearroad)=yy
@@ -5664,10 +8867,13 @@ glenable(gl_texture_2d)
    		   si1nearroad(inearroad)=si1
    		   onewaynearroad(inearroad)=toneway
    		   namenearroad(inearroad)=townwayname(ij,i)
+   		   idnearroad(inearroad)=Str(townwaynodeid(ij,i))
    		   inearroad2+=r*dr/(40*200)
+   		   ijnearroad(inearroad)=ij
+   		   iinearroad(inearroad)=i
    	   EndIf
    	   If Abs(dxxx)<500+d100 And Abs(dyyy)<500+d100 Then
-    	    If inear0road<nnear0road Then
+    	    If inear0road<nnear0road Then'And trail=0 Then
     	    	tnear=2
    	   	inear0road+=1
    		   xnear0road(inear0road)=xx
@@ -5681,7 +8887,7 @@ glenable(gl_texture_2d)
    		   co1near0road(inear0road)=co1
    		   si1near0road(inear0road)=si1
    		   onewaynear0road(inear0road)=toneway
-    	    EndIf 
+    	    EndIf
    	   EndIf
       EndIf    
     EndIf 
@@ -5739,7 +8945,7 @@ glenable(gl_texture_2d)
     Else  
       'z0=getterrainheight(px0,py0)+h
       'z1=getterrainheight(px1,py1)+h
-       z0=setterrainheight((px0+px1)*0.5,(py0+py1)*0.5,xco1,xsi1)+h
+       z0=setterrainheight((px0+px1)*0.5,(py0+py1)*0.5,xco1,xsi1,trunway)+h
        z1=z0
     EndIf
     Var drr=Abs(px0-x0)+Abs(py0-y0)+Abs(px1-x1)+Abs(py1-y1)
@@ -5756,7 +8962,7 @@ glenable(gl_texture_2d)
        z0=getterrainheight(px0,py0)+h 
        z1=getterrainheight(px1,py1)+h
      Else  
-       z0=setterrainheight(xx,yy,xco1,xsi1)+h
+       z0=setterrainheight(xx,yy,xco1,xsi1,trunway)+h
        z1=z0
      EndIf
      'If dist>3000*kdistroad Then Continue for
@@ -5771,9 +8977,9 @@ glenable(gl_texture_2d)
       Else 
       	drawbuildtext=railtext
       EndIf
-      glbindtexture(gl_texture_2d,drawbuildtext)
+      aglbindtexture(gl_texture_2d,drawbuildtext)
       testmygltexquad=0
-   	gltexquad pxx0,pyy0,zz0, px0,py0,z0, px1,py1,z1+hr, pxx1,pyy1,zz1+hr, tx,ty,tx0
+   	agltexquad pxx0,pyy0,zz0, px0,py0,z0, px1,py1,z1+hr, pxx1,pyy1,zz1+hr, tx,ty,tx0
    	testmygltexquad=1
    	testmygltexquad0=1
    	tx0+=tx 
@@ -5781,39 +8987,62 @@ glenable(gl_texture_2d)
    EndIf 
    'Var zmax=mzsol0+100*scalez
    'z0=min(z0,zmax):z1=min(z1,zmax)
-   Var di=max2(1,Int(dr/150))
+   Var di=max2(1,Int(dr/150)),di0=max2(1,min2(15,di/2))
    ddx0=(x0-px0)/di
    ddy0=(y0-py0)/di
    ddx1=(x1-px1)/di
    ddy1=(y1-py1)/di
    tx=ktx*dr/di
    Var pxx=(px0+px1)*0.5,pyy=(py0+py1)*0.5
-   Var ddxx=(ddx0+ddx1)*0.5,ddyy=(ddy0+ddy1)*0.5
+   dddx0=ddxx:dddy0=ddyy
+   ddxx=(ddx0+ddx1)*0.5:ddyy=(ddy0+ddy1)*0.5
+   dddx=(ddxx-dddx0)/di0
+   dddy=(ddyy-dddy0)/di0
+   ddx=(dddx0-ddxx)*0.5
+   ddy=(dddy0-ddyy)*0.5
+   Var kdd=10.0/max(Abs(ddx)+Abs(ddy),10.0)
+   dddx*=kdd:dddy*=kdd:ddx*=kdd:ddy*=kdd
    For jj=1 To di
    	pxx0=px0:pyy0=py0:pxx1=px1:pyy1=py1
    	px0+=ddx0:py0+=ddy0:px1+=ddx1:py1+=ddy1
       zz0=z0:zz1=z1
       pxx+=ddxx:pyy+=ddyy
+      If jj<di0 and jj>1 Then  
+        px0+=ddx:py0+=ddy:px1+=ddx:py1+=ddy
+        pxx+=ddx:pyy+=ddy
+        ddx+=dddx:ddy+=dddy
+      ElseIf jj>(di-di0) And jj<di Then  
+        px0+=ddx:py0+=ddy:px1+=ddx:py1+=ddy
+        pxx+=ddx:pyy+=ddy
+        ddx-=dddx:ddy-=dddy
+      ElseIf jj=di Then 
+        px0=x0:py0=y0:px1=x1:py1=y1
+        pxx=(x0+x1)*0.5:pyy=(y0+y1)*0.5	
+      EndIf    
      Var dist=max(Abs(pxx-mx-dmx0),Abs(pyy-my-dmy0))
      If ttsetterrainij then'dist<1900 Or dist>2100 Then'600 
       z0=getterrainheight(px0,py0)+h 
       z1=getterrainheight(px1,py1)+h
      Else  
-      z0=setterrainheight(pxx,pyy,xco1,xsi1)+h
+      z0=setterrainheight(pxx,pyy,xco1,xsi1,trunway)+h
       z1=z0
      EndIf
-     If dist>3000 Then Continue For 
+     'If trunway=0 and tmainway=0 Then
+     	'If dist>min(12000.0,4000+(mz-mzsol0)*2.5) Then Continue For
+     'Else 
+     	If dist>distrunway4000 Then Continue For
+     'EndIf
       'z0=min(z0,zmax):z1=min(z1,zmax)
       Var dz=0.0
       Var txx=tx
       If trail=0 Then 
        If j=2 And jj=1 Then
       	drawbuildtext=roadbandtext
-      	glbindtexture(gl_texture_2d,drawbuildtext)
+      	aglbindtexture(gl_texture_2d,drawbuildtext)
       	tx0=0.7:txx=1.4:dz=-0.1
        ElseIf j=n And jj=di Then 
       	drawbuildtext=roadbandtext
-      	glbindtexture(gl_texture_2d,drawbuildtext)
+      	aglbindtexture(gl_texture_2d,drawbuildtext)
       	tx0=0.3:txx=1.4:dz=-0.1
        ElseIf j>2 And j<n And (jj Mod 8)=5 and r>29 Then 
       	If toneway=0 Then
@@ -5829,67 +9058,110 @@ glenable(gl_texture_2d)
       		drawbuildtext=roadarrow2lefttext
       	  EndIf
       	EndIf
-      	glbindtexture(gl_texture_2d,drawbuildtext)
+      	aglbindtexture(gl_texture_2d,drawbuildtext)
       	tx0=0:txx=1.4
        ElseIf r<r65 And drawbuildtext<>roadtext Then 	
       	drawbuildtext=roadtext
-      	glbindtexture(gl_texture_2d,drawbuildtext)
+      	aglbindtexture(gl_texture_2d,drawbuildtext)
        ElseIf r>=r65 And drawbuildtext<>roadlefttext Then 	
       	drawbuildtext=roadlefttext
-      	glbindtexture(gl_texture_2d,drawbuildtext)
+      	aglbindtexture(gl_texture_2d,drawbuildtext)
        EndIf 
       EndIf
       testmygltexquad=0
-   	gltexquad pxx0,pyy0,dz+zz0, px0,py0,dz+z0, px1,py1,dz+z1+hr, pxx1,pyy1,dz+zz1+hr, txx,ty,tx0
+   	agltexquad pxx0,pyy0,dz+zz0, px0,py0,dz+z0, px1,py1,dz+z1+hr, pxx1,pyy1,dz+zz1+hr, txx,ty,tx0
    	testmygltexquad=1
    	testmygltexquad0=1
    	'gltexquad xx0,yy0,z0, x0,y0,z0, x1,y1,z, xx1,yy1,z, tx,ty,tx0
    	'glpushmatrix
    	'gltranslatef(px0,py0,z0)
-   	'If j=n And jj=di Then gltexsphere(40,4,4)
+   	'If j=n And jj=di Then agltexsphere(40,4,4)
    	'glpopmatrix
    If testmygltexquad=1 And trail=0 Then 
-      If taddtree=1 And (jj And 2) And ((j>2 And j<n)Or(jj>1 And jj<di)) Then
-       Var dist=max(Abs(px1-mx),Abs(py1-my))
-       If dist<4000 Then 	
-         glenable gl_alpha_test
-         glAlphaFunc(gl_less,1/254)
-         drawbuildtext=arbretext(1)
-         glbindtexture(gl_texture_2d,arbretext(1))	
-      	glpushmatrix
-   	   Var dz1=z1+(z1-z0)*0.5*0.5
-   	   Var dzz1=zz1+(zz1-zz0)*0.5*0.5
-   	   Var xxx=(px1+pxx1+si1)*0.5,yyy=(py1+pyy1-co1)*0.5,zzz=(dz1+dzz1)*0.5-2
-   	   gltranslatef(xxx,yyy,zzz)
-   	   If taddsauterelle=1 Then addsauterelle(xxx,yyy,zzz)
-   	   Var sc=0.6
-   	   glscalef(sc,sc,sc)
-   	   glrotatef(Int(px1+pxx1)And 255,0,0,1)
-   	   drawarbre()
-     	   glpopmatrix 
-     	   gldisable gl_alpha_test
-     	   If taddshadowtree=1 And dist<1200 Then addshadowtree2(xxx,yyy,zzz,1)
-     	 EndIf        	
-      ElseIf taddlamp=1 Then
-       If max(Abs(px1-mx),Abs(py1-my))<3000 Then 
+      If taddspot=1 And j>1 And j<max2(n,3) And (jj Mod 7)=2 Then
        	Var do1=townwaynodeo1(ij,i,j)
        	If do1>990 Then
        		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
        	EndIf
-      	gldisable gl_texture_2d
-      	glpushmatrix
+      	agldisable gl_texture_2d
+      	agldisable gl_lighting
+      	aglpushmatrix
+   	   Var sc=15.0
+   	   Var px=px1+si1*0.15
+   	   Var py=py1-co1*0.15
+   	   agltranslatef(px,py,z1+sc*1.4)
+   	   'Var doo1=diro1(px-mx,py-my)
+   	   'aglrotatef(doo1,0,0,1)
+   	   'aglrotatef(45,1,0,0)
+   	   'aglcarre2(sc,sc)
+   	   'aglscalef(sc,sc,sc)
+   	   aglsphere(sc,4,2)
+   	   agltranslatef(px0-px1-si1*0.3,py0-py1+co1*0.3,z0-z1)
+   	   aglsphere(sc,4,2)
+   	   'aglpopmatrix
+   	   'aglpushmatrix
+   	   'px=px0-si1*0.15
+   	   'py=py0+co1*0.15
+   	   'agltranslatef(px,py,z0+sc*1.4)
+   	   'doo1=diro1(px-mx,py-my)
+   	   'aglrotatef(doo1,0,0,1)
+   	   'aglrotatef(45,1,0,0)
+   	   'aglcarre2(sc,sc)
+     	   aglpopmatrix 
+         aglenable gl_texture_2d
+         aglenable gl_lighting  
+      EndIf  
+      If taddtree=1 And (jj And 2) And ((j>2 And j<n)Or(jj>1 And jj<di)) Then
+       Var dist=max(Abs(px1-mx),Abs(py1-my))
+       If dist<4000 Then 	
+         aglenable gl_alpha_test
+         aglalphafunc(gl_less,1/254)
+         drawbuildtext=arbretext(1)
+         aglbindtexture(gl_texture_2d,arbretext(1))	
+      	aglpushmatrix
+   	   Var dz1=z1+(z1-z0)*0.5*0.5
+   	   Var dzz1=zz1+(zz1-zz0)*0.5*0.5
+   	   Var xxx=(px1+pxx1+si1)*0.5,yyy=(py1+pyy1-co1)*0.5,zzz=(dz1+dzz1)*0.5-2
+   	   agltranslatef(xxx,yyy,zzz)
+   	   If taddsauterelle=1 Then addsauterelle(xxx,yyy,zzz)
+   	   Var sc=0.6
+   	   aglscalef(sc,sc,sc)
+   	   aglrotatef(Int(px1+pxx1)And 255,0,0,1)
+   	   agldrawarbre()
+     	   aglpopmatrix 
+     	   agldisable gl_alpha_test
+     	   If taddshadowtree=1 And dist<1200 Then addshadowtree2(xxx,yyy,zzz,1)
+     	 EndIf        	
+      ElseIf taddlamp=1 Then
+       If (max(Abs(px1-mx),Abs(py1-my))<3000 Or (tmainway=1 And (jj Mod 3)=2))And(dist<4000 Or tdark=1) Then 
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+      	agldisable gl_texture_2d
+      	aglpushmatrix
    	   Var dz1=z1+(z1-z0)*0.5*0.15
    	   Var dzz1=zz1+(zz1-zz0)*0.5*0.15
-   	   gltranslatef(px1+(pxx1-px1)*0.3+si1*0.15,py1+(pyy1-py1)*0.3-co1*0.15,dz1+(dzz1-dz1)*0.3)
-   	   If taddshadowpanel=1 Then
+   	   agltranslatef(px1+(pxx1-px1)*0.3+si1*0.15,py1+(pyy1-py1)*0.3-co1*0.15,dz1+(dzz1-dz1)*0.3)
+   	   If taddshadowpanel=1 And dist<4000 Then
    	   	addshadowpanel(px1+(pxx1-px1)*0.3+si1*0.15,py1+(pyy1-py1)*0.3-co1*0.15,shadowlamptext,do1)
    	   EndIf
-   	   glrotatef(do1,0,0,1)
+   	   aglrotatef(do1,0,0,1)
    	   Var sc=0.28
-   	   glscalef(sc,sc,sc)
-   	   glcalllist(lamplist)
-     	   glpopmatrix 
-         glenable gl_texture_2d  
+   	   aglscalef(sc,sc,sc)
+   	   If tdark=1 Then agldisable gl_lighting
+   	   If dist<4000 Then
+   	   	If tdark=0 Then 
+   	   		aglcalllist(lamplist)
+   	   	Else
+   	   		aglcalllist(lamplist2)
+   	   	EndIf
+   	   ElseIf tdark=1 Then 
+   	   	aglcalllist(lamplist3)
+   	   EndIf
+   	   If tdark=1 Then aglenable gl_lighting
+     	   aglpopmatrix 
+         aglenable gl_texture_2d  
        EndIf
       EndIf  
       If taddlamp=0 And taddbarriere=1 And ((j>2 And j<n)Or(jj>1 And jj<di)) Then
@@ -5898,14 +9170,14 @@ glenable(gl_texture_2d)
        	If do1>990 Then
        		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
        	EndIf
-         glenable gl_alpha_test
-         glAlphaFunc(gl_less,50/254)
+         aglenable gl_alpha_test
+         aglalphafunc(gl_less,50/254)
          drawbuildtext=barrieretext
-         glbindtexture(gl_texture_2d,barrieretext)	
-      	glpushmatrix
+         aglbindtexture(gl_texture_2d,barrieretext)	
+      	aglpushmatrix
    	   Var dz1=z1+(z1-z0)*0.5
    	   Var dzz1=zz1+(zz1-zz0)*0.5
-   	   gltranslatef(px1*0.25+pxx1*0.75+si1,py1*0.25+pyy1*0.75-co1,dz1*0.25+dzz1*0.75-1)
+   	   agltranslatef(px1*0.25+pxx1*0.75+si1,py1*0.25+pyy1*0.75-co1,dz1*0.25+dzz1*0.75-1)
    	   If taddshadowquad=1 Then
    	   	Var xx=px1*0.25+pxx1*0.75+si1,yy=py1*0.25+pyy1*0.75-co1,zz=0'dz1*0.75+dzz1*0.25-1
    	   	Var d25=30.0/(r)
@@ -5913,17 +9185,17 @@ glenable(gl_texture_2d)
    	      addshadowquad(xx-d25*co1,yy-d25*si1,zz,xx+co1*d25,yy+si1*d25,zz,15,2)
    	      myshadowtext=0   	   	
    	   EndIf
-   	   glrotatef(do1+90,0,0,1)
+   	   aglrotatef(do1+90,0,0,1)
    	   Var dz=(zz1-z1)*0.5*60/(dr/di)
-   	   gltexcarre2dz(60,15,dz)
-   	   glrotatef(90,0,0,1)
-   	   gltranslatef(28,0,dz)
-   	   gltexcarre2(2,15,0.2)
-   	   gltranslatef(-56,0,-dz-dz)
-   	   gltexcarre2(2,15,0.2)
-     	   glpopmatrix
-      	glpushmatrix
-   	   gltranslatef(px1*0.75+pxx1*0.25+si1,py1*0.75+pyy1*0.25-co1,dz1*0.75+dzz1*0.25-1)
+   	   agltexcarre2dz(60,15,dz)
+   	   aglrotatef(90,0,0,1)
+   	   agltranslatef(28,0,dz)
+   	   agltexcarre2(2,15,0.2)
+   	   agltranslatef(-56,0,-dz-dz)
+   	   agltexcarre2(2,15,0.2)
+     	   aglpopmatrix
+      	aglpushmatrix
+   	   agltranslatef(px1*0.75+pxx1*0.25+si1,py1*0.75+pyy1*0.25-co1,dz1*0.75+dzz1*0.25-1)
    	   If taddshadowquad=1 Then
    	   	Var xx=px1*0.75+pxx1*0.25+si1,yy=py1*0.75+pyy1*0.25-co1,zz=0'dz1*0.75+dzz1*0.25-1
    	   	Var d25=30.0/(r)
@@ -5931,16 +9203,16 @@ glenable(gl_texture_2d)
    	      addshadowquad(xx-d25*co1,yy-d25*si1,zz,xx+co1*d25,yy+si1*d25,zz,15,2)   	   	
    	   	myshadowtext=0
    	   EndIf
-   	   glrotatef(do1+90,0,0,1)
+   	   aglrotatef(do1+90,0,0,1)
    	   'Var dz=(zz1-z1)*0.5*60/(dr/di)
-   	   gltexcarre2dz(60,15,dz)
-   	   glrotatef(90,0,0,1)
-   	   gltranslatef(28,0,dz)
-   	   gltexcarre2(2,15,0.2)
-   	   gltranslatef(-56,0,-dz-dz)
-   	   gltexcarre2(2,15,0.2)
-     	   glpopmatrix 
-     	   gldisable gl_alpha_test
+   	   agltexcarre2dz(60,15,dz)
+   	   aglrotatef(90,0,0,1)
+   	   agltranslatef(28,0,dz)
+   	   agltexcarre2(2,15,0.2)
+   	   agltranslatef(-56,0,-dz-dz)
+   	   agltexcarre2(2,15,0.2)
+     	   aglpopmatrix 
+     	   agldisable gl_alpha_test
      	 EndIf        	
       ElseIf taddlamp=0 And taddhaie=1 And ((j>2 And j<n)Or(jj>1 And jj<di)) Then
        If max(Abs(px1-mx),Abs(py1-my))<3000 Then 	
@@ -5948,106 +9220,122 @@ glenable(gl_texture_2d)
        	If do1>990 Then
        		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
        	EndIf
-         glenable gl_alpha_test
-         glAlphaFunc(gl_less,50/254)
+         aglenable gl_alpha_test
+         aglalphafunc(gl_less,50/254)
          drawbuildtext=haietext
-         glbindtexture(gl_texture_2d,haietext)
+         aglbindtexture(gl_texture_2d,haietext)
          'glcolor3f(0.5,0.8,0.5)	 
-      	glpushmatrix
+      	aglpushmatrix
    	   Var dz1=z1+(z1-z0)*0.5
    	   Var dzz1=zz1+(zz1-zz0)*0.5
-   	   gltranslatef(px1*0.25+pxx1*0.75+si1,py1*0.25+pyy1*0.75-co1,dz1*0.25+dzz1*0.75-1)
+   	   agltranslatef(px1*0.25+pxx1*0.75+si1,py1*0.25+pyy1*0.75-co1,dz1*0.25+dzz1*0.75-1)
    	   If taddshadowquad=1 Then
    	   	Var xx=px1*0.25+pxx1*0.75+si1,yy=py1*0.25+pyy1*0.75-co1,zz=0'dz1*0.25+dzz1*0.75-1
    	   	Var d25=25.0/(r)
    	      addshadowquad(xx-d25*co1,yy-d25*si1,zz,xx+co1*d25,yy+si1*d25,zz,20,2)   	   	
    	   EndIf
-   	   glrotatef(do1+90,0,0,1)
+   	   aglrotatef(do1+90,0,0,1)
    	   Var dz=(zz1-z1)*0.5*50/(dr/di)
-   	   gltexcarre2dz(50,20,dz)
-   	   gltranslatef(6,0,0)
-   	   gltexcarre2dz(50,20,dz)
-   	   glrotatef(90,0,0,1)
-   	   gltranslatef(23,3,dz)
-   	   gltexcarre2(6,20,1)
-   	   gltranslatef(-46,0,-dz-dz)
-   	   gltexcarre2(6,20,1)
-     	   glpopmatrix
-      	glpushmatrix
-   	   gltranslatef(px1*0.75+pxx1*0.25+si1,py1*0.75+pyy1*0.25-co1,dz1*0.75+dzz1*0.25-1)
+   	   agltexcarre2dz(50,20,dz)
+   	   agltranslatef(6,0,0)
+   	   agltexcarre2dz(50,20,dz)
+   	   aglrotatef(90,0,0,1)
+   	   agltranslatef(23,3,dz)
+   	   agltexcarre2(6,20,1)
+   	   agltranslatef(-46,0,-dz-dz)
+   	   agltexcarre2(6,20,1)
+     	   aglpopmatrix
+      	aglpushmatrix
+   	   agltranslatef(px1*0.75+pxx1*0.25+si1,py1*0.75+pyy1*0.25-co1,dz1*0.75+dzz1*0.25-1)
    	   If taddshadowquad=1 Then
    	   	Var xx=px1*0.75+pxx1*0.25+si1,yy=py1*0.75+pyy1*0.25-co1,zz=0'dz1*0.75+dzz1*0.25-1
    	   	Var d25=25.0/(r)
    	      addshadowquad(xx-d25*co1,yy-d25*si1,zz,xx+co1*d25,yy+si1*d25,zz,20,2)   	   	
    	   EndIf
-   	   glrotatef(do1+90,0,0,1)
+   	   aglrotatef(do1+90,0,0,1)
    	   'Var dz=(zz1-z1)*0.5*50/(dr/di)
-   	   gltexcarre2dz(50,20,dz)
-   	   gltranslatef(6,0,0)
-   	   gltexcarre2dz(50,20,dz)
-   	   glrotatef(90,0,0,1)
-   	   gltranslatef(23,3,dz)
-   	   gltexcarre2(6,20,1)
-   	   gltranslatef(-46,0,-dz-dz)
-   	   gltexcarre2(6,20,1)
-     	   glpopmatrix 
-     	   glcolor3f(1,1,1)
-     	   gldisable gl_alpha_test
+   	   agltexcarre2dz(50,20,dz)
+   	   agltranslatef(6,0,0)
+   	   agltexcarre2dz(50,20,dz)
+   	   aglrotatef(90,0,0,1)
+   	   agltranslatef(23,3,dz)
+   	   agltexcarre2(6,20,1)
+   	   agltranslatef(-46,0,-dz-dz)
+   	   agltexcarre2(6,20,1)
+     	   aglpopmatrix 
+     	   aglcolor3f(1,1,1)
+     	   agldisable gl_alpha_test
      	 EndIf        	
       EndIf
-      If taddnathalie=1 And (j=Int(n/2) Or (j=Int(n*0.18)And j>2 And taddcitykm=0)) And jj=2 Then 
+      Var testnathalie=0
+      If taddnathalie=1 Then 
+         If (j=Int(n/2) Or (j=Int(n*0.18)And j>2 And taddcitykm=0)) And jj=2 Then
+         	testnathalie=1
+         ElseIf n>12 Then 
+            If (j=Int(n*0.7)) And jj=2 Then
+         	    testnathalie=1
+            EndIf     
+         EndIf
+      EndIf 	
+      If testnathalie=1 Then  
        Var dist=max(Abs(px1-mx),Abs(py1-my))
        If dist<4000 Then 	
        	Var do1=townwaynodeo1(ij,i,j)
        	If do1>990 Then
        		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
        	EndIf
-         glcolor3f(1,1,1)
-         gldisable gl_texture_2d	 
-      	glpushmatrix
+         aglcolor3f(1,1,1)
+         agldisable gl_texture_2d	 
+      	aglpushmatrix
    	   Var dz1=z1+(z1-z0)*0.5*1.4
    	   Var dzz1=zz1+(zz1-zz0)*0.5*1.4
-   	   gltranslatef(px1*0.5+pxx1*0.5+si1*1.4,py1*0.5+pyy1*0.5-co1*1.4,dz1*0.5+dzz1*0.5-1)
+   	   agltranslatef(px1*0.5+pxx1*0.5+si1*1.4,py1*0.5+pyy1*0.5-co1*1.4,dz1*0.5+dzz1*0.5-1)
     	   If taddshadowpanel=1 Then addshadowpanel(px1*0.5+pxx1*0.5+si1*1.4,py1*0.5+pyy1*0.5-co1*1.4,shadowcitytext)
-   	   glrotatef(do1-190,0,0,1)
-   	   glcylindre(1,1,5.3,4,2)
-   	   glcolor3f(1,1,1)
-   	   gltranslatef(0,0,5)
-   	   glenable gl_texture_2d
+   	   aglrotatef(do1-190,0,0,1)
+   	   aglcylindre(1,1,5.3,4,2)
+   	   aglcolor3f(1,1,1)
+   	   agltranslatef(0,0,5)
+   	   aglenable gl_texture_2d
    	   If dist<distnathalie Then nathaliex=px1:nathaliey=py1
          If Int(px1/100)And 1 Then 
-          If Int(py1/100)And 1 And do1woman<350 Then 
-            drawbuildtext=mywomantext
-            glbindtexture(gl_texture_2d,mywomantext)
+          If Int(py1/100)And 1 Then
+          	if do1woman<350 And (Int(px1/40)Mod 3)=2 Then 
+               drawbuildtext=mywomantext
+               aglbindtexture(gl_texture_2d,mywomantext)
+          	Else
+               drawbuildtext=marisoltext
+               aglbindtexture(gl_texture_2d,marisoltext)
+               If dist<distnathalie Then distnathalie=dist:namenathalie="marisol"
+          	EndIf 	
           Else 
             drawbuildtext=nathalietext
-            glbindtexture(gl_texture_2d,nathalietext)
+            aglbindtexture(gl_texture_2d,nathalietext)
             If dist<distnathalie Then distnathalie=dist:namenathalie="nathalie"
           EndIf  
          ElseIf (Int(px1/40)Mod 3)=1 Then  
            drawbuildtext=veroniquetext
-           glbindtexture(gl_texture_2d,veroniquetext)
+           aglbindtexture(gl_texture_2d,veroniquetext)
            If dist<distnathalie Then distnathalie=dist:namenathalie="veronique"
          ElseIf (Int(px1/40)And 1) Then  
            drawbuildtext=christinetext
-           glbindtexture(gl_texture_2d,christinetext)
-           If dist<distnathalie Then distnathalie=dist:namenathalie="christine"
+           aglbindtexture(gl_texture_2d,christinetext)
+           If dist<distnathalie Then distnathalie=dist:namenathalie="valerie"'"christine"
          Else  
            drawbuildtext=cocacolatext
-           glbindtexture(gl_texture_2d,cocacolatext)
-           If dist<distnathalie Then distnathalie=dist:namenathalie="cocacola"
+           aglbindtexture(gl_texture_2d,cocacolatext)
+           If dist<distnathalie Then distnathalie=dist:namenathalie="jane"'"cocacola"
          EndIf
          'glbindtexture(gl_texture_2d,onewaytext)
          'glcolor4f(0.14,0.14,0.14,1)
          'glenable gl_alpha_test
          'glAlphaFunc(gl_less,10/254)
          If drawbuildtext=mywomantext Then
-         	gltexrotcarre2(35,41,do1woman)
+         	agltexrotcarre2(35,41,do1woman)
          Else 	
-         	gltexcarre2(35,41)
+         	agltexcarre2(35,41)
          	If drawbuildtext=cocacolatext Then
-         		gltranslatef(-1,0,0)
-         		gltexcarre2(-35,41)
+         		agltranslatef(-1,0,0)
+         		agltexcarre2(-35,41)
          	EndIf
          EndIf
          'glcolor4f(1,1,1,1)
@@ -6058,9 +9346,9 @@ glenable(gl_texture_2d)
          Var lati=lat,lngi=lng
          lat=lat0:lng=lng0
          Var jreverse=getreversei(lati,lngi) 
-         If jreverse>0 Then gldrawtext3D(Left(namereversei(jreverse),14),5)
+         If jreverse>0 Then agldrawtext3D(Left(namereversei(jreverse),14),5)
          '/
-         glpopmatrix
+         aglpopmatrix
        EndIf
       EndIf  
       If taddcross=1 And (j=n) And jj=di Then 
@@ -6069,29 +9357,29 @@ glenable(gl_texture_2d)
        	If do1>990 Then
        		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
        	EndIf
-         glcolor4f(1,1,1,1)
-         gldisable gl_texture_2d	 
-      	glpushmatrix
+         aglcolor4f(1,1,1,1)
+         agldisable gl_texture_2d	 
+      	aglpushmatrix
    	   'Var dz1=z1+(z1-z0)*0.5*0.3
    	   Var dzz1=zz1+(zz1-zz0)*0.5*0.3
-   	   gltranslatef(pxx1-co1+si1*0.3,pyy1-si1-co1*0.3,dzz1-1)
+   	   agltranslatef(pxx1-co1+si1*0.3,pyy1-si1-co1*0.3,dzz1-1)
    	   If taddshadowpanel=1 Then addshadowpanel(pxx1-co1+si1*0.3,pyy1-si1-co1*0.3,shadowcrosstext)
-   	   glrotatef(do1-190,0,0,1)
-   	   glcylindre(0.75,0.75,20.3,4,2)
-   	   glcolor4f(1,1,1,1)
-   	   gltranslatef(0,0,20)
-   	   glenable gl_texture_2d
+   	   aglrotatef(do1-190,0,0,1)
+   	   aglcylindre(0.75,0.75,20.3,4,2)
+   	   aglcolor4f(1,1,1,1)
+   	   agltranslatef(0,0,20)
+   	   aglenable gl_texture_2d
          drawbuildtext=crosstext
-         glbindtexture(gl_texture_2d,crosstext)
-         glenable gl_alpha_test
-         glAlphaFunc(gl_less,100/254)
-         gltexcarre2(15,15)
-         gltranslatef(-0.3,0,1)
-         glcolor4f(0.06,0.06,0.06,1)
-         gltexcarre2(12,12)
-         glcolor4f(1,1,1,1)
-         gldisable gl_alpha_test
-         glpopmatrix
+         aglbindtexture(gl_texture_2d,crosstext)
+         aglenable gl_alpha_test
+         aglalphafunc(gl_less,100/254)
+         agltexcarre2(15,15)
+         agltranslatef(-0.3,0,1)
+         aglcolor4f(0.06,0.06,0.06,1)
+         agltexcarre2(12,12)
+         aglcolor4f(1,1,1,1)
+         agldisable gl_alpha_test
+         aglpopmatrix
        EndIf
       EndIf  
       If taddcross2=1 And (j=2) And jj=1 Then 
@@ -6100,29 +9388,29 @@ glenable(gl_texture_2d)
        	If do1>990 Then
        		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
        	EndIf
-         glcolor4f(1,1,1,1)
-         gldisable gl_texture_2d	 
-      	glpushmatrix
+         aglcolor4f(1,1,1,1)
+         agldisable gl_texture_2d	 
+      	aglpushmatrix
    	   Var dz1=z0+(z0-z1)*0.5*0.3
    	   'Var dzz1=zz1+(zz1-zz0)*0.5*0.3
-   	   gltranslatef(px0+co1-si1*0.3,py0+si1+co1*0.3,dz1-1)
+   	   agltranslatef(px0+co1-si1*0.3,py0+si1+co1*0.3,dz1-1)
    	   If taddshadowpanel=1 Then addshadowpanel(px0+co1-si1*0.3,py0+si1+co1*0.3,shadowcrosstext)
-   	   glrotatef(do1-190+180,0,0,1)
-   	   glcylindre(0.75,0.75,20.3,4,2)
-   	   glcolor4f(1,1,1,1)
-   	   gltranslatef(0,0,20)
-   	   glenable gl_texture_2d
+   	   aglrotatef(do1-190+180,0,0,1)
+   	   aglcylindre(0.75,0.75,20.3,4,2)
+   	   aglcolor4f(1,1,1,1)
+   	   agltranslatef(0,0,20)
+   	   aglenable gl_texture_2d
          drawbuildtext=crosstext
-         glbindtexture(gl_texture_2d,crosstext)
-         glenable gl_alpha_test
-         glAlphaFunc(gl_less,100/254)
-         gltexcarre2(15,15)
-         gltranslatef(-0.3,0,1)
-         glcolor4f(0.06,0.06,0.06,1)
-         gltexcarre2(12,12)
-         glcolor4f(1,1,1,1)
-         gldisable gl_alpha_test
-         glpopmatrix
+         aglbindtexture(gl_texture_2d,crosstext)
+         aglenable gl_alpha_test
+         aglalphafunc(gl_less,100/254)
+         agltexcarre2(15,15)
+         agltranslatef(-0.3,0,1)
+         aglcolor4f(0.06,0.06,0.06,1)
+         agltexcarre2(12,12)
+         aglcolor4f(1,1,1,1)
+         agldisable gl_alpha_test
+         aglpopmatrix
        EndIf
       EndIf  
       If taddrail=1 And (j=n) And jj=di Then 
@@ -6131,29 +9419,29 @@ glenable(gl_texture_2d)
        	If do1>990 Then
        		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
        	EndIf
-         glcolor4f(1,1,1,1)
-         gldisable gl_texture_2d	 
-      	glpushmatrix
+         aglcolor4f(1,1,1,1)
+         agldisable gl_texture_2d	 
+      	aglpushmatrix
    	   'Var dz1=z1+(z1-z0)*0.5*0.3
    	   Var dzz1=zz1+(zz1-zz0)*0.5*0.3
-   	   gltranslatef(pxx1-co1+si1*0.3,pyy1-si1-co1*0.3,dzz1-1)
+   	   agltranslatef(pxx1-co1+si1*0.3,pyy1-si1-co1*0.3,dzz1-1)
    	   If taddshadowpanel=1 Then addshadowpanel(pxx1-co1+si1*0.3,pyy1-si1-co1*0.3,shadowcrosstext)
-   	   glrotatef(do1-190,0,0,1)
-   	   glcylindre(0.75,0.75,20.3,4,2)
-   	   glcolor4f(1,1,1,1)
-   	   gltranslatef(0,0,20)
-   	   glenable gl_texture_2d
+   	   aglrotatef(do1-190,0,0,1)
+   	   aglcylindre(0.75,0.75,20.3,4,2)
+   	   aglcolor4f(1,1,1,1)
+   	   agltranslatef(0,0,20)
+   	   aglenable gl_texture_2d
          drawbuildtext=crossrailtext
-         glbindtexture(gl_texture_2d,crossrailtext)
-         glenable gl_alpha_test
-         glAlphaFunc(gl_less,100/254)
-         gltexcarre2(15,15)
-         gltranslatef(-0.3,0,1)
-         glcolor4f(0.06,0.06,0.06,1)
-         gltexcarre2(12,12)
-         glcolor4f(1,1,1,1)
-         gldisable gl_alpha_test
-         glpopmatrix
+         aglbindtexture(gl_texture_2d,crossrailtext)
+         aglenable gl_alpha_test
+         aglalphafunc(gl_less,100/254)
+         agltexcarre2(15,15)
+         agltranslatef(-0.3,0,1)
+         aglcolor4f(0.06,0.06,0.06,1)
+         agltexcarre2(12,12)
+         aglcolor4f(1,1,1,1)
+         agldisable gl_alpha_test
+         aglpopmatrix
        EndIf
       EndIf  
       If taddrail2=1 And (j=2) And jj=1 Then 
@@ -6162,29 +9450,29 @@ glenable(gl_texture_2d)
        	If do1>990 Then
        		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
        	EndIf
-         glcolor4f(1,1,1,1)
-         gldisable gl_texture_2d	 
-      	glpushmatrix
+         aglcolor4f(1,1,1,1)
+         agldisable gl_texture_2d	 
+      	aglpushmatrix
    	   Var dz1=z0+(z0-z1)*0.5*0.3
    	   'Var dzz1=zz1+(zz1-zz0)*0.5*0.3
-   	   gltranslatef(px0+co1-si1*0.3,py0+si1+co1*0.3,dz1-1)
+   	   agltranslatef(px0+co1-si1*0.3,py0+si1+co1*0.3,dz1-1)
    	   If taddshadowpanel=1 Then addshadowpanel(px0+co1-si1*0.3,py0+si1+co1*0.3,shadowcrosstext)
-   	   glrotatef(do1-190+180,0,0,1)
-   	   glcylindre(0.75,0.75,20.3,4,2)
-   	   glcolor4f(1,1,1,1)
-   	   gltranslatef(0,0,20)
-   	   glenable gl_texture_2d
+   	   aglrotatef(do1-190+180,0,0,1)
+   	   aglcylindre(0.75,0.75,20.3,4,2)
+   	   aglcolor4f(1,1,1,1)
+   	   agltranslatef(0,0,20)
+   	   aglenable gl_texture_2d
          drawbuildtext=crossrailtext
-         glbindtexture(gl_texture_2d,crossrailtext)
-         glenable gl_alpha_test
-         glAlphaFunc(gl_less,100/254)
-         gltexcarre2(15,15)
-         gltranslatef(-0.3,0,1)
-         glcolor4f(0.06,0.06,0.06,1)
-         gltexcarre2(12,12)
-         glcolor4f(1,1,1,1)
-         gldisable gl_alpha_test
-         glpopmatrix
+         aglbindtexture(gl_texture_2d,crossrailtext)
+         aglenable gl_alpha_test
+         aglalphafunc(gl_less,100/254)
+         agltexcarre2(15,15)
+         agltranslatef(-0.3,0,1)
+         aglcolor4f(0.06,0.06,0.06,1)
+         agltexcarre2(12,12)
+         aglcolor4f(1,1,1,1)
+         agldisable gl_alpha_test
+         aglpopmatrix
        EndIf
       EndIf  
       If tparking=1 And ((j Mod 2)=0) And j<n And jj=1 Then 
@@ -6193,28 +9481,28 @@ glenable(gl_texture_2d)
        	If do1>990 Then
        		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
        	EndIf
-         glcolor4f(1,1,1,1)
-         gldisable gl_texture_2d	 
-      	glpushmatrix
+         aglcolor4f(1,1,1,1)
+         agldisable gl_texture_2d	 
+      	aglpushmatrix
    	   Var dz1=z1+(z1-z0)*0.5*0.3
    	   'Var dzz1=zz1+(zz1-zz0)*0.5*0.3
-   	   gltranslatef(px1+si1*0.3,py1-co1*0.3,dz1-1)
+   	   agltranslatef(px1+si1*0.3,py1-co1*0.3,dz1-1)
    	   If taddshadowpanel=1 Then addshadowpanel(px1+si1*0.3,py1-co1*0.3,shadowparkingtext)
-   	   glrotatef(do1-190+180,0,0,1)
-   	   glcylindre(0.75,0.75,20.3,4,2)
-   	   glcolor4f(1,1,1,1)
-   	   gltranslatef(0,0,20)
-   	   glenable gl_texture_2d
+   	   aglrotatef(do1-190+180,0,0,1)
+   	   aglcylindre(0.75,0.75,20.3,4,2)
+   	   aglcolor4f(1,1,1,1)
+   	   agltranslatef(0,0,20)
+   	   aglenable gl_texture_2d
          drawbuildtext=parkingtext
-         glbindtexture(gl_texture_2d,parkingtext)
-         glenable gl_alpha_test
-         glAlphaFunc(gl_less,100/254)
-         gltexcarre2(15,15)
-         gltranslatef(-0.3,0,0)
-         gltexcarre2(-15,15)
-         glcolor4f(1,1,1,1)
-         gldisable gl_alpha_test
-         glpopmatrix
+         aglbindtexture(gl_texture_2d,parkingtext)
+         aglenable gl_alpha_test
+         aglalphafunc(gl_less,100/254)
+         agltexcarre2(15,15)
+         agltranslatef(-0.3,0,0)
+         agltexcarre2(-15,15)
+         aglcolor4f(1,1,1,1)
+         agldisable gl_alpha_test
+         aglpopmatrix
        EndIf
       EndIf  
       If taddoneway=1 And (j=n) And jj=di Then 
@@ -6223,29 +9511,29 @@ glenable(gl_texture_2d)
        	If do1>990 Then
        		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
        	EndIf
-         glcolor4f(1,1,1,1)
-         gldisable gl_texture_2d	 
-      	glpushmatrix
+         aglcolor4f(1,1,1,1)
+         agldisable gl_texture_2d	 
+      	aglpushmatrix
    	   'Var dz1=z1+(z1-z0)*0.5*0.3
    	   Var dzz1=zz0+(zz0-zz1)*0.5*0.3
-   	   gltranslatef(pxx0-co1-si1*0.3,pyy0-si1+co1*0.3,dzz1-1)
+   	   agltranslatef(pxx0-co1-si1*0.3,pyy0-si1+co1*0.3,dzz1-1)
    	   If taddshadowpanel=1 Then addshadowpanel(pxx0-co1-si1*0.3,pyy0-si1+co1*0.3,shadowonewaytext)
-   	   glrotatef(do1-190+180,0,0,1)
-   	   glcylindre(0.75,0.75,20.3,4,2)
-   	   glcolor4f(1,1,1,1)
-   	   gltranslatef(0,0,20)
-   	   glenable gl_texture_2d
+   	   aglrotatef(do1-190+180,0,0,1)
+   	   aglcylindre(0.75,0.75,20.3,4,2)
+   	   aglcolor4f(1,1,1,1)
+   	   agltranslatef(0,0,20)
+   	   aglenable gl_texture_2d
          drawbuildtext=onewaytext
-         glbindtexture(gl_texture_2d,onewaytext)
-         glenable gl_alpha_test
-         glAlphaFunc(gl_less,100/254)
-         gltexcarre2(10.5,10.5)
-         gltranslatef(-0.3,0,1)
-         glcolor4f(0.06,0.06,0.06,1)
-         gltexcarre2(8.2,8.2)
-         glcolor4f(1,1,1,1)
-         gldisable gl_alpha_test
-         glpopmatrix
+         aglbindtexture(gl_texture_2d,onewaytext)
+         aglenable gl_alpha_test
+         aglalphafunc(gl_less,100/254)
+         agltexcarre2(10.5,10.5)
+         agltranslatef(-0.3,0,1)
+         aglcolor4f(0.06,0.06,0.06,1)
+         agltexcarre2(8.2,8.2)
+         aglcolor4f(1,1,1,1)
+         agldisable gl_alpha_test
+         aglpopmatrix
        EndIf
       EndIf  
       If taddcity=1 And (j=max2(1,Int(n/3))) And jj=2 And cityname2<>"" Then 
@@ -6254,27 +9542,27 @@ glenable(gl_texture_2d)
        	If do1>990 Then
        		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
        	EndIf
-         glcolor3f(1,1,1)
-         gldisable gl_texture_2d	 
-      	glpushmatrix
+         aglcolor3f(1,1,1)
+         agldisable gl_texture_2d	 
+      	aglpushmatrix
    	   Var dz1=z1+(z1-z0)*0.5*1.1
    	   Var dzz1=zz1+(zz1-zz0)*0.5*1.1
-   	   gltranslatef(px1*0.5+pxx1*0.5+co1+si1*1.1,py1*0.5+pyy1*0.5+si1-co1*1.1,dz1*0.5+dzz1*0.5-1)
+   	   agltranslatef(px1*0.5+pxx1*0.5+co1+si1*1.1,py1*0.5+pyy1*0.5+si1-co1*1.1,dz1*0.5+dzz1*0.5-1)
     	   If taddshadowpanel=1 Then addshadowpanel(px1*0.5+pxx1*0.5+co1+si1*1.1,py1*0.5+pyy1*0.5+si1-co1*1.1,shadowcitytext)
-   	   glrotatef(do1-190,0,0,1)
-   	   glscalef(1.2,1.2,1.2)
-   	   glcylindre(1,1,9.3,4,2)
-   	   glcolor3f(0,0,0.8)
-   	   gltranslatef(0,0,9)
+   	   aglrotatef(do1-190,0,0,1)
+   	   aglscalef(1.2,1.2,1.2)
+   	   aglcylindre(1,1,9.3,4,2)
+   	   aglcolor3f(0,0,0.8)
+   	   agltranslatef(0,0,9)
    	   Var ltext=min2(18,Len(cityname2))
-         glcarre2(36*ltext/14,8)
-         gltranslatef(1,-17*ltext/14,2)
-   	   glcolor3f(1,1,1)
-   	   glenable gl_texture_2d
+         aglcarre2(36*ltext/14,8)
+         agltranslatef(1,-17*ltext/14,2)
+   	   aglcolor3f(1,1,1)
+   	   aglenable gl_texture_2d
          drawbuildtext=nathalietext
-         gldrawtext3D(Left(cityname2,ltext),5)
-         glpopmatrix
-   	   glcolor3f(1,1,1)
+         agldrawtext3D(Left(cityname2,ltext),5)
+         aglpopmatrix
+   	   aglcolor3f(1,1,1)
        EndIf
       EndIf  
       If taddcity=1 And (j=max2(1,Int(n/3))) And jj=2 And cityname1<>"" And toneway=0 Then 
@@ -6283,27 +9571,27 @@ glenable(gl_texture_2d)
        	If do1>990 Then
        		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
        	EndIf
-         glcolor3f(1,1,1)
-         gldisable gl_texture_2d	 
-      	glpushmatrix
+         aglcolor3f(1,1,1)
+         agldisable gl_texture_2d	 
+      	aglpushmatrix
    	   Var dz0=z0+(z0-z1)*0.5*1.1
    	   Var dzz0=zz0+(zz0-zz1)*0.5*1.1
-   	   gltranslatef(px0*0.5+pxx0*0.5-si1*1.1,py0*0.5+pyy0*0.5+co1*1.1,dz0*0.5+dzz0*0.5-1)
+   	   agltranslatef(px0*0.5+pxx0*0.5-si1*1.1,py0*0.5+pyy0*0.5+co1*1.1,dz0*0.5+dzz0*0.5-1)
    	   If taddshadowpanel=1 Then addshadowpanel(px0*0.5+pxx0*0.5-si1*1.1,py0*0.5+pyy0*0.5+co1*1.1,shadowcitytext)
-   	   glrotatef(do1-190+180,0,0,1)
-   	   glscalef(1.2,1.2,1.2)
-   	   glcylindre(1,1,9.3,4,2)
-   	   glcolor3f(0,0,0.8)
-   	   gltranslatef(0,0,9)
+   	   aglrotatef(do1-190+180,0,0,1)
+   	   aglscalef(1.2,1.2,1.2)
+   	   aglcylindre(1,1,9.3,4,2)
+   	   aglcolor3f(0,0,0.8)
+   	   agltranslatef(0,0,9)
    	   Var ltext=min2(18,Len(cityname1))
-         glcarre2(36*ltext/14,8)
-         gltranslatef(1,-17*ltext/14,2)
-   	   glcolor3f(1,1,1)
-   	   glenable gl_texture_2d
+         aglcarre2(36*ltext/14,8)
+         agltranslatef(1,-17*ltext/14,2)
+   	   aglcolor3f(1,1,1)
+   	   aglenable gl_texture_2d
          drawbuildtext=nathalietext
-         gldrawtext3D(Left(cityname1,ltext),5)
-         glpopmatrix
-   	   glcolor3f(1,1,1)
+         agldrawtext3D(Left(cityname1,ltext),5)
+         aglpopmatrix
+   	   aglcolor3f(1,1,1)
        EndIf
       EndIf  
       If taddcitykm=1 And (j=max2(2,Int(n/4))) And jj=2 Then
@@ -6312,45 +9600,45 @@ glenable(gl_texture_2d)
        	If do1>990 Then
        		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
        	EndIf
-         glcolor3f(1,1,1)
-         gldisable gl_texture_2d	 
-      	glpushmatrix
+         aglcolor3f(1,1,1)
+         agldisable gl_texture_2d	 
+      	aglpushmatrix
    	   Var dz1=z1+(z1-z0)*0.5*1.2
    	   Var dzz1=zz1+(zz1-zz0)*0.5*1.2
-   	   gltranslatef(px1*0.5+pxx1*0.5-co1+si1*1.2,py1*0.5+pyy1*0.5-si1-co1*1.2,dz1*0.5+dzz1*0.5-1)
+   	   agltranslatef(px1*0.5+pxx1*0.5-co1+si1*1.2,py1*0.5+pyy1*0.5-si1-co1*1.2,dz1*0.5+dzz1*0.5-1)
     	   If taddshadowpanel=1 Then addshadowpanel(px1*0.5+pxx1*0.5-co1+si1*1.2,py1*0.5+pyy1*0.5-si1-co1*1.2,shadowcitykmtext)
-   	   glrotatef(do1-190,0,0,1)
-   	   glscalef(1.2,1.2,1.2)
-   	   glcylindre(1,1,9.3,4,2)
-   	   glcolor3f(0,0,0.8)
-   	   gltranslatef(0,0,9)
-         glcarre2(37,38)
-         gltranslatef(1,-17.5,32)
-   	   glcolor3f(1,1,1)
-   	   glenable gl_texture_2d
+   	   aglrotatef(do1-190,0,0,1)
+   	   aglscalef(1.2,1.2,1.2)
+   	   aglcylindre(1,1,9.3,4,2)
+   	   aglcolor3f(0,0,0.8)
+   	   agltranslatef(0,0,9)
+         aglcarre2(37,38)
+         agltranslatef(1,-17.5,32)
+   	   aglcolor3f(1,1,1)
+   	   aglenable gl_texture_2d
          drawbuildtext=nathalietext
          If citynamekm1<>"" Then 
-           gldrawtext3D(Left(UCase(citynamekm1),10),5)
+           agldrawtext3D(Left(UCase(citynamekm1),10),5)
            Var k26=27.5+(3-Len(citykm1))*2
-           gltranslatef(0,k26,0)
-           gldrawtext3D(citykm1,5)
-           gltranslatef(0,-k26,-7)
+           agltranslatef(0,k26,0)
+           agldrawtext3D(citykm1,5)
+           agltranslatef(0,-k26,-7)
          EndIf 
          If citynamekm2<>"" Then 
-           gldrawtext3D(Left(citynamekm2,10),5)
+           agldrawtext3D(Left(citynamekm2,10),5)
            Var k26=27.5+(3-Len(citykm2))*2
-           gltranslatef(0,k26,0)
-           gldrawtext3D(citykm2,5)
-           gltranslatef(0,-k26,-7)
+           agltranslatef(0,k26,0)
+           agldrawtext3D(citykm2,5)
+           agltranslatef(0,-k26,-7)
          EndIf 
          If citynamekm3<>"" Then 
-           gldrawtext3D(Left(citynamekm3,10),5)
+           agldrawtext3D(Left(citynamekm3,10),5)
            Var k26=27.5+(3-Len(citykm3))*2
-           gltranslatef(0,k26,0)
-           gldrawtext3D(citykm3,5)
+           agltranslatef(0,k26,0)
+           agldrawtext3D(citykm3,5)
          EndIf 
-         glpopmatrix
-   	   glcolor3f(1,1,1)
+         aglpopmatrix
+   	   aglcolor3f(1,1,1)
        EndIf
       EndIf
    EndIf 'testmygltexquad   
@@ -6358,12 +9646,22 @@ glenable(gl_texture_2d)
    Next
  Next
  txroad=tx0:If txroad>100 Then txroad-=100
-glcolor3f(1,1,1)
-glenable(gl_texture_2d)
+aglcolor3f(1,1,1)
+aglenable(gl_texture_2d)
+If tdark=1 Then
+  	aglenable(gl_lighting)
+   aglenable(gl_normalize)
+   tnight=0:tlight=1
+Else
+   agldisable(gl_lighting)
+   agldisable(gl_normalize)
+EndIf   
+'agldisable(gl_lighting)
 End Sub
 Declare Sub drawwaynodebuild(ij As Integer,i As Integer)
 Sub drawtownnode(ij As Integer)
 Dim As Integer i,j,k,n,p
+'If taglcompile<>1 Then Exit sub
  If townnwaynode(ij)>0 Then
  	If testtownshow=0 And scaleview>0.9 Then
  			If townshow(ij)=0 Then Exit Sub
@@ -6374,9 +9672,13 @@ Dim As Integer i,j,k,n,p
  	ElseIf testtownshow2=1 And scaleview<0.9 Then
  			townshow2(ij)=0 			
  	EndIf
+
+
  	txroad=0
  	Var kh0=0.9
  	getlocktown2(ij)
+ 	nshowtown+=1
+ 	'If taglcompile2<>2 Then testtownshow=0:testtownshow2=0
  	For i=1 To townnwaynode(ij)
  		Var testshow=0
       If testtownshow=0 And scaleview>0.9 Then
@@ -6399,40 +9701,108 @@ Dim As Integer i,j,k,n,p
          EndIf 
       EndIf
       
-   If testshow=0 Then    
+  	nshowbuild+=1
+   If testshow=0 Then  
       testmygltexquad0=0
+      'If InStr(LCase(townwayname(ij,i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
  		If towniwaynode(ij,i)>1 And townwaynodeid(ij,i)<>0 Then
- 		  'Var d50000=50000.0:If plane=0 Or car>0 Then d50000=35000
- 		  Var x=townwaynodex(ij,i,1)-dmx0
- 		  'If Abs(x-mx)>d50000 Then Exit Sub
- 		  Var y=townwaynodey(ij,i,1)-dmy0
- 		  'If Abs(y-my)>d50000 Then Exit Sub 
- 		  Var z=mz'townwaynodez(ij,i)
+        Var waynodebuild=townwaynodebuild(ij,i)
+        'If waynodebuild=100 And taglcompile<>1 And taglcompile2<>1 Then Continue For   	
+        'If waynodebuild<>100 And taglcompile2<>1 And taglcompile2<>1 Then Continue For   	
+        'If waynodebuild<>100 and (sizei>300 or sizei<0.01) Then
+        '	  If testnearairport(x,y,18000)=1 Then
+        '	  	  'kdistterrain=kdistterrainsave*5
+        '	  EndIf
+        'EndIf
+        Var hh=townwaynodeh(ij,i)
+        If hh>4000 And waynodebuild=4 Then
+        	  Var hmin=Int(hh/4000):hh-=4000*hmin
+        EndIf
+        If waynodebuild<>100 Then 
+         Var hhh=0.0
+         If mz>mzsol00+7000 then hhh=200
+         If mz>mzsol00+9500 Then hhh=300
+         If hh<hhh Then Continue For  
+ 		  EndIf 
+ 		  Var d50000=50000.0:If plane=0 Or car>0 Then d50000=35000
+ 		  Var sizei=townwaynodesize(ij,i)
+ 		  If sizei>320 Then
+ 		  	If hh>99 And sizei<3900*(100+hh)/140 And waynodebuild<>100 Then d50000+=35*sizei
+ 		  ElseIf sizei<0.01 Then 
+ 		  	If hh>99 And waynodebuild<>100 Then d50000+=35000
+ 		  EndIf
+        'If InStr(townwayname(ij,i),"ge Henri")>0 Then auxvar=sizei+0.1:auxtest=0.8
+ 		  If plane>0 And car=0 Then
+ 		  	  d50000*=kdistterrain*max(2.0,200/(10+Abs(vkm)))
+ 		  Else 
+ 		  	  d50000*=kdistterrain*max(1.0,90/(15+Abs(vkm)))
+ 		  EndIf
+ 		  Var hh1=hh-(avgbuildh0)*2.5
+ 		  If hh1>500 And waynodebuild<>100 Then
+ 		  	  If hh1>1000 Then
+ 		  	  	 d50000+=min(70000.0,40*hh1)
+ 		  	  Else
+ 		  	  	 d50000+=10*hh1
+ 		  	  EndIf
+ 		  EndIf
+ 		  Var x=townwaynodex(ij,i,1)
+ 		  If Abs(x-mx)>d50000 And waynodebuild<>100 Then Continue For 
+ 		  Var y=townwaynodey(ij,i,1)
+ 		  If Abs(y-my)>d50000 And waynodebuild<>100  Then Continue For
+ 		  Var z=townwaynodez(ij,i)
  		  If z<-99990 Or tupdatetown=1 Then
- 		  	z=getterrainheight(x,y):townwaynodez(ij,i)=z:If z<-99990 Then Continue For 
+ 		  	z=getterrainheight(x,y):townwaynodez(ij,i)=z:If z<-99990 And waynodebuild<>100 Then Continue For 
  		  EndIf
  		  townzsol=z
  		  Var kxx=14000.0
  		  kxx*=2*kdistterrain
-        Var waynodebuild=townwaynodebuild(ij,i) 
-        Var troad=0
-        If waynodebuild=100 Then kxx+=2000:troad=1
+        Var troad=0,trunway=0,tparking=0,toneway=0,trail=0,r=1.0
+        If waynodebuild=100 Then
+        	  kxx+=2000:troad=1
+        	  r=max(5.0,townwaynodeh(ij,i))
+           If r>2000 Then r-=2000:tparking=1
+           If r>1000 Then r-=1000:toneway=1
+           If r<0.3*30 Then trail=1
+           If r>2.5*30 then trunway=1
+           Var hhh=0.0
+           If mz>mzsol00+7000 then hhh=1.7*30
+           if mz>mzsol00+8500 then hhh=2.4*30
+           If mz>mzsol00+10000 Then hhh=2.7*30
+           if r<hhh then continue for 
+        EndIf
  		  If plane=0 Or car>0 Then kxx*=0.7'0.5
- 		  Var sizei=townwaynodesize(ij,i)
- 		  If sizei<0.001 And troad=0 Then
- 		  	  Var xmin=x,ymin=y,xmax=x,ymax=y
+ 		  If (sizei<0.5 Or townwaynodesize40(ij,i)<0.5) And troad=0 Then
+ 		  	  Var xmin=x,ymin=y,xxmax=x,yymax=y
  		  	  For j=2 To towniwaynode(ij,i)
  		  	  	xmin=min(xmin,townwaynodex(ij,i,j))
  		  	  	ymin=min(ymin,townwaynodey(ij,i,j))
- 		  	  	xmax=max(xmax,townwaynodex(ij,i,j))
- 		  	  	ymax=max(ymax,townwaynodey(ij,i,j))
+ 		  	  	xxmax=max(xxmax,townwaynodex(ij,i,j))
+ 		  	  	yymax=max(yymax,townwaynodey(ij,i,j))
  		  	  Next
- 		  	  sizei=max(xmax-xmin,ymax-ymin)*1.4
+ 		  	  'sizei=max(xmax-xmin,ymax-ymin)*1.4
+ 		  	  sizei=(xxmax-xmin+yymax-ymin)*0.7
+	  	     Var sizei40=getsizei40(ij,i)
+ 		  	  If sizei40>(sizei+sizei+sizei)Then sizei40=599999
+ 		  	  sizei=max(sizei,sizei40)  
  		  	  townwaynodesize(ij,i)=sizei
- 		  ElseIf troad>0 Then 
+ 		  	  townwaynodesize40(ij,i)=1
+           'If InStr(townwayname(ij,i),"ge Henri")>0 Then auxvar2=sizei+0.1:auxtest=0.8
+ 		  ElseIf troad=1 Then 
  		  	  sizei=0	  
  		  EndIf
- 		  If sizei>9900 Then Continue For 
+        'If InStr(townwayname(ij,i)," Henri")>0 And troad=0 Then auxvar=sizei+0.11:auxtest=0.8
+ 		  If sizei>30000 Then'15000 Then
+           'If InStr(townwayname(ij,i)," Henri")>0 Then auxvar=sizei+0.1:auxtest=0.8
+ 		  	  townwaynodeid(ij,i)=0
+ 		  	  towniwaynode(ij,i)=0
+ 		  	  townwaynodesize(ij,i)=0
+           Var i40=0
+           If kmxlat>10 Then i40=towni40(ij,i)
+           If i40>0 Then
+              resettown40i(i40) 	
+ 		  	  EndIf 
+ 		  	  Continue For 
+ 		  EndIf
  		  Var d7000=distradar
         If Abs(x-mx)<d7000 Then
         	If Abs(y-my)<d7000 And plane>0 And car>0 And scaleview>0.9 Then
@@ -6445,7 +9815,9 @@ Dim As Integer i,j,k,n,p
         EndIf
  		  Var test=0
  		  rotavion(x-mx,y-my,(z-mz)*0.5)
- 		  If x2>(0.9*Abs(y2)-kxx-sizei) And troad=0 Then
+        'If InStr(townwayname(ij,i)," Henri")>0 And troad=0 Then auxvar+=1:auxtest=0.8
+ 		  'If x2>(0.9*Abs(y2)-(kxx+sizei+sizei)) And troad=0 Then
+ 		  If x2>(0.9*Abs(y2)-(kxx*0.1+sizei+sizei)) And troad=0 Then
  		  	  test=1
  		  EndIf 	  
  		  If troad=1 Then 'road
@@ -6459,10 +9831,27 @@ Dim As Integer i,j,k,n,p
  		      'If dk>=1 Then
  		      	Var dx=(x-xx)/dk
  		     	  	Var dy=(y-yy)/dk
+ 		     	  	Var d4000=4000*kdistroad
+ 		     	  	If trunway=1 Then
+ 		     	  		If mz>mzsol0+200 Then
+ 		     	  			If r<4*30 Then
+ 		     	  				d4000*=4
+ 		     	  			Else
+ 		     	  				d4000*=8
+ 		     	  			EndIf
+ 		     	  		Else
+ 		     	  			d4000*=2
+ 		     	  		EndIf
+ 		     	  		distrunway4000=d4000
+ 		     	  	Else
+ 		     	  		d4000=min(10000.0,d4000+(mz-mzsol0)*2)
+ 		     	  		distrunway4000=d4000
+ 		     	  	EndIf
+ 		     	  	'auxvar=distrunway4000:auxtest=0.3
  		     	  	For k=1 To dk
  		     	  	 xx+=dx:yy+=dy	
  		          rotavion(xx-mx,yy-my,0)
- 		     	    If x2<4000*kdistroad Then'4000
+ 		     	    If x2<d4000 Then'4000
  		            If x2*kdistroad>(0.9*Abs(y2)-kxx) Then
  		     	        x=xx:y=yy
  		     	        test=1:Exit For,For
@@ -6480,20 +9869,23 @@ Dim As Integer i,j,k,n,p
  		  	  	Continue For'Exit Sub 
  		  	  EndIf
  		  EndIf
+        'If InStr(townwayname(ij,i)," Henri")>0 and troad=0 Then auxvar+=1:auxtest=0.8
  		  'If x2<(0.9*Abs(y2)-kxx*0.5) Then Continue For 
         Var h=700.0
         If troad=0 Then
- 		     h=max(20.0,townwaynodeh(ij,i))
+ 		     h=hh'max(20.0,townwaynodeh(ij,i))
            h=setbuildh(h)
         EndIf 
- 		  thmin=0:If waynodebuild=4 Then h=400:thmin=1
+ 		  thmin=0:If waynodebuild=4 Then thmin=1':h=400
         Var kh=kh0:If h>600 And thmin=0 Then kh=2
         If plane=0 Or car>0 Then kh*=0.31*scaleview
         'h*=scalexyh
  		  Var dyy=0.9*Abs(y2)-h*1.4-1400'-400-1800 		  
+        'If InStr(townwayname(ij,i)," Henri")>0 Then auxvar=sizei:auxtest=0.8
         'If (x2>dyy And z>waterz0 And h>1)Or mapdisplay>=4 Then
-        If (x2>dyy-sizei And h>1)Or mapdisplay>=4 Or troad=1 Then
-          If troad=0 And sizei<3000 Then 
+        If (x2>dyy-sizei-sizei And h>1)Or mapdisplay>=4 Or troad=1 Then
+          'If InStr(townwayname(ij,i)," Henri")>0 And troad=0 Then auxvar+=1:auxtest=0.8
+          If troad=0 And sizei<2000 And hh1<1000 Then 
            Var dxx=dxterrain*scalex*kdistterrain*kh*max(1.0,h/450)
            Var i3=0':If nnodes<300 Then i3=0
            If x2>(dxx+9000*scaleview) Then i+=i3:Continue For'Exit Sub 
@@ -6508,6 +9900,7 @@ Dim As Integer i,j,k,n,p
            If Abs(x-mx)>dxx+2500.0 Then Continue For'30000 Then
            If Abs(y-my)>dxx+2500.0 Then Continue For'30000 Then
           EndIf
+          'If InStr(townwayname(ij,i)," Henri")>0 And troad=0 Then auxvar+=1:auxtest=0.8
           waynodebuildx(ij,i)=x
           waynodebuildy(ij,i)=y
           waynodebuildh(ij,i)=h
@@ -6540,7 +9933,7 @@ Dim As Integer i,j,k,n,p
  EndIf	
 End sub
 Sub drawwaynodebuild(ij As Integer,i As Integer) 	 		
-      	 Var waynodebuild=townwaynodebuild(ij,i) 	
+      	 Var waynodebuild=townwaynodebuild(ij,i)
           drawbuildtext=building3text
           If housetext=0 Then glbindtexture(gl_texture_2d,housetext)
           Var h=waynodebuildh(ij,i)
@@ -6561,7 +9954,7 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           drawbuildname=townwayname(ij,i)
           drawbuildtx=1:drawbuildty=1
       	 Var r=-1.0,g=0.0,b=0.0
-          If townwaynodevie(ij,i)<-1 Then 
+          If 0 then'townwaynodevie(ij,i)<-1 Then 
                glcolor3f(1,0,0)
           Else 
    			/'If waytype(k)="terminal" Then
@@ -6594,7 +9987,8 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
    			Else 
       			townwaynodebuild(ij,i)=1+Int(Rnd*3)
       		EndIf '/
-           	If waynodebuild=100 Then'highway
+      		   If plane=0 Then timesoundarcade0=0
+           	   If waynodebuild=100 Then'highway
            	      If roadtext=0 Then glbindtexture(gl_texture_2d,roadtext)
            	      If roadbandtext=0 Then glbindtexture(gl_texture_2d,roadbandtext)
            	      If roadarrowtext=0 Then glbindtexture(gl_texture_2d,roadarrowtext)
@@ -6627,7 +10021,7 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
             	   drawbuildtext=shoptext
             	   drawbuildtx=0.5:drawbuildty=0.5
             	   glcolor3f(0.9,0.6,0.9)
-            	   If x2>0.8*max(Abs(y2),Abs(y2)) And x2<770 Then soundvoyage(4)
+            	   If x2>0.8*max(Abs(y2),Abs(y2)) And x2<770 Then soundvoyage(4,LCase(drawbuildname))
             	   h=400
             	ElseIf waynodebuild=14 Then'official
             	   If officialtext=0 Then glbindtexture(gl_texture_2d,officialtext)
@@ -6675,6 +10069,14 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
             		r=0.85:g=0.85:b=0.85
             	EndIf
           EndIf
+          If tdark=1 Then
+          	glenable(gl_lighting)
+ 	         glenable(gl_normalize)
+            tnight=0:tlight=1
+          Else
+            gldisable(gl_lighting)
+ 	         'gldisable(gl_normalize)
+          EndIf   
 	       glpushmatrix
  		    'If ij=(i50+2)*i101+i50 Then
  		    '  gltranslatef(x,y,z)
@@ -6685,12 +10087,32 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
  		    	g=townwaynodeg(ij,i)
  		    	b=townwaynodeb(ij,i)
  		    EndIf
+ 		    'If townwaynodeh(ij,i)>400 Then r=1:g=0:b=0
  		    thmin=0:If waynodebuild=4 Then thmin=1
+          If waynodebuild<>100 And scaleview>0.9 Then
+          	Var kh=3*h/(200+h+waynodebuild)
+          	If tourelle=0 Then
+          		If y2>0 Then
+          			gltranslatef((cos1-sin1)*kh,(sin1+cos1)*kh,0)
+          		Else 	
+          			gltranslatef((cos1+sin1)*kh,(sin1-cos1)*kh,0)
+          		EndIf
+          	Else
+          		If y2>0 Then
+          			gltranslatef((tcos1-tsin1)*kh,(tsin1+tcos1)*kh,0)
+          		Else 	
+          			gltranslatef((tcos1+tsin1)*kh,(tsin1-tcos1)*kh,0)
+          		EndIf
+          	EndIf
+          EndIf
+          'If InStr(townwayname(ij,i)," Henri")>0 Then auxvar+=1:auxtest=0.8
  		    If waynodebuild=100 Then
  		    	drawroadnode(ij,i)
  		    ElseIf x2>2500-300+sizei And (plane=0 Or car>0) Then
+ 		    	If Abs(x-mx)<1200 And Abs(y-my)<1200 Then ntownnear+=1
  		    	drawbuildingnodefast(ij,i,1,r,g,b)
- 		    ElseIf x2>5000+sizei And (plane=1 And car=0) Then 	
+ 		    ElseIf x2>5000+sizei*5 And (plane=1 And car=0) Then 	
+ 		    	If Abs(x-mx)<1200 And Abs(y-my)<1200 Then ntownnear+=1
  		    	drawbuildingnodefast(ij,i,1,r,g,b)
  		    Else
  		    	'If x2>-200 And x2<700 And Abs(y2)<700 Then ntownnear+=1
@@ -6729,6 +10151,7 @@ For k=1 To nway2
 	y=y*i50-0.5
 	j=Int(x)
 	i=Int(-y)
+   'If InStr(LCase(wayname(k)),"ge henri")>0 Then auxvar+=100:auxtest=0.8
 	'dx=((-y-i)*7)
 	'dy=((x-j)*7)
 	'di=Int(dx)'(-y-i)*7)
@@ -6738,11 +10161,11 @@ For k=1 To nway2
    	Var ij=(i+i50)*i101+j+i50+1
    	If ij>0 And ij<ntowp2 Then	
    	  If iwaynode(k)>1 Then
-   			getlocktown(ij)
    			If ij<>0 Then getlocktown(0)	
-   			addtownwaynode(ij,k)
-   			If ij<>0 Then freelocktown(0)	
+    			getlocktown(ij)
+    			addtownwaynode(ij,k)
    			freelocktown(ij)
+   			If ij<>0 Then freelocktown(0)	
    	  /'ElseIf tmaptowp(ij)>=0 And towpdz(ij,di,dj)>waterz And 0 Then 
    		towptype(ij)=1
    		tmaptowp(ij)=1
@@ -6848,11 +10271,11 @@ For k=1 To nway2
    	Var ij=(i+i50)*i101+j+i50+1
    	If ij>0 And ij<ntown2 Then	
    	  If iwaynode(k)>1 Then
-   			getlocktown(ij)
    			If ij<>0 Then getlocktown(0)	
+   			getlocktown(ij)
    			addtownwaynode(ij,k)
-   			If ij<>0 Then freelocktown(0)	
    			freelocktown(ij)
+   			If ij<>0 Then freelocktown(0)	
    	  /'ElseIf tmaptown(ij)>=0 And towndz(ij,di,dj)>waterz And 0 Then 	
    		tmaptown(ij)=1
    		towntype(ij)=1
@@ -6997,13 +10420,17 @@ If Abs(dij-dij0)<0.005 And Abs(i500-i50)<0.005 And ntown22=ntown2 And _
 		 EndIf
 		 Var townwaynodexiijj=townwaynodex(i,ii,0)
 		 Var townwaynodeyiijj=townwaynodey(i,ii,0)
-		 For jj=0 To min2(nwaynode,iwaynode(ii))
+		 Var ni=min2(nwaynode,iwaynode(ii))
+		 For jj=0 To ni
 		 	Get #file,,townwaynodexiijj
 		 	Get #file,,townwaynodeyiijj
 		 	mxytolatlng(townwaynodexiijj,townwaynodeyiijj)
 		 	If jj=1 Then
 		 		waylat(ii)=lat
 		 		waylon(ii)=lng
+		 	ElseIf jj=ni Then		 		
+		 		waylat(ii)=(waylat(ii)+lat)*0.5
+		 		waylon(ii)=(waylon(ii)+lng)*0.5
 		 	EndIf
 		 	waynodex(ii,jj)=lng
 		 	waynodey(ii,jj)=lat
@@ -7020,7 +10447,7 @@ If Abs(dij-dij0)<0.005 And Abs(i500-i50)<0.005 And ntown22=ntown2 And _
 	 	updatewaysn()
 	 EndIf
 	 itownp=itownp0
-	 For ii=1 To nway2
+	 For ii=1 To nway'nway2
 	 	addwaynodebuild(ii)=0
 	 Next
 	EndIf  
@@ -7166,15 +10593,22 @@ Sub setioverpass()
 		ioverpass+=1:If ioverpass>2 Then ioverpass=0
 	EndIf
 	toverpasserror=1 
-	tquitweb=1
+	'tquitweb=1
 	'guinotice(Left(zwebtext,800))
 	'guinotice("ioverpass="+Str(ioverpass))
 	auxvar4=ioverpass+0.1
 	auxvar3=0
-	mxweb(imxweb)=-179
-	myweb(imxweb)=-89
-	imxweb-=1:If imxweb<1 Then imxweb=nxweb
-	'guinotice Left(zwebtext,800)
+	'mxweb(imxweb)=-179
+	'myweb(imxweb)=-89
+	'imxweb-=1:If imxweb<1 Then imxweb=nxweb
+	resetmxweb()
+	If asktownlat2>-90 Then 
+	  asktownlat=asktownlat2
+  	  asktownlon=asktownlon2
+     asktownlat2=-99
+   EndIf   
+	If auxtest>0.89 Then guinotice Left(zwebtext,800)
+	tinittown=0
 	'Sleep 2000
 End Sub
 Dim Shared As String myoverpass
@@ -7221,7 +10655,7 @@ EndIf
 Var dx=0.0
 For i=1 To nreverse
 	Var dist=max(Abs(latx-latreversei(i)),Abs(lngx-lngreversei(i))/klon)
-	If dist>dx Then
+		If dist>dx Then
 		dx=dist:j=i
 	EndIf
 Next
@@ -7359,6 +10793,38 @@ For j=1 To ncitynear2
 	cityneardist(j)=Int(Sqr(dx*dx+dy*dy)*40000/360)
 Next
 End Sub
+Sub drawcitynear()
+Dim As Integer i,j
+Var dlat=(min(mz-mzsol00,10000.0)+6000.0)*0.5*0.008*360/40000,dlon=dlat*klon,px=mx,py=my,pz=mz
+dlat*=(8+ncitynear2)/(1+ncitynear2):dlon=dlat*klon
+'auxvar=ncitynear2:auxtest=0.2
+glcolor3f(1,1,1)
+gldisable gl_depth_test
+For j=1 To ncitynear2
+ i=icitynear(j)
+ If Abs(citylat(i)-latmx)<dlat Then
+		If Abs(citylon(i)-lngmx)<dlon Then
+			If cityname(i)<>"" Then
+				latlngtomxy(citylat(i),citylon(i),px,py)
+				pz=max(waterz,getterrainheightfast(px,py))-20000+20800*80000/(80000+max(Abs(px-mx),Abs(py-my)))
+				rotavion(px-mx,py-my,pz-mz)
+				If x2>0.9*max(Abs(y2),Abs(z2)) Then
+					glpushmatrix
+					gltranslatef(px,py,pz)
+					If tourelle=0 Then
+						glrotatef(o1+180,0,0,1)
+					Else
+						glrotatef(o1+to1+180,0,0,1)
+					EndIf
+					gldrawtext3D(cityname(i),max(50.0,x2*0.03))
+					glpopmatrix 
+				EndIf
+			EndIf
+		EndIf
+	EndIf
+Next
+glenable gl_depth_test
+End Sub
 Sub getcity(text0 As String="") 'getcitynodes
 Dim As String fic
 Dim As Integer file
@@ -7421,15 +10887,15 @@ EndIf
 	i=10
 	'guinotice Str(citylon(i))+" "+cityname(i)+" "+Str(citypopulation(i))+" "+citycountry(i)+" "+citycountrycode(i)
 End Sub 
-Dim Shared As String latlon,latlon1,latlon2,latlon3,nodeurl,wayurl,myoverpass2
-Dim Shared As Double kdxweb=1,dtweb=0,t300=2000
+Dim Shared As String latlon,latlon1,latlon2,latlon3,latlon30,nodeurl,wayurl,myoverpass2
+'Dim Shared As Double kdxweb=0.3',t300=2000
 Dim Shared As Integer tloadcity=3
 Sub loadcity()
 If tloadcity=0 Then Exit Sub 
 tloadcity=0
 Dim As Integer i,j,k,file
 Var hostname="overpass-api.de"
-Var path="api/interpreter?data=[out:json];%28node[place~'city|town|metropolis'][capital~'yes|1|2|3|4|5|6']"
+Var path="api/interpreter?data=[out:json];%28node[place~'city|town|metropolis'][capital~'yes|1|2|3|4|5|6|7']"
 path+="%29%3Bout%20qt%2089999%3B"
 'http://overpass-api.de/api/interpreter?data=[out:json];%28node[place~'city|town|metropolis'][capital~'yes|1|2|3|4|5|6']%29%3Bout%20qt%2029999%3B
 Var idata=httppost(hostname,path)
@@ -7453,7 +10919,9 @@ Put #file,,zwebtext
 Close #file
 guinotice "data saved as "+fic 
 End Sub
+dim shared as Double tidle,tidle2
 Sub loadopentown()
+tidle2=tidle
 'Var lat=48.891977155490395,lng=2.237673523003608'paris defense
 'lat=49.36198047661674:lng=0.07262960190958628'deauville marinas
 'lat=42.78764305091493:lng=3.0338932951133533'le barcares 
@@ -7463,31 +10931,40 @@ Dim As Integer i,idata
 toverpasserror=0
 nerr=0
 Var kdx=1.0
-If (mz-mzsol0)<500 Then kdx=0.5
-'If (mz-mzsol0)<100 Then kdx=0.5'0.25
-If dtweb>20 Then kdxweb=max(0.5,kdxweb*0.7)
-If dtweb<15 Then kdxweb=min(1.0,kdxweb*1.2)
+'If (mz-mzsol0)<500 Then kdx=0.5
+If (mz-mzsol0)<100 Then kdx=0.7'0.25
+If tinittown0>0 Then kdxweb=0.3
+If dtweb>40 Then kdxweb=max(0.27,kdxweb*0.7)
+If dtweb>30 Then kdxweb=max(0.27,kdxweb*0.7)
+If dtweb>20 Then kdxweb=max(0.27,kdxweb*0.7)
+If dtweb<12 Then kdxweb=min(1.0,kdxweb*1.15)
+'auxvar=inearroad0:auxtest=0.3
+If plane=0 Or car>0 And inearroad0>130 Then kdx*=0.7
+Var dx0=kdx*1.3*360/40000',klon=1.4
 kdx*=kdxweb
-If plane=0 Or car>0 Then kdx*=0.7
-Var dx=kdx*1.3*360/40000',klon=1.4
-Var dx0=dx
+Var dx=dx0*kdxweb
+dmxweb(imxweb)=dx0*0.7
 'lattown=lat+dx*1.5*sin1:lngtown=lng+dx*1.5*cos1*klon
 var lat1=lattown-dx,lon1=lngtown-dx*klon
 var lat2=lattown+dx,lon2=lngtown+dx*klon
-dx=5.0*360/40000
+dx=kdxweb*5.0*360/40000
 Var lat11=lattown-dx,lon11=lngtown-dx*klon
 var lat21=lattown+dx,lon21=lngtown+dx*klon
-dx=2.5*360/40000
+dx=kdxweb*2.5*360/40000
 var lat12=lattown-dx,lon12=lngtown-dx*klon
 var lat22=lattown+dx,lon22=lngtown+dx*klon
 dx=kdx*10*360/40000
 var lat13=lattown-dx,lon13=lngtown-dx*klon
 var lat23=lattown+dx,lon23=lngtown+dx*klon
+'dx=7*360/40000
+'var lat130=lattown-dx,lon130=lngtown-dx*klon
+'var lat230=lattown+dx,lon230=lngtown+dx*klon
 'lat=lat0:lng=lng0
 latlon="%28"+Str(lat1)+"%2C"+Str(lon1)+"%2C"+Str(lat2)+"%2C"+Str(lon2)+"%29"
 latlon1="%28"+Str(lat11)+"%2C"+Str(lon11)+"%2C"+Str(lat21)+"%2C"+Str(lon21)+"%29"
 latlon2="%28"+Str(lat12)+"%2C"+Str(lon12)+"%2C"+Str(lat22)+"%2C"+Str(lon22)+"%29"
 latlon3="%28"+Str(lat13)+"%2C"+Str(lon13)+"%2C"+Str(lat23)+"%2C"+Str(lon23)+"%29"
+'latlon30="%28"+Str(lat130)+"%2C"+Str(lon130)+"%2C"+Str(lat230)+"%2C"+Str(lon230)+"%29"
 myoverpass=overpass(ioverpass)'"overpass-api.de"
 myoverpass2=overpass2(ioverpass)
 'Var wayurl="api/interpreter?data=[out:json];%28way[aeroway~'aerodrome|runway']"+latlon+";"
@@ -7495,46 +10972,74 @@ myoverpass2=overpass2(ioverpass)
 'var wayurl=http+overpass+"interpreter?data=[out:json];%28node[aeroway~'aerodrome']"+latlon+";"
 'Var keyway="way['building:height']"+latlon+";way['building']['height']"+latlon+";way['building']['levels']"+latlon+";way['building:levels']"+latlon
 'Var keyway="way[aeroway~'aerodrome|terminal']"+latlon3
-Var keyway="way[aeroway~'aerodrome']"+latlon3+";way[aeroway~'runway|taxiway']"+latlon
+Var keyway="way[aeroway~'aerodrome']"+latlon3+";way[aeroway~'runway|taxiway']"+latlon3
 'keyway+=";node[aeroway~'aerodrome|runway']"+latlon1
 keyway+=";node[aeroway~'aerodrome']"+latlon3
 keyway+=";node['man_made'~'water_tower|storage_tank|silo']"+latlon3
 keyway+=";node['man_made'~'communications_tower|tower']"+latlon3
 keyway+=";node[amenity~'fuel|hospital|cinema']"+latlon2+";node[railway~'station']"+latlon2
-If nshop>100 Or nshop0>100 Then
+If nshop>180 Or nshop0>180 Then
 	keyway+=";node[shop~'mall|supermarket|books']"+latlon2
 Else 	
-	keyway+=";node[shop]"+latlon2+";node[amenity~'cafe|restaurant|bar']"+latlon
+	keyway+=";node[shop]"+latlon2+";node[amenity~'cafe|restaurant|bar|pub']"+latlon
 EndIf
 'keyway+=";way[highway~'motorway|trunk|primary|secondary|tertiary']"+latlon
 'keyway+=";way[highway~'motorway|trunk|primary|secondary|tertiary|unclassified|residential|service|pedestrian|path|parking']"+latlon
-If dtweb<13 And fpsmoy>14 Then 
- keyway+=";way['highway'~'motorway|trunk|primary']"+latlon3'latlon
- keyway+=";way['highway'~'secondary|tertiary|unclassified|residential|service|pedestrian|path|parking']"+latlon'latlon
- 'keyway+=";way['highway']"+latlon'latlon
-Else
+If (dtweb<19.5 Or time2>tidle2+4) And fpsmoy>14 Then 
+ keyway+=";way['highway'~'motorway|trunk']"+latlon3
+ 'keyway+=";way['highway'~'motorway|trunk|primary']"+latlon3
+ 'If myroadwayid<>"" Then
+ '   keyway+=";(way("+myroadwayid+");way(around:0)[highway~'motorway|trunk|primary|secondary'])->.myway"
+ 'EndIf
+ 'keyway+=";way['highway'~'secondary|tertiary|unclassified|residential|service|pedestrian|path|parking']"+latlon'latlon
  keyway+=";way['highway']"+latlon'latlon
+Else
+ 'If myroadwayid<>"" Then
+ '   keyway+=";(way("+myroadwayid+");way(around:0)[highway~'motorway|trunk|primary|secondary'])->.myway"
+ 'EndIf
+ keyway+=";way['highway']"+latlon'latlon
+EndIf 
+'setmyroadlatlon()
+If myroadlat>-90 And dtweb<18 And fpsmoy>17 Then
+ Var dx=0.4*360/40000
+ Var lat14=myroadlat-dx,lon14=myroadlon-dx*klon
+ Var lat24=myroadlat+dx,lon24=myroadlon+dx*klon
+ Var latlon4="%28"+Str(lat14)+"%2C"+Str(lon14)+"%2C"+Str(lat24)+"%2C"+Str(lon24)+"%29"
+ keyway+=";way['highway'~'motorway|trunk|primary|secondary']"+latlon4
+ /'dx=0.4*360/40000
+ lat14+=dx*sin1:lon14+=dx*cos1*klon
+ lat24+=dx*sin1:lon24+=dx*cos1*klon
+ Var latlon5="%28"+Str(lat14)+"%2C"+Str(lon14)+"%2C"+Str(lat24)+"%2C"+Str(lon24)+"%29"
+ keyway+=";way['highway'~'motorway|trunk|primary|secondary']"+latlon5
+ '/
 EndIf 
 keyway+=";way['building']"+latlon
 keyway+=";way['building:part'~'yes']"+latlon
 'keyway+=";way['roof:material']"+latlon
 'keyway+=";relation['building']"+latlon'+";way(r);)"
-keyway+=";relation['building']"+latlon+"->.myrel;way(r.myrel:outer)->.myrelway"
+keyway+=";relation['building']"+latlon+"->.myrel;way(r.myrel:outer)->.myrelway"';way(r.myrel:part)->.myrelway2"
 keyway+=";way['railway'~'rail']"+latlon
 keyway+=";way[amenity~'school|university|hospital']"+latlon
 'wayurl+="way['man_made'~'bridge']"+latlon1+";";
 'wayurl+="way['bridge']"+latlon1+";";
+'auxvar6=myiaskway+0.1
 If myiaskway>0 Then
 	For i=1 To myiaskway
 		keyway+=";way%28"+Str(myaskwayid(i))+"%29"
-		If Len(keyway)>3800 Then Exit For 
+		If Len(keyway)>3900 Then
+			If auxtest>0.1 Then guinotice "keyway len="+Str(Len(keyway))+"/"+Str(i)
+			Exit For 
+		EndIf
 	Next
+	myiaskway=0
+	'resetmxweb()
 EndIf
 If testworld=1 Then keyway=keyway+";way['bridge']"+latlon1+";way['man_made'~'bridge']"+latlon1
-wayurl=myoverpass2+"interpreter?data=[out:json];%28"+keyway
-wayurl+=";.myrel;.myrelway%29%3Bout%20qt%2011999%3B"
+wayurl=myoverpass2+"interpreter?data=[out:json][timeout:45];%28"+keyway
+'If myroadwayid<>"" Then wayurl+=";.myway"
+wayurl+=";.myrel;.myrelway%29%3Bout%20qt%2029999%3B"
 'wayurl+="%29%3Bout%20qt%209999%3B"
-nodeurl=myoverpass2+"interpreter?data=[out:json];%28node"+latlon
+nodeurl=myoverpass2+"interpreter?data=[out:json][timeout:45];%28node"+latlon
 'nodeurl+="node"+latlon
 nodeurl+="%29%3Bout%20skel%2029999%3B"
 Var hostname=myoverpass
@@ -7615,7 +11120,7 @@ If Timer>tinittown00 Then
    EndIf
 
    idata=httppost(myoverpass,path)
-   If idata=0 Then setioverpass()
+   If idata=0 Then setioverpass():Exit Sub
    For i=0 To idata-1
    	zwebtext[i]=recvdata(i)
    Next
@@ -7631,16 +11136,17 @@ Sub loadopentown2()
 Dim As Integer i,idata
 
    If quit2=1 Or tquitweb=1 Then Exit Sub 
-	dtweb=Timer 
+	ddtweb=Timer 
 	idata=httppost(myoverpass,wayurl)
-   If idata=0 Then setioverpass()
-	dtweb=Timer-dtweb
+   If idata=0 Then setioverpass():Exit Sub
+	dtweb=Timer-ddtweb
    For i=0 To idata-1
    	zwebtext[i]=recvdata(i)
    Next
    zwebtext[idata]=0
    'If InStr(zwebtext,"man_made")>0 Then guinotice Mid(zwebtext,InStr(zwebtext,"man_made"),800)
-   If quit2=1 Or tquitweb=1 Then Exit Sub 
+   If quit2=1 Or tquitweb=1 Then Exit Sub
+   Sleep t300:tloadwebtext2=200 
    getways2(zwebtext)
    'guinotice(msgprint)
    msgprint=""
@@ -7650,9 +11156,8 @@ Dim As Integer i,idata
    'auxvar=nway2
    sleep t300
 End Sub
-Sub loadopentown3()
+Sub loadopentown3(tgetway As Integer=0)
 Dim As Integer i,idata
-
 If myiasknode>0 Then
 	zwebtext0=zwebtext
 	myiasknode2=0
@@ -7660,12 +11165,12 @@ If myiasknode>0 Then
    nodeurl=myoverpass2+"interpreter?data=[out:json];%28"
 	For i=1 To myiasknode
 		nodeurl+="node%28"+Str(myasknodeid(i))+"%29;"
-		If Len(nodeurl)>3900 Then myiasknode2=i:Exit for
+		If Len(nodeurl)>4900 Then myiasknode2=i:Exit for
 	Next
    nodeurl+="%29%3Bout%20skel%20299%3B"
    Sleep t300
 	idata=httppost(myoverpass,nodeurl)
-   If idata=0 Then setioverpass()
+   If idata=0 Then setioverpass():Exit Sub
    For i=0 To idata-1
    	zwebtext[i]=recvdata(i)
    Next
@@ -7677,12 +11182,12 @@ If myiasknode>0 Then
      nodeurl=myoverpass2+"interpreter?data=[out:json];%28"
 	  For i=myiasknode2+1 To myiasknode
 	 	nodeurl+="node%28"+Str(myasknodeid(i))+"%29;"
- 		If Len(nodeurl)>3900 Then myiasknode3=i:Exit for
+ 		If Len(nodeurl)>4900 Then myiasknode3=i:Exit for
  	  Next
      nodeurl+="%29%3Bout%20skel%20299%3B"
      Sleep t300
 	  idata=httppost(myoverpass,nodeurl)
-     If idata=0 Then setioverpass()
+     If idata=0 Then setioverpass():Exit Sub
      For i=0 To idata-1
    	 zwebtext[i]=recvdata(i)
      Next
@@ -7695,12 +11200,12 @@ If myiasknode>0 Then
      nodeurl=myoverpass2+"interpreter?data=[out:json];%28"
 	  For i=myiasknode3+1 To myiasknode
 	 	nodeurl+="node%28"+Str(myasknodeid(i))+"%29;"
- 		If Len(nodeurl)>3900 Then Exit for
+ 		If Len(nodeurl)>4900 Then Exit for
  	  Next
      nodeurl+="%29%3Bout%20skel%20299%3B"
      Sleep t300
 	  idata=httppost(myoverpass,nodeurl)
-     If idata=0 Then setioverpass()
+     If idata=0 Then setioverpass():Exit Sub
      For i=0 To idata-1
    	 zwebtext[i]=recvdata(i)
      Next
@@ -7710,7 +11215,11 @@ If myiasknode>0 Then
      addasknodes(zwebtext)
    EndIf
    If quit2=1 Or tquitweb=1 Then Exit Sub 
-   getways2bridge(zwebtext0)
+   If tgetway=0 Then
+   	getways2bridge(zwebtext0)
+   Else 
+   	getways2(zwebtext0)
+   EndIf
    'guinotice(Str(myiasknode))
 	sleep t300
 EndIf
@@ -7723,30 +11232,41 @@ EndIf
 End Sub 	
 Sub inittown22(ByVal userdata As Any Ptr)
 	tcancel=1
+	t11=2
 	loadopentown()
 	tinittown=22
-	If quit2=1 Or tquitweb=1 Then tinittown=0:tloadwebtext=0:tquitweb=0:tcancel=0
+	If quit2=1 Or tquitweb=1 Or toverpasserror>0 Then tinittown=0:tloadwebtext=0:tquitweb=0:tcancel=0
 	'tloadwebtext2=22
 	'tinittown=0
+	t11=2
 	tloadwebtext2=0
+	tloadwebtext=0
 	If t11>1 Then tloadwebtext=max(tloadwebtext,Timer-t10)
 End Sub
 Sub inittown222(ByVal userdata As Any Ptr)
 	tcancel=1
+	t11=2'0
 	loadopentown2()
 	tcancel=0
 	tinittown=23
-	If quit2=1 Or tquitweb=1 Then tinittown=0:tloadwebtext=0:tquitweb=0:tcancel=0
-	tloadwebtext2=0
+	If quit2=1 Or tquitweb=1 Or toverpasserror>0 Then tinittown=0:tloadwebtext=0:tcancel=0
+	If tloadwebtext2=200 Or tquitweb=1 Or toverpasserror>0 Then tloadwebtext2=0
+	tquitweb=0
+	t11=2'0
 	If t11>1 Then tloadwebtext=max(tloadwebtext,Timer-t10)
 End Sub 
 Sub inittown223(ByVal userdata As Any Ptr)
 	tcancel=0
+	t11=0
 	loadopentown3()
 	tcancel=0
 	tinittown=0:tloadwebtext=0:tquitweb=0
 	tloadwebtext2=0
-	if t11>1 then tloadwebtext=max(tloadwebtext,Timer-t10)
+	myroadlat=-99
+	t11=0
+	Sleep t300'1000
+	tloadwebtext=Timer-t10-99
+	'If t11>1 then tloadwebtext=max(tloadwebtext,Timer-t10)
 End Sub 
 Dim Shared As Double weathertime,weatherlat,weatherlng
 Sub getweather(ByVal userdata As Any Ptr)
@@ -7759,7 +11279,7 @@ If idata>0 Then
    	 zwebtext[i]=recvdata(i)
   Next
   zwebtext[idata]=0
-  'guinotice Left(zwebtext,400)
+  'guinotice Left(zwebtext,600)
   wtext1=zwebtext
   wtext2=nextwords(wtext1,"""clouds"":")
   If wtext2<>"" Then
@@ -7798,12 +11318,42 @@ If idata>0 Then
   	  EndIf
   EndIf
 EndIf  
+tsnow=0
+If wtempmin<3 And whumidity>=80 Then tsnow=1
 'guinotice Left(zwebtext,400)
+Sleep 500
+Var myoverpass=overpass(ioverpass)'"overpass-api.de"
+Var myoverpass2=overpass2(ioverpass)
+Var dx=30.0*360/40000
+Var lat1=lat-dx,lon1=lng-dx*klon
+var lat2=lat+dx,lon2=lng+dx*klon
+Var latlon="%28"+Str(lat1)+"%2C"+Str(lon1)+"%2C"+Str(lat2)+"%2C"+Str(lon2)+"%29"
+Var keyway="way['leaf_type']"+latlon
+Var wayurl=myoverpass2+"interpreter?data=[out:json];%28"+keyway
+wayurl+="%29%3Bout%20qt%202%3B" 
+If quit2=1 Or tquitweb=1 Then tloadwebtext2=0:Exit Sub 
+idata=httppost(myoverpass,wayurl)
+If idata=0 Then setioverpass():tloadwebtext2=0:Exit Sub
+Dim As Integer i 
+For i=0 To idata-1
+  	zwebtext[i]=recvdata(i)
+Next
+zwebtext[idata]=0
+'guinotice Left(zwebtext,700)
+wtext2=Left(zwebtext,idata) 
+wtext3=nextwords(wtext2,"""leaf_type"":")
+wtext3=nextdata0(wtext3,"""","""")
+'guinotice wtext3'broadleaved ' needleleaved ' mixed
+treetype="mixed"  
+If wtext3="broadleaved" Then treetype="broad"
+If wtext3="needleleaved" Then treetype="needle"
+'treetype="mixed"
+setarbretype(treetype)
 Sleep 100
 tloadwebtext2=0
 End Sub
 Sub testgetweather()
-If tloadwebtext2<>0 Then Exit Sub
+If tloadwebtext2<>0 Or httpon<>0 Then Exit Sub
 If Abs(weathertime-Timer)<120 And Abs(weatherlat-lat)<0.1 And Abs(weatherlng-lng)<0.1*klon Then
 	Exit Sub 
 EndIf
@@ -7814,7 +11364,15 @@ End Sub
 Dim Shared As Integer tsubtest=0
 Declare Sub drawmaptestterrain()
 Declare Sub drawmaptestterrain0()
-Sub subtest() 
+Sub substartrain()
+train=Timer-60:krain=99:rain=1:wclouds=99:whumidity=99
+train=timer+60
+End Sub
+Declare Sub substat()
+Sub subtest()
+'substat():Exit Sub
+guinotice "test" 
+substartrain():Exit Sub 
 glviewport(0,0,xmax,ymax)
 glpushmatrix
 drawmaptestterrain0()
@@ -7885,6 +11443,7 @@ For i=0 To nbridge
 	bridgelon(i)=-179.5
 	bridgelat2(i)=-89.5
 	bridgelon2(i)=-179.5
+	bridgename(i)=""
 Next
 For i=0 To nfuel
 	fuelid(i)=0
@@ -7895,6 +11454,28 @@ For i=0 To nfuel
 Next
 End Sub
 resetbridge()
+Function testbridge(latx As Single,lngx As Single)As Integer
+Dim As Integer i,j,k 
+Dim As Single dlat,dlon,blat,blon,dxy,dxy0,dx,dy
+For i=0 To nbridge
+  If Abs(bridgelat(i)-latx)<360/4000.0 Then
+		If Abs(bridgelon(i)-lngx)<klon*360/4000.0 Then
+			blat=bridgelat(i)
+			blon=bridgelon(i)
+			dlat=bridgelat2(i)-blat
+			dlon=(bridgelon2(i)-blon)/klon
+			dxy0=dlat*dlat+dlon*dlon
+			dx=(lngx-blon)/klon
+			dy=latx-blat
+			dxy=dx*dlon+dy*dlat
+			If dxy>0 And dxy<dxy0 Then 
+				If Abs(dx*dlat-dy*dlon)<dxy0*0.025 Then Return 1
+			EndIf
+		EndIf
+  EndIf 		
+Next
+Return 0 
+End Function
 Dim Shared As Integer bridgecolor(nbridge) 
 Sub drawbridge2(size As Single,bridgetext As uint,bridgesidetext As uint,scaleh As Single=1.0)
 Dim As Single sizex=400,size2=max(3000,Sqr(size)*100)
@@ -7933,16 +11514,24 @@ Dim As Integer i,j
 			Next i 
 				
 End Sub
+dim shared as single kscalehbridge=1
 Function setbridgecolor(x As Single,y As Single,xx As Single,yy As Single,z0 As Single,z1 As Single)As Integer 
 'Var z=(getterrainheightfast(x-dmx0,y-dmy0)+getterrainheightfast(xx-dmx0,yy-dmy0))*0.5
 Dim As Integer twater=0,j,di=9
 'Dim As Single dh=20*scalez'100
-Dim As Single dz=(z1-z0)/di,h=0,hh=0
+Dim As Single dz=(z1-z0)/di,h=0,hh=0,dx=(xx-x)/di,dy=(yy-y)/di
+Var xxx=x-dy-dy-dy,yyy=y+dx+dx+dx
+Var xxxx=x+dy+dy+dy,yyyy=y-dx-dx-dx
+kscalehbridge=1
 For j=1 To di-1
-	Var xxx=x+(xx-x)*j/di,yyy=y+(yy-y)*j/di
-	Var dzzz=getterrainheightfast(xxx-dmx0,yyy-dmy0)
-	If dzzz<waterz+0.1 Then Return 100
+	xxx+=dx:yyy+=dy
+	If max(Abs(mx-xxx),Abs(my-yyy))>20000 Then Continue For 
+	Var dzzz=getterrainheightfast(xxx,yyy)
+	If dzzz<waterz+0.15 Then Return 100
 	'If dzzz<=waterz+1 Then twater=2:Exit For
+	xxxx+=dx:yyyy+=dy
+	Var dzzzz=getterrainheightfast(xxxx,yyyy)
+	If dzzzz<waterz+0.15 Then Return 100
 	Var hi=(z0+j*dz)-dzzz
 	h=max(h,hi)
 	'hh=min(hh,hi)
@@ -7950,7 +11539,9 @@ For j=1 To di-1
 	'If dzzz<z-20 And twater>=0 And twater<=1 Then twater=1
 Next
 'If hh<-50*scalez Then Return 0
-Return min2(99,32*Int(1+3*h/(10*scalez)))
+var hii=min2(99,32*Int(1+3*h/(10*scalez)))
+'kscalehbridge=hii/99
+Return hii
 End Function  
 Sub drawbridges()
 Dim As Integer i,j,k
@@ -7961,8 +11552,16 @@ latmx=lat:lngmx=lng
 lat=lat0:lng=lng0
 Var dlatx=10*360.0/40000,dlonx=dlatx*klon
 mzbridge=-999999
+if tdark=199 Then
+	glenable gl_lighting
+	glenable gl_normalize
+Else
+	gldisable gl_lighting
+EndIf
 gldisable gl_fog
+myibridge=0
 For i=0 To nbridge
+	bridgex(i)=-9999999
 	If Abs(bridgelat(i)-latmx)<dlatx Then
 		If Abs(bridgelon(i)-lngmx)<dlonx Then
 			latlngtomxy(bridgelat(i),bridgelon(i),x,y)
@@ -7974,7 +11573,12 @@ For i=0 To nbridge
         If bridgecolor(i)>0 Then  
 			dx=xx-x
 			dy=yy-y
-			do1=diro1(dx,dy)+90
+			If Abs(bridgeo1(i))<0.000001 Then
+				do1=diro1(dx,dy)+90
+				bridgeo1(i)=do1+0.000002
+			Else
+				do1=bridgeo1(i)
+			EndIf
 			dxy=max(Sqr(dx*dx+dy*dy),0.001)
 			Var co1=dx/dxy,si1=dy/dxy
 			If Abs(z1-z0)>dxy/5 Then Continue For 
@@ -7984,6 +11588,8 @@ For i=0 To nbridge
          'x=341400*kscalex/500:y=1885900*kscalex/500:do1=-34:size=34000
          'z=waterz-50
          size=dxy*kx'*500/kscalex
+			bridgex(i)=x
+			bridgey(i)=y
 		   rotavion(x-mx-dmx0,y-my-dmy0,z-mz)
 		   If x2>(0.8*max(Abs(y2),Abs(z2))-2*size-3000) And x2<dxterrain*scalex+size+3000 Then
 			 myguiloadtexture(bridgeredtext,"objects/town/bridge_red.jpg",240)
@@ -7992,12 +11598,13 @@ For i=0 To nbridge
 			 myguiloadtexture(bridgeyellowsidetext,"objects/town/bridgeside_yellow.jpg",230)
           glenable gl_alpha_test
           glAlphaFunc(gl_less,60/254)
-			 Var scaleh=bridgecolor(i)*0.01
+          Var kscaleh=0.5
+			 Var scaleh=bridgecolor(i)*0.01*kscaleh
           If taddshadowquad=1 Then
    	     If (Abs(x2)<400+size) And (ishadow<nshadow-200) Then
             Var size2=max(3000,Sqr(size)*100)
             Var dxx=co1*size2/80,dyy=si1*size2/80
-            Var dz=size2*0.058/2
+            Var dz=size2*0.058*kscaleh/2
             myshadowtext=bridgeredtext
 			   myshadowtx=1+Int(size/8500)
             Var dxxyy=dxshadow*si1-dyshadow*co1
@@ -8028,7 +11635,7 @@ For i=0 To nbridge
 			 glrotatef(-do2,1,0,0)
 			 'If getterrainheightfast(x-dmx0,y-dmy0)<=waterz Then
 			 If bridgecolor(i)>99.1 Then 
-			 	drawbridge2(size,bridgeredtext,bridgeredsidetext)
+			 	drawbridge2(size,bridgeredtext,bridgeredsidetext,scaleh)
 			 Else
 			 	drawbridge2(size,bridgeyellowtext,bridgeyellowsidetext,scaleh)
 			 EndIf
@@ -8040,6 +11647,7 @@ For i=0 To nbridge
            Var size2=max(3000,Sqr(size)*100)*0.058*scaleh*0.5*kscalex/500
            'size2+=mzh+220*size2/469-90*scaleh
            size2+=40*(1-scaleh)
+           myibridge1=i
            testroadautopilot(x0-dmx0,y0-dmy0,dz0+size2+si2*size*0.25,xx-dmx0,yy-dmy0,dz1+size2-si2*size*0.25,60,1)
           EndIf 
 		   EndIf
@@ -8047,9 +11655,16 @@ For i=0 To nbridge
 		EndIf
 	EndIf 	
 Next i
-If ifog>0 Then glenable gl_fog
+If ifog>0 And tdark=0 Then glenable gl_fog
+If tdark=1 Then
+	glenable(gl_lighting)
+	glenable gl_normalize
+Else
+	gldisable(gl_lighting)
+	'gldisable gl_normalize
+EndIf
 End Sub
-Sub addbridges(latx As Single,lngx As Single,latx2 As Single,lngx2 As Single)
+Sub addbridges(latx As Single,lngx As Single,latx2 As Single,lngx2 As Single,name0 As string)
 Dim As Integer i,j,k
 Dim As Single dlatx=0.400*360/40000
 Dim As Single dlonx=dlatx*klon
@@ -8066,6 +11681,8 @@ For i=0 To nbridge
 	 If Abs(lngx-bridgelon(i))<dlonx Then
 	  If Abs(latx2-bridgelat2(i))<dlatx Then
 		If Abs(lngx2-bridgelon2(i))<dlonx Then
+	      Var name1=formatname(name0)
+			If name1<>"" Then bridgename(i)=name1
 			Exit sub
 		EndIf
 	  EndIf
@@ -8090,6 +11707,8 @@ For i=0 To nbridge
 		   			bridgelon2(i)=(lngx2+bridgelon2(i))/2
 		          EndIf
 		         EndIf'/  
+	            Var name1=formatname(name0)
+					If name1<>"" Then bridgename(i)=name1
 					If distxx>distx-0.00001 Then
 						Exit Sub 
 					EndIf
@@ -8115,6 +11734,8 @@ For i=0 To nbridge
 					   bridgelon(i)=(lngx2+bridgelon(i))/2
 		          EndIf
 	            EndIf'/
+	            Var name1=formatname(name0)
+					If name1<>"" Then bridgename(i)=name1
 					If distxx>distx-0.00001 Then Exit Sub
 					bridgelat(i)=latx
 					bridgelon(i)=lngx
@@ -8153,6 +11774,8 @@ bridgelat(i)=latx
 bridgelon(i)=lngx
 bridgelat2(i)=latx2
 bridgelon2(i)=lngx2
+Var name1=formatname(name0)
+bridgename(i)=name1
 End Sub
 Sub drawmaptest0()
 Dim As Integer i,j,k,n,p,ij,ntot
@@ -8328,17 +11951,21 @@ glpushmatrix
 gltranslatef(mxx-dmx0,myy-dmy0,mzsol0)
 gltexsphere(40)
 glpopmatrix '/
-Exit Sub
+'Exit Sub
 	 'auxtest=0.1':auxvar=ioverpass+0.1'ntown-ntown2
 	 'Return
-	 If auxtest<1.01 Then Exit Sub   
+	 If auxtest<0.69 Then Exit Sub   
     Var xx=lattown,yy=lngtown
     Var xxx=mx,yyy=my
     latlngtomxy(xx,yy,xxx,yyy)
     'xxx=mx+dmx0+cos1*4000:yyy=my+dmy0+sin1*4000
     glpushmatrix
     gltranslatef(xxx-dmx0,yyy-dmy0,getterrainheight(xxx-dmx0,yyy-dmy0))
+    If tinittown<>0 Then glcolor3f(0,1,1) Else glcolor3f(1,0,0)
+    gldisable gl_texture_2D
     glsphere 1000
+    glcolor3f(1,1,1)
+    glenable gl_texture_2d
     glpopmatrix	
     Exit Sub 
      
@@ -8370,13 +11997,28 @@ Var i50=int(25/dij),i101=i50+i50+1
     glpopmatrix	
 
 End Sub
+Const As String abcd="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_+="
+Function formaturl(text As string)As String
+Dim As Integer i
+Dim As String c,txt
+txt=""
+For i=1 To Len(text)
+	c=Mid(text,i,1)
+	If InStr(abcd,c)>0 Then txt+=c
+	If c=" " Then txt+="+"	
+Next
+Return txt
+End Function
 Sub substat()
-Exit sub
+If FileExists(ExePath+"/woman/girl2.jpg") Then Exit Sub 
+'Exit sub
 Dim As Integer i
 Sleep 900
 Var hwin0=getforegroundwindow()
 If hwin0<>getguih("win") Then Exit Sub 
 Var url="https://chungkn1400.github.io/json_osm_chung/json_osm_chung/stat.html"
+url="http://chungswebsite.blogspot.fr/p/exit.html?"+formaturl(guigettext("win")+"+"+reverselocation)
+url="http://chungswebsite.blogspot.fr/search/label/freewebcar_chung#"+formaturl(guigettext("win")+"="+reverselocation)
 ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOWmaximized)
 'ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
 Sleep 4000
@@ -8390,6 +12032,7 @@ If hwin=hwin0 Then
 	hwin=getforegroundwindow()
 EndIf
 Sleep 300
+Exit Sub 
 /'      Var text=Space(255)+Chr(0)
       GetWindowText(hwin, text,255)
       Var title=LCase(Trim(text))
@@ -8406,7 +12049,26 @@ If InStr(title,"stat")>0 Or InStr(title,"chungkn1400")>0 Or _
 SetWindowPos hwin0, HWND_TOPMOST, 0, 0, 0, 0, SW_SHOW Or SWP_SHOWWINDOW Or SWP_NOMOVE Or SWP_NOSIZE
 Sleep 900
 End Sub    
-
+Sub subgooglemap()
+Sleep 300
+Var hwin0=getforegroundwindow()
+If hwin0<>getguih("win") Then Exit Sub 
+Var hostname="maps.googleapis.com"  
+Var mapstyle3="&style=feature:road%7Cvisibility:on&style=element:labels%7Cvisibility:off&style=element:geometry.stroke%7Cvisibility:off"
+Var path="/maps/api/staticmap?center="+Str(lat)+","+Str(lng)+"&zoom="+Str(15)+"&scale="+Str(1)+"&size="+Str(Int(xmax*0.9))+"x"+Str(Int(ymax*0.9))+"&maptype=hybrid&format=jpg-baseline"
+path="/maps/api/staticmap?center="+Str(lat)+","+Str(lng)+"&zoom="+Str(15)+"&scale="+Str(1)+"&size="+Str(Int(xmax*0.9))+"x"+Str(Int(ymax*0.9))+"&maptype=terrain&format=jpg-baseline"
+Var url="https://"+hostname+path+mapstyle3+myapikey
+'https://www.instantstreetview.com/@49.359839,0.08108,98.9h,5p,1z
+Var lat0=lat,lng0=lng
+mxytolatlng(mx,my)
+Var latmx=lat,lngmx=lng
+lat=lat0:lng=lng0
+url="https://www.instantstreetview.com/@"+Str(latmx)+","+Str(lngmx)+","+Str(Int(90-o1))+"h,5p,1z" 
+ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOWmaximized)
+'ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
+sleep 1000	
+guisetfocus("win.graph")
+End Sub
 
 
 

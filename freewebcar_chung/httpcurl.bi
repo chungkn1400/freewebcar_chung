@@ -4,14 +4,14 @@
 #Include once "curl.bi"
 #include once "crt/string.bi"
 
-Dim Shared As String*12500001 myztext
+'Dim Shared As String*12500100 myztext
 'Dim Shared As Byte recvdata(12512001)
 'Dim Shared As Integer tquitweb=0
 Dim Shared As Integer myidata
 '' this callback will be called when any data is received
 'Private Function write_callback CDecl _
-Static Shared As ZString Ptr zstr = 0
-Static Shared As Integer maxbytes = 0
+Dim Shared As ZString Ptr zstr = 0
+Dim Shared As Integer maxbytes = 0, ibyte,ibytes
 Function write_callback CDecl _
     ( _
         ByVal buffer As Byte Ptr, _
@@ -21,7 +21,7 @@ Function write_callback CDecl _
     ) As Integer
 
 
-    Dim As Integer i,bytes = size * nitems
+    ibyte=0:ibytes = size * nitems
 
     '' current zstring buffer too small?
     'If( maxbytes < bytes ) Then
@@ -35,23 +35,23 @@ Function write_callback CDecl _
 
     '' just print it..
     '? Left(*zstr,100)
-    If bytes<12500000-myidata Then
+    If ibytes<12500000-myidata And ibytes>0 Then
     	'myztext+=*zstr
-      For i=0 To bytes-1
-      	recvdata(myidata)=buffer[i]
+      For ibyte=0 To ibytes-1
+      	recvdatacurl(myidata)=buffer[ibyte]
       	myidata+=1
       	httpidata=myidata
       Next
-    Else
+    ElseIf ibytes>0 Then 
     	myidata=0:Return 0
     EndIf
     
     If tquitweb=1 Or quit=1 Then myidata=0:Return 0 'stop
-    Return bytes
+    Return ibytes
 End Function
 
     '' init
-    myztext=""+Chr(0)
+    'myztext=""+Chr(0)
     myidata=0
     'Var curlglob= curl_global_init(CURL_GLOBAL_DEFAULT)
     ''?"CURL_GLOBAL_DEFAULT "+Str(curlglob)
@@ -89,16 +89,37 @@ Var url=host
     End If
     Var res=curl_easy_setopt( curl, CURLOPT_URL, url)
     res=curl_easy_setopt( curl, CURLOPT_WRITEFUNCTION, @write_callback )
-    res=curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L)'no verify'1L)
+    res=curl_easy_setopt(curl, CURLOPT_BUFFERSIZE, 100000L)
+    If InStr(url,"https")>0 Then res=curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L)'no verify'1L)
     '?"CURLOPT_SSL_VERIFYPEER "+Str(res)
-    If useragent="" Then useragent="freewebcar_chung"+Str(Int(Rnd*1000))
+    If InStr(url,"google")<=0 Then
+    	useragent="freewebcar_chung"'+Str(Int(Rnd*1000))
+    Else
+      useragent="Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.186 Safari/535.1"
+    EndIf 
     res=curl_easy_setopt(curl, CURLOPT_USERAGENT, useragent)
     'guinotice "CURLOPT_USERAGENT "+Str(res)
+    res=curl_easy_setopt( curl, CURLOPT_FAILONERROR, 1L)
     '' execute..
+    
+    myidata=0
     Var retcode=curl_easy_perform( curl )
+    /'If retcode<>0 Then
+    	Sleep 2000
+    	guinotice "curl code="+Str(retcode)
+    	myidata=0
+    	retcode=curl_easy_perform( curl )
+    EndIf
+    If retcode<>0 Then
+    	Sleep 2000
+    	guinotice "curl code="+Str(retcode)
+    	myidata=0
+    	retcode=curl_easy_perform( curl )
+    EndIf '/
+
     '?"retcode="+Str(retcode)
     If retcode<>0 Then
-    	If auxtest>1.01 Then guinotice "error curl="+Str(retcode)+"  "+url'curl_easy_strerror(retcode))
+    	If auxtest>0.61 Then guinotice "error curl="+Str(retcode)+"  "+url'curl_easy_strerror(retcode))
     	myidata=0
     EndIf
     'myztext+=Chr(0)
@@ -111,12 +132,24 @@ Var url=host
     'For i=0 To myidata
     '	recvdata(i)=myztext[i]
     'Next
+    
+    If myidata>=0 Then 
+     For i=0 To 10
+      	recvdatacurl(myidata+i)=0
+     Next
+    EndIf  
+    
 If tquitweb=1 Or quit=1 Then Return 0
-'guinotice Str(myidata)
+'guinotice url+"="+Str(myidata)
    httpon=0
-   If InStr(LCase(httphost),"google")>0 And InStr(UCase(Left(recvbuffer,30)),"HTTP")>0 Then
-   	httpon=-1:httpidata=-httpidata:Return 0
-   EndIf
+   /'If InStr(LCase(httphost),"nominatim")>0 Then 'And InStr(UCase(Left(recvbuffer,30)),"HTTP")>0 Then
+      guinotice url+"="+Str(myidata)
+   	For i=0 To 500
+   		recvbuffer[i]=recvdatacurl(i)
+   	Next
+   	If auxtest>-0.68 Then guinotice Left(recvbuffer,500)
+   	'httpon=-1:httpidata=-httpidata:Return 0
+   EndIf'/
 Return myidata
 End Function 
 /'

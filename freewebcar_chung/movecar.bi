@@ -34,6 +34,7 @@ Dim Shared As Single poids=1,p1,p2,pz3,py3,vplane,dirv,vkm,v0,vkm2,vkm20,xkm,ykm
 Dim Shared As Integer joystick=0,jet,jetspace
 Dim Shared As Single speed,speed1,speed2,tvol,tvol1,tvol2',vcruise=30
 Dim Shared As Single queuex,queuey,queuez,pitchx,pitchy,pitchz
+Dim Shared As Double taccelere,taccelere2
 Sub stopvol
 mcisendstring("setaudio avion volume to "+str$(0),0,0,0)
 mcisendstring("setaudio avion2 volume to "+str$(0),0,0,0)	
@@ -46,6 +47,7 @@ If volume>=549 Then
 Else
 	volume2=min2(1000,int(850*soundvol*0.05))	
 EndIf
+If Time2<taccelere2+0.3 Then volume2=min2(1000,Int(volume2+200*2.8*(taccelere2+0.3-Time2)))
 If typeavion=13 Then volume2=Int(volume2*0.5)'ballon
 mcisendstring("setaudio avion volume to "+str$(volume2),0,0,0)
 mcisendstring("setaudio avion2 volume to "+str$(volume2),0,0,0)
@@ -56,18 +58,19 @@ volumecar2=min2(690,1+int(volumecar*soundvol*0.05))
 mcisendstring("setaudio mycar volume to "+str$(volumecar2),0,0,0)
 mcisendstring("setaudio mycar2 volume to "+str$(volumecar2),0,0,0)
 End Sub
+Dim Shared As Single kjoy=0.8,kmotor=1
 Dim Shared As String avion,avionname(20)
 Sub initavion
 Dim As String soundfic
 If typeavion<1 Then typeavion=8
-If typeavion>13 Then typeavion=1
+If typeavion>15 Then typeavion=1
 avionname(0)="car"
 avionname(1)="avion1"
 avionname(2)="avion2"
 avionname(3)="avion3"
 avionname(4)="avion4"
 avionname(5)="avion5"
-avionname(6)="avion6"
+avionname(6)="zero"
 avionname(7)="jet3"
 avionname(8)="jet4"
 avionname(9)="jet5"
@@ -75,17 +78,36 @@ avionname(10)="space1"
 avionname(11)="space2"
 avionname(12)="c150"
 avionname(13)="ballon"
+avionname(14)="737"
+avionname(15)="copter"
+kjoy=1
+kmotor=1
 If car<=0 Then
 	avion=avionname(typeavion)
 Else
 	If car=1 Then 
-		avion="car"
+		avion="ford_mustang"'"car"
+		kjoy=0.75
+		kmotor=1.7
 	ElseIf car=2 Then 
-		avion="car2"
+		avion="fiat"
+		kjoy=0.93
+		kmotor=1
+	ElseIf car=3 Then 
+		avion="nissan"'car3
+		kjoy=0.88
+		kmotor=1.1
+	ElseIf car=4 Then 
+		avion="chevy"'"car3"
+		kjoy=0.78
+		kmotor=1.4
 	Else 
-		avion="car3"
+		avion="cadillac"
+		kjoy=0.77
+		kmotor=1.38
 	EndIf
 EndIf
+If car>0 Then kmotor*=1.1
 kpitch=1:kroll=1:kqueue=1:kprop=1
 poids=1
 vcruise=18
@@ -99,6 +121,12 @@ rroll=kaux:rpitch=kaux:rqueue=kaux:rv=0.01 'resistances
    vcruise=32
    altmax=70000'10000
 'end If	
+If avion="737" then
+   kpitch=0.5:kroll=0.5:kqueue=0.5:kprop=3'1.5
+   poids=2.2
+   vcruise=53
+   altmax=150000'10000
+End If	
 If avion="c150" then
    kpitch=0.7:kroll=0.7:kqueue=0.7:kprop=1.5
    poids=1.2
@@ -124,6 +152,12 @@ If avion="car3" Then
    altmax=70000
 End if
 If avion="ballon" Then
+   kpitch=0.8:kroll=2:kqueue=2:kprop=1.5
+   poids=0.15
+   vcruise=5.0
+   altmax=70000
+End If
+If avion="copter" Then
    kpitch=0.8:kroll=2:kqueue=2:kprop=1.5
    poids=0.15
    vcruise=5.0
@@ -161,10 +195,10 @@ if avion="avion5" then
    vcruise=28
    altmax=70000
 end if
-if avion="avion6" Then'zero
+if avion="zero" Then'zero
    kpitch=0.9:kroll=0.9:kqueue=1:kprop=1.2
    poids=0.9
-   vcruise=22
+   vcruise=32'22
    altmax=70000
 end if
 If avion="jet2" then
@@ -206,9 +240,11 @@ if avion="space2" then
 end If
 altmax=altmax/2.2'2.5
 soundfic="sounds/"+avion+".mp3"
+If avion="737" Then soundfic="sounds/jet3.mp3"
 If avion="c150" Then soundfic="sounds/avion1.mp3"
 If avion="ballon" Then soundfic="sounds/avion5.mp3"
-If avion="avion6" Then soundfic="sounds/avion3.mp3"
+If avion="copter" Then soundfic="sounds/copter.mp3"
+If avion="zero" Then soundfic="sounds/avion3.mp3"
 If avion="jet5" Then soundfic="sounds/jet4.mp3"
 If avion="space1" Then soundfic="sounds/jet4.mp3"
 If avion="space2" Then soundfic="sounds/jet4.mp3"
@@ -273,12 +309,12 @@ EndIf
 	dmz+=pitchz*joy 
 End Sub
 Sub keyLeft(ByVal joy0 As Single=2)
-joy=joy0
+joy=joy0*kjoy
 if tourelle=1 Then
 	to1=to1+joy
 Else
    If car>=1 Then
-   	if abs(v)<1 then soundmoteur
+   	if abs(v)<1 And joy0>1 Then soundmoteur
       volantrot+=joy*40
    	joy=joy*4*Sgn2(dirv)
    	queue2
@@ -290,12 +326,12 @@ Else
 EndIf
 End Sub
 Sub keyRight(ByVal joy0 As Single=2)
-joy=-joy0
+joy=-joy0*kjoy
 if tourelle=1 Then
 	to1=to1+joy
 Else
    If car>=1 Then
-   	if abs(v)<1 then soundmoteur
+   	if abs(v)<1 And joy0>1 Then soundmoteur
       volantrot+=joy*40
    	joy=joy*4*Sgn2(dirv)
    	queue2
@@ -307,7 +343,7 @@ Else
 EndIf
 End Sub 
 Sub keyleft2
-joy=1
+joy=1*kjoy
 if tourelle=1 Then
 	to1=to1+joy
 Else
@@ -321,7 +357,7 @@ Else
 EndIf
 End Sub 
 Sub keyright2
-joy=-1
+joy=-1*kjoy
 if tourelle=1 Then
 	to1=to1+joy
 Else
@@ -335,12 +371,12 @@ Else
 EndIf
 End Sub
 Sub keyup
-joy=-2
+joy=-2*kjoy
 If tourelle=1 Then
 	to2=to2-joy
 Else
 	If car>=1 Then
-		if abs(v)<3 then soundmoteur:mx+=dmx*4*kfps:my+=dmy*4*kfps
+		if abs(v)<2.5 then soundmoteur:mx+=dmx*4*kfps:my+=dmy*4*kfps
 	Else 
    	joy=1.5*joy:klevel=0.4
 	   pitch2
@@ -348,12 +384,13 @@ Else
 EndIf
 End Sub
 Sub keydown
-joy=2
+joy=2*kjoy
 If tourelle=1 Then
 	to2=to2-joy
 Else
 	If car>=1 Then
-		if v>-3 And v<0.5 then soundmoteur:mx-=dmx*4*kfps:my-=dmy*4*kfps
+		if v>=0 And v<0.25 then soundmoteur:mx-=dmx*1.2*kfps:my-=dmy*1.2*kfps
+		If v<0 And v>-2 then soundmoteur:mx-=dmx*1*kfps:my-=dmy*1*kfps
 	Else 
 	   joy=1.5*joy:klevel=0.4
    	pitch2
@@ -427,16 +464,38 @@ Else
 EndIf
 End Sub
 Sub accelere
-volume=min2(2550,volume+30*kfps)
+taccelere2=Time2	
+'If time2>taccelere and car>0 Then
+'	taccelere=max(time2-0.12,taccelere+kfps*0.12)
+'	Exit Sub
+'EndIf
+taccelere=time2+0.5 
+volume=min2(2550,volume+30*kfps*kmotor)
 setvol
 End Sub 
 Dim Shared As Single suspension
+Dim Shared As Double tdecelere
 Sub decelere
 If volume>=550 Then volume=max2(550,volume-30*kfps)
 suspension=3
 if mz<=mzsol0 Then
-	v=v-v*0.1*0.5*kfps+0.000001-0.03*kfps
+	If car>0 Then
+		v=v-v*0.1*0.5*kfps+0.000001-0.03*kfps
+	Else 
+		v=v-v*0.1*0.125*kfps+0.000001-0.008*kfps
+	EndIf
 	If Abs(v)<0.5 Then v=0:vmx2=0:vmy2=0
+EndIf
+If time2>tdecelere+2 And time2<tdecelere+4 Then
+	tdecelere=time2-2.1
+	If car>0 Then
+		v=v-v*min(0.9,0.1*0.25*kfps)+0.000001
+	Else 
+		v=v-v*min(0.9,0.1*0.06*kfps)+0.000001
+	EndIf
+	If Abs(v)<0.5 Then v=0:vmx2=0:vmy2=0
+ElseIf time2>tdecelere+4.1 Then 
+	tdecelere=time2	
 EndIf
 If jetspace=1 Then 
    volume=max2(550-1100,volume-60*kfps)
@@ -445,8 +504,16 @@ setvol
 End Sub 
 Sub brakes
 suspension=3
+If v>12 Then suspension=2
 If mz<=mzsol0+0.01 Then
-	v=v-v*0.1*kfps+0.000001
+	If car=0 Then
+		v=v-v*min(0.9,0.1*kfps)
+	Else 
+		Var kv=min(0.9,0.03*kfps)
+		v-=(v)*kv
+		vmx2-=(vmx2)*kv
+		vmy2-=(vmy2)*kv
+	EndIf
 	If Abs(v)<0.5 Then v=0:vmx2=0:vmy2=0
 EndIf
 setvol
@@ -457,6 +524,11 @@ If tspeed>0 Then
 Else
  'speed=int(min(2200,max(550,volume*0.5+v*1000/25)))
  speed=int(min2(2190,max2(550,volume*0.5+v*700/vcruise)))
+ 'carb=min(1020.0,carb)
+ If carb<1001 And prop>1000 And car>0 Then
+ 	speed=Int(min2(2190,speed*2))
+ 	volume-=kfps*50
+ EndIf
  tvol=time0
  If abs(speed1-speed)>20 then
   if tvol>(tvol1+100) or tvol<tvol1 then
@@ -516,6 +588,7 @@ End Sub
 Dim Shared As Integer mapdisplay=0
 Dim Shared As Double tcrashz,mzcrash
 Sub testcrash
+If guitestkey(vk_up) Or guitestkey(vk_down) Or guitestkey(vk_left) or guitestkey(vk_right) Then Exit Sub 
 If plane=1 And mapdisplay<>4 Then 
 	If Abs(v)>4 Then
 		soundcrash
@@ -526,10 +599,10 @@ If plane=1 And mapdisplay<>4 Then
    	'Else
    		Sleep 1300
 	      If prop>50 Then
-	      	v=vcruise:mx-=dmx*40:mz-=dmz*40-70:my-=dmy*40:o1=o1+Sgn(Rnd-0.5)*45
+	      	v=vcruise:mx-=dmx*40:mz-=dmz*40-70:my-=dmy*40:o1=o1+Sgn(Rnd-0.5)*45*0.5
 	      Else 
 	         mx-=dmx*40:my-=dmy*40:mz-=dmz*40
-	         If myboat=0 Then o1=o1+Sgn(Rnd-0.5)*45
+	         If myboat=0 Then o1=o1+Sgn(Rnd-0.5)*45*0.5
 	      EndIf
 	      'irrsetnodeposition(cameranode,mx,mz,my)
 	      vmz3=0
@@ -542,7 +615,7 @@ If plane=1 And mapdisplay<>4 Then
 	v=0
 EndIf
 End Sub 
-Dim Shared As Integer aterrissage,piste,tdrawwind
+Dim Shared As Integer aterrissage,piste,tdrawwind,piste0
 Dim Shared As Single windvx,windvy,windco1,windsi1
 Dim Shared As Single pistez,pz
 Dim Shared As Single dmmx,dmmy,dmmz,o22,o33,sin22,sin33,vmx1,vmy1,vmz1,mzh=25
@@ -624,7 +697,8 @@ timemove=Timer
 Var dkfps=min(6.0,(timemove-timemove0)*30)'kfps
 mx+=vmx2*dkfps*kvaux:my+=vmy2*dkfps*kvaux:mz1+=vmz2*dkfps*kvaux
 End Sub
-Dim Shared As Integer ntownnear
+Dim Shared As Integer ntownnear,ntownnear0
+Dim Shared As Single do22,do33
 Sub move
 If avion="ballon" Then
 	o3=max(-30.0,min(30.0,o3))
@@ -634,6 +708,14 @@ If avion="ballon" Then
 	If o3>18 Then o1+=kfps*(o3-18)*0.0085
 	If o3<-18 Then o1+=kfps*(o3+18)*0.0085
 EndIf
+If avion="copter" Then
+	vmz3=0
+	mz1+=max(0.0,(v+prop*0.0003)*(0.002+sin2)*kfps)
+	mz1-=max(0.0,(1500-prop)*0.002*kfps)
+	If Abs(sin3)>0.6 Then o2=max(-85.0,o2-Abs(sin3*cos2)*0.25*kfps)
+	If o2<-80 Then o1+=o3:o3=0	
+EndIf
+
 'movewind()
 'If carb<=0.1 then prop=0:volume=550 else carb=max(0.01,carb-0.000003*prop*v*kfps)
 If carb<=0.1 Then
@@ -643,8 +725,8 @@ ElseIf jetspace=0 Then
 Else 
 	carb=max(0.01,carb-0.00005*Abs(prop)*kfps)
 EndIf
-If (mz>=mzsol00+0.01) Then aterrissage=1
-If mz<=(min(mzsol0,mzsol00+10)+0.0000001) Then
+If (mz>=mzsol00+0.102) Then aterrissage=1
+If mz<=(min(mzsol0,mzsol00+10)+0.1) Then
    'ysol0=NGetTerrainHeight(Terrain,x,z)+yh
    piste=0'mytestairport() Or piste
    If piste=1 Then
@@ -682,11 +764,16 @@ If mz<=(min(mzsol0,mzsol00+10)+0.0000001) Then
    		If mz<=(waterz+mzh) Then 
    			If ntownnear<2 Then soundwaterwave
    		EndIf
-         v=v*0.85+1e-20
+         v-=v*0.0002*kfps'v*0.85+1e-20
       End if
    end If
+   If o2<-0.4 Then
+   	o2*=-0.8
+   Else
+   	o2=max(-0.1,o2)
+   EndIf
    'mz=mzsol0
-   mz1=mzsol0
+   mz1=mzsol0+0.09
    'piste=0
    'for ipiste=1 to npiste
    '   if abs(ypiste(ipiste)-my)<100 then
@@ -711,12 +798,30 @@ If mz<=(min(mzsol0,mzsol00+10)+0.0000001) Then
       o3=o33-0.75*(o3-o33)
    else
       o3=o33
-      If piste=1 then o3=0:sin3=0
+      If piste=1 Or piste=2 Then
+      	o3=0:sin3=0
+      	If plane>0 And car=0 Then o2=max(-0.1,o2)
+      EndIf
    end If
-   if piste=0 then
-      o2=o2+(Rnd-0.5)*0.74*min(1.1,abs(v)/5)
-      o3=o3+(rnd-0.5)*0.74*min(1.1,abs(v)/2)
+   if piste=0 Then
+     If Rnd<0.75*kfps Then 	
+       do22=(Rnd-0.5)*0.74*min(1.1,abs(v)/5)
+       do33=o3+(Rnd-0.5)*0.74*min(1.1,abs(v)/2)
+     EndIf
+     o2+=do22
+     o3+=do33
    end If
+   'cos2=Cos(o2*degtorad)
+   sin2=sin(o2*degtorad)
+   sin3=sin(o3*degtorad)
+   cos3=Cos(o3*degtorad)
+Else
+   If Rnd<0.75*kfps Then  
+     do22=(Rnd-0.5)*0.3*min(1.3,abs(v)/60)
+     do33=(Rnd-0.5)*0.6*min(1.3,abs(v)/60)
+   EndIf
+   o2+=do22
+   o3+=do33
    'cos2=Cos(o2*degtorad)
    sin2=sin(o2*degtorad)
    sin3=sin(o3*degtorad)
@@ -730,7 +835,8 @@ pz3=p2*cos3
 'vcruise=18
 'altmax=10000
 'air=max(0.1,min(2.0,(altmax-mz)/altmax))
-air=max(0.1,(altmax)/(altmax+Abs(mz)))
+'air=max(0.1,(altmax)/(altmax+Abs(mz)))
+air=max(0.1,(altmax)/(altmax+Abs(mz-mzsol0*0.79*mzsol0/max(3000.0,mzsol0))))'0.79
 Var air0=air
 If v>1000.0/17 Or tsphere=1 Then
 	If jet=1 Then air*=0.6 Else air0=0
@@ -755,21 +861,21 @@ joy=kaux*vroll:roll3
 joy=kaux*vpitch:pitch3
 joy=kaux*vqueue:queue3
 sin2=sin(o2*degtorad)
-Var rv2=rv
-If v>950.0/17 And v<1000.0/17 Then
+Var rv2=rv,k17=17*0.33
+If v>950.0/k17 And v<1000.0/k17 Then
  If tsphere=0 Then 	
-	rv2=min(0.99,rv+0.07/(1001.0-v*17))
+	rv2=min(0.99,rv+0.07/(1001.0-v*k17))
 	If jet=0 Then air0*=rv/rv2
  EndIf 
 EndIf
 If jetspace=1 Then air0=(air0+2)/3
 Var vmax=3000.0/max(0.1,min(1.0,air*1.7))
-v=max(-10.0,min(vmax/17,v+0.7*kfps*(air0*prop*poids/8000-air*v*rv2+p1)+1e-20))
+v=max(-10.0,min(vmax/k17,v+0.7*kfps*(air0*prop*poids/8000-air*v*rv2+p1)+1e-20))
 'v=v+air*prop*poids/8000-air*v/100+p1
 'v=v+prop/4000-0.02*v
 If v<0 Then v=v-1.4*kfps*air*v*rv+1e-20
 If v>-0.09 And v<0.03 then v=0
-If v0<=1000.0/17 And v>1000.0/17 Then
+If v0<=1000.0/k17 And v>1000.0/k17 Then
 	If tsphere=0 Then soundshoot
 EndIf
 v0=v
@@ -800,51 +906,83 @@ vmz2=vmz2+vmz3
 kvaux=1.0'5.9
 timemove0=timemove
 timemove=Timer
-Var dkfps=min(6.0,(timemove-timemove0)*30)*0.6'kfps
+Var dkfps=min(6.0,(timemove-timemove0)*30)*0.4'0.6'kfps
+If tautopilot=0 Then dkfps*=1.2
 
 mx+=vmx2*dkfps*kvaux:my+=vmy2*dkfps*kvaux:mz1+=vmz2*dkfps*kvaux
 mz11=min(mz1,mz11)
 End Sub
-Dim Shared As Integer rebond,tonneau,pneu,ipneu,mytestbridge
+Dim Shared As Double ttonneau
+Dim Shared As Integer rebond,tonneau,pneu,ipneu,mytestbridge,testweb
 Dim Shared As Single do300
 Dim Shared As Single vm20,vm2,do222,o222,ko222=1,cos222,sin222,scalexy=1,scalexyh=1
+Declare Function gettestroadtree(x As Single,y As Single)As Integer
+Declare Function gettestnear0road(x As Single,y As Single,layer As Integer=0,inear0 As Integer=0)As Integer
+Function getterrainheightpiste(x As Single,y As Single)As Single
+Var z=getterrainheight(x,y)-8
+If gettestnear0road(x,y)>=1 Then z+=8
+Return z
+End Function
 Sub movecar 
 Dim As Single carmx,carmy,mmy1,mmy2,mmy3,mmy4,o20,o30',o33
+If time2<timeinit+10 Then Exit Sub 
 If volume<549 Then 
 	volume=min2(550,volume+1+30*kfps)
 	setvol
 EndIf
 If orbit=0 And planet=1 Then 
 	movespace
-ElseIf car<=0 And (piste=0 Or v>4) Then
+ElseIf car<=0 And (piste=0 Or v>vcruise*0.134) Then
    If plane=1 Then move
 Else
 	carb=max(0.01,carb-0.00002*Abs(prop)*kfps)
-   carmx=42.0:carmy=30.0
+   carmx=32.0:carmy=24.0
    mmx=carmx*cos1+carmy*sin1
    mmy=carmx*sin1-carmy*cos1
-   mmy1=getterrainheight(mx+mmx,my+mmy) 'front left
-   mmy4=getterrainheight(mx-mmx,my-mmy) 'back right
+   mmy1=getterrainheightpiste(mx+mmx,my+mmy) 'front left
+   mmy4=getterrainheightpiste(mx-mmx,my-mmy) 'back right
    mmx=carmx*cos1-carmy*sin1
    mmy=carmx*sin1+carmy*cos1
-   mmy2=getterrainheight(mx+mmx,my+mmy) 'front right
-   mmy3=getterrainheight(mx-mmx,my-mmy) 'back left
+   mmy2=getterrainheightpiste(mx+mmx,my+mmy) 'front right
+   mmy3=getterrainheightpiste(mx-mmx,my-mmy) 'back left
    If mytestbridge=1 Then
    	o2=0
-   ElseIf mz<=mzsol0 Then
+   ElseIf mz<=mzsol0+0.1 Then
      mz=mzsol0
-     o20=o2:o30=o3
-     piste=mytestairport() Or piste
-     If piste=1 Then
-      o2=0:o3=Cos((o1-boato1(10))*degtorad)*boato3(10)+Sin((o1-boato1(10))*degtorad)*boato2(10)
-     Else  	
+     o20=o2:o30=o3 
+     'piste=mytestairport() Or piste
+     piste=piste0
+     If 0 Then'piste=1 Then
+      'o2=0:o3=Cos((o1-boato1(10))*degtorad)*boato3(10)+Sin((o1-boato1(10))*degtorad)*boato2(10)
       o2=atn( (max(mmy1,mmy2)-max(mmy3,mmy4))/(carmx+carmx) )*radtodeg
       o3=Atn( (max(mmy1,mmy3)-max(mmy2,mmy4))/(carmy+carmy) )*radtodeg
-      'o2=atn( ((mmy1+mmy2)/2-(mmy3+mmy4)/2)/(carmx+carmx) )*radtodeg
-      'o3=Atn( ((mmy1+mmy3)/2-(mmy2+mmy4)/2)/(carmy+carmy) )*radtodeg
-      Var do2=(Rnd-0.4)*0.5045*min(1.1,abs(v)/4.5)
-      o2=o2-do2:o222+=o2-do2
-      o3=o3+(Rnd-0.5)*0.5045*min(1.1,abs(v)/4.5)
+     Else  	
+      'o2=atn( (max(mmy1,mmy2)-max(mmy3,mmy4))/(carmx+carmx) )*radtodeg
+      'o3=Atn( (max(mmy1,mmy3)-max(mmy2,mmy4))/(carmy+carmy) )*radtodeg
+      o2=atn( ((mmy1+mmy2)/2-(mmy3+mmy4)/2)/(carmx+carmx) )*radtodeg
+      o3=Atn( ((mmy1+mmy3)/2-(mmy2+mmy4)/2)/(carmy+carmy) )*radtodeg
+      If Rnd<0.79*kfps Then 
+       If piste=0 Then 
+       	'do22=(Rnd-0.4)*0.94045*min(1.1,abs(v)/4.5)
+         'do33=(Rnd-0.5)*1.1045*min(1.1,abs(v)/4.5)
+       	do22=(Rnd-0.4)*3*0.94045*min(1.1,abs(v)/4.5)
+         do33=(Rnd-0.5)*3*1.1045*min(1.1,abs(v)/4.5)
+       Else
+       	Var rnd2=Rnd,rnd3=Rnd
+       	do22=(Rnd-0.4)*rnd2*Rnd2*3*0.4845*min(1.1,abs(v)/4.5)
+         do33=(Rnd-0.5)*Rnd3*Rnd3*2*0.4855*min(1.1,abs(v)/4.5)
+       EndIf 	
+      EndIf  
+      o2=o2-do22:o222-=do22'(o2-do22)-o2
+      o3=o3+do33
+      If do22>(0.85-0.4)*0.94045*1.1 Then
+      	If Rnd<0.84 Then
+      		addcarsmoke()
+      	Else
+      		soundpneu()
+      	   If Rnd<0.80 Then soundmetal()
+      	EndIf
+      EndIf
      EndIf 
      if rebond=1 Then
       rebond=0
@@ -910,19 +1048,34 @@ Else
   vmz3=0
   'Var v8=0.80:If tautopilot=0 Then v8=0.33
   Var v8=1.3':If tautopilot=0 Then v8=1.2
-  if (abs(dvmx2-vmx2)+abs(dvmy2-vmy2)+abs(dvmz2-vmz2))>v8 then'*kfps Then'2.5
+  If tautopilot=0 Then
+   If (abs(dvmx2-vmx2)+abs(dvmy2-vmy2)+abs(dvmz2-vmz2))>v8*kfps then'*kfps Then'2.5
      pneu=1
-     do3=do3*0.7+0.3*( (dvmx2-vmx2)*sin1-(dvmy2-vmy2)*cos1 )+1e-10
-  else
-     do3=do3*0.7+0.3*( (dvmx2-vmx2)*sin1-(dvmy2-vmy2)*cos1 )+1e-10
+     do3=do3*0.7+0.3*( (dvmx2-vmx2)*sin1-(dvmy2-vmy2)*cos1 )*0.9+1e-10
+   Else
+     do3=do3*0.7+0.3*( (dvmx2-vmx2)*sin1-(dvmy2-vmy2)*cos1 )*0.9+1e-10
      'do3=0.7*do3+1e-10
-  EndIf 
+   EndIf 
+  Else  
+   If (abs(dvmx2-vmx2)+abs(dvmy2-vmy2)+abs(dvmz2-vmz2))>v8 then'*kfps Then'2.5
+     pneu=1
+     do3=do3*0.7+0.3*( (dvmx2-vmx2)*sin1-(dvmy2-vmy2)*cos1 )*1.3+1e-10
+   Else
+     do3=do3*0.7+0.3*( (dvmx2-vmx2)*sin1-(dvmy2-vmy2)*cos1 )*1.3+1e-10
+     'do3=0.7*do3+1e-10
+   EndIf
+  EndIf  
 EndIf
 o3=o33+do3+do30
 While o3>180:o3-=360:Wend
 While o3<-180:o3+=360:Wend
 'If cos3<0.75 then
-If Abs(o3)>35 then
+'auxvar=o2:auxtest=0.2
+If Abs(o3)>40 Then
+   If Timer>max(ttonneau,timeinit)+20 Then 	
+      ttonneau=Timer
+      testweb=1
+   EndIf    
    If tonneau=0 Then
    	do30=sin3*50:o3=o3+do30:soundcrash
    	If do30>0 Then do300=20 Else do300=-20
@@ -934,6 +1087,17 @@ If Abs(o3)>35 then
    mx-=2*do300*sin1:my+=2*do300*cos1
    If mz<(getterrainheight(mx,my)+mzh) Then mx=mx0:my=my0:tonneau=0:do30=0:do300=0:o3=0
 Else
+	If Abs(o3)>35-10+scalez Or Abs(o2)>35-10+scalez Then
+		If Timer>max(ttonneau,timeinit)+30 Then
+			ttonneau=Timer
+			testweb=1
+		EndIf
+	elseIf Abs(o3)>25-10+scalez Or Abs(o2)>25-10+scalez Then
+		If Timer>max(ttonneau,timeinit)+60 Then
+			ttonneau=Timer
+			testweb=1
+		EndIf
+	EndIf
    tonneau=0
    do30=0:do300=0
 EndIf
@@ -953,12 +1117,14 @@ If pneu=1 Then
 '	ipneu=0
 EndIf
 kaux=0.92
+kaux=1-(1-kaux)*max(0.001,min(1.0,0.196*kfps))
 vmx2=kaux*vmx2+(1-kaux)*dvmx2
 vmy2=kaux*vmy2+(1-kaux)*dvmy2
 vmz2=kaux*vmz2+(1-kaux)*dvmz2	
 kvaux=0.8
-Var kvaux2=kvaux*0.6'0.8
+Var kvaux2=kvaux*0.4'0.8
 'If scalexy>1.1 Then kvaux2*=0.5
+If tautopilot=0 Then kvaux2*=1.7
 timemove0=timemove
 timemove=Timer
 Var dkfps=min(6.0,(timemove-timemove0)*30)'kfps
@@ -967,6 +1133,8 @@ EndIf
 End Sub
 Dim Shared As Integer tinitloadmx=0
 Dim Shared As Single loadmx,loadmy,loadmz
+Dim Shared As Single mxold,myold,mzold,scalezold
+Declare Sub subsettupdate()
 Sub testmz
 Dim As Single aux
 If orbit=0 And planet=1 Then
@@ -984,11 +1152,12 @@ Else
     mz1=min(mz1+vmz*kfps,250000.0)'75000.0)'52000.0)
       mzsol0 =(getterrainheight(mx, my )+mzh)'+25',ysolpiste)
       mzsol00=mzsol0
+      mxold=mx:myold=my:mzold=mzsol0-mzh:scalezold=scalez
       mzsol0=max(mz11,mzsol0) 
       If (mz1>mzsol0) And (car>=1 Or plane=0) Then
       	vmz=vmz-4.0*kfps	 
       EndIf
-      If (car>=1 Or plane=0 or v<7)And avion<>"ballon" Then aux=3.0 Else aux=0.00004'0.1
+      If (car>=1 Or plane=0 or v<7)And avion<>"ballon" And avion<>"copter" Then aux=3.0 Else aux=0.00004'0.1
       If mz1>(mzsol0+aux) And (piste=0 Or v>1) Then '3.0) Then 
       	mz=mz1
       Else
@@ -1002,6 +1171,7 @@ Else
       	'	mx=mx0:my=my0:mz=mz0 'cant climb
       	'EndIf 	
       EndIf
+      piste=0
       If plane=0 Or car>0 Then
      	   If mz>mzsol00+500 Then
      	   	mz=min(mzsol00+500,mz)
@@ -1010,18 +1180,23 @@ Else
             mzsol0=min(mz,mzsol0)
             mzsol00=min(mz,mzsol00)
      	   EndIf
-      ElseIf mz>mzsol00+7000 Then  	
+     	   piste=piste0
+      ElseIf mz>mzsol00+20000 And tinittown0=0 Then   	
      	      If tinitloadmx=0 Then
      	         tinitloadmx=1
      	         'mx=loadmx:my=loadmy
      	         mz=loadmz
      	      Else 
-     	      	mz=min(mzsol00+1400,mz)
+     	      	mz=min(mzsol00+19000,mz)
      	      EndIf
             mz1=min(mz,mz1)
             mz11=min(mz,mz11)
             mzsol0=min(mz,mzsol0)
             mzsol00=min(mz,mzsol00)
+     	      subsettupdate()
+      ElseIf mz<mzsol00+mzh+0.1 Then
+      	   piste=piste0
+      	   'If plane>0 And car=0 Then o2=max(-5,o2)
       EndIf 	
       mz11=max(mzsol00,mz11-kfps)
       If (plane=0 Or car>0) Then mz1=mz11
@@ -1064,6 +1239,7 @@ Declare Sub subtopview()
 Declare Sub subfoot()
 Declare Sub subretroviseur()
 Dim Shared As Integer topview=0,mapdisplay0=0,tloadmapdisplay=0,testjoy,testjoy2
+Dim Shared As Single cocko1,cocko2
 Sub keyplane
 	
 If guitestkey(vk_LEFT)<>0 then keyLeft
@@ -1073,6 +1249,7 @@ if guitestkey(vk_DOWN)<>0 Then keydown
 If guitestkey(vk_PRIOR)<>0 Then accelere 'pageup
 if guitestkey(vk_NEXT)<>0 then decelere 'pagedown
 if guitestkey(vk_CONTROL)<>0 then brakes
+if guitestkey(vk_shift)<>0 then brakes
 If guitestkey(vk_add)<>0 then accelere '+
 if guitestkey(vk_subtract)<>0 then decelere '-
 If guitestkey(vk_NUMPAD4)<>0 then keyLeft
@@ -1102,16 +1279,29 @@ EndIf
 If guitestkey(vk_z)<>0 And guitestkey(vk_control)<>0 Then
 	'subtopview
 EndIf
-If guitestkey(key2(vk_A))<>0 then keyLeft
-if guitestkey(key2(vk_E))<>0 then keyRight
-If guitestkey(key2(vk_Q))<>0 then keyleft2
-if guitestkey(key2(vk_D))<>0 then keyright2
-if guitestkey(key2(vk_Z))<>0 And guitestkey(vk_control)=0 then keyup
-if guitestkey(key2(vk_S))<>0 then keydown
-If guitestkey(vk_n) Or(guitestkey(vk_up) And car>0 And plane=1 And tourelle=0) Then accelere
-if guitestkey(vk_b) Or(guitestkey(vk_down)And car>0 And plane=1 And tourelle=0) Then decelere
-If guitestkey(vk_SPACE)<>0 Then
-	If mapdisplay=0 Then keytir Else mapdisplay=0:Sleep 300:guiscan
+If car>0 Or volant<>2 Then 
+ If guitestkey(key2(vk_A))<>0 then keyLeft
+ If guitestkey(key2(vk_E))<>0 then keyRight
+ If guitestkey(key2(vk_Q))<>0 then keyleft2
+ If guitestkey(key2(vk_D))<>0 then keyright2
+ If guitestkey(key2(vk_Z))<>0 And guitestkey(vk_control)=0 then keyup
+ If guitestkey(key2(vk_S))<>0 then keydown 
+EndIf  
+If guitestkey(vk_b)<>0 Or(guitestkey(vk_down)And car>0 And plane=1 And tourelle=0) Then decelere
+If guitestkey(vk_n)<>0 Or(guitestkey(vk_up) And car>0 And plane=1 And tourelle=0) Then accelere
+If guitestkey(vk_SPACE)<>0 And guitestkey(vk_left)=0 And guitestkey(vk_right)=0 Then
+	If plane=0 Or car>0 Then Sleep 200:guiscan
+	If  guitestkey(vk_left)=0 And guitestkey(vk_right)=0 Then
+		If mapdisplay=0 Then
+			If volant<>2 Or max(Abs(cocko1),Abs(cocko2))<0.01 Then
+				keytir
+			Else 
+				cocko1=0:cocko2=0:Sleep 300:guiscan
+			EndIf
+		Else
+			mapdisplay=0:Sleep 300:guiscan
+		EndIf
+	EndIf
 Else
 	tcarhorn=0
 EndIf
@@ -1120,11 +1310,25 @@ If guitestkey(vk_k)<>0 Then
 		ikey0(vk_k)=1
 		If car<=0 Then 
 			volant=(volant+1)Mod 7
-			If volant=1 Then volant=4
+			If volant=3 And typeavion=15 Then volant=4
+			If volant=1 Then
+				If typeavion=12 Or typeavion=15 Then'c150 'copter
+				   volant=2
+				ElseIf typeavion=14 Or typeavion=13 Then
+				   volant=3
+				Else    	
+					volant=4
+				EndIf
+			EndIf
 		Else 
 			volant=(volant+1)Mod 3
 		EndIf
 	EndIf
+   If tautopilot=1 And plane>0 And car>0 And volant>0Then
+   	showgui("win.typeauto")
+   Else
+   	hidegui("win.typeauto")
+   EndIf
 Else
 	ikey0(vk_k)=0
 EndIf
@@ -1140,7 +1344,11 @@ If guitestkey(vk_j)<>0 Then
 Else
 	ikey0(vk_j)=0
 EndIf
-If guitestkey(vk_t)<>0 Then
+'If plane>0 And car=0 Then
+'	   If guitestkey(vk_shift) Then accelere()
+'	   If guitestkey(vk_control) Then decelere()	
+'EndIf
+If guitestkey(vk_t)<>0 And guitestkey(vk_control)=0 Then
  If guitestkey(vk_shift)=0 Then 	
 	If ikey0(vk_t)=0 Then
 		ikey0(vk_t)=1:tourelle=(tourelle+1)Mod 2
@@ -1165,6 +1373,13 @@ If guitestkey(vk_c)<>0 Then
 Else
 	ikey0(vk_c)=0
 EndIf
+If guitestkey(vk_l)<>0 Then
+	If ikey0(vk_l)=0 Then
+		ikey0(vk_l)=1:compas2=(compas2+1)Mod 2
+	EndIf
+Else
+	ikey0(vk_l)=0
+EndIf
 If guitestkey(vk_f)<>0 Then
    If ikey0(vk_f)=0 Then
       ikey0(vk_f)=1:subfoot()
@@ -1174,7 +1389,7 @@ Else
 EndIf
 
 
-if joystick=1 then
+if joystick=1 Then
 ' gosub [getjoystick]
  if abs(joy1dx)>8000 then roll:testjoy=1
  if abs(joy1dy)>8000 then pitch:testjoy=1

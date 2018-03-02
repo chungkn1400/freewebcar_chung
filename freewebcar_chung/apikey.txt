@@ -2,5 +2,5 @@ AIzaSyANRP3VHNdU-bcXpWxDwZTwMh-7m53pzeA
 
 
 
-thats my key ! put here your google static map apikey (=> https://developers.google.com/maps/documentation/static-maps/get-api-key)
-to get more than my per ip google static maps apiusage quota (some thousands to 20 thousands per day) (its free)
+thats my apikey ! you can get your own too there (=> https://developers.google.com/maps/documentation/static-maps/get-api-key) or 
+continue to use my shared apikey

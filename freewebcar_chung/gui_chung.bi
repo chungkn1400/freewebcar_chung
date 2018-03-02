@@ -121,9 +121,9 @@ Dim Shared As uint guistatictextink=bgr(0,0,0),guiedittextink=bgr(0,0,0),guilist
 Dim Shared As hfont guiedittextfont=0,guistatictextfont=0,guilistboxfont=0,guibuttonfont=0
 Dim Shared As hbitmap guicontrolhbmp(nguimax)
 Dim shared As Any Ptr guigfxbuffer(nguimax)
-Dim Shared As Integer guimousex,guimousey,guikeyreturn
+Dim Shared As Integer guimousex,guimousey,guikeyreturn,guimousewheelrot
 Dim Shared As Sub() guileftmousesub(nguimax),guirightmousesub(nguimax),guimovemousesub(nguimax)
-Dim Shared As Sub() guileftmouseupsub(nguimax),guirightmouseupsub(nguimax)
+Dim Shared As Sub() guileftmouseupsub(nguimax),guirightmouseupsub(nguimax),guimousewheelsub
 Dim shared as hwnd guiopenglhwin
 dim shared as hdc  guiopenglwindc
 Dim Shared As hGLRC guiopenglhRC
@@ -174,6 +174,7 @@ For igui=0 To nguimax
 	guileftmouseupsub(igui)=0
 	guirightmouseupsub(igui)=0
 	guimovemousesub(igui)=0
+	guimousewheelsub=0
 	guiresizesub(igui)=0
 	guikeyboardsub(igui)=0
 	guicontrolhicon(igui)=0
@@ -397,6 +398,12 @@ Dim As uint i,iwindow
          redrawwindow(guihwindow(iwindow),0,0,RDW_INVALIDATE )'or RDW_UPDATENOW)
 		EndIf
  EndIf
+End Sub
+Sub guirefreshwindowh(Byval windowh As hwnd)
+		If windowh<>0 Then
+			'invalidaterect(guihwindow(iwindow),NULL,TRUE ) 
+         redrawwindow(windowh,0,0,RDW_INVALIDATE )'or RDW_UPDATENOW)
+		EndIf
 End Sub
 Sub guirefreshcontrolh(ByVal hcontrol As hwnd)
 If hcontrol<>0 Then	
@@ -653,6 +660,24 @@ Select Case uMsg
       EndIf
       Return DefWindowProc(hWin,uMsg,wParam,lParam)
    
+
+   Case WM_MOUSEWHEEL
+     if guimousewheelsub<>0 Then 
+      iwindow=0
+      For i=1 To nguiwindow
+      	If hwin = guihwindow(i) Then
+      		iwindow=i:Exit For 
+      	EndIf
+      Next
+      If iwindow>0  Then
+      	'keyshift = LoWord(wParam) 
+         guimousewheelrot = HiWord(wParam)
+         guimousewheelrot=CShort(CUShort(guimousewheelrot))
+         guimousewheelsub()
+      EndIf  
+     EndIf  
+      Return DefWindowProc(hWin,uMsg,wParam,lParam)
+
        
    Case WM_PAINT
       iwindow=0
@@ -1209,6 +1234,9 @@ If iguicontrol>0 Then
 Else
 	guinotice("trapmovemouse :"+controlname+" not fount !","warning")
 EndIf
+End Sub
+Sub trapmousewheel(ByVal mousesub As Sub())	
+	guimousewheelsub=mousesub
 End Sub
 Sub enableguih(ByVal hcontrol As hwnd)
 If hcontrol<>0 Then
@@ -1943,7 +1971,7 @@ Return hbmp
 End Function
 #Ifndef noguijpeg
 Dim Shared As uint guialpha=255 
-Function guiloadtexture(ByRef filename As String,ByVal maxcolor As uint=255, ByVal alph As uint=127) As uint 
+Function guiloadtexture(ByRef filename As String,ByVal maxcolor As uint=255, ByVal alph As uint=127,typealpha As uint=0) As uint 
 	                     'bmp jpg gif ico
 Dim As hbitmap hbmp,hbmp2
 Dim As hdc bmpdc,bmp2dc
@@ -1981,12 +2009,40 @@ EndIf
 If maxcolor<>255 Then 
   GetBitmapBits hbmp,bmpx*bmpy*4,@PicBits(1)
   k=(alph And 255) Shl 24 ' add alpha if color>maxcolor
-  For i=1 To UBound(picbits)
-	 pix=picbits(i)
-	 If ((pix And 255)+((pix Shr 8)And 255)+((pix Shr 16)And 255))>3*maxcolor Then 
-	 	picbits(i)=k Or pix
-	 EndIf
-  Next
+  Var k2=(230 And 255) Shl 24 ' add alpha if color>maxcolor
+  If typealpha=0 Then
+  	Var maxcolor3=3*maxcolor
+   For i=1 To UBound(picbits)
+	  pix=picbits(i)
+	  If ((pix And 255)+((pix Shr 8)And 255)+((pix Shr 16)And 255))>maxcolor3 Then 
+	 	 picbits(i)=k Or pix
+	  EndIf
+   Next
+  ElseIf typealpha=1 Then 
+   For i=1 To UBound(picbits)
+	  pix=picbits(i)
+	  If ((pix And 255)>maxcolor Or ((pix Shr 8)And 255)>maxcolor Or ((pix Shr 16)And 255)>maxcolor) Then 
+	 	 picbits(i)=k Or pix
+	  EndIf
+   Next
+  ElseIf typealpha=2 Then 
+   For i=1 To UBound(picbits)
+	  pix=picbits(i)
+	  If ((pix And 255)>maxcolor Or ((pix Shr 8)And 255)>maxcolor Or ((pix Shr 16)And 255)>maxcolor) Then 
+	 	 picbits(i)=k Or pix
+	  Else
+	  	 picbits(i)=k2 Or pix 
+	  EndIf
+   Next
+  Else
+  	Var kpix=(255 Shl 16)+(255 Shl 8)+255
+   For i=1 To UBound(picbits)
+	  pix=picbits(i)
+	  k=(((pix And 255)+((pix Shr 8)And 255)+((pix Shr 16)And 255))\3)
+	  If k<maxcolor Then k=0
+	  picbits(i)=(k Shl 24) Or kpix
+   Next
+  EndIf 	
   SetBitmapBits hbmp,bmpx*bmpy*4,@PicBits(1)
 EndIf 
 glGenTextures(1, @itexture)

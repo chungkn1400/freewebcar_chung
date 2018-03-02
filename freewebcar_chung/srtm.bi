@@ -46,6 +46,7 @@ Dim Shared As ZString*4000000 srtmtext
 Dim Shared As Integer isrtm,toksrtm=1
 Dim Shared As String srtmfiles(4),msgsrtm
 Dim Shared As Single srtmlati(4),srtmlngi(4),srtmdata(4,610,610)
+Dim Shared As Integer tloadwebtext2=0
 Function loadwebsrtmtext(fic As String)As Integer 
 Dim As Integer i
 i=InStr(fic,"/srtm/")
@@ -54,14 +55,14 @@ Var fic1=fic'Mid(fic,i+6)
 Var hostname="https://chungkn1400.github.io"
 Var path="mysrtm/srtm/"+fic1
 'guinotice path
-Var idata=httppostcurl(hostname,path)
+Var idata=httppost(hostname,path)
    idata=min2(idata,4000000-2)
    For i=0 To idata-1
    	srtmtext[i]=recvdata(i)
    Next
    srtmtext[idata]=0
-   'guinotice "length="+Str(Len(srtmtext)) 
-   'guinotice Left(srtmtext,400) 
+   'guinotice "length="+Str(Len(srtmtext))+"/"+Str(idata) 
+   'guinotice Left(srtmtext,400)+"/"+Str(recvdata(100))
 Return idata 
 End Function 
 Dim Shared As String srtmfolder0
@@ -104,7 +105,7 @@ If toksrtm=3 Then
 	If loadwebsrtmtext(fic)<300 Then
 		toksrtm=0
 	Else 
-		If auxtest>-0.2 Then msgsrtm="loading SRTM"
+		If auxtest>-0.2 Then msgsrtm="loaded SRTM"
 	EndIf
 EndIf
 If toksrtm=1 Or toksrtm=2 Then 
@@ -174,6 +175,14 @@ End Sub
 'If FileExists(srtmfile) Then guinotice "ok"
 'loadsrtmfile(srtmfile,1)
 Dim Shared As Double ttestloadsrtm=0 
+Sub resetsrtm()
+Dim As Integer i  
+For i=0 To 3
+	srtmfiles(i)=""
+	srtmlati(i)=-89
+	srtmlngi(i)=-179
+Next
+End Sub
 Sub testloadsrtmfile(lat1 As single,lng1 As Single)
   srtmfile=getsrtmfile(lat1,lng1) 
   if(srtmfile="") Then Exit Sub
@@ -203,8 +212,9 @@ Sub testloadsrtmfile(lat1 As single,lng1 As Single)
   'guinotice "isrtm="+Str(isrtm)+" "+Str(srtmlati(isrtm))+" "+Str(srtmlngi(isrtm))
 End Sub
 Sub testloadsrtm() 
-if(Timer<ttestloadsrtm) Then Exit Sub  
+If(Timer<ttestloadsrtm) Then Exit Sub  
 ttestloadsrtm=Timer+8  
+'guinotice "testsrtm"
 var dx=0.2
 MercatorLatLngtosrtmlatlng(lat,lng)
 'guinotice Str(srtmlat)+" "+Str(srtmlng) 

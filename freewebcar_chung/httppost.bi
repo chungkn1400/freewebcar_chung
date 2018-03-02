@@ -53,15 +53,47 @@ hostname="en.wikipedia.org"
 path="/w/api.php?action=opensearch&search="+"lennon"+"&limit=5&namespace=0&format=json&redirects=resolve"
 '/
 
-Dim Shared As Byte recvdata(12512001)
-Dim Shared As Integer tquitweb=0,httpon,httpidata
+Dim Shared As UByte recvdata(12512016)
+Dim Shared As UByte recvdatagoogle(12512016)
+Dim Shared As UByte recvdatacurl(12512016)
+Dim Shared As Integer tquitweb=0,httpon,httpidata,webidata,googleerror=1,tgoogle=1,icurl
+Dim Shared As Byte tlockchanged
 Dim Shared As String httphost
 Dim Shared as ZString * RECVBUFFLEN+2 recvbuffer
+Dim Shared As Integer cdatagoogle0,cdatagoogle
+cdatagoogle0=CInt(@recvdatagoogle(0))
+cdatagoogle=0'16-(cdatagoogle0 Mod 16)
+'guinotice Str((cdatagoogle0+cdatagoogle) Mod 16)
 Declare Function httppostcurl(ByRef hostname0 As string,ByRef path As string)As Integer'String
 Function httppost(ByRef hostname0 As string,ByRef path As string)As Integer'String
+Dim As Integer iwait,i
    httphost=hostname0
+   Sleep 100
+   If httpon<>0 And httpon<>-1 Then
+   	For iwait=1 To 800
+   		Sleep 100
+   		If httpon=0 Or httpon=-1 Then Exit For 
+   	Next
+   EndIf
+   If httpon<>0 And httpon<>-1 Then Return 0
    httpon=1
-   Return httppostcurl(hostname0,path)
+   tlockchanged=1
+   Sleep 100
+   icurl= httppostcurl(hostname0,path)
+   If InStr(hostname0,"google")>0 Or InStr(hostname0,"virtualearth")>0 Then
+      For i=0 To icurl
+      	recvdatagoogle(i+cdatagoogle)=recvdatacurl(i)
+      Next
+   Else 
+      For i=0 To icurl
+      	recvdata(i)=recvdatacurl(i)
+      Next
+   EndIf
+   If httpon<>-1 Then httpon=0
+   tlockchanged=1
+   Return icurl
+   
+   /'
    If tquitweb=1 Then Return 0 
 	doInit( )
    Var hostname=hostname0
@@ -203,6 +235,7 @@ Function httppost(ByRef hostname0 As string,ByRef path As string)As Integer'Stri
    	httpon=-1:httpidata=-httpidata:Return 0
    EndIf
 	Return idata'recvtext
+	'/
 End Function 
 
 

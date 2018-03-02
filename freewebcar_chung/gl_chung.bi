@@ -130,33 +130,36 @@ Sub gltexcarrexy(ByVal dx As Single,tx0 As Single=0,ty0 As Single=0,ByVal tx As 
 	glvertex3f(-dx,dx,0)
 	glend()
 End Sub 
-Sub gltexcarre2(byval x As Single,ByVal y As Single,ByVal tx As Single=1)
-Dim As Single x1,x0,dtx
+Sub gltexcarre2(byval x As Single,ByVal y As Single,ByVal tx As Single=1,ByVal ty0 As Single=0)
+Dim As Single x1,x0,dtx,dty
 x1=x*0.5:x0=0-x1:dtx=0'max(0.0,tx*(y/x-1)*0.5)
+dty=1-ty0
 	glbegin(gl_quads)
-	glTexCoord2f(dtx,0)
+	glTexCoord2f(dtx,ty0)
 	glvertex3f(0,x0,0)
-	gltexcoord2f(tx-dtx,0)
+	gltexcoord2f(tx-dtx,ty0)
 	glvertex3f(0,x1,0)
-	glTexCoord2f(tx-dtx,tx)
+	glTexCoord2f(tx-dtx,ty0+dty)
 	glvertex3f(0,x1,y)
-	gltexcoord2f(dtx,tx)
+	gltexcoord2f(dtx,ty0+dty)
 	glvertex3f(0,x0,y)
 	glend()
 End Sub
-Sub gltexrotcarre2(byval x As Single,ByVal y As Single,ByVal o1 As Single=0,ByVal tx As Single=0.75)
-Dim As Single x1,x0,dtx,dty
+Sub gltexrotcarre2(byval x As Single,ByVal y As Single,ByVal o1 As Single=0,ByVal tx As Single=0.75, _  
+	                tx0 As Single=0,ty0 As Single=0)
+Dim As Single x1,x0,dtx,dty,s05,t05
 Dim As Single co1,si1
 co1=Cos(o1*3.1416/180):si1=Sin(o1*3.1416/180)
 x1=x*0.5:x0=0-x1:dtx=co1*0.5*tx*x/max(0.001,y):dty=si1*0.5*tx
+s05=tx0+0.5:t05=ty0+0.5
 	glbegin(gl_quads)
-	glTexCoord2f(0.5-dtx+dty,0.5-dtx-dty)
+	glTexCoord2f(s05-dtx+dty,t05-dtx-dty)
 	glvertex3f(0,x0,0)
-	gltexcoord2f(0.5+dtx+dty,0.5-dtx+dty)
+	gltexcoord2f(s05+dtx+dty,t05-dtx+dty)
 	glvertex3f(0,x1,0)
-	glTexCoord2f(0.5+dtx-dty,0.5+dtx+dty)
+	glTexCoord2f(s05+dtx-dty,t05+dtx+dty)
 	glvertex3f(0,x1,y)
-	gltexcoord2f(0.5-dtx-dty,0.5+dtx-dty)
+	gltexcoord2f(s05-dtx-dty,t05+dtx-dty)
 	glvertex3f(0,x0,y)
 	glend()
 End Sub
@@ -281,15 +284,15 @@ Sub gltexquad (ByVal x1 As Single,ByVal y1 As Single,ByVal z1 As Single,_
              ByVal x2 As Single,ByVal y2 As Single,ByVal z2 As Single,_
              ByVal x3 As Single,ByVal y3 As Single,ByVal z3 As Single,_
              ByVal x4 As Single,ByVal y4 As Single,ByVal z4 As Single,_ 
-             ByVal tx As Single=1,ByVal ty As Single=1,ByVal tx0 As Single=0)
+             ByVal tx As Single=1,ByVal ty As Single=1,ByVal tx0 As Single=0,ByVal ty0 As Single=0)
 glBegin GL_QUADS
-glTexCoord2f tx0,0
+glTexCoord2f tx0,ty0
 glVertex3f x1,y1,z1
-glTexCoord2f tx0+tx,0
+glTexCoord2f tx0+tx,ty0
 glVertex3f x2,y2,z2
-glTexCoord2f tx0+tx,ty
+glTexCoord2f tx0+tx,ty0+ty
 glVertex3f x3,y3,z3
-glTexCoord2f tx0,ty
+glTexCoord2f tx0,ty0+ty
 glVertex3f x4,y4,z4
 glEnd
 End Sub

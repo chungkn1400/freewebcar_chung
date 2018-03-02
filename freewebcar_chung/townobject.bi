@@ -208,7 +208,7 @@ glcolor3f(1,1,1)
          gldisable gl_alpha_test
 		EndIf
 End Sub  
-Dim Shared As Single balloonx,balloony,balloonz,balloono1,balloonco1,balloonsi1
+Dim Shared As Single balloonx,balloony,balloonz,balloono1,balloonco1,balloonsi1,balloonzsol,balloonx2,balloondo1
 Dim Shared As Double tballoon
 Sub drawballoon()
 If time2>tballoon Then
@@ -231,13 +231,15 @@ If balloonx>mx+dmax Then balloonx=mx-0.9*dmax
 If balloonx<mx-dmax Then balloonx=mx+0.9*dmax
 If balloony>my+dmax Then balloony=my-0.9*dmax
 If balloony<my-dmax Then balloony=my+0.9*dmax
-balloonz=max(waterz+500.0,getterrainheightfast(balloonx,balloony)+500)	
+balloonzsol=getterrainheightfast(balloonx,balloony)
+balloonz=max(waterz+500.0,balloonzsol+500)	
 Var x=balloonx+dmx0,y=balloony+dmy0,z=balloonz
 glenable gl_texture_2d
 gldisable gl_lighting
 glcolor3f(1,1,1)
       Var size=400
 		rotavion(x-mx-dmx0,y-my-dmy0,z-mz)
+		balloonx2=x2
 		if x2>(0.9*max(y2,z2)-size*kscalex/500-100) And x2<dxterrain*scalex Then
 			myguiloadtexture(balloontext,"objects/town/ballon.jpg",250)
 			myguiloadtexture(balloon1text,"objects/town/ballon1.jpg",250)
@@ -250,22 +252,28 @@ glcolor3f(1,1,1)
 			Var ddo1=-balloono1-do1+90
 			While ddo1>180:ddo1-=360:Wend
 			While ddo1<-180:ddo1+=360:Wend
+			Var do10=0.0
 			If ddo1<-90 And ddo1>-150 Then
 				do1+=180
+				do10=30
 				glbindtexture(gl_texture_2d,balloon2text)
 			ElseIf ddo1<-150 or ddo1>150 Then
 				do1+=180
 				glbindtexture(gl_texture_2d,balloontext)
 			ElseIf ddo1<150 and ddo1>90 Then
 				do1+=180
+				do10=-30
 				glbindtexture(gl_texture_2d,balloon1text)
 			ElseIf ddo1<90 and ddo1>30 Then
+				do10=30
 				glbindtexture(gl_texture_2d,balloon1text)
 			ElseIf ddo1<30 and ddo1>-30 Then
 				glbindtexture(gl_texture_2d,balloontext)
 			Else'If ddo1<-30 or ddo1>-90 Then
+			   do10=-30
 				glbindtexture(gl_texture_2d,balloon2text)
 			EndIf
+			balloondo1=balloono1+do10
 			glscalef(kscalex/500,kscalex/500,kscalex/500)
 			'glsphere(1000)
 			gltexcarre2rot(400,280,do1)

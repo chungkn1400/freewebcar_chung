@@ -406,24 +406,35 @@ Sub dirorder(ByVal i As integer)
 disttarget2=20000
 Select Case order
 	Case 1 'formation
-	   Var dx=airshipx(i)-mx-cos1*180
-	   Var dy=airshipy(i)-my-sin1*180
+	   Var mmx=mx,mmy=my,mmz=mz,mcos1=cos1,msin1=sin1,mtarget=0
+	   If mdistnearaeroway<999990 And plane>0 And car=0 Then 
+	    If ((airshipx(i)-mmx-mcos1*880)*mcos1+(airshipy(i)-mmy-msin1*880)*msin1)>880 Then
+	   	mtarget=1
+	   	mmx=mnearaerowayx:mmy=mnearaerowayy:mmz=(mzsol0+700)*0.35+0.65*mz
+	    EndIf 
+	   EndIf
+	   Var dx=airshipx(i)-mmx-mcos1*180
+	   Var dy=airshipy(i)-mmy-msin1*180
 	   If vkm>1000 Then
-	   	dx-=cos1*(v)*40:dy-=sin1*(v)*40
+	   	dx-=mcos1*(v)*40:dy-=msin1*(v)*40
 	   Else
-	   	dx-=cos1*(v-vcruise)*20:dy-=sin1*(v-vcruise)*20
+	   	dx-=mcos1*(v-vcruise)*20:dy-=msin1*(v-vcruise)*20
 	   EndIf
 	   If Rnd<0.01*kfps Then target22(i)=0
-	   airshipmmx=dx-(1400)*cos1-(i-5)*sin1*380 
-	   airshipmmy=dy-(1400)*sin1-(i-5)*cos1*380     		
-      airshipz900(i)=mz+200
+	   airshipmmx=dx-(1400)*mcos1-(i-5)*msin1*380 
+	   airshipmmy=dy-(1400)*msin1-(i-5)*mcos1*380     		
+      airshipz900(i)=mmz+200
 	   'If (itime Mod 7)=0 Then 
-	    Var dxy=((dx)*cos1+(dy)*sin1+100)
+	    Var dxy=((dx)*mcos1+(dy)*msin1+100)
 	    If vkm>1000 Then dxy+=(v-vcruise)*8
-	    If dxy<Sqr(dx*dx+dy*dy)*0.8 Then
+	    If mtarget=0 Then 
+	     If dxy<Sqr(dx*dx+dy*dy)*0.8 Then
 	   	airshipv(i)=max(airshipv(i),v*1.05)
-	    Else 
-	   	airshipv(i)=min(airshipv(i),max(vcruise,v*0.9))
+	     Else 
+	   	airshipv(i)=min(airshipv(i),max(vcruise*0.5,v*0.9))
+	     EndIf
+	    Else  
+	   	airshipv(i)=min(airshipv(i),max(vcruise*0.5,v*0.9))
 	    EndIf 
 	   'EndIf
 	Case 2 'attack
@@ -489,16 +500,17 @@ Select Case order
 End Select
 End Sub 
 Sub moveairship(ByVal i As Integer)
-Dim As Single auxv',kvaux=1.0
+Dim As Single auxv,kvaux=0.6',kvaux=1.0
 Dim As Integer order0
 order0=order
-if order=4 and i=4 And nship2>5 then order=1
+'if order=4 and i=4 And nship2>5 then order=1
+order=1
 If klevel2(i)>0.01 Then klevel2(i)=max(0.0,klevel2(i)-0.03*kfps)
 kfps3=kfps*airshipmove(i)
 airshipx(i)+=airshipv(i)*airshipco2(i)*airshipco1(i)*kfps*kvaux
 airshipy(i)+=airshipv(i)*airshipco2(i)*airshipsi1(i)*kfps*kvaux
 If airshipwar(i)<0.1 Then
- If ((i-3) Mod 4)=0 Or i=1 Then
+ /'If ((i-3) Mod 4)=0 Or i=1 Then
 	If i=11 Then
 		If Abs(airshipx(i)-mx)>18000 Or Abs(airshipy(i)-my)>18000 Then
 			turnairship11=0
@@ -519,13 +531,14 @@ If airshipwar(i)<0.1 Then
 		EndIf 
 	EndIf
  Else
-   If i>=4 And i<=6 Then
-   	dirorder(i)
-   Else 	
-      airshipmmx=airshipx(i)-airshipx(i-1)-590*airshipco1(i-1)-400*((i+1)Mod 2)
-      airshipmmy=airshipy(i)-airshipy(i-1)-590*airshipsi1(i-1)-400*(i Mod 2)'2000 
-	EndIf
- EndIf
+ '/
+   'If i>=4 And i<=6 Then
+   	If mz<mzsol00+9500 Then dirorder(i)
+   'Else 	
+   '   airshipmmx=airshipx(i)-airshipx(i-1)-590*airshipco1(i-1)-400*((i+1)Mod 2)
+   '   airshipmmy=airshipy(i)-airshipy(i-1)-590*airshipsi1(i-1)-400*(i Mod 2)'2000 
+	'EndIf
+ 'EndIf
 EndIf  
 airshipsol=GetTerrainHeight(airshipx(i),airshipy(i))
 airshipz(i)+=airshipv(i)*airshipsi2(i)*kfps*kvaux
@@ -613,20 +626,24 @@ Else
        EndIf
     	Else
        dirairship2(i)
-       If distairship>900 Then 
-      	airshipv(i)=airshipv(i)+0.7*kfps*((vcruise+5)/104-0.01*airshipv(i)-1.0*airshipsi2(i))
+       Var dx=(airshipx(i)-mx),dy=(airshipy(i)-my)
+       If  (dx*cos1+dy*sin1)>150+0.7*Abs(dx*sin1-dy*cos1) Then
+      	airshipv(i)=airshipv(i)+0.7*kfps*((vcruise-10)/104-0.01*airshipv(i)-1.0*airshipsi2(i))
+       ElseIf distairship>900 Then 
+      	airshipv(i)=airshipv(i)+0.7*kfps*((vcruise+10)/104-0.01*airshipv(i)-1.0*airshipsi2(i))
        Else 
       	airshipv(i)=airshipv(i)+0.7*kfps*((vcruise+0.05)/104-0.01*airshipv(i)-1.0*airshipsi2(i))
        EndIf 
        If i=4 Or i=15 Then 
       	airshipz900(i)=airshipz(3)+50
-       ElseIf i=1 Then airshipz900(i)=avionz+50
+       ElseIf i=1 Then
+       	airshipz900(i)=mz+50'avionz+50
        Else
     		airshipz900(i)=airshipz(i-1)+50
        EndIf
       EndIf
     Else
-    	dirairship(i)
+     	dirairship(i)
       airshipv(i)=airshipv(i)+0.7*kfps*(vcruise/104-0.01*airshipv(i)-1.0*airshipsi2(i))
     EndIf
     if setairship(i)=1 Then
