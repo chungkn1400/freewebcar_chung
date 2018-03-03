@@ -14155,7 +14155,7 @@ If time2<timeinit+10 Then Exit sub
     setrangeGL(4000)
     If pause=0 And mapdisplay=0 Then moveavion
     'avionx=0:aviony=0:avionz=10:aviono1=30:aviono2=-20:aviono3=40
-    If plane>0 And car>0 And guitestactivekey=1 Then
+    If plane>0 And car>0 And guitestactivekey=1 And mapdisplay=0 Then
        If guitestkey(vk_z) Or guitestkey(vk_w) Then dyh0=min2(10,dyh0+1):guinotice "car height="+Str(dyh0)
        If guitestkey(vk_s) Then dyh0=max2(0,dyh0-1):guinotice "car height="+Str(dyh0)
     EndIf	
