@@ -13312,7 +13312,7 @@ Dim Shared As Double timecollide,timecollide2,timecollide22,timebridge,timecolli
 Dim Shared As Integer mytestroad,mytestroad2,mytestroad0,mytestroad3',mytestbridge
 Dim Shared As Single dyautopilot,dxautopilot,co1autopilot,si1autopilot,d60road=60,d05road
 Dim Shared As glfloat winz2(8000),winztop(8000)
-Dim Shared As gldouble winposx(200),winposy(200),winposz(200)
+Dim Shared As gldouble winposx(400),winposy(400),winposz(400)
 Dim Shared As glUByte  winstenciltop(8000)
 Dim Shared As Double dtimecollide,timeztop
 Dim Shared As Integer testposx,testztop,teststenciltop
@@ -13334,10 +13334,11 @@ tpiste=piste
 If time2<timercollide+0.1 Then Exit Sub
 timercollide=time2
 Var kfps0=kfps,kfps=3.0
+Var tkeyup=0:If guitestkey(vk_up) Or testjoy2 Then tkeyup=1
 If Abs(tlayer)>0.4 Or Abs(mz-mzsol00)>30 Then timelayeroff=time2
 If fps<10 Or (Abs(tlayer)>0.4 Or (time2<timelayeroff+6)) Then
 	If time2>timeinit+30 Then
-		Exit Sub 
+		If tkeyup Then Exit Sub 
 	EndIf
 	kfps=kfps0
 EndIf
@@ -13345,11 +13346,11 @@ If tautopilot>0 Then
  If piste>0 Then
 	timepiste=time2
 	If time2>timeinit+30 Then
-		Exit Sub 
+		If tkeyup Then Exit Sub 
 	EndIf
  ElseIf time2>timepiste+5 Then
 	If time2>timeinit+30 Then
-		Exit Sub 
+		If tkeyup Then Exit Sub 
 	EndIf
  EndIf 
 EndIf
@@ -13366,7 +13367,7 @@ If (time2>timecollide2+2 And time2>timecollide22+2)Then timecollide222=time2
 If time2>timecollide222+12 Then timecollide=time2
 If time2<timecollide+t4 Or v<-0.0001 Then
   	If mytestroad2=0 Or time2>timeautopilot+2 Then
-  		Exit Sub
+  		If tkeyup Then Exit Sub
   	Else 
   		timecollide=min(time2-t4*0.75,timecollide)
   	EndIf
@@ -13382,7 +13383,9 @@ glGetDoublev( GL_MODELVIEW_MATRIX, @modelview(0) )
 glGetDoublev( GL_PROJECTION_MATRIX, @projection(0) )
 glGetIntegerv( GL_VIEWPORT, @viewport(0) )
 Var ky=0.19*ymax
-If tautopilot=1 Then ky=0.07*ymax
+'If tautopilot=1 Then
+	ky=0.07*ymax
+'EndIf
 winx = xmax/2
 winy = ymax*0.5+ky
 glReadPixels( winx,winy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, @winZ )
@@ -13400,20 +13403,23 @@ If dist<100 And dist>0 Then
 	EndIf
 EndIf
 If plane>0 And car=0 Then Exit Sub 
-If plane>0 And (mytestroad2=0 And time2<timecollide2+1 And time2<timecollide22+1)And time2>timebridge+2 Then Exit Sub 
+If plane>0 And (mytestroad2=0 And time2<timecollide2+1 And time2<timecollide22+1)And time2>timebridge+2 Then 
+ 	If (tkeyup) Then Exit Sub 
+EndIf
 'subteststenciltop()
 If cos3<0.5 Then Exit Sub 
 Var dist1=(posx-mx)*cos1+(posy-my)*sin1
 winx = xmax/2
 winy = ymax*0.59'0.4+ky
 Var d150=150,d300=300
+'Var d150=80,d300=160
 If winx>150 Then d150=Int(winx):d300=d150+d150
 glReadPixels( winx-d150,winy, d300+1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, @winZ2(0) )
 gluUnProject(winX,winY,winz2(d150),@modelview(0),@projection(0),@viewport(0),@posX2,@posY2,@posZ2)   
-gluUnProject(winX-100,winY,winz2(d150-100),@modelview(0),@projection(0),@viewport(0),@posX20,@posY20,@posZ20)   
-gluUnProject(winX+100,winY,winz2(d150+100),@modelview(0),@projection(0),@viewport(0),@posX21,@posY21,@posZ21)
-'gluUnProject(winX-150,winY,winz2(d150-150),@modelview(0),@projection(0),@viewport(0),@posX20,@posY20,@posZ20)   
-'gluUnProject(winX+150,winY,winz2(d150+150),@modelview(0),@projection(0),@viewport(0),@posX21,@posY21,@posZ21)
+'gluUnProject(winX-100,winY,winz2(d150-100),@modelview(0),@projection(0),@viewport(0),@posX20,@posY20,@posZ20)   
+'gluUnProject(winX+100,winY,winz2(d150+100),@modelview(0),@projection(0),@viewport(0),@posX21,@posY21,@posZ21)
+gluUnProject(winX-150,winY,winz2(d150-150),@modelview(0),@projection(0),@viewport(0),@posX20,@posY20,@posZ20)   
+gluUnProject(winX+150,winY,winz2(d150+150),@modelview(0),@projection(0),@viewport(0),@posX21,@posY21,@posZ21)
 If ntownnear>2 Then 
 Dim As gldouble winposx0,winposy0,winposz0   
 For i=1 To 80-1
@@ -13434,26 +13440,40 @@ If plane>0 Or testztop=1 Then
  'mx+=kfps*0.095*cos1:my+=kfps*0.095*sin1	
  Var dist20=(posx20-mx)*cos1+(posy20-my)*sin1
  Var dist21=(posx21-mx)*cos1+(posy21-my)*sin1
- If dist20<55 And dist21>55 Then
+ var d55=55.0
+ If dist20<d55 And dist21>d55 Then
  	Var kkfps=3.0
  	mx=mx0-8*cos1*kkfps:my=my0-8*sin1*kkfps
- 	mx+=kkfps*9.5*sin1:my-=kkfps*9.5*cos1:timecollide2=time2
+ 	mx+=kkfps*9.5*sin1:my-=kkfps*9.5*cos1
+ 	If tkeyup Then
+ 		timecollide2=time2
+ 	Else	
+   	o1-=0.3*kkfps 
+ 	EndIf
+ 	v*=0.8
+	vmx2=v*cos1:vmy2=v*sin1
  	'If mytestroad2=0 Then o1-=0.1*kfps Else o1-=0.03*kfps
- 	o1-=0.3*kkfps 
  	tdist20=1
- ElseIf dist21<55 And dist20>55 Then
+ ElseIf dist21<d55 And dist20>d55 Then
  	Var kkfps=3.0
  	mx=mx0-8*cos1*kkfps:my=my0-8*sin1*kkfps
- 	mx-=kkfps*9.5*sin1:my+=kkfps*9.5*cos1:timecollide22=time2
+ 	mx-=kkfps*9.5*sin1:my+=kkfps*9.5*cos1
+ 	If tkeyup Then
+ 		timecollide22=time2
+ 	Else 	
+    	o1+=0.3*kkfps
+ 	EndIf
+ 	v*=0.8
+	vmx2=v*cos1:vmy2=v*sin1
  	'If mytestroad2=0 Then o1+=0.1*kfps Else o1+=0.03*kfps
- 	o1+=0.3*kkfps
  	tdist20=1
- elseif (dist20<50 Or dist21<50)And testztop=1 And (tautopilot=0 Or plane=0) Then 
+ 'elseif (dist20<50 Or dist21<50)And testztop=1 and(tautopilot=0 Or plane=0) Then 
+ elseif (dist20<50 Or dist21<50)And(tkeyup=0) Then 
  	'If Rnd<0.5 Then
  		mx=mx0-cos1*(8+v)*kfps:my=my0-sin1*(8+v)*kfps
  	'EndIf
  	tdist20=1
- 	If tautopilot=0 And plane>0 And guitestkey(vk_up)=0 Then
+ 	If tautopilot=0 And plane>0 Then
  		If Abs(tlayer)<0.4 And mytestbridge=0 Then testcrash()
  	EndIf
  EndIf 	
