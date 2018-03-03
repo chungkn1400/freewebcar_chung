@@ -447,6 +447,7 @@ Sub stopsoundyuna
 End Sub
 Dim Shared As Double timesoundarcade,timesoundarcade0
 Dim Shared As Double timeinit
+Dim Shared As Integer testinit
 Sub soundarcade	
 If arcadesound=1 Then Exit Sub
 If Timer<timeinit+10 Then Exit Sub  	
@@ -1950,6 +1951,7 @@ Dim As Single xx,yy
 			mapautotext=maptexture:i=1
 		EndIf
 End Sub
+Dim Shared As Single hrgb0,hrgb1
 Declare Sub testtownarbres()
 Declare Sub setwebwater2(i As Integer,j As Integer,xx As Single,yy As Single)
 Declare Sub setwebwater3(i As Integer,j As Integer,xx As Single,yy As Single)
@@ -2120,6 +2122,7 @@ Else
 EndIf
 'Var dxwebzoom2=dxwebzoom*0.9,dywebzoom2=dywebzoom*0.9
 For i=-100 To 612
+   hrgb0=0:hrgb1=0
 	For j=-100 To 612
 	  x=i-256:y=j-256
      xx=(x*scalex+dmx0)
@@ -20972,6 +20975,7 @@ mz11=-999999
         scalex0=scalex
         'Dim Shared As ubyte mybmpretro(4*1000*1000)
         timeinit=Timer 
+        testinit=0
         'guinotice "ok"
         
         Var tquit=Timer,tframe=tquit-5,tactive=Timer
@@ -21441,6 +21445,8 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    If test=11 And (t11<3 Or Timer>t111+9)And (testweb2=0 or mapdisplay>0) Then testweb2=11
    If test=1 And (t11<3 Or Timer>t111+9) Then testweb=1
    If time2>timeinit+200 And timeinit>time2-1000 Then timeinit=time2-30:testweb=1
+   If time2>timeinit+20 And testinit=0 Then testinit=1:testweb=1:subsettupdate()
+   If timeinit>time2-6 Then testinit=0
    If tquitweb=1 Then
    	If quit=1 Then testweb=0
    	If tloadwebtext2=200 Then tloadwebtext2=0

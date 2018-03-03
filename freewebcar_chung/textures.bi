@@ -1923,11 +1923,11 @@ EndIf'/
 		Var hsrtm=max(-0.0,0.8*(getsrtmheight(srtmlat,srtmlng)-14))
      	If test=0 Then
      	  Var h=0.0'max(0,(r+g)/2-b)*2'4'*0.1
-		  If testhsrtm=0 Then
-		  	h=hrgb(r,g,b)'120*4000*(g+g-b-r)/(30+r*r+g*g+b*b)
-		  Else
-		  	h=hrgb(r,g,b)*0.2'0.7
-		  EndIf
+   	  h=hrgb(r,g,b)'120*4000*(g+g-b-r)/(30+r*r+g*g+b*b)
+		  If Abs(h-hrgb0)<90 Then hrgb1=max(0.0,min(256.0,hrgb1+(h-hrgb0)))
+		  hrgb0=h
+		  h=hrgb1
+		  'If testhsrtm<>0 Then h*=0.2
 		  'h=max(0.0,min(256.0,h))
      	  h=h+hsrtm-60+dhmareemax+0.1
      	  myzmin+=(max(-65.0,min(myzmin,h))-myzmin)*0.001
@@ -11371,8 +11371,8 @@ End Sub
 Declare Sub substat()
 Sub subtest()
 'substat():Exit Sub
-guinotice "test" 
-substartrain():Exit Sub 
+'guinotice "test" 
+'substartrain():Exit Sub 
 glviewport(0,0,xmax,ymax)
 glpushmatrix
 drawmaptestterrain0()
@@ -11912,7 +11912,8 @@ glcolor3f(r,g,b)
 glplacecursor(xmax*0.5,ymax*0.5,-40)
 glcarre(15.5)
 'ReDim Shared As uint webpicr(1 To bmpwebx2*bmpweby2)
-n=bmpwebx2   
+n=bmpwebx2
+Var sc=2.0   
 For i=1 To n Step 2
 	For j=1 To n Step 2
 	  Var ij=n*(j-1)+i
@@ -11922,8 +11923,8 @@ For i=1 To n Step 2
 	  b=webpicb(ij)/255
 	  glcolor3f(r,g,b)
      glpushmatrix
-	  glplacecursor(xmax*0.5+270*(-1+2*i/n),ymax*0.5+270*(-1+2*j/n),-40)
-	  glcarre(0.15)
+	  glplacecursor(xmax*0.5+sc*270*(-1+2*i/n),ymax*0.5+sc*270*(-1+2*j/n),-40)
+	  glcarre(sc*0.15)
 	  glpopmatrix
   Next
 Next
