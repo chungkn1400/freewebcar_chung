@@ -2,5 +2,3 @@ AIzaSyANRP3VHNdU-bcXpWxDwZTwMh-7m53pzeA
 
 
 
-thats my apikey ! you can get your own too there (=> https://developers.google.com/maps/documentation/static-maps/get-api-key) or 
-continue to use my shared apikey

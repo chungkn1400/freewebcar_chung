@@ -39,8 +39,6 @@ F3 => change hour
 T => tourelle view
 
 
-apikey : to increase google static maps api quota (some thousands to 20000/day per key) see "apikey.txt" file 
-you can also get your own bing static maps api key (50000 maps/day per key) see "apikeybing.txt" file 
 use shift+B to switch between google/bing imagery. 
 
 download  freewebcar_save.zip : sample scenary save files (.save+.townxy3 pairs to copy to /save/ folder ) 
