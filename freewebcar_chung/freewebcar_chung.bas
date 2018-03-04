@@ -1951,7 +1951,7 @@ Dim As Single xx,yy
 			mapautotext=maptexture:i=1
 		EndIf
 End Sub
-Dim Shared As Single hrgb0,hrgb1
+Dim Shared As Single hrgb0,hrgb1,hhrgb0(-100 To 612)
 Declare Sub testtownarbres()
 Declare Sub setwebwater2(i As Integer,j As Integer,xx As Single,yy As Single)
 Declare Sub setwebwater3(i As Integer,j As Integer,xx As Single,yy As Single)
@@ -2122,7 +2122,10 @@ Else
 EndIf
 'Var dxwebzoom2=dxwebzoom*0.9,dywebzoom2=dywebzoom*0.9
 For i=-100 To 612
-   hrgb0=0:hrgb1=0
+	hhrgb0(i)=0
+Next
+For i=-100 To 612
+	hrgb0=0:hrgb1=0
 	For j=-100 To 612
 	  x=i-256:y=j-256
      xx=(x*scalex+dmx0)
@@ -14414,7 +14417,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     		EndIf
     	Else
     		tmxmove=Timer
-    	EndIf
+      EndIf
     	If plane=0 And trun=0 Then 
     		If Abs(mx-mx0)+Abs(my-my0)>0.01 Then o2=0:cos2=1:sin2=0:dmz=0
     	EndIf 	
@@ -14435,7 +14438,11 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     	distback=min(40.0,distback+10)
     Else 	
       distback=max(0.0,distback-kfps)	
-    EndIf 	
+    EndIf
+    If plane=0 Or car=0 Then
+    	ncarx(0)=mx:ncary(0)=my
+    	nncarx(0)=mx:nncary(0)=my
+    EndIf	
     mx0=mx:my0=my:mz0=mz
     
     
