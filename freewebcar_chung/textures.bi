@@ -1926,8 +1926,6 @@ EndIf'/
    	  h=hrgb(r,g,b)'120*4000*(g+g-b-r)/(30+r*r+g*g+b*b)
 		  If Abs(h-hrgb0)<90 Then hrgb1=max(0.0,min(256.0,hrgb1+(h-hrgb0)))
 		  hrgb0=h
-		  If Abs(h-hhrgb0(j))<90 Then hrgb1=max(0.0,min(256.0,hrgb1+(h-hhrgb0(j))))
-		  hhrgb0(j)=h
 		  h=hrgb1
 		  'If testhsrtm<>0 Then h*=0.2
 		  'h=max(0.0,min(256.0,h))
