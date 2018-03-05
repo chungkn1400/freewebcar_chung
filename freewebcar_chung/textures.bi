@@ -11886,9 +11886,13 @@ For i=1 To n 'Step 2
 	  Var dz=(terrain(ii,jj))*scalez
 	  dz=(waterz+(dz-waterz)*3)
 	  Var d10=max(10.0,(myzmax-myzmin)*scalez*0.04)
-  r=max(0.0,min(1.0,(d10+dz)/(10*d10+Abs(dz))))
+  r=max(0.0,min(1.0,(d10+dz)/(7*d10+Abs(dz))))
 	  g=1-r:b=0
-	  If dz<waterz Then b=1
+	  If r>0.75 Then
+	  	  b=(r-0.75)*4
+	  	  r*=(1-r)*4
+	  EndIf
+	  If dz<waterz Then b=1:r=0.5:g=0.5
 	  If Abs(ii-ii0)<0.5 And Abs(jj-jj0)<0.5 Then r=0:g=0:b=0
 	  glcolor3f(r,g,b)
      glpushmatrix
@@ -11913,7 +11917,7 @@ glplacecursor(xmax*0.5,ymax*0.5,-40)
 glcarre(15.5)
 'ReDim Shared As uint webpicr(1 To bmpwebx2*bmpweby2)
 n=bmpwebx2
-Var sc=2.0   
+Var sc=1.0   
 For i=1 To n Step 2
 	For j=1 To n Step 2
 	  Var ij=n*(j-1)+i
