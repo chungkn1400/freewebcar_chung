@@ -1924,7 +1924,10 @@ EndIf'/
      	If test=0 Then
      	  Var h=0.0'max(0,(r+g)/2-b)*2'4'*0.1
    	  h=hrgb(r,g,b)'120*4000*(g+g-b-r)/(30+r*r+g*g+b*b)
-		  If Abs(h-hrgb0)<80 Then hrgb1=max(0.0,min(512.0,hrgb1+(h-hrgb0)*2))
+		  If Abs(h-hrgb0)<80 Then
+		  	  Var kh=(100-Abs(h-hrgb0))*0.01
+		  	  hrgb1=max(0.0,min(512.0,hrgb1+(h-hrgb0)*2*kh))
+		  EndIf
 		  hrgb0=h
 		  h=hrgb1
 		  'If testhsrtm<>0 Then h*=0.2
