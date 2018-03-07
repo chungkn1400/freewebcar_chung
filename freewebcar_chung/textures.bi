@@ -5162,7 +5162,7 @@ For i=1 To ishadow'0
     glVertex3f shadowx4(i),shadowy4(i),shadowz4(i)
     glEnd
 Next i
-glcolor4f(0,0,0,1)    
+glcolor4f(0.6,0.6,0.6,1)    
 glAlphaFunc(gl_less,50/254)
 For i=1 To ishadow'0
   If shadowrank(i)<>2 Then Continue For 

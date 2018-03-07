@@ -2350,7 +2350,11 @@ dx=Int(min(190.0,dx*max(1.0, distscale*3*narbre2/(narbre2+4*2*ntree))))
 dx=Int(dx*100/kscalex)
 'dx=Int(min(120.0,dx*max(1.0, distscale*3*narbre2/(narbre2+4*2*ntree))))
 dxterrain=dx
-If tcolorshadow Then dx=min(18.0,dx)
+If tcolorshadow Then
+	dx=min(18.0,dx) 
+	glcolor4f(0.6,0.6,0.6,0.6)
+	gldisable gl_lighting
+EndIf
 x0=Int(mx/scalex+10000)-10000
 y0=Int(my/scalex+10000)-10000
 d7000=9000*scalex/500
@@ -3035,7 +3039,11 @@ dx=Int(min(190.0,dx*max(1.0, distscale*3*narbre2/(narbre2+4*2*ntree))))
 dx=Int(dx*100/kscalex)
 'dx=Int(min(120.0,dx*max(1.0, distscale*3*narbre2/(narbre2+4*2*ntree))))
 dxterrain=dx
-If tcolorshadow Then dx=min(18.0,dx)
+If tcolorshadow Then
+	dx=min(18.0,dx)
+   glcolor4f(0.6,0.6,0.6,0.6)
+	gldisable gl_lighting
+EndIf
 x0=Int(mx/scalex+10000)-10000
 y0=Int(my/scalex+10000)-10000
 'x0=mxmap/scalex
