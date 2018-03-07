@@ -18481,7 +18481,7 @@ If orbit=0 And planet=1 Then Return -99999
 	'While i1>=612:i1-=512+200:Wend
 	'While j1>=612:j1-=512+200:Wend 
 getlockterrain()
-var t4=4'3
+var t4=3
 Var t1=1
 If tsetterrain(i1,j)<=t1 Or tsetterrain(i,j1)<=t1 Then
 	z00=terrain0(i,j)
@@ -21606,7 +21606,7 @@ ElseIf tinittown=0 And tinittown0=0 And testweb2=11 And httpon<>1 And tloadwebte
    	subsettupdate()
       'updateworldobjects
       'initterrainlines
-   ElseIf testweb=0 And tloadwebtext2=0 And tinittown=0 And tinittown0<=0 And topentown=1 And Timer>tloadwebtext+t10+0.3 And _  
+   ElseIf testweb=0 And tloadwebtext2=0 And tinittown=0 And tinittown0<=0 And topentown=1 And Timer>tloadwebtext+t10+2.3 And _  
    	    abs(sin3)<0.60 And quit2=0 And tinternet>=2 And mapdisplay=0 And  _   
    	    guitestkey(vk_left)=0 And guitestkey(vk_right)=0 And guitestkey(vk_down)=0 Then '<0.67
      If mapdisplay=0 And testweb2=0 And time2>timeinit+20 Then 
