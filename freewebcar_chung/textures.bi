@@ -221,6 +221,11 @@ glnewlist horselist,gl_compile
 load3dssize("objects/horseheadlow.3ds",@"",@"",100)
 glendlist 
 
+airporttowerlist=glgenlists(1)
+glnewlist airporttowerlist,gl_compile 
+load3dssize("objects/airport_tower.3ds",@"",@"",100)
+glendlist 
+
 webtext=guiloadtexture("media/road.jpg")
 roadtext=guiloadtexture("media/road.jpg",200,255)
 roadbandtext=guiloadtexture("media/roadband.jpg")

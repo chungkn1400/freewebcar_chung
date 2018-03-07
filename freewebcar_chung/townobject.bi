@@ -5,7 +5,7 @@ Dim Shared As uint bridge2text,bridgeside2text,bridgeredtext,bridgeredsidetext,b
 Dim Shared As uint eiffeltext,eiffellist,triumphtext,triumphlist
 Dim Shared As uint londontext,londonlist,paris01text,paris02text,paris03text
 Dim Shared As uint archelist,notredamelist,pantheonlist,radiolist,cnitlist
-Dim Shared As uint jussieulist,trocaderolist,assembleelist
+Dim Shared As uint jussieulist,trocaderolist,assembleelist,airporttowerlist
 Dim Shared As uint gasstationtext,gasstationlist,gasstation2list,tennistext,tennislist,stade2text,stade2list
 Dim Shared As uint buddahtext,capitoletext,christriotext,libertystatuetext,tajmahaltext,airporttowertext
 Dim Shared As uint watertowertext,commtowertext,balloontext,balloon1text,balloon2text
@@ -18,7 +18,7 @@ eiffeltext=0:eiffellist=0:triumphtext=0:triumphlist=0
 londontext=0:londonlist=0:paris01text=0:paris02text=0:paris03text=0
 archelist=0:notredamelist=0:pantheonlist=0:radiolist=0:cnitlist=0
 jussieulist=0:trocaderolist=0:assembleelist=0
-gasstationtext=0:gasstationlist=0:gasstation2list=0
+gasstationtext=0:gasstationlist=0:gasstation2list=0:airporttowerlist=0
 buddahtext=0:capitoletext=0:christriotext=0:libertystatuetext=0:tajmahaltext=0
 tennistext=0:tennislist=0:stade2text=0:stade2list=0:airporttowertext=0:watertowertext=0:commtowertext=0
 balloontext=0:balloon1text=0:balloon2text=0
@@ -185,6 +185,31 @@ gldisable gl_lighting
 		EndIf 
 End Sub  
 Sub drawairporttower(x As single,y As single,z As Single,w As Single=1)
+glenable gl_texture_2d
+gldisable gl_lighting
+glcolor3f(1,1,1)
+      Var size=750
+		rotaviontest(x-mx-dmx0,y-my-dmy0,z-mz)
+		if x2>(0.9*max(y2,z2)-size*kscalex/500-100) And x2<dxterrain*scalex Then
+			myguiloadtexture(airporttowertext,"objects/airport_tower.jpg")
+			glbindtexture(gl_texture_2d,airporttowertext)
+         'glenable gl_alpha_test
+         'glAlphaFunc(gl_less,10/254)
+         glcolor3f(0.8,0.8,0.8)
+         glenable gl_lighting
+			glpushmatrix
+			gltranslatef(x-dmx0,y-dmy0,z+10)
+			glscalef(1,1,1.3)
+			'glscalef(kscalex/500,kscalex/500,kscalex/500)
+			'glsphere(1000)
+			glcalllist airporttowerlist
+			glpopmatrix
+			gldisable gl_lighting
+			glcolor3f(1,1,1)
+         'gldisable gl_alpha_test
+		EndIf
+End Sub  
+Sub drawairporttower_old(x As single,y As single,z As Single,w As Single=1)
 glenable gl_texture_2d
 gldisable gl_lighting
 glcolor3f(1,1,1)
