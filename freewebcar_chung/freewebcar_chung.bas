@@ -18511,31 +18511,37 @@ If dx<=(1.0-dy) Then
   'If tsetterrain(i1,j)<=t4 Then tsetterrain(i1,j)+=1:terrain(i1,j)=z10+(h-z10)*(Abs((1-dx)*xsi1-dy*xco1)/max(0.01,Abs(1-dx)+Abs(dy)))'*d100/max(d10,Abs(1-dx)+Abs(dy))
   'If tsetterrain(i,j1)<=t4 Then tsetterrain(i,j1)+=1:terrain(i,j1)=z01+(h-z01)*(Abs(dx*xsi1-(1-dy)*xco1)/max(0.01,Abs(dx)+Abs(1-dy)))'*d100/max(d10,Abs(dx)+Abs(1-dy))
   If tsetterrain(i,j)<=t4 Then
-  	tsetterrain(i,j)+=1
    dr0=max(0.02,Abs(dx)+Abs(dy))
-  	dr=Abs(dx*xsi1-dy*xco1)
-  	'terrain(i,j)=h-(h-z00)*min(dr,dr0)*d100/max(d10,dr0)
-  	Var dh=d100*dr0:If dr<0 Then dh=-dh
-  	Var dh0=(h-z00)*dr 
-  	If Abs(dh)<Abs(dh0) Then terrain(i,j)=h+dh
+  	dr=(dx*xsi1-dy*xco1)
+  	If Abs(dr+dr)>dr0 Then
+  	 tsetterrain(i,j)+=1
+  	 'terrain(i,j)=h-(h-z00)*min(dr,dr0)*d100/max(d10,dr0)
+  	 Var dh=d100*dr0:If dr<0 Then dh=-dh
+  	 Var dh0=(h-z00)*dr 
+  	 If Abs(dh)<Abs(dh0) Then terrain(i,j)=h+dh
+  	EndIf  
   EndIf
   If tsetterrain(i1,j)<=t4 Then
-  	tsetterrain(i1,j)+=1
    dr0=max(0.02,Abs(1-dx)+Abs(dy))
-  	dr=Abs((1-dx)*xsi1-dy*xco1)
-  	'terrain(i1,j)=h-(h-z10)*min(dr,dr0)*d100/max(d10,dr0)
-  	Var dh=d100*dr0:If dr<0 Then dh=-dh
-  	Var dh0=(h-z10)*dr
-  	If Abs(dh)<Abs(dh0) Then terrain(i1,j)=h+dh
+  	dr=((1-dx)*xsi1-dy*xco1)
+  	If Abs(dr+dr)>dr0 Then
+  	 tsetterrain(i1,j)+=1
+  	 'terrain(i1,j)=h-(h-z10)*min(dr,dr0)*d100/max(d10,dr0)
+  	 Var dh=d100*dr0:If dr<0 Then dh=-dh
+  	 Var dh0=(h-z10)*dr
+  	 If Abs(dh)<Abs(dh0) Then terrain(i1,j)=h+dh
+  	EndIf  
   EndIf
   If tsetterrain(i,j1)<=t4 Then
-  	tsetterrain(i,j1)+=1
    dr0=max(0.02,Abs(dx)+Abs(1-dy))
-  	dr=Abs(dx*xsi1-(1-dy)*xco1)
-  	'terrain(i,j1)=h-(h-z01)*min(dr,dr0)*d100/max(d10,dr0)
-  	Var dh=d100*dr0:If dr<0 Then dh=-dh
-  	Var dh0=(h-z01)*dr
-  	If Abs(dh)<Abs(dh0) Then terrain(i,j1)=h+dh
+  	dr=(dx*xsi1-(1-dy)*xco1)
+  	If Abs(dr+dr)>dr0 Then
+  	 tsetterrain(i,j1)+=1
+  	 'terrain(i,j1)=h-(h-z01)*min(dr,dr0)*d100/max(d10,dr0)
+  	 Var dh=d100*dr0:If dr<0 Then dh=-dh
+  	 Var dh0=(h-z01)*dr
+  	 If Abs(dh)<Abs(dh0) Then terrain(i,j1)=h+dh
+  	EndIf  
   EndIf
   z00=terrain0(i,j)
   z10=terrain0(i1,j)
@@ -18548,31 +18554,37 @@ Else
   'If tsetterrain(i,j1)<=t4 Then tsetterrain(i,j1)+=1:terrain(i,j1)=z01+(h-z01)*(Abs(dx*xsi1-(1-dy)*xco1)/max(0.01,Abs(dx)+Abs(1-dy)))'*d100/max(d10,Abs(dx)+Abs(1-dy))
   'If tsetterrain(i1,j1)<=t4 Then tsetterrain(i1,j1)+=1:terrain(i1,j1)=z11+(h-z11)*(Abs((1-dx)*xsi1-(1-dy)*xco1)/max(0.01,Abs(1-dx)+Abs(1-dy)))'*d100/max(d10,Abs(1-dx)+Abs(1-dy))
   If tsetterrain(i1,j)<=t4 Then
-  	tsetterrain(i1,j)+=1
    dr0=max(0.02,Abs(1-dx)+Abs(dy))
-  	dr=Abs((1-dx)*xsi1-dy*xco1)
-  	'terrain(i1,j)=h-(h-z10)*min(dr,dr0)*d100/max(d10,dr0)
-  	Var dh=d100*dr0:If dr<0 Then dh=-dh
-  	Var dh0=(h-z10)*dr
-  	If Abs(dh)<Abs(dh0) Then terrain(i1,j)=h+dh
+  	dr=((1-dx)*xsi1-dy*xco1)
+  	If Abs(dr+dr)>dr0 Then
+  	 tsetterrain(i1,j)+=1
+  	 'terrain(i1,j)=h-(h-z10)*min(dr,dr0)*d100/max(d10,dr0)
+    Var dh=d100*dr0:If dr<0 Then dh=-dh
+  	 Var dh0=(h-z10)*dr
+  	 If Abs(dh)<Abs(dh0) Then terrain(i1,j)=h+dh
+  	EndIf  
   EndIf
   If tsetterrain(i,j1)<=t4 Then
-  	tsetterrain(i,j1)+=1
    dr0=max(0.02,Abs(dx)+Abs(1-dy))
-  	dr=Abs(dx*xsi1-(1-dy)*xco1)
-  	'terrain(i,j1)=h-(h-z01)*min(dr,dr0)*d100/max(d10,dr0)
-  	Var dh=d100*dr0:If dr<0 Then dh=-dh
-  	Var dh0=(h-z01)*dr
-  	If Abs(dh)<Abs(dh0) Then terrain(i,j1)=h+dh
+  	dr=(dx*xsi1-(1-dy)*xco1)
+  	If Abs(dr+dr)>dr0 Then
+  	 tsetterrain(i,j1)+=1
+  	 'terrain(i,j1)=h-(h-z01)*min(dr,dr0)*d100/max(d10,dr0)
+  	 Var dh=d100*dr0:If dr<0 Then dh=-dh
+  	 Var dh0=(h-z01)*dr
+  	 If Abs(dh)<Abs(dh0) Then terrain(i,j1)=h+dh
+  	EndIf  
   EndIf
   If tsetterrain(i1,j1)<=t4 Then
-  	tsetterrain(i1,j1)+=1
    dr0=max(0.02,Abs(1-dx)+Abs(1-dy))
-  	dr=Abs((1-dx)*xsi1-(1-dy)*xco1)
-  	'terrain(i1,j1)=h-(h-z11)*min(dr,dr0)*d100/max(d10,dr0)
-  	Var dh=d100*dr0:If dr<0 Then dh=-dh
-  	Var dh0=(h-z11)*dr
-  	If Abs(dh)<Abs(dh0) Then terrain(i1,j1)=h+dh
+  	dr=((1-dx)*xsi1-(1-dy)*xco1)
+  	If Abs(dr+dr)>dr0 Then
+  	 tsetterrain(i1,j1)+=1
+  	 'terrain(i1,j1)=h-(h-z11)*min(dr,dr0)*d100/max(d10,dr0)
+  	 Var dh=d100*dr0:If dr<0 Then dh=-dh
+  	 Var dh0=(h-z11)*dr
+  	 If Abs(dh)<Abs(dh0) Then terrain(i1,j1)=h+dh
+  	EndIf  
   EndIf
   'z00=terrain0(i,j)
   z10=terrain0(i1,j)
