@@ -18527,7 +18527,7 @@ If dx<=(1.0-dy) Then
   'If tsetterrain(i,j)<=t4 Then tsetterrain(i,j)+=1:terrain(i,j)=z00+(h-z00)*(Abs(dx*xsi1-dy*xco1)/max(0.01,Abs(dx)+Abs(dy)))'*d100/max(d10,Abs(dx)+Abs(dy))
   'If tsetterrain(i1,j)<=t4 Then tsetterrain(i1,j)+=1:terrain(i1,j)=z10+(h-z10)*(Abs((1-dx)*xsi1-dy*xco1)/max(0.01,Abs(1-dx)+Abs(dy)))'*d100/max(d10,Abs(1-dx)+Abs(dy))
   'If tsetterrain(i,j1)<=t4 Then tsetterrain(i,j1)+=1:terrain(i,j1)=z01+(h-z01)*(Abs(dx*xsi1-(1-dy)*xco1)/max(0.01,Abs(dx)+Abs(1-dy)))'*d100/max(d10,Abs(dx)+Abs(1-dy))
-  If tsetterrain(i,j)<=t4 Then
+  If tsetterrain(i,j)<=t4 And h<z00 Then
    dr0=max(0.02,Abs(dx)+Abs(dy))
   	dr=(dx*xsi1-dy*xco1)
   	If Abs(dr+dr)>dr0 Then
@@ -18538,7 +18538,7 @@ If dx<=(1.0-dy) Then
   	 If Abs(dh)<Abs(dh0) Then terrain(i,j)=h+dh
   	EndIf  
   EndIf
-  If tsetterrain(i1,j)<=t4 Then
+  If tsetterrain(i1,j)<=t4 And h<z10 Then
    dr0=max(0.02,Abs(1-dx)+Abs(dy))
   	dr=((1-dx)*xsi1-dy*xco1)
   	If Abs(dr+dr)>dr0 Then
@@ -18549,7 +18549,7 @@ If dx<=(1.0-dy) Then
   	 If Abs(dh)<Abs(dh0) Then terrain(i1,j)=h+dh
   	EndIf  
   EndIf
-  If tsetterrain(i,j1)<=t4 Then
+  If tsetterrain(i,j1)<=t4 And h<z01 Then
    dr0=max(0.02,Abs(dx)+Abs(1-dy))
   	dr=(dx*xsi1-(1-dy)*xco1)
   	If Abs(dr+dr)>dr0 Then
@@ -18570,7 +18570,7 @@ Else
   'If tsetterrain(i1,j)<=t4 Then tsetterrain(i1,j)+=1:terrain(i1,j)=z10+(h-z10)*(Abs((1-dx)*xsi1-dy*xco1)/max(0.01,Abs(1-dx)+Abs(dy)))'*d100/max(d10,Abs(1-dx)+Abs(dy))
   'If tsetterrain(i,j1)<=t4 Then tsetterrain(i,j1)+=1:terrain(i,j1)=z01+(h-z01)*(Abs(dx*xsi1-(1-dy)*xco1)/max(0.01,Abs(dx)+Abs(1-dy)))'*d100/max(d10,Abs(dx)+Abs(1-dy))
   'If tsetterrain(i1,j1)<=t4 Then tsetterrain(i1,j1)+=1:terrain(i1,j1)=z11+(h-z11)*(Abs((1-dx)*xsi1-(1-dy)*xco1)/max(0.01,Abs(1-dx)+Abs(1-dy)))'*d100/max(d10,Abs(1-dx)+Abs(1-dy))
-  If tsetterrain(i1,j)<=t4 Then
+  If tsetterrain(i1,j)<=t4 And h<z10 Then
    dr0=max(0.02,Abs(1-dx)+Abs(dy))
   	dr=((1-dx)*xsi1-dy*xco1)
   	If Abs(dr+dr)>dr0 Then
@@ -18581,7 +18581,7 @@ Else
   	 If Abs(dh)<Abs(dh0) Then terrain(i1,j)=h+dh
   	EndIf  
   EndIf
-  If tsetterrain(i,j1)<=t4 Then
+  If tsetterrain(i,j1)<=t4 And h<z01 Then
    dr0=max(0.02,Abs(dx)+Abs(1-dy))
   	dr=(dx*xsi1-(1-dy)*xco1)
   	If Abs(dr+dr)>dr0 Then
@@ -18592,7 +18592,7 @@ Else
   	 If Abs(dh)<Abs(dh0) Then terrain(i,j1)=h+dh
   	EndIf  
   EndIf
-  If tsetterrain(i1,j1)<=t4 Then
+  If tsetterrain(i1,j1)<=t4 And h<z11 Then
    dr0=max(0.02,Abs(1-dx)+Abs(1-dy))
   	dr=((1-dx)*xsi1-(1-dy)*xco1)
   	If Abs(dr+dr)>dr0 Then
@@ -19725,9 +19725,9 @@ Else
     	 'o1+=Sgn(avgo1-o1)*kfps*0.8
      EndIf 
     ElseIf plane>0 And volant=2 Then
-    	If guitestkey(vk_q)Or guitestkey(vk_a) Then cocko1=min(60,cocko1+kfps)
+    	If guitestkey(vk_q)Or guitestkey(vk_a) Then cocko1=min(60.0,cocko1+kfps)
     	If guitestkey(vk_e)Or guitestkey(vk_d) Then
-    		cocko1=max(-60,cocko1-kfps)
+    		cocko1=max(-60.0,cocko1-kfps)
     	   If guitestkey(vk_q)Or guitestkey(vk_a) Then cocko1=0
     	EndIf
     	If guitestkey(vk_s)Then cocko2=max(-50.0,cocko2-kfps)

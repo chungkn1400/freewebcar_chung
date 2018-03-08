@@ -198,8 +198,8 @@ glcolor3f(1,1,1)
          glcolor3f(0.8,0.8,0.8)
          glenable gl_lighting
 			glpushmatrix
-			gltranslatef(x-dmx0,y-dmy0,z+10)
-			glscalef(1,1,1.3)
+			gltranslatef(x-dmx0,y-dmy0,z+40)
+			glscalef(2.5,2.5,3.25)
 			'glscalef(kscalex/500,kscalex/500,kscalex/500)
 			'glsphere(1000)
 			glcalllist airporttowerlist
