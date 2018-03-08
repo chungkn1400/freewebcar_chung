@@ -18499,18 +18499,27 @@ If orbit=0 And planet=1 Then Return -99999
 	'While j1>=612:j1-=512+200:Wend 
 getlockterrain()
 var t4=3
-Var t1=1
-If tsetterrain(i1,j)<=t1 Or tsetterrain(i,j1)<=t1 Then
+Var t1=0'1
+If tsetterrain(i,j)<=t1 Then
 	z00=terrain0(i,j)
-   z10=terrain0(i1,j)
-   z01=terrain0(i,j1)
-   z11=terrain0(i1,j1)
-Else   
+Else
 	z00=terrain(i,j)
-   z10=terrain(i1,j)
-   z01=terrain(i,j1)
-   z11=terrain(i1,j1)
+EndIf 	
+If tsetterrain(i1,j)<=t1 Then
+	z10=terrain0(i1,j)
+Else
+	z10=terrain(i1,j)
+EndIf 	
+If tsetterrain(i,j1)<=t1 Then
+	z01=terrain0(i,j1)
+Else
+	z01=terrain(i,j1)
 EndIf
+If tsetterrain(i1,j1)<=t1 Then
+	z11=terrain0(i1,j1)
+Else
+	z11=terrain(i1,j1)
+EndIf 	
 Var hwaterz=(waterz)/scalez
 'If z00<hwaterz Then z00=hwaterz
 'If z10<hwaterz Then z10=hwaterz
