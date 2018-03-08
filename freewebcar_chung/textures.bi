@@ -9763,8 +9763,9 @@ Dim As Integer i,j,k,n,p
  		  If Abs(y-my)>d50000 And waynodebuild<>100  Then Continue For
  		  Var z=townwaynodez(ij,i)
  		  If (z<-99990 And tupdateterrain=0) Or tupdatetown=1 Then
- 		  	z=getterrainheight(x,y):townwaynodez(ij,i)=z:If z<-99990 And waynodebuild<>100 Then Continue For 
+ 		  	z=getterrainheight(x,y):townwaynodez(ij,i)=z
  		  EndIf
+ 		  If z<-99990 And waynodebuild<>100 Then Continue For 
  		  townzsol=z
  		  Var kxx=14000.0
  		  If Abs(o2)<20 Then
