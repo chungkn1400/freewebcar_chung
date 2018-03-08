@@ -1393,13 +1393,13 @@ Sub webglbindtexture(gltexture2D As uint,texture As uint)
 		glbindtexture(gl_texture_2d,texture)
 	EndIf
 End Sub 
-Dim Shared As Integer tcolorshadow=0
+Dim Shared As Integer tcolorshadow=0,testwater2
 Sub myglcolor3fv(color3fv As glfloat Ptr)
 Dim As Single r1=1.0 
 If tcolorshadow Then glcolor4f(0.6,0.6,0.6,0.6):Exit sub
 If mapautotext=towntext Then'And hsnowij>waterz Then
 	glcolor4f(r1,r1,r1,0):Exit Sub
-ElseIf testwater=1 And testsea2=1 Then
+ElseIf testwater=1 And (testsea2=1 Or testwater2=1) Then
 	glcolor4f(0.2,0.2,r1,0):Exit Sub 
 'ElseIf mapautotext=webtext And planet=0 Then
 '	glcolor3f(1,1,1):Exit sub
@@ -1441,6 +1441,13 @@ If topview<=2 Then
  ElseIf (mapautotext=webtext And planet=0) Or testsea=0 Then
 	x=(tx*texscale-256)*scalex+dmx0
 	y=(ty*texscale-256)*scalex+dmy0
+	If Abs(x-mx)>15000 Then
+		testwater2=1
+	ElseIf Abs(y-my)>15000 Then
+		testwater2=1
+	Else
+		testwater2=0
+	EndIf
 	'Var tyy=0.06+0.94*(y-yweb+dyweb)*0.48/dyweb
 	'x=(tx*texscale-256+0.665)*scalex+dmx0
 	'y=(ty*texscale-256-0.665)*scalex+dmy0
@@ -10917,7 +10924,7 @@ Dim As Single vtir=1000,disttir,aux
 	vtirz(itir)=(dtirz/aux)*(1+0.2*(Rnd-0.5))
 End Sub
 Dim Shared As Single avionsmoke
-Dim Shared As uint nhorse=50,nhorse0=17,md2ihorse(nhorse),testsoundshoot,ndrawmd2'nhorse=29
+Dim Shared As uint nhorse=50,nhorse0=17,nhorse2=0,md2ihorse(nhorse),testsoundshoot,ndrawmd2'nhorse=29
 Dim Shared As Single horsex(nhorse),horsey(nhorse),horsez(nhorse),horseo1(nhorse),horseo2(nhorse)
 Sub testtir(ByVal itypetir As Integer=0)
 Dim As Integer i  	
@@ -13842,10 +13849,10 @@ Dim As Integer i,j,k
     glscalef(1,1,1)
     For i=1 To nbuisson
      Var changebuisson=tupdatearbre	
-     While buissonx(i)<mx-distbuisson :buissonx(i)+=distbuisson*2:changebuisson=1:Wend 
-     While buissonx(i)>mx+distbuisson :buissonx(i)-=distbuisson*2:changebuisson=1:Wend 	
-     While buissony(i)<my-distbuisson :buissony(i)+=distbuisson*2:changebuisson=1:Wend 
-     While buissony(i)>my+distbuisson :buissony(i)-=distbuisson*2:changebuisson=1:Wend 
+     While buissonx(i)<mx-distbuisson :buissonx(i)+=distbuisson*1.9999:changebuisson=1:Wend 
+     While buissonx(i)>mx+distbuisson :buissonx(i)-=distbuisson*1.9999:changebuisson=1:Wend 	
+     While buissony(i)<my-distbuisson :buissony(i)+=distbuisson*1.9999:changebuisson=1:Wend 
+     While buissony(i)>my+distbuisson :buissony(i)-=distbuisson*1.9999:changebuisson=1:Wend 
      If changebuisson>=1 Then
         'If testairport(buissonx(i),buissony(i),1000,110)=0 Then
      	  If gettestroadtree(buissonx(i)+dmx0,buissony(i)+dmy0)>=1 Then
@@ -14623,11 +14630,13 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
       'For md2inode=1 To nmd2'md2nnode
       '   drawMd2node(md2_nodes(md2inode))
       'Next md2inode
-      If ndrawmd2<=nhorse0 Then 
+      If ndrawmd2<=nhorse0 Then
+        nhorse2=nhorse0	
         For ihorse=1 To nhorse0'ndrawmd2
       	drawMd2node(md2_nodes(md2ihorse(ihorse)))
         Next
       Else
+        nhorse2=nhorse	
         For ihorse=1 To nhorse'ndrawmd2
       	drawMd2node(md2_nodes(md2ihorse(ihorse)))
         Next
@@ -14638,7 +14647,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
 
 If planet=0 Then 
 
-    If pause=0 Then 'And plane>0 And car=0 Then
+    If pause=0 And (plane=0 Or car=0) Then
        movehorses
     EndIf    
     
@@ -19035,7 +19044,7 @@ Dim As Integer i,j,k
 Dim As Single co1,si1,co2,si2,dmx,dmy,dmz,vhorse,horsex0,horsey0,horsez0
 Dim As Integer changehorse,horsesound
 Dim As md2_node Ptr md2node
-For i=1 To nhorse
+For i=1 To nhorse2
   md2node=md2_nodes(md2ihorse(i))	
   horseo1(i)=md2node->rotz
   co1=Cos(degtorad*horseo1(i))

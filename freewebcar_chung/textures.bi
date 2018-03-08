@@ -9766,7 +9766,11 @@ Dim As Integer i,j,k,n,p
  		  EndIf
  		  townzsol=z
  		  Var kxx=14000.0
- 		  kxx*=2*kdistterrain
+ 		  If Abs(o2)<20 Then
+ 		  	kxx=100
+ 		  Else 	
+ 		  	kxx*=2*kdistterrain
+ 		  EndIf
         Var troad=0,trunway=0,tparking=0,toneway=0,trail=0,r=1.0
         If waynodebuild=100 Then
         	  kxx+=2000:troad=1
