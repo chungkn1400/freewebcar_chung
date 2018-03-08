@@ -21589,8 +21589,9 @@ ElseIf tinittown=0 And tinittown0=0 And testweb2=11 And httpon<>1 And tloadwebte
      Else 
       tloadwebtext2=2
       tloadwebtext=0
+      tupdateterrain=1
       xweb=xweb1:yweb=yweb1:dxweb=dxweb1:dyweb=dyweb1:klon=klon1
-      subsettupdate()
+      'subsettupdate()
       If testworld=0 Then
       	y+=(yweb-y)*0.5
       EndIf
@@ -21605,6 +21606,7 @@ ElseIf tinittown=0 And tinittown0=0 And testweb2=11 And httpon<>1 And tloadwebte
    ElseIf tloadwebtext2=3 Then
       tloadwebtext2=2
       setmapautotextures2()
+      tupdateterrain=0
       If (Abs(worldx-worldx000)+Abs(worldy-worldy000))>0.0001 Or (topentown=1 And tinittown0>=1) Then 
         initairport
      	  If tinittown=0 And quit2=0 Then

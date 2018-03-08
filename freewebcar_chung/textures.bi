@@ -9670,6 +9670,7 @@ EndIf
 'agldisable(gl_lighting)
 End Sub
 Declare Sub drawwaynodebuild(ij As Integer,i As Integer)
+Dim Shared As Integer tupdateterrain
 Sub drawtownnode(ij As Integer)
 Dim As Integer i,j,k,n,p
 'If taglcompile<>1 Then Exit sub
@@ -9761,7 +9762,7 @@ Dim As Integer i,j,k,n,p
  		  Var y=townwaynodey(ij,i,1)
  		  If Abs(y-my)>d50000 And waynodebuild<>100  Then Continue For
  		  Var z=townwaynodez(ij,i)
- 		  If z<-99990 Or tupdatetown=1 Then
+ 		  If (z<-99990 And tupdateterrain=0) Or tupdatetown=1 Then
  		  	z=getterrainheight(x,y):townwaynodez(ij,i)=z:If z<-99990 And waynodebuild<>100 Then Continue For 
  		  EndIf
  		  townzsol=z
