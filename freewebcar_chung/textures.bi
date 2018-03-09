@@ -10959,13 +10959,13 @@ If dtweb<12 Then kdxweb=min(1.0,kdxweb*1.15)
 'auxvar=inearroad0:auxtest=0.3
 If (plane=0 Or car>0) And inearroad0>130 Then kdx*=0.7
 Var dx0=kdx*1.3*360/40000',klon=1.4
-kdx*=kdxweb
+if plane=0 or car>0 then kdx*=kdxweb
 Var dx=dx0*kdxweb
 dmxweb(imxweb)=dx0*0.7
 'lattown=lat+dx*1.5*sin1:lngtown=lng+dx*1.5*cos1*klon
 var lat1=lattown-dx,lon1=lngtown-dx*klon
 var lat2=lattown+dx,lon2=lngtown+dx*klon
-dx=kdxweb*7*360/40000
+dx=kdxweb*10*360/40000
 Var lat11=lattown-dx,lon11=lngtown-dx*klon
 var lat21=lattown+dx,lon21=lngtown+dx*klon
 dx=kdxweb*2.5*360/40000
@@ -11039,11 +11039,13 @@ If plane=0 or car>0 or avion="ballon" Or avion="copter" Then
   keyway+=";way['railway'~'rail']"+latlon
   keyway+=";way[amenity~'school|university|hospital']"+latlon
 Else  
+  Var d10=10
   If (dtweb<15.5)Then' Or time2>tidle2+14) Then
-  	  tbuildheight=min2(50,max2(10,Int(tbuildheight*0.8)))
+  	  tbuildheight=min2(50,max2(d10,Int(tbuildheight*0.8)))
   Else 
-  	  tbuildheight=min2(50,max2(10,Int(tbuildheight*1.25)))
+  	  tbuildheight=min2(50,max2(d10,Int(tbuildheight*1.25)))
   EndIf
+  'auxvar=tbuildheight:auxtest=0.2:auxvar2=dtweb
   Var h30=Str(tbuildheight),h10=Str(Int(tbuildheight/3))
   Var testheight="(if:(number(t['building:height'])>"+h30+")||(number(t['height'])>"+h30+ _
                  ")||(number(t['building:levels'])>"+h10+")||(number(t['levels'])>"+h10+"))"
@@ -11427,7 +11429,7 @@ glpopmatrix
 guirefreshopenGL()
 While guitestkey(vk_space)=0 And quit=0:guiscan:Sleep 100:Wend
 Exit sub
-mz+=350:mz1=mz:mz11=mz:Exit sub
+'mz+=350:mz1=mz:mz11=mz:Exit sub
 Dim As Integer i
 'tquitweb=1:Return
 Var msg=""

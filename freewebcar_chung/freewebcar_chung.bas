@@ -21660,6 +21660,7 @@ ElseIf tinittown=0 And tinittown0=0 And testweb2=11 And httpon<>1 And tloadwebte
       If (mz-mzsol0)<690.500 Or vkm<80 Then kdx=0.7
       'If (mz-mzsol0)<100 Then kdx=0.5
       Var dx=kdx*1.3*360/40000
+      If plane>0 And car=0 And avion="737" Then dx*=1.5
       Var kz=min(2.0,0.97+(mz-mzsol0)/4000)'2000'1300'3900
       If (mz-mzsol0)<690.500 And plane>0 Then kz+=v*70/1300
       If (mz-mzsol0)<690.500 Or vkm<80 Then kz-=0.65
