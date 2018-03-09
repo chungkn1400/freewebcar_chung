@@ -9831,10 +9831,10 @@ Dim As Integer i,j,k,n,p
         	EndIf
         EndIf
  		  Var test=0
- 		  rotavion(x-mx,y-my,(z-mz)*0.5)
+ 		  rotavion(x-mx,y-my,(z-mz))'*0.5)
         'If InStr(townwayname(ij,i)," Henri")>0 And troad=0 Then auxvar+=1:auxtest=0.8
  		  'If x2>(0.9*Abs(y2)-(kxx+sizei+sizei)) And troad=0 Then
- 		  If x2>(0.9*Abs(y2)-(kxx*0.1+sizei+sizei)) And troad=0 Then
+ 		  If x2>(0.9*(Abs(y2)+Abs(z2))-(kxx*0.1+sizei+sizei)) And troad=0 Then
  		  	  test=1
  		  EndIf 	  
  		  If troad=1 Then 'road
@@ -10937,6 +10937,7 @@ Close #file
 guinotice "data saved as "+fic 
 End Sub
 dim shared as Double tidle,tidle2
+Dim Shared As Integer tbuildheight=15
 Sub loadopentown()
 tidle2=tidle
 'Var lat=48.891977155490395,lng=2.237673523003608'paris defense
@@ -10956,7 +10957,7 @@ If dtweb>30 Then kdxweb=max(0.27,kdxweb*0.7)
 If dtweb>20 Then kdxweb=max(0.27,kdxweb*0.7)
 If dtweb<12 Then kdxweb=min(1.0,kdxweb*1.15)
 'auxvar=inearroad0:auxtest=0.3
-If plane=0 Or car>0 And inearroad0>130 Then kdx*=0.7
+If (plane=0 Or car>0) And inearroad0>130 Then kdx*=0.7
 Var dx0=kdx*1.3*360/40000',klon=1.4
 kdx*=kdxweb
 Var dx=dx0*kdxweb
@@ -10964,7 +10965,7 @@ dmxweb(imxweb)=dx0*0.7
 'lattown=lat+dx*1.5*sin1:lngtown=lng+dx*1.5*cos1*klon
 var lat1=lattown-dx,lon1=lngtown-dx*klon
 var lat2=lattown+dx,lon2=lngtown+dx*klon
-dx=kdxweb*5.0*360/40000
+dx=kdxweb*7*360/40000
 Var lat11=lattown-dx,lon11=lngtown-dx*klon
 var lat21=lattown+dx,lon21=lngtown+dx*klon
 dx=kdxweb*2.5*360/40000
@@ -11030,13 +11031,35 @@ If myroadlat>-90 And dtweb<18 And fpsmoy>17 Then
  keyway+=";way['highway'~'motorway|trunk|primary|secondary']"+latlon5
  '/
 EndIf 
-keyway+=";way['building']"+latlon
-keyway+=";way['building:part'~'yes']"+latlon
+'node[natural=peak](if:t["ele"]>50)({{bbox}})'levels'
+'testheight="(if:(t['height']>50)||(t['height']>50))"
+If plane=0 or car>0 or avion="ballon" Or avion="copter" Then 
+  keyway+=";way['building']"+latlon
+  keyway+=";way['building:part'~'yes']"+latlon
+  keyway+=";way['railway'~'rail']"+latlon
+  keyway+=";way[amenity~'school|university|hospital']"+latlon
+Else  
+  If (dtweb<15.5)Then' Or time2>tidle2+14) Then
+  	  tbuildheight=min2(50,max2(10,Int(tbuildheight*0.8)))
+  Else 
+  	  tbuildheight=min2(50,max2(10,Int(tbuildheight*1.25)))
+  EndIf
+  Var h30=Str(tbuildheight),h10=Str(Int(tbuildheight/3))
+  Var testheight="(if:(number(t['building:height'])>"+h30+")||(number(t['height'])>"+h30+ _
+                 ")||(number(t['building:levels'])>"+h10+")||(number(t['levels'])>"+h10+"))"
+  If tbuildheight>10.1 Then
+    keyway+=";way['building']"+testheight+latlon1
+    keyway+=";way['building:part'~'yes']"+testheight+latlon1
+  Else
+    keyway+=";way['building']"+latlon2
+    keyway+=";way['building:part'~'yes']"+latlon2
+  EndIf 	
+  keyway+=";way['railway'~'rail']"+latlon2
+  keyway+=";way[amenity~'school|university|hospital|place_of_worship']"+latlon2
+EndIf 
 'keyway+=";way['roof:material']"+latlon
 'keyway+=";relation['building']"+latlon'+";way(r);)"
 keyway+=";relation['building']"+latlon+"->.myrel;way(r.myrel:outer)->.myrelway"';way(r.myrel:part)->.myrelway2"
-keyway+=";way['railway'~'rail']"+latlon
-keyway+=";way[amenity~'school|university|hospital']"+latlon
 'wayurl+="way['man_made'~'bridge']"+latlon1+";";
 'wayurl+="way['bridge']"+latlon1+";";
 'auxvar6=myiaskway+0.1
@@ -11161,6 +11184,7 @@ Dim As Integer i,idata
    	zwebtext[i]=recvdata(i)
    Next
    zwebtext[idata]=0
+   'guinotice Left(zwebtext,400)
    'If InStr(zwebtext,"man_made")>0 Then guinotice Mid(zwebtext,InStr(zwebtext,"man_made"),800)
    If quit2=1 Or tquitweb=1 Then Exit Sub
    Sleep t300:tloadwebtext2=200 
