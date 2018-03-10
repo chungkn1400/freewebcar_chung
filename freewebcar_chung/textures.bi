@@ -9834,7 +9834,8 @@ Dim As Integer i,j,k,n,p
  		  rotavion(x-mx,y-my,(z-mz))'*0.5)
         'If InStr(townwayname(ij,i)," Henri")>0 And troad=0 Then auxvar+=1:auxtest=0.8
  		  'If x2>(0.9*Abs(y2)-(kxx+sizei+sizei)) And troad=0 Then
- 		  If x2>(0.9*(Abs(y2)+Abs(z2))-(kxx*0.1+sizei+sizei)) And troad=0 Then
+ 		  Var sizeii=sizei+sizei:If mz>mzsol00+100 Then sizeii+=hh
+ 		  If x2>(0.9*(Abs(y2)+Abs(z2))-(kxx*0.1+sizeii)) And troad=0 Then
  		  	  test=1
  		  EndIf 	  
  		  If troad=1 Then 'road
