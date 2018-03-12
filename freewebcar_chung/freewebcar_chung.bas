@@ -13785,8 +13785,9 @@ Dim As Integer i,j,k
       EndIf
      EndIf  
      If arbrez(i)>-99990 And tupdatearbres(i)<2 Then
-       If Abs(arbrex(i)-mx)<200 Then
-      	If Abs(arbrey(i)-my)<200 Then
+     	 var d200=200.0:if mz>mzsol00+100 then d200=400
+       If Abs(arbrex(i)-mx)<d200 Then
+      	If Abs(arbrey(i)-my)<d200 Then
             tupdatearbres(i)+=2
       		If gettestnear0road(arbrex(i),arbrey(i))>0 Then
       			arbrez(i)=-999999

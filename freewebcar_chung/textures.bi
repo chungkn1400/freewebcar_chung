@@ -7419,7 +7419,7 @@ EndIf
  glcolor3f(1,1,1)
  gltexsphere(20,8,8)
  glpopmatrix 
- 'Exit sub
+ 'Exit sub 
  x=xx:y=yy
  '/
  x0=x-si1-co1:y0=y+co1-si1
@@ -7807,7 +7807,7 @@ EndIf
    '	layer=0
    'EndIf
    Var di=1,di0=1
-   If layer<>0 And j=n Or j=2 Then
+   If layer<>0 And (j=n Or j=2) Then
       di=max2(1,Int(dr/70)):di0=max2(1,min2(15,di/2))
    Else 
       di=max2(1,Int(dr/150)):di0=max2(1,min2(15,di/2))
@@ -7861,7 +7861,7 @@ EndIf
      'If trunway=0 and tmainway=0 Then
      	'If dist>min(12000.0,4000+(mz-mzsol0)*2.5) Then Continue For
      'Else 
-     	If dist>distrunway4000 Then Continue For
+     If dist>distrunway4000 Then Continue For
      'EndIf
       'z0=min(z0,zmax):z1=min(z1,zmax)
       Var dz=0.0
@@ -7902,7 +7902,8 @@ EndIf
       If tcolor Then glcolor3f(rcolor,gcolor,bcolor)
       If tcolor And j=n And jj=di Then glcolor3f(rcolor,gcolor,1)
       testmygltexquad=0
-   	If dr<dr30000 And ttunnel<>1 And (ttunnel=0 Or (j=2 And jj=1) Or (j=n And jj=di)) Then
+   	'If dr<dr30000 And ttunnel<>1 And (ttunnel=0 Or (j=2 And jj=1) Or (j=n And jj=di)) Then
+   	If  ttunnel<>1 And (ttunnel=0 Or (j=2 And jj=1) Or (j=n And jj=di)) Then
    		gltexquad pxx0,pyy0,dz+zz0, px0,py0,dz+z0, px1,py1,dz+z1+hr, pxx1,pyy1,dz+zz1+hr, txx,ty,tx0
    	   If Abs(layer)<0.4 And tlayer0>-0.1 Then 
      	    glcolor3f(0,1,0)
