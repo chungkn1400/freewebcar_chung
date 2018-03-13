@@ -6795,10 +6795,10 @@ Function gettestnearroad(x As Single,y As Single,dist As Single=0)As Integer
 Dim As Integer i
 Dim As Single dx,dy,r,dr,co1,si1,dxx
 'If plane>0 And car=0 Then Return 0
-For i=1 To inearroad0
+For i=1 To inearroad0 
 	r=rnearroad0(i)
 	If r<9.1 Then r=17'Continue For 'rail
-	If r>2.5*30 Then r+=30'runway	
+	If r>2.5*30 Then r+=230'runway	
 	r+=dist
 	dr=drnearroad0(i)
 	dx=x-xnearroad0(i)

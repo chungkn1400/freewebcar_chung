@@ -4980,9 +4980,10 @@ EndIf
 kdistterrain=scaleview*kdistterrain0
 kdistterrainsave=kdistterrain
 copynearroad0()
-If inearroad=0 Then
+Var i60=60:If mz<mzsol00+100 Then i60=30
+If inearroad<=i60 Then
 	distnearroad=min(20000.0,distnearroad+1000)
-Else
+ElseIf inearroad>i60+10 Then 
 	distnearroad=max(2000.0,distnearroad-1000)
 EndIf
 If time2>timesearchroad+40 And tautopilot>0 Then
@@ -13777,11 +13778,14 @@ Dim As Integer i,j,k
      	  EndIf
      EndIf
      If arbrez(i)>-99990 And tupdatearbres(i)<1 Then
-      If Abs(arbrex(i)-mx)-distnearroad<14*kfps Or Abs(arbrey(i)-my)-distnearroad<14*kfps Then
+      'If Abs(arbrex(i)-mx)-distnearroad<14*kfps Or Abs(arbrey(i)-my)-distnearroad<14*kfps Then
+      If Abs(arbrex(i)-mx)<distnearroad Then
+       If Abs(arbrey(i)-my)<distnearroad Then
         tupdatearbres(i)+=1
      	  If gettestnearroad(arbrex(i),arbrey(i))=1 Then
      	  	  arbrez(i)=-999999
      	  EndIf
+     	 EndIf  
       EndIf
      EndIf  
      If arbrez(i)>-99990 And tupdatearbres(i)<2 Then
@@ -13858,10 +13862,10 @@ Dim As Integer i,j,k
         'If testairport(buissonx(i),buissony(i),1000,110)=0 Then
      	  If gettestroadtree(buissonx(i)+dmx0,buissony(i)+dmy0)>=1 Then
      	  	  buissonz(i)=-99999
-     	  Else'If gettestroad(buissonx(i)+dmx0,buissony(i)+dmy0)=0 Then
+     	  ElseIf gettestnearroad(buissonx(i)+dmx0,buissony(i)+dmy0)=0 Then
      	     buissonz(i)=getterrainheight(buissonx(i),buissony(i))
-        'Else
-     	  '   buissonz(i)=-99999'waterz-1
+     	  Else
+     	     buissonz(i)=-99999'waterz-1
         EndIf
      EndIf
   If buissonz(i)>waterz And mz<(mzsol0+9000) Then    
