@@ -11618,9 +11618,9 @@ For i=0 To nbridge
         If bridgecolor(i)>0 Then  
 			dx=xx-x
 			dy=yy-y
-			If Abs(bridgeo1(i))<0.000001 Then
+			If Abs(bridgeo1(i))<0.0001 Then
 				do1=diro1(dx,dy)+90
-				bridgeo1(i)=do1+0.000002
+				bridgeo1(i)=do1+0.0002
 			Else
 				do1=bridgeo1(i)
 			EndIf
