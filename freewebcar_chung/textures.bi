@@ -10537,6 +10537,7 @@ Return 1
 End Function 
 Sub drawfuel()
 Dim As Integer i,j,k
+iradar2=iradar20
 For i=1 To nfuel
  	If fuelid(i)<>0 Then
  		  Var x=fuelx(i)-dmx0
@@ -10546,11 +10547,11 @@ For i=1 To nfuel
  		  'If Abs(x-mx)<14000 Then'7000
  		  	'If Abs(y-my)<14000 And plane>0 And car>0 Then
  		  		If fueldo1(i)<360 Then
- 		  			addradar(x,y,4)'fuel
+ 		  			addradar(x,y,4,1)'fuel
  		  		ElseIf fueldo1(i)<720+360 Then
- 		  			addradar(x,y,6)'water_tower
+ 		  			addradar(x,y,6,1)'water_tower
  		  		ElseIf fueldo1(i)<720*2+360 Then
- 		  			addradar(x,y,7)'silo
+ 		  			addradar(x,y,7,1)'silo
  		  		'Else
  		  		'	addradar(x,y,8)'communicationstower
  		  		EndIf

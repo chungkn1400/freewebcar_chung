@@ -4919,16 +4919,22 @@ Dim Shared As Single kdistterrain=0.3,kdistterrainsave
 Dim Shared As Double tdistterrain,tkdistterrain
 Const As Integer nradar=30
 Dim Shared As Single xradar(nradar),yradar(nradar),distradar=5000
-Dim Shared As Integer iradar,typeradar(nradar),iradar0
+Dim Shared As Integer iradar,typeradar(nradar),iradar0,iradar2,iradar20
 Dim Shared As Integer testtownshow,testtownshow2
 Dim Shared As Double ttownshow
-Sub addradar(ByVal x As Single,ByVal y As Single,ByVal itype As Integer)
-	If testtownshow=0 Then Exit Sub 
+Sub addradar(ByVal x As Single,ByVal y As Single,ByVal itype As Integer,testshow As Integer=0)
+	If testtownshow=0 And testshow=0 Then Exit Sub 
 	If iradar<nradar Then
 		iradar+=1
 		xradar(iradar)=x
 		yradar(iradar)=y
 		typeradar(iradar)=itype
+		If testshow=0 Then iradar20=iradar:iradar2=iradar20
+	ElseIf itype=4 Then 'fuel
+			iradar2+=1:If iradar2>nradar Then iradar2=1
+		   xradar(iradar2)=x
+		   yradar(iradar2)=y
+		   typeradar(iradar2)=itype
 	EndIf
 End Sub
 Declare Sub copynearroad0()
@@ -6196,8 +6202,9 @@ If volant>0 Then
      	  gldrawtext("+", dx-mapy,dy-mapx)    	
      EndIf
      If itype=4 Then'fuel
-     	  glcolor3f(1,1,1)
-     	  gldrawtext(".", dx-mapy,dy-mapx)    	
+    	  glcolor3f(1,1,0)'1)
+     	  'gldrawtext(".", dx-mapy,dy-mapx)    	
+     	  gldrawtext("R", dx-mapy,dy-mapx,0.7)    	
      EndIf
      If itype=5 Then'school
      	  glcolor3f(0.45,0.45,0.9)
