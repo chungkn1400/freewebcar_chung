@@ -14467,7 +14467,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     
     Var yhlayer0=yh:If time2<timeinit+20 Then tlayer0=tlayer00:tlayer=tlayer00
     If plane>0 And car=0 And mz>mzsol0+100 Then tlayer=0:tlayer0=0
-    If tlayer0>0.6 Then yh+=80
+    If tlayer0>0.6 Then mz=mzsol00+50:mz1=mz:yh+=30'yh+=80
     If tlayer0<-0.6 Then yh-=100
     if tfoothorse=1 And plane=0 Then yh+=o2horse*0.8+7.5
     'If mapdisplay=4 Then
