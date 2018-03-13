@@ -11490,6 +11490,7 @@ For i=0 To nbridge
 	bridgelat2(i)=-89.5
 	bridgelon2(i)=-179.5
 	bridgename(i)=""
+	bridgeo1(i)=0
 Next
 For i=0 To nfuel
 	fuelid(i)=0
@@ -11619,9 +11620,9 @@ For i=0 To nbridge
         If bridgecolor(i)>0 Then  
 			dx=xx-x
 			dy=yy-y
-			If Abs(bridgeo1(i))<0.0001 Then
+			If Abs(bridgeo1(i))<0.00001 Then
 				do1=diro1(dx,dy)+90
-				bridgeo1(i)=do1+0.0002
+				bridgeo1(i)=do1+0.00002
 			Else
 				do1=bridgeo1(i)
 			EndIf
@@ -11822,6 +11823,7 @@ bridgelat2(i)=latx2
 bridgelon2(i)=lngx2
 Var name1=formatname(name0)
 bridgename(i)=name1
+bridgeo1(i)=0
 End Sub
 Sub drawmaptest0()
 Dim As Integer i,j,k,n,p,ij,ntot
