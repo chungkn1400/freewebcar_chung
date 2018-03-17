@@ -5913,7 +5913,7 @@ EndIf
  If testname=0 And drawbuildname<>"" Then
  	townnametype(ij,i)=1
  EndIf
- If Abs(x-x0)+Abs(y-y0)>0.00001 Then 
+ If Abs(x-x0)+Abs(y-y0)>0.01 Then 
   xx=x:yy=y
   x=x0:y=y0
   If i40>0 Then
@@ -6007,11 +6007,13 @@ If hmin>10 Then
    EndIf
  Next
  'xx=x:yy=y
- x=x0:y=y0
- 'gltriangle xx,yy,z0, xmid,ymid,z0, x,y,z0
- If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ If Abs(x-x0)+Abs(y-y0)>0.01 Then 
+  x=x0:y=y0
+  'gltriangle xx,yy,z0, xmid,ymid,z0, x,y,z0
+  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
  	glvertex3f(x,y,z0)
- EndIf
+  EndIf
+ EndIf  
  glend()
 EndIf
 EndIf 'testmygltexquad
@@ -6380,11 +6382,13 @@ If testmygltexquad=1 And h0>46 Then
    EndIf
  Next
  'xx=x:yy=y
- x=x0:y=y0
- 'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
- If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
- 	glvertex3f(x,y,z)
- EndIf
+ If Abs(x-x0)+Abs(y-y0)>0.01 Then 
+  x=x0:y=y0
+  'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
+  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+  	 glvertex3f(x,y,z)
+  EndIf
+ EndIf  
  glend()
 'EndIf  
 If hmin>10 Then
@@ -6407,10 +6411,12 @@ If hmin>10 Then
    EndIf
  Next
  'xx=x:yy=y
- x=x0:y=y0
- 'gltriangle xx,yy,z0, xmid,ymid,z0, x,y,z0
- If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
- 	glvertex3f(x,y,z0)
+ If Abs(x-x0)+Abs(y-y0)>0.01 Then 
+  x=x0:y=y0
+  'gltriangle xx,yy,z0, xmid,ymid,z0, x,y,z0
+  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	 glvertex3f(x,y,z0)
+  EndIf 
  EndIf
  glend()
 EndIf
@@ -6679,7 +6685,9 @@ If testmygltexquad=1 And h0>46 Then
  Else
  	glbegin(gl_polygon)
  EndIf 	
- glvertex3f(x,y,z)
+ If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	glvertex3f(x,y,z)
+ EndIf
  For jj=2 To n
  	jx+=di
  	j=Int(jx)
@@ -6688,12 +6696,18 @@ If testmygltexquad=1 And h0>46 Then
  	x=townwaynodex(ij,i,j)-dmx0
  	y=townwaynodey(ij,i,j)-dmy0
  	'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
- 	glvertex3f(x,y,z)
+   If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	  glvertex3f(x,y,z)
+   EndIf
  Next
  'xx=x:yy=y
- x=x0:y=y0
- 'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
- glvertex3f(x,y,z)
+ If Abs(x-x0)+Abs(y-y0)>0.01 Then 
+  x=x0:y=y0
+  'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
+  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	 glvertex3f(x,y,z)
+  EndIf
+ EndIf  
  glend()
 'EndIf 'mz 
 EndIf 'testmygltexquad 
@@ -9807,6 +9821,11 @@ Dim As Integer i,j,k,n,p
            'If InStr(townwayname(ij,i),"ge Henri")>0 Then auxvar2=sizei+0.1:auxtest=0.8
  		  ElseIf troad=1 Then 
  		  	  sizei=0	  
+ 		  EndIf
+ 		  If sizei>2000 Then
+   	  	  dr30000=min(15000.0,sizei*0.5)
+ 		  Else
+  	   	  dr30000=15000
  		  EndIf
         'If InStr(townwayname(ij,i)," Henri")>0 And troad=0 Then auxvar=sizei+0.11:auxtest=0.8
  		  If sizei>30000 Then'15000 Then
