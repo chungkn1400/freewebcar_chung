@@ -721,9 +721,9 @@ EndIf
 If carb<=0.1 Then
 	prop=0:volume=550 
 ElseIf jetspace=0 Then 
-	carb=max(0.01,carb-0.00009*Abs(prop)*kfps)
+	carb=max(0.01,carb-0.00003*Abs(prop)*kfps)
 Else 
-	carb=max(0.01,carb-0.00005*Abs(prop)*kfps)
+	carb=max(0.01,carb-0.00002*Abs(prop)*kfps)
 EndIf
 If (mz>=mzsol00+0.102) Then aterrissage=1
 If mz<=(min(mzsol0,mzsol00+10)+0.1) Then
