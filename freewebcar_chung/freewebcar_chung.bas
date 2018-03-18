@@ -20745,7 +20745,6 @@ mz11=-999999
         'showwindow(getguih("win"),sw_show)
         setforegroundwindow(getguih("win"))
         Sleep 200
-        guistartOpenGL("win.graph")
         trapclose("win",@subquit)
         traprightmouse("win.graph",@subrightmouse)
         'trapmovemouse("win.graph",@submovemouse)
@@ -20909,6 +20908,7 @@ mz11=-999999
         guisetfocus("win.graph")
         
         'substat()
+        guistartOpenGL("win.graph")
         initgl
         For n=1 To 2
         glclearcolor 0,0.7,0, 0.0
@@ -20983,12 +20983,22 @@ mz11=-999999
         resetfuel()
         If startoption=1 And init=0 Then
         	  ficload=""
+        	  Var testok=1
         	  If getficok()<>"ok" Then
+        	  	  testok=0
         	  	  subload()
         	  EndIf
         	  If ficload="" Then
-        	    setficok("notok")
-        	    load("save/startup.save0")
+        	  	 If testok=0 Then
+        	  	 	guiconfirm("continue previous game ?","confirm",resp)
+        	  	 	If resp="yes" Then testok=1
+        	  	 EndIf
+        	    If testok=0 Then
+        	    	subreset()
+        	    Else 
+         	   setficok("notok")
+        	      load("save/startup.save0")
+        	    EndIf   
         	  EndIf   
      	     'setficok("ok")
         Else 

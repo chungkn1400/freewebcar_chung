@@ -3512,6 +3512,7 @@ Sub getways2(text0 As String)'getways
 	  	    EndIf 'k>0 
  	     EndIf
  	     If taddbridge=1 Or InStr(wtext2,"""highway""")<1 Then Continue For
+ 	     'Continue For
  	  EndIf  
      'If InStr(wtext1,"284893655")>0 Then guinotice "ok"
      Var layer=0
@@ -11435,6 +11436,7 @@ train=timer+60
 End Sub
 Declare Sub substat()
 Sub subtest()
+Dim As Integer i
 'substat():Exit Sub
 'guinotice "test" 
 'substartrain():Exit Sub 
@@ -11450,11 +11452,16 @@ drawmaptestterrain()
 glpopmatrix 
 guirefreshopenGL()
 While guitestkey(vk_space)=0 And quit=0:guiscan:Sleep 100:Wend
+Var msg=""
+'guinotice Str(ibridge)
+'For i=1 To 60
+'	msg+=Str(i)+" "+bridgename(i)
+'Next
+'guinotice msg
 Exit sub
 'mz+=350:mz1=mz:mz11=mz:Exit sub
-Dim As Integer i
 'tquitweb=1:Return
-Var msg=""
+'Var msg=""
 For i=0 To 18
  	Var j=iaeroway-i:If j<1 Then j+=naeroway
 	msg+=aerowayname(j)+"/ "+Str(aerowaylat(j))+" / "
@@ -11628,6 +11635,7 @@ gldisable gl_fog
 myibridge=0
 For i=0 To nbridge
 	bridgex(i)=-9999999
+	'If InStr(LCase(bridgename(i)),"garigli")>0 Then auxvar+=1:auxtest=0.2
 	If Abs(bridgelat(i)-latmx)<dlatx Then
 		If Abs(bridgelon(i)-lngmx)<dlonx Then
 			latlngtomxy(bridgelat(i),bridgelon(i),x,y)
@@ -11741,7 +11749,10 @@ Var dy=latx2-latx
 Var dlatmin=0.100*360/40000
 If Abs(dx)<dlatmin And Abs(dy)<dlatmin Then Exit Sub
 taddbridge=1 
+dlatx=min(dlatx,max(Abs(dx),Abs(dy))*0.5)
+dlonx=dlatx*klon
 'If testworldobject(latx,lngx)=1 Then Exit Sub 
+'If InStr(LCase(name0),"garigliano")>0 Then guinotice "ok"
 For i=0 To nbridge
 	If Abs(latx-bridgelat(i))<dlatx Then
 	 If Abs(lngx-bridgelon(i))<dlonx Then
@@ -11749,6 +11760,12 @@ For i=0 To nbridge
 		If Abs(lngx2-bridgelon2(i))<dlonx Then
 	      Var name1=formatname(name0)
 			If name1<>"" Then bridgename(i)=name1
+         'If InStr(LCase(name0),"garigliano")>0 Then guinotice Str(i)+" ok2 "+name1
+			'bridgelat(i)=latx
+			'bridgelon(i)=lngx
+			'bridgelat2(i)=latx2
+			'bridgelon2(i)=lngx2
+			'bridgeo1(i)=0
 			Exit sub
 		EndIf
 	  EndIf
@@ -11782,6 +11799,7 @@ For i=0 To nbridge
 					bridgelon(i)=lngx
 					bridgelat2(i)=latx2
 					bridgelon2(i)=lngx2
+					bridgeo1(i)=0
 					Exit Sub 
 		   EndIf
 		EndIf
@@ -11807,6 +11825,7 @@ For i=0 To nbridge
 					bridgelon(i)=lngx
 					bridgelat2(i)=latx2
 					bridgelon2(i)=lngx2
+					bridgeo1(i)=0
 					Exit Sub  
 		   EndIf
 		EndIf
