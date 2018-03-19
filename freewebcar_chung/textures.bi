@@ -4073,33 +4073,105 @@ End Sub
 Function formatname(text0 As String)As String
 	Dim As String abcd="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 '-_����&�,;:!*?./"
 	Dim As String abcd2="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789����&�"
-	Dim As String utf8="éèçàùâêîôûÂÊÎÔÛäëïöüÄËÏÖÜÉÈÇ"
-   Dim As String ansi="eecauaeiouAEIOUaeiouAEIOUEEC" '"����������������������������"
-	Dim As String text,c,cc
-	Dim As Integer i,li,j,k,tok=0
+	Dim As String utf8="éèçàùâêîôûÂÊÎÔÛäëïöüÄËÏÖÜÉÈÇ"+"àãĩ"
+	Dim As String utf82="ÀÂÃÄÅÆÇÈÉÊËÌÎÑÒÓÔÕÖÙÚÛÜàáâãäåæçèéêëìíîïðñòóôõöùúûüýþÿ"
+	Dim As String utf822="ǎǑǒǓǔǕǖǗǙǚǛǜǞǟǡǢǣǤǥǦǧǨǩǪǫǬǭǮǯǰǴǵǶǷǸǹǺǻǼǽǾǿȀȂȃȄȅȆȇȈȉȊȋȌȎȑȒȓȔȕȖȗșȚțȜȞȟȡȢȣȤȥȦȧȨȩȪȫȬȭȮȯȰȱȲȳ"
+	Dim As String utf83="ộộủệ"
+	Dim As String ansi3="ooie"
+   Dim As String ansi="eecauaeiouAEIOUaeiouAEIOUEEC"+"aai" '"����������������������������"
+   Dim As String ansi2="AAAAAACEEEEIINOOOOOUUUUYaaaaaaceeeeiiiionooooouuuuypy"
+   Dim As String ansi22="aOoUuUuUUuUuAaaAaGgGgKkQqQq33JGgHPNnAaAaOoAAaEeEeIiIiOOrRrUuUusTt3Hhd88ZzAaEeOoOoOoOoYy"
+	Dim As String text,c,cc,ccc
+	Dim As Integer i,li,j,k,tok=0,ic,iskip,i2,i3,i22
 	text="":li=Len(text0)
 	For i=1 To li
 		c=Mid(text0,i,1)
+		ic=Asc(c)
+		'If ic>=192 And ic<=255 And c<>"�" Then auxvar+=1:auxtest=0.2
 		If InStr(abcd,c)>0 Then
 			text+=c
 			If tok=0 Then
 				If InStr(abcd2,c)>0 Then tok=1
 			EndIf
+			iskip=0
+		ElseIf ic>=192 And ic<=198 And c<>"�" Then
+			text+="A"
+		ElseIf ic>=199 And ic<=199 Then
+			text+="C"
+		ElseIf ic>=200 And ic<=203 Then
+			text+="E"
+		ElseIf ic>=204 And ic<=207 Then
+			text+="I"
+		ElseIf ic>=208 And ic<=208 Then
+			text+="D"
+		ElseIf ic>=209 And ic<=209 Then
+			text+="N"
+		ElseIf ic>=210 And ic<=216 Then
+			text+="O"
+		ElseIf ic>=217 And ic<=220 Then
+			text+="U"
+		ElseIf ic>=221 And ic<=223 Then
+			text+="Y"
+		ElseIf ic>=224 And ic<=230 Then
+			text+="a"
+		ElseIf ic>=231 And ic<=231 Then
+			text+="c"
+		ElseIf ic>=232 And ic<=235 Then
+			text+="e"
+		ElseIf ic>=236 And ic<=239 Then
+			text+="i"
+		ElseIf ic>=240 And ic<=248 Then
+			text+="o"
+		ElseIf ic>=249 And ic<=252 Then
+			text+="u"
+		ElseIf ic>=253 And ic<=255 Then
+			text+="y"
 		ElseIf i<li Then
 			cc=Mid(text0,i,2)
 			j=InStr(utf8,cc)
+	      If j<1 Then 
+	      	i2=InStr(utf82,cc)
+	         If i2<1 Then i22=InStr(utf822,cc)
+	      EndIf    
+			ccc=Mid(text0,i,3)
+			i3=InStr(utf83,ccc)
 			If j>0 And (j Mod 2)=1 Then
 				text+=Mid(ansi,Int(j/2+1),1)
 				i+=1
 				tok=1
-			Else
+				iskip=0
+				'auxvar2+=1:auxtest=0.2
+			ElseIf i2>0 And (i2 Mod 2)=1 Then
+				text+=Mid(ansi2,Int(i2/2+1),1)
+				i+=1
+				tok=1
+				iskip=0
+				'auxvar+=1:auxtest=0.2
+			ElseIf i22>0 And (i22 Mod 2)=1 Then
+				text+=Mid(ansi22,Int(i22/2+1),1)
+				i+=1
+				tok=1
+				iskip=0
+				'auxvar2+=1000:auxtest=0.2
+			ElseIf i3>0 And (i3 Mod 3)=1 Then
+				text+=Mid(ansi3,Int(i3/3+1),1)
+				i+=2
+				tok=1
+				iskip=0
+				'auxvar2+=1:auxtest=0.2
+			ElseIf c="�" Then
+				text+=Right(cc,1):i+=1
+				iskip=0
+			ElseIf iskip=0 Then  	
 				text+="."
+				iskip=1
 			EndIf
-		Else 	
+		Else  	
 			text+="."
 		EndIf
 	Next
 	if tok=0 then return ""
+	'auxtext=text
 	Return Left(Trim(text),40)
 End Function
 Dim Shared As String countrycode
@@ -7190,9 +7262,12 @@ Declare Sub setcitykm1(latx As single,lngx As Single,co1 As Single,si1 As Single
 Sub resetttsetterrain()
 Dim As Integer ij,i,j
 For ij=1 To ntown2
+	getlocktown(ij)
 	For i=1 To ntownnode
 		ttsetterrain(ij,i)=0
+ 		townwaynodez(ij,i)=-999999
 	Next
+	freelocktown(ij)
 Next
 For i=-100 To 612
 	For j=-100 To 612
@@ -9926,12 +10001,21 @@ Dim As Integer i,j,k,n,p
           'If InStr(townwayname(ij,i)," Henri")>0 And troad=0 Then auxvar+=1:auxtest=0.8
           If troad=0 And sizei<2000 And hh1<1000 Then 
            Var dxx=dxterrain*scalex*kdistterrain*kh*max(1.0,h/450)
-           Var i3=0':If nnodes<300 Then i3=0
-           If x2>(dxx+9000*scaleview) Then i+=i3:Continue For'Exit Sub 
+           'Var i3=0':If nnodes<300 Then i3=0
+           If x2>(dxx+9000*scaleview) Then Continue For'Exit Sub 
            'If Abs(x-mx)>(dxx+9000) Then i+=i3:Continue For'Exit Sub'*kh
            'If Abs(y-my)>(dxx+9000) Then i+=i3:Continue For'Exit Sub'*kh 
            If Abs(x-mx)>dxx+5000 Then kh0=0:Continue For'30000 Then
            If Abs(y-my)>dxx+5000 Then kh0=0:Continue For'30000 Then
+      	 EndIf 
+          If troad=0 And (sizei>2000 or hh1>1000) Then 
+           Var dxx=dxterrain*scalex'*kdistterrain*kh*max(1.0,h/450)
+           'Var i3=0':If nnodes<300 Then i3=0
+           If x2>(dxx+9000*scaleview) Then Continue For'Exit Sub 
+           'If Abs(x-mx)>(dxx+9000) Then i+=i3:Continue For'Exit Sub'*kh
+           'If Abs(y-my)>(dxx+9000) Then i+=i3:Continue For'Exit Sub'*kh 
+           If Abs(x-mx)>dxx+5000 Then Continue For'30000 Then
+           If Abs(y-my)>dxx+5000 Then Continue For'30000 Then
       	 EndIf 
           If troad=1 And scaleview<0.9 Then 
            Var dxx=dxterrain*scalex*kdistterrain*0.5'*scaleview'kh
@@ -10709,15 +10793,48 @@ Function formatutf8name(text0 As String)As String
     Dim As String utf8="éèç� ùâêîôûÂÊÎÔÛäëïöüÄËÏÖÜÉÈÇ"
    Dim As String ansi="eecauaeiouAEIOUaeiouAEIOUEEC" '"����������������������������"
     Dim As String text,c,cc
-    Dim As Integer i,li,j,k,tok=0
+    Dim As Integer i,li,j,k,tok=0,ic
     text="":li=Len(text0)
     For i=1 To li
         c=Mid(text0,i,1)
+        ic=Asc(c)
         If InStr(abcd,c)>0 Then
             text+=c
             If tok=0 Then
             	If InStr(abcd2,c)>0 Then tok=1
             EndIf
+		ElseIf ic>=192 And ic<=198 And c<>"�" Then
+			text+="A"
+		ElseIf ic>=199 And ic<=199 Then
+			text+="C"
+		ElseIf ic>=200 And ic<=203 Then
+			text+="E"
+		ElseIf ic>=204 And ic<=207 Then
+			text+="I"
+		ElseIf ic>=208 And ic<=208 Then
+			text+="D"
+		ElseIf ic>=209 And ic<=209 Then
+			text+="N"
+		ElseIf ic>=210 And ic<=216 Then
+			text+="O"
+		ElseIf ic>=217 And ic<=220 Then
+			text+="U"
+		ElseIf ic>=221 And ic<=223 Then
+			text+="Y"
+		ElseIf ic>=224 And ic<=230 Then
+			text+="a"
+		ElseIf ic>=231 And ic<=231 Then
+			text+="c"
+		ElseIf ic>=232 And ic<=235 Then
+			text+="e"
+		ElseIf ic>=236 And ic<=239 Then
+			text+="i"
+		ElseIf ic>=240 And ic<=248 Then
+			text+="o"
+		ElseIf ic>=249 And ic<=252 Then
+			text+="u"
+		ElseIf ic>=253 And ic<=255 Then
+			text+="y"
         ElseIf i<li Then
             cc=Mid(text0,i,2)
             j=InStr(utf8,cc)
@@ -10725,10 +10842,10 @@ Function formatutf8name(text0 As String)As String
                 text+=Mid(ansi,Int(j/2+1),1)
                 i+=1
                 tok=1
-            Else
+            ElseIf c<>"�" Then 
                 text+="."
             EndIf
-        Else    
+        ElseIf c<>"�" Then     
             text+="."
         EndIf
     Next

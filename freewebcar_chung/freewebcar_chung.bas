@@ -1397,7 +1397,7 @@ Dim Shared As Integer tcolorshadow=0,testwater2
 Sub myglcolor3fv(color3fv As glfloat Ptr)
 Dim As Single r1=1.0 
 If tcolorshadow Then glcolor4f(0.6,0.6,0.6,0.6):Exit sub
-If mapautotext=towntext Then'And hsnowij>waterz Then
+If mapautotext=towntext And hsnowij>waterz Then
 	glcolor4f(r1,r1,r1,0):Exit Sub
 ElseIf testwater=1 And (testsea2=1 Or testwater2=1) Then
 	glcolor4f(0.2,0.2,r1,0):Exit Sub 
@@ -1985,7 +1985,7 @@ Sub subsettupdate()
  tupdatearbre=1
  tupdatecow=1
  tupdategrass=1
- tupdateseashore=1	
+ tupdateseashore=1
 End Sub
 Declare Sub resetttsetterrain()
 Sub setmapautotextures2()
