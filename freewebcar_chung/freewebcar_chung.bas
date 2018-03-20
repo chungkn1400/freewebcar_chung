@@ -1958,7 +1958,7 @@ Dim As Single xx,yy
 			mapautotext=maptexture:i=1
 		EndIf
 End Sub
-Dim Shared As Single hrgb0,hrgb1,hrgbi(-100 To 612)
+Dim Shared As Single hrgb0,hrgb1,hrgbi(-100 To 612),testhrgb(-100 To 612,-100 To 612)
 Dim Shared As Integer thrgb0
 Declare Sub testtownarbres()
 Declare Sub setwebwater2(i As Integer,j As Integer,xx As Single,yy As Single)
@@ -2132,6 +2132,9 @@ EndIf
 thrgb0=0:If plane=0 Or car>0 Then thrgb0=1
 For j=-100 To 612
 	hrgbi(j)=0
+	For i=-100 To 612
+		testhrgb(i,j)=0
+	Next
 Next
 For i=-100 To 612
 	hrgb0=0:hrgb1=0

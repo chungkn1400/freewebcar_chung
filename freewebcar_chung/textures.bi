@@ -1929,15 +1929,21 @@ EndIf'/
      	If test=0 Then
      	  Var h=0.0'max(0,(r+g)/2-b)*2'4'*0.1
    	  h=hrgb(r,g,b)'120*4000*(g+g-b-r)/(30+r*r+g*g+b*b)
+   	  Var h80=10
 		  If thrgb0=1 Then 
-		   If Abs(h-hrgb0)<80 Then
+		   If Abs(h-hrgb0)<h80 Then
 		  	  Var kh=(100-Abs(h-hrgb0))*0.01
 		  	  hrgb1=max(0.0,min(256.0,hrgb1+(h-hrgb0)*kh))
+		   	testhrgb(i,j)+=0.11
+		   Else
+		   	testhrgb(i,j)+=1
 		   EndIf
 		   hrgb0=h
-		   If Abs(h-hrgbi(j))<80 Then
+		   If Abs(h-hrgbi(j))<h80 Then
 		  	  Var kh=(100-Abs(h-hrgbi(j)))*0.01
 		  	  hrgb1=max(0.0,min(256.0,hrgb1+(h-hrgbi(j))*kh))
+		   Else
+		   	testhrgb(i,j)+=1
 		   EndIf
 		   hrgbi(j)=h
 		   h=hrgb1
@@ -11552,7 +11558,7 @@ weathertime=Timer:weatherlat=lat:weatherlng=lng
 threaddetach(ThreadCreate(@getweather))
 End Sub
 Dim Shared As Integer tsubtest=0
-Declare Sub drawmaptestterrain()
+Declare Sub drawmaptestterrain(opt As Integer=0)
 Declare Sub drawmaptestterrain0()
 Sub substartrain()
 train=Timer-60:krain=99:rain=1:wclouds=99:whumidity=99
@@ -11572,7 +11578,7 @@ guirefreshopenGL()
 While guitestkey(vk_space)=0 And quit=0:guiscan:Sleep 100:Wend
 Sleep 300:guiscan
 glpushmatrix
-drawmaptestterrain()
+drawmaptestterrain(1)
 glpopmatrix 
 guirefreshopenGL()
 While guitestkey(vk_space)=0 And quit=0:guiscan:Sleep 100:Wend
@@ -12088,35 +12094,48 @@ glcarre(15.5)
 n=512 
 Var ii0=(mx-xweb)/scalex+256
 Var jj0=(my-yweb)/scalex+256 
+Var dxx=max(1.01,min(10.0,512/(dxterrain*2.15)))'(i101*2)
 For i=1 To n 'Step 2
 	For j=1 To n 'Step 2
-	  Var dxx=512/(dxterrain*2.2)'(i101*2)
 	  Var ii=256+(i-256)/dxx
 	  Var jj=256+(j-256)/dxx
 	  Var dz=(terrain(ii,jj))*scalez
 	  dz=(waterz+(dz-waterz)*3)
 	  Var d10=max(10.0,(myzmax-myzmin)*scalez*0.04)
-  r=max(0.0,min(1.0,(d10+dz)/(7*d10+Abs(dz))))
+     r=max(0.0,min(1.0,(d10+dz)/(7*d10+Abs(dz))))
 	  g=1-r:b=0
 	  If r>0.75 Then
 	  	  b=(r-0.75)*4
 	  	  r*=(1-r)*4
 	  EndIf
+     'If testhrgb(ii,jj)>0.1 Then g=1
+     If testhrgb(ii,jj)>0.5 Then b=1:r*=0.5
+     If testhrgb(ii,jj)>1 Then b=1:r=0.8:g=0
 	  If dz<waterz Then b=1:r=0.5:g=0.5
 	  If Abs(ii-ii0)<0.5 And Abs(jj-jj0)<0.5 Then r=0:g=0:b=0
 	  glcolor3f(r,g,b)
      glpushmatrix
 	  glplacecursor(xmax*0.5+270*(-1+2*i/n),ymax*0.5-270*(-1+2*j/n),-40)
-	  glcarre(0.15)
+	  glcarre(0.1)
 	  glpopmatrix
   Next
+  glpushmatrix 
+  If (i Mod 50)=0 Then gldrawtext(Left(Str(i),4),xmax*0.5-12+270*(-1+2*i/n),50,1)
+  glpopmatrix 
 Next
+Var lat0=lat,lng0=lng,mxx=mx,myy=my,mxxx=mx,myyy=my
+latlngtomxy(lat,lng,mxx,myy)
+latlngtomxy(lat+360/40000,lng,mxxx,myyy)
+lat=lat0:lng=lng0
+glpushmatrix 
+gldrawtext("scale="+Left(Str(dxx),4)+"   scalex="+Left(Str(scalex/max(0.01,Abs(myyy-myy))),4)+"km",xmax*0.5-180,30,1)
+glpopmatrix
 glcolor3f(1,1,1)
 glenable gl_texture_2D	
 glenable gl_depth_test
 Sleep 30	
 End Sub
-Sub drawmaptestterrain()
+Sub drawmaptestterrain(opt As Integer=0)
 Dim As Integer i,j,k,n,p
 Dim As Single r,g,b
 gldisable gl_depth_test
@@ -12128,20 +12147,34 @@ glcarre(15.5)
 'ReDim Shared As uint webpicr(1 To bmpwebx2*bmpweby2)
 n=bmpwebx2
 Var sc=1.0   
-For i=1 To n Step 2
-	For j=1 To n Step 2
+Var dxx=max(1.01,min(10.0,512/(dxterrain*2.15)))'(i101*2)
+Var i2=2
+Var scx=dxx/i2
+For i=1 To n Step i2
+	For j=1 To n Step i2
 	  Var ij=n*(j-1)+i
 	  If ij<1 Or ij>n*n Then Exit For,For
 	  r=webpicr(ij)/255
 	  g=webpicg(ij)/255
 	  b=webpicb(ij)/255
 	  glcolor3f(r,g,b)
+	  /'If opt=1 Then 
+	  	Var ii=256+(i*512/n-256)/dxx
+	   Var jj=256+(j*512/n-256)/dxx
+	   If testhrgb(ii,jj)>0.1 Then glcolor3f(0.7,g,0) 
+	   If testhrgb(ii,jj)>0.5 Then glcolor3f(1,0,0)
+	   If water(ii,jj) Then glcolor3f(r,g,1) 
+	  EndIf '/
      glpushmatrix
 	  glplacecursor(xmax*0.5+sc*270*(-1+2*i/n),ymax*0.5+sc*270*(-1+2*j/n),-40)
-	  glcarre(sc*0.15)
+	  'glplacecursor(xmax*0.5+270*(-1+2*i/n),ymax*0.5-270*(-1+2*j/n),-40)
+	  glcarre(sc*0.1*i2)
 	  glpopmatrix
   Next
 Next
+glpushmatrix 
+gldrawtext("scale="+Left(Str(scx),4)+"   / n="+Str(n),xmax*0.5-180,30,1)
+glpopmatrix
 glcolor3f(1,1,1)
 glenable gl_texture_2D	
 glenable gl_depth_test
