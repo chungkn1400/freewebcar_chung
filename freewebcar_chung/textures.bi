@@ -12092,13 +12092,15 @@ glcolor3f(r,g,b)
 glplacecursor(xmax*0.5,ymax*0.5,-40)
 glcarre(15.5)
 n=512 
-Var ii0=(mx-xweb)/scalex+256
-Var jj0=(my-yweb)/scalex+256 
+Var ii0=(mx)/scalex+256
+Var jj0=(my)/scalex+256
+Var i256=xweb/scalex+256
+Var j256=yweb/scalex+256
 Var dxx=max(1.01,min(10.0,512/(dxterrain*2.15)))'(i101*2)
 For i=1 To n 'Step 2
 	For j=1 To n 'Step 2
-	  Var ii=256+(i-256)/dxx
-	  Var jj=256+(j-256)/dxx
+	  Var ii=max2(-100,min2(612,Int(i256+(i-256)/dxx)))
+	  Var jj=max2(-100,min2(612,Int(j256+(j-256)/dxx)))
 	  Var dz=(terrain(ii,jj))*scalez
 	  dz=(waterz+(dz-waterz)*3)
 	  Var d10=max(10.0,(myzmax-myzmin)*scalez*0.04)
