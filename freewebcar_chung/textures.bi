@@ -515,7 +515,7 @@ End Function
 Declare Sub loadwebterrain(zoom1 As integer)
 Declare Sub loadwebterrainmap(zoom1 As integer)
 Dim Shared As Single dlat=0.1,dlon=0.1,latmx,lngmx,xweb0=999000,yweb0=999000,latweb0,lngweb0',klon=1
-Dim Shared As Integer webzoom=13
+'Dim Shared As Integer webzoom=13
 Sub latlngtomxy(ByVal latxx As single,ByVal lngxx As Single ,ByRef mxx As Single,ByRef myy As Single)
 	If kmxlat<10 Then mxx=0:myy=0:Exit Sub 
 	If Abs(xweb0-xweb)<0.01 And Abs(yweb0-yweb)<0.01 Then		
@@ -1954,7 +1954,8 @@ EndIf'/
 		   h=max(0.0,min(256.0,h))
 		  EndIf  
      	  h=h+hsrtm-60+dhmareemax+0.1
-     	  myzmin+=(max(-65.0,min(myzmin,h))-myzmin)*0.001
+     	  'myzmin+=(max(-65.0,min(myzmin,h))-myzmin)*0.001
+     	  myzmin+=(min(myzmin,h)-myzmin)*0.001
      	  myzmax+=(max(myzmax,h)-myzmax)*0.001
      	  terrain22(i,j)=h'(h-60+dhmareemax+0.1)
      	  water(i,j)=0
@@ -1962,7 +1963,8 @@ EndIf'/
      	  Var hh=hsrtm-60+dhmareemax+0.1	
         terrain22(i,j)=-65
         water(i,j)=1
-     	  myzmin+=(max(-65.0,min(myzmin,hh))-myzmin)*0.001
+     	  'myzmin+=(max(-65.0,min(myzmin,hh))-myzmin)*0.001
+     	  myzmin+=(min(myzmin,hh)-myzmin)*0.001
      	  myzmax+=(max(myzmax,hh)-myzmax)*0.001
      	EndIf
    EndIf   	
@@ -12113,7 +12115,7 @@ For i=1 To n 'Step 2
      'If testhrgb(ii,jj)>0.1 Then g=1
      If testhrgb(ii,jj)>0.5 Then b=1:r*=0.5
      If testhrgb(ii,jj)>1 Then b=1:r=0.8:g=0
-	  If dz<waterz Then b=1:r=0.5:g=0.5
+	  If water(ii,jj) Then b=1:r=0.5:g=0.5
 	  If Abs(ii-ii0)<0.5 And Abs(jj-jj0)<0.5 Then r=0:g=0:b=0
 	  glcolor3f(r,g,b)
      glpushmatrix
