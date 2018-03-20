@@ -1958,7 +1958,7 @@ Dim As Single xx,yy
 			mapautotext=maptexture:i=1
 		EndIf
 End Sub
-Dim Shared As Single hrgb0,hrgb1
+Dim Shared As Single hrgb0,hrgb1,hrgbi(-100 To 612)
 Dim Shared As Integer thrgb0
 Declare Sub testtownarbres()
 Declare Sub setwebwater2(i As Integer,j As Integer,xx As Single,yy As Single)
@@ -2130,6 +2130,9 @@ Else
 EndIf
 'Var dxwebzoom2=dxwebzoom*0.9,dywebzoom2=dywebzoom*0.9
 thrgb0=0:If plane=0 Or car>0 Then thrgb0=1
+For j=-100 To 612
+	hrgbi(j)=0
+Next
 For i=-100 To 612
 	hrgb0=0:hrgb1=0
 	For j=-100 To 612
@@ -4915,7 +4918,7 @@ Declare Sub drawbridges()
 Declare Sub drawfuel()
 Declare Sub drawtownnode(ij As Integer)
 Declare Sub drawtownnodes()
-Dim Shared As Single kdistterrain=0.3,kdistterrainsave
+Dim Shared As Single kdistterrain=0.3,kdistterrainsave,dkdistterrain=1
 Dim Shared As Double tdistterrain,tkdistterrain
 Const As Integer nradar=30
 Dim Shared As Single xradar(nradar),yradar(nradar),distradar=5000
@@ -4974,10 +4977,18 @@ If (Timer>tdistterrain+max(0.1,min(0.5,0.15*kfps))) Then
 		Else
 			dfps=minfps-6-6
 		EndIf
+		dfps=minfps-7.5
 		'If Abs(dfps-minfps+6)>0.001 Then dfps=0+minfps-6 Else dfps=1+minfps-6
-	   If (kdistterrain-kdistterrain0)*(kdistterrain0-kdistterrain00)<0 Then
-	   	kdistterrain+=(kdistterrain0-kdistterrain)*0.8
+	   If (kdistterrain-kdistterrain0)*(kdistterrain0-kdistterrain00)<0.00001 Then
+	   	'kdistterrain+=(kdistterrain0-kdistterrain)*0.8
+	   	dkdistterrain*=0.5
+	   	If dkdistterrain<0.03 Then dkdistterrain=0.03
+	   Else 
+	   	dkdistterrain*=1.5
+	   	If dkdistterrain>1 Then dkdistterrain=1
 	   EndIf
+	   kdistterrain+=(kdistterrain0-kdistterrain)*(1-dkdistterrain)
+	   'auxvar=dkdistterrain:auxtest=0.2:auxvar2=kdistterrain	   
 		kdistterrain00=kdistterrain0
 	EndIf
 	kdistterrain0=kdistterrain

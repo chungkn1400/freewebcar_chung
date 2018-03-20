@@ -1935,9 +1935,16 @@ EndIf'/
 		  	  hrgb1=max(0.0,min(256.0,hrgb1+(h-hrgb0)*kh))
 		   EndIf
 		   hrgb0=h
+		   If Abs(h-hrgbi(j))<80 Then
+		  	  Var kh=(100-Abs(h-hrgbi(j)))*0.01
+		  	  hrgb1=max(0.0,min(256.0,hrgb1+(h-hrgbi(j))*kh))
+		   EndIf
+		   hrgbi(j)=h
 		   h=hrgb1
 		  Else 
-		   If testhsrtm<>0 Then h*=0.2
+		   'If testhsrtm<>0 Then
+		   	h*=0.2
+		   'EndIf
 		   h=max(0.0,min(256.0,h))
 		  EndIf  
      	  h=h+hsrtm-60+dhmareemax+0.1
@@ -9927,11 +9934,11 @@ Dim As Integer i,j,k,n,p
         	EndIf
         EndIf
  		  Var test=0
- 		  rotavion(x-mx,y-my,(z-mz))'*0.5)
+ 		  rotavion(x-mx,y-my,min(0.0,max(z-mz,z+hh-mz)))'*0.5)
         'If InStr(townwayname(ij,i)," Henri")>0 And troad=0 Then auxvar+=1:auxtest=0.8
  		  'If x2>(0.9*Abs(y2)-(kxx+sizei+sizei)) And troad=0 Then
- 		  Var sizeii=sizei+sizei:If mz>mzsol00+100 Then sizeii+=hh
- 		  If x2>(0.9*(Abs(y2)+Abs(z2))-(kxx*0.1+sizeii)) And troad=0 Then
+ 		  Var sizeii=sizei*cos2*0.7+kxx*0.1'kxx*0.1'+sizei':If mz>mzsol00+100 Then sizeii+=hh
+ 		  If x2>(0.9*(Abs(y2)+Abs(z2))-(sizeii)) And troad=0 Then
  		  	  test=1
  		  EndIf 	  
  		  If troad=1 Then 'road
