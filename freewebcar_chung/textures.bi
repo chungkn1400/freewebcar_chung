@@ -7016,8 +7016,8 @@ For i=1 To inearroad
 					If ttunnel=1 Then dcos1*=0.01
 					If ttunnel=2 Then dcos1*=100
 					If myncari=0 Or tcarpolice=1 Then
-                If dxxx<Abs(dcos1)*(5+r0) Then
-               	dxxx=Abs(dcos1)*(5+r0)
+                If dxxx<Abs(dcos1)*(7+r0) Then'5+
+               	dxxx=Abs(dcos1)*(7+r0)'5+
                	idxxx=i
                 EndIf
 					 dcos1=avgco1*co1+avgsi1*si1

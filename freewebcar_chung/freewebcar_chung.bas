@@ -2221,6 +2221,16 @@ Next
 Next k
 If testworld=1 Then 
  Dim As Integer di=2'3
+ If myzmin<0 Then 
+  Var dz=-myzmin
+  For i=-100 To 612
+ 	 For j=-100 To 612
+ 		terrain22(i,j)+=dz
+ 	 Next
+  Next
+  myzmin+=dz
+  myzmax+=dz
+ EndIf  
  Var hwater0=max(-60+dhmareemax+0.1,myzmin)
  'Var hwater0=-60+dhmareemax+0.1
  'Var dhwater=max(0.0,myzmin-hwater0)
@@ -8336,8 +8346,8 @@ For i=i1 To ncar
 		  Var dist=0.0,xx=0.0,yy=0.0
 		  For n=0 To nrandomnearroad-1	
 			For j=0 To 14
-			  xx=xnearroad(n)+(j/15)*co1nearroad(n)*drnearroad(n)/(0.1+rnearroad(n))
-			  yy=ynearroad(n)+(j/15)*si1nearroad(n)*drnearroad(n)/(0.1+rnearroad(n))
+			  xx=xnearroad(n)+(j/15)*co1nearroad(n)*drnearroad(n)/(05.1+rnearroad(n))
+			  yy=ynearroad(n)+(j/15)*si1nearroad(n)*drnearroad(n)/(05.1+rnearroad(n))
 			  var dist1=max(Abs(xx-mx-dmx0),Abs(yy-my-dmy0))
 			  If dist<dist1 And dist1<dmax*0.9 Then
 			  	 dist=dist1
@@ -14259,12 +14269,12 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     			If guitestkey(vk_down) Then my-=4000*sc:Sleep 200:testweb2=11
     			If max(Abs(mx),Abs(my))>250000 Then
     				resetmxy0()
-    				resetsrtm()':resetterrain()
+    				resetsrtm():resetterrain()
     			EndIf 	
     		EndIf 	
     		If guitestkey(vk_8) Then
     			guiconfirm("reset srtm ?","confirm",resp)
-    			If resp="yes" Then resetsrtm()':resetterrain()
+    			If resp="yes" Then resetsrtm():resetterrain()
     			'v=50
     		   'subsettupdate():guinotice "ok"
     		'	Var resp0="wxtown1(i)="+Str(wxtown)+":wytown1(i)="+Str(wytown)+":wktown1(i)="+Str(wktown)
