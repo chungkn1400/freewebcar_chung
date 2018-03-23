@@ -5233,7 +5233,7 @@ If taglcompile2=1 Then
    glnewlist agllist,gl_compile_and_execute
 EndIf
 
-If taglcompile=1 Or taglcompile2=1 Then
+If taglcompile=1 Or taglcompile2=1 Or scaleview<0.9 Then
 
 avgbuildh0=avgbuildh
 avgbuildh=0:navgbuildh=1
@@ -14257,9 +14257,14 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     			If guitestkey(vk_right) Then mx+=4000*sc:Sleep 200:testweb2=11
     			If guitestkey(vk_up) Then my+=4000*sc:Sleep 200:testweb2=11
     			If guitestkey(vk_down) Then my-=4000*sc:Sleep 200:testweb2=11
-    			If max(Abs(mx),Abs(my))>250000 Then resetmxy0()
+    			If max(Abs(mx),Abs(my))>250000 Then
+    				resetmxy0()
+    				resetsrtm()':resetterrain()
+    			EndIf 	
     		EndIf 	
     		If guitestkey(vk_8) Then
+    			guiconfirm("reset srtm ?","confirm",resp)
+    			If resp="yes" Then resetsrtm()':resetterrain()
     			'v=50
     		   'subsettupdate():guinotice "ok"
     		'	Var resp0="wxtown1(i)="+Str(wxtown)+":wytown1(i)="+Str(wytown)+":wktown1(i)="+Str(wktown)
@@ -14443,7 +14448,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     		If plane=0 Then d180=80
     		Var k01=0.05*kfps
     		avgv+=(vkm-avgv)*k01:avgmx+=(mx-avgmx)*k01:avgmy+=(my-avgmy)*k01
-    		If Abs(mxmove-avgmx)>d180 Or Abs(mymove-avgmy)>d180 Or Abs(o1move-o1)>90 Or (prop<500*(1+sin2) And plane>0) Or _  
+    		If Abs(mxmove-avgmx)>d180 Or Abs(mymove-avgmy)>d180 Or Abs(o1move-o1)>110 Or (prop<500*(1+sin2) And plane>0) Or _  
     		   mapdisplay>0 Then
     			tmxmove=Timer
     			mxmove=mx:mymove=my:o1move=o1 
@@ -20880,6 +20885,7 @@ mz11=-999999
         addcombo("win.mapsol","auto")
         selectcomboindex("win.mapsol",imapsol)
         '/
+        guistartOpenGL("win.graph")
         imapsol=7+3
         'submapsol
         addcombo("win.ciel","ciel")
@@ -20897,8 +20903,8 @@ mz11=-999999
         addcombo("win.ciel","sky7")
         addcombo("win.ciel","auto")
         If iciel>8 Then
-           If cieltext<>0 Then guideletetexture(cieltext)
-           cieltext=guiloadtexture("media/ciel"+Str(8-2)+".jpg")
+           'If cieltext<>0 Then guideletetexture(cieltext)
+           'cieltext=guiloadtexture("media/ciel"+Str(8-2)+".jpg")
         EndIf
         selectcomboindex("win.ciel",iciel)
         subciel
@@ -20922,7 +20928,6 @@ mz11=-999999
         guisetfocus("win.graph")
         
         'substat()
-        guistartOpenGL("win.graph")
         initgl
         For n=1 To 2
         glclearcolor 0,0.7,0, 0.0

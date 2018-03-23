@@ -9943,6 +9943,9 @@ Dim As Integer i,j,k,n,p
         EndIf
  		  Var test=0
  		  rotavion(x-mx,y-my,min(0.0,max(z-mz,z+hh-mz)))'*0.5)
+        If scaleview<0.9 Then
+        	  If x2>1000 and troad=0 Then Continue For 
+        EndIf
         'If InStr(townwayname(ij,i)," Henri")>0 And troad=0 Then auxvar+=1:auxtest=0.8
  		  'If x2>(0.9*Abs(y2)-(kxx+sizei+sizei)) And troad=0 Then
  		  Var sizeii=sizei*cos2*0.7+kxx*0.1'kxx*0.1'+sizei':If mz>mzsol00+100 Then sizeii+=hh
