@@ -1929,19 +1929,23 @@ EndIf'/
      	If test=0 Then
      	  Var h=0.0'max(0,(r+g)/2-b)*2'4'*0.1
    	  h=hrgb(r,g,b)'120*4000*(g+g-b-r)/(30+r*r+g*g+b*b)
-   	  Var h80=10
+   	  Var h80=10.0
 		  If thrgb0=1 Then 
 		   If Abs(h-hrgb0)<h80 Then
-		  	  Var kh=(100-Abs(h-hrgb0))*0.01
+		  	  'Var kh=(100-Abs(h-hrgb0))*0.01
+		  	  Var kh=(10-Abs(h-hrgb0))*0.1
 		  	  hrgb1=max(0.0,min(256.0,hrgb1+(h-hrgb0)*kh))
+		  	  'hrgb1=max(0.0,min(250.0,hrgb1+(h-hrgb0)))
 		   	testhrgb(i,j)+=0.11
 		   Else
 		   	testhrgb(i,j)+=1
 		   EndIf
 		   hrgb0=h
 		   If Abs(h-hrgbi(j))<h80 Then
-		  	  Var kh=(100-Abs(h-hrgbi(j)))*0.01
+		  	  'Var kh=(100-Abs(h-hrgbi(j)))*0.01
+		  	  Var kh=(10-Abs(h-hrgbi(j)))*0.1
 		  	  hrgb1=max(0.0,min(256.0,hrgb1+(h-hrgbi(j))*kh))
+		  	  'hrgb1=max(0.0,min(250.0,hrgb1+(h-hrgbi(j))))
 		   Else
 		   	testhrgb(i,j)+=1
 		   EndIf
@@ -1953,19 +1957,20 @@ EndIf'/
 		   'EndIf
 		   h=max(0.0,min(256.0,h))
 		  EndIf  
-     	  h=h+hsrtm-60+dhmareemax+0.1
+     	  'h=h+hsrtm-60+dhmareemax+0.1
+     	  h=hsrtm+h'-60+dhmareemax+0.1
      	  'myzmin+=(max(-65.0,min(myzmin,h))-myzmin)*0.001
-     	  myzmin+=(min(myzmin,h)-myzmin)*0.001
-     	  myzmax+=(max(myzmax,h)-myzmax)*0.001
+     	  myzmin+=(min(myzmin,h)-myzmin)*0.0021
+     	  myzmax+=(max(myzmax,h)-myzmax)*0.0021
      	  terrain22(i,j)=h'(h-60+dhmareemax+0.1)
      	  water(i,j)=0
      	Else 
-     	  Var hh=hsrtm-60+dhmareemax+0.1	
-        terrain22(i,j)=-65
+     	  Var hh=hsrtm'-60+dhmareemax+0.1	
+        terrain22(i,j)=hh'-65
         water(i,j)=1
      	  'myzmin+=(max(-65.0,min(myzmin,hh))-myzmin)*0.001
-     	  myzmin+=(min(myzmin,hh)-myzmin)*0.001
-     	  myzmax+=(max(myzmax,hh)-myzmax)*0.001
+     	  myzmin+=(min(myzmin,hh)-myzmin)*0.0021
+     	  myzmax+=(max(myzmax,hh)-myzmax)*0.0021
      	EndIf
    EndIf   	
 End Sub
@@ -4389,6 +4394,7 @@ Dim As Integer i,j,k,ij,di,dj
 		water(i,j)=water2(i,j)
  	Next
  Next
+ testweb=1
 End Sub
 Dim Shared As Single testmz0,testmzsol0
 Sub testresetmz0()
@@ -12099,6 +12105,8 @@ glcarre(15.5)
 n=512 
 Var ii0=(mx)/scalex+256
 Var jj0=(my)/scalex+256
+Var ii00=(xweb)/scalex+256
+Var jj00=(yweb)/scalex+256
 Var i256=xweb/scalex+256
 Var j256=yweb/scalex+256
 Var dxx=max(1.01,min(10.0,512/(dxterrain*2.15)))'(i101*2)
@@ -12115,11 +12123,12 @@ For i=1 To n 'Step 2
 	  	  b=(r-0.75)*4
 	  	  r*=(1-r)*4
 	  EndIf
-     'If testhrgb(ii,jj)>0.1 Then g=1
+     ''If testhrgb(ii,jj)>0.1 Then g=1
      If testhrgb(ii,jj)>0.5 Then b=1:r*=0.5
      If testhrgb(ii,jj)>1 Then b=1:r=0.8:g=0
 	  If water(ii,jj) Then b=1:r=0.5:g=0.5
 	  If Abs(ii-ii0)<0.5 And Abs(jj-jj0)<0.5 Then r=0:g=0:b=0
+	  If Abs(ii-ii00)<0.5 And Abs(jj-jj00)<0.5 Then r=1:g=0:b=0
 	  glcolor3f(r,g,b)
      glpushmatrix
 	  glplacecursor(xmax*0.5+270*(-1+2*i/n),ymax*0.5-270*(-1+2*j/n),-40)

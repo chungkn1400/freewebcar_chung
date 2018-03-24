@@ -241,14 +241,14 @@ Dim As Integer i,j,k,ii,jj
 	Next ii  
 	if(jj<0) Then return -0.5
 	testhsrtm=1    
-	var nny=0.0001+599.99*(lngx-srtmlngi(jj)+2.5)/5 
-	var nnx=0.0001+599.99*(laty-srtmlati(jj)+2.5)/5 
+	var nny=0.00001+599.999*(lngx-srtmlngi(jj)+2.5)/5 
+	var nnx=0.00001+599.999*(laty-srtmlati(jj)+2.5)/5 
 	nnx=599.5-nnx 
 	nny-=0.5 
 	'if(nnx>=600) then nnx=600-1   
 	'if(nny>=600) then nny=600-1   
-	if(nnx<0.0001) then nnx=0.0001   
-	if(nny<0.0001) then nny=0.0001   
+	if(nnx<0.00001) then nnx=0.00001   
+	if(nny<0.00001) then nny=0.00001   
 	i=Int(nnx):j=Int(nny) 
 	var dx=nnx-i,dy=nny-j 
 	var i1=i+1,j1=j+1 
@@ -261,7 +261,12 @@ Dim As Integer i,j,k,ii,jj
     var z10=srtmdata(jj,i1,j) 
     var z01=srtmdata(jj,i,j1) 
     var z11=srtmdata(jj,i1,j1) 
-return (1-dx)*(1-dy)*(z00)+(1-dx)*dy*(z01)+dx*(1-dy)*z10+dx*dy*z11 
+'return (1-dx)*(1-dy)*(z00)+(1-dx)*dy*(z01)+dx*(1-dy)*z10+dx*dy*z11 
+If dx<=(1.0-dy) Then 
+    Return ( dx*(z10-z00) +dy*(z01-z00) +z00)
+Else 
+    Return ( (1-dx)*(z01-z11) +(1-dy)*(z10-z11) +z11 )
+EndIf 
 End Function
 'MercatorLatLngtosrtmlatlng(49,0.2)
 'guinotice Str(getsrtmheight(srtmlat,srtmlng))

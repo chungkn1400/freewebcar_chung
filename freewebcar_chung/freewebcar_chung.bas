@@ -37,7 +37,7 @@ auxtest=1
 #Include Once "woman.bi"
 #Include Once "freeimage.bi"
 #Undef char
-#Define char ubyte
+#Define char UByte
 
 /'On Error GoTo suberror
 GoTo start 
@@ -1992,6 +1992,7 @@ Sub setmapautotextures2()
 Dim As Integer i,j
 getlockterrain()
 Var dzmax=80.0,dzz=0.0,dzz0=0.0
+Var altzold=mz-mzsol00
 For i=-100 To 612
 	For j=-100 To 612
 		mapautotexture(i,j)=mapautotexture2(i,j)
@@ -2007,7 +2008,9 @@ For i=-100 To 612
 		tsetterrain(i,j)=1
 	Next
 Next
-If Abs(mxold)>0.001 And mzold>-scalez And mzold<1900*scalez And scalezold>0.01 And scalez>0.01 Then
+mz=getterrainheight(mx,my)+altzold
+mz1=mz
+/'If Abs(mxold)>0.001 And mzold>-scalez And mzold<1900*scalez And scalezold>0.01 And scalez>0.01 Then
 	Var dz=(mzold/scalezold)-getterrainheight(mxold,myold)/scalez
 	For i=-100 To 612
 		For j=-100 To 612
@@ -2022,7 +2025,7 @@ If Abs(mxold)>0.001 And mzold>-scalez And mzold<1900*scalez And scalezold>0.01 A
    'For i=1 To nship
 	'  airshipz(i)+=dz*scalez
    'Next 
-EndIf
+EndIf '/
 freelockterrain()
 subsettupdate()
 resetttsetterrain()
@@ -2045,17 +2048,19 @@ freelockterrain()
 subsettupdate()
 End Sub
 Sub testcorrectterrain()
-If time2>timecorrectterrain+5 Then
+If time2>timecorrectterrain+5 And time2>timeinit+20 Then
 	If max(Abs(mxcorrect-mx),Abs(mycorrect-my))<10*kfps Then
 		If Abs(mzcorrect-mz)>10*kfps Then
 			Var dz=(mzcorrect-getterrainheight(mxcorrect,mycorrect))
 			If dz>5*kfps Then 
 			  If auxtest>0.6 Then guinotice "correctmz="+Str(dz)
-			  If Abs(waterz-100)>200 Then dz+=(100-waterz)*0.5
-			  correctterrain(dz/scalez)
+			  'If Abs(waterz-100)>200 Then dz+=(100-waterz)*0.5
+			  'correctterrain(dz/scalez)
 			  timecorrectterrain=Timer
-			  mz+=dz
-			  mz1+=dz
+			  'mz+=dz
+			  'mz1+=dz
+			  mz-=dz
+			  mz1-=dz
 			  'auxvar+=1:auxtest=0.2
 			EndIf   
 		EndIf
@@ -2208,6 +2213,7 @@ For i=-100 To 612
 	Next j
 Next i 	
 Var d120=128.0 
+'myzmin=99999:myzmax=-99999
 For k=1 To 1'ismooth
 For i=-100+1 To 612
 	xx=terrain22(i,-100)
@@ -2215,14 +2221,18 @@ For i=-100+1 To 612
 		xxx=xx:xx=terrain22(i,j)
 		yyy=terrain22(i-1,j)
 		xx=min(yyy+d120,max(yyy-d120,xx))
-		terrain22(i,j)=min(xxx+d120,max(xxx-d120,xx))
+		yy=min(xxx+d120,max(xxx-d120,xx))
+		terrain22(i,j)=yy
+		'If myzmin>yy Then myzmin+=(yy-myzmin)*0.1
+		'If myzmax<yy Then myzmax+=(yy-myzmax)*0.1
 	Next
 Next
 Next k
+myzmax=max(myzmin+10,myzmax)
 If testworld=1 Then 
  Dim As Integer di=2'3
- If myzmin<0 Then 
-  Var dz=-myzmin
+ If myzmin<4 Then 
+  Var dz=-myzmin-4/scalez
   For i=-100 To 612
  	 For j=-100 To 612
  		terrain22(i,j)+=dz
@@ -4364,7 +4374,7 @@ Dim Shared As String  townwayname(ntown,ntownnode),townwayname2(ntown,ntownnode)
 Dim Shared As Single waynodebuildh(ntown,ntownnode),waynodebuildx(ntown,ntownnode),waynodebuildy(ntown,ntownnode)
 Dim Shared As Single waynodebuildx2(ntown,ntownnode)
 Dim Shared As Single myroadlat=-99,myroadlon,myroadlat2=-99,myroadlon2
-Dim Shared As Integer mywayroadij,mywayroadi,tt2=10,ttt2=0,t8000=25000/10
+Dim Shared As Integer mywayroadij,mywayroadi',tt2=10,ttt2=0,t8000=25000/10
 Dim Shared As Double twarning 
 Sub testwarningfree()
 	If Fre()<50000000 Then
@@ -4453,6 +4463,8 @@ Function  ptownwaynodeo12(ntowni As integer,ntownnodei As integer,nwaynodei As I
 	EndIf
 	Return @(townwaynodexyo12(ntowni,ntownnodei).o1(nwaynodei))
 End Function
+#Define tt2 10
+#Define t8000 25000/10
 Sub getlockterrain()
 'Exit sub
 Dim As Integer i
@@ -14269,12 +14281,11 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     			If guitestkey(vk_down) Then my-=4000*sc:Sleep 200:testweb2=11
     			If max(Abs(mx),Abs(my))>250000 Then
     				resetmxy0()
-    				resetsrtm():resetterrain()
     			EndIf 	
     		EndIf 	
     		If guitestkey(vk_8) Then
     			guiconfirm("reset srtm ?","confirm",resp)
-    			If resp="yes" Then resetsrtm():resetterrain()
+    			If resp="yes" Then resetsrtm():testweb=1'resetterrain()
     			'v=50
     		   'subsettupdate():guinotice "ok"
     		'	Var resp0="wxtown1(i)="+Str(wxtown)+":wytown1(i)="+Str(wytown)+":wktown1(i)="+Str(wktown)
