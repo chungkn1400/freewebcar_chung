@@ -8249,9 +8249,9 @@ End Sub
 Dim Shared As Integer ncari1,thighway,tinverse,myibridge
 Dim Shared As Double timeautopilot2,timeinverse(ncar)
 Dim Shared As Single ncarv0,vautopilot0=5.5,ncarx0,ncary0,ncaro10,ncarcos100=1,ncarsin100,o1autopilot
-Dim Shared As Single ncarz0,zroad,avgco1=1,avgsi1,distback
+Dim Shared As Single ncarz0,zroad,avgco1=1,avgsi1,distback,kavgo1
 Dim Shared As String myroadwayid
-Dim Shared As Double tmyroadwayname,timerrot
+Dim Shared As Double tmyroadwayname,timerrot,timenear0road
 Sub drawncars()
 Dim As Integer i,j
 If tinittown0>0 Then
@@ -8428,7 +8428,7 @@ For i=i1 To ncar
 	EndIf
    If n>0 Then
 	 Var tcrossroad=0
-	 If nrandomnearroad>1 Then tcrossroad=1
+	 If nrandomnearroad>1 Then	tcrossroad=1
 	 Var r=max(0.1,rnearroad(n))
 	 If r>4000 Then r-=4000
 	 If r>1000 Then r-=1000
@@ -8439,6 +8439,38 @@ For i=i1 To ncar
 	 Var co1=co1nearroad(n)/r
 	 Var si1=si1nearroad(n)/r
     Var dxx=ncarco1(i)*co1+ncarsi1(i)*si1
+    'auxvar=inear0road:auxtest=0.2
+    If i=0 And inear0road>20 Then timenear0road=time2
+    If i=0 And time2>timenear0road+20 Then
+    	 Var cco1=Cos(avgo1*degtorad),ssi1=Sin(avgo1*degtorad) 
+    	 Var dxxx=cco1*cos1+ssi1*sin1
+    	 Var avgo10=avgo1,kavgo10=kavgo1 
+    	 If (timeautopilot>time2-4) Or((Abs(dxx)>0.8)And distback<1) Then
+    	 	If dxx>0 Then kavgo1=1 Else kavgo1=-1
+    	 EndIf
+    	 'auxvar2=(kavgo1)
+    	 if 1 Then'dxxx>-0.8 then'dxxx>0 Then 
+    		If kavgo1>=0 Then
+    			avgo1=diro1(co1,si1)
+    		Else
+    			avgo1=diro1(-co1,-si1)
+    		EndIf
+    	 	If time2>timenear0road+22 Then
+    	 		ncaro1(i)=avgo1
+    	 	   nncaro1(i)=avgo1
+    	 		timenear0road=time2-22+0.04*kfps
+    	 	EndIf
+    	 EndIf	
+    	 'If dxxx<-0.1 Then'And time2>timenear0road+25 Then 
+    	 	'timenear0road=time2-20
+    	 '	distback=30
+    	 'EndIf
+    	 If Abs(avgo1-avgo10)>8 Then
+    	 	 ncarv(i)=min(ncarv(i),0.40)
+    	 	 nncarv(i)=min(nncarv(i),0.40)
+    	 EndIf
+    	 If dxxx<0 Then distback=60
+    EndIf 	
     tinverse=0
     If dxx<0 And onewaynearroad(n) And (i>0 Or inear0road>10) And (i>0 Or typeautopilot=1) Then
     	tinverse=1
