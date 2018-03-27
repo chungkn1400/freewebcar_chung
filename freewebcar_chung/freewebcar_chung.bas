@@ -14261,7 +14261,7 @@ Dim Shared As String treetype
 Dim shared as double tmxmove,tupdate,dtweb=0,ddtweb
 dim shared as single avgv,avgmx,avgmy,mxmove,mymove,o1move,avgdo1,avgo10,tkzoom=0,mzbridge=-999999
 Dim Shared As Single o333,cos333,sin333,do333
-dim shared as double timehelp
+dim shared as double timehelp,timelayer0
 declare sub drawhelp()
 Sub display ()
 Dim As Single x,y,z,aux,r,g,b
@@ -14540,14 +14540,20 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     If plane=0 Or car=0 Then
     	ncarx(0)=mx:ncary(0)=my
     	nncarx(0)=mx:nncary(0)=my
-    EndIf	
+    EndIf
     mx0=mx:my0=my:mz0=mz
     
     
     Var yhlayer0=yh:If time2<timeinit+20 Then tlayer0=tlayer00:tlayer=tlayer00
     If plane>0 And car=0 And mz>mzsol0+100 Then tlayer=0:tlayer0=0
-    If tlayer0>0.6 Then mz=mzsol00+50:mz1=mz:yh+=30'yh+=80
-    If tlayer0<-0.6 Then yh-=100
+    If tlayer0>0.6 Then
+    	mz=mzsol00+50:mz1=mz:yh+=30'yh+=80
+    	timelayer0=Timer
+    elseIf tlayer0<-0.6 Then
+    	yh-=100
+    ElseIf timer<timelayer0+1+40/max(20.0,vkm) Then
+    	mz=mzsol00+50:mz1=mz:yh+=30
+    EndIf 	
     if tfoothorse=1 And plane=0 Then yh+=o2horse*0.8+7.5
     'If mapdisplay=4 Then
     		'glulookat(mx,my-5,mz+yh+max(9000,min(40000,(mz-mzsol0)*20)), mx,my,mz+yh, 0,0,1)'+40000
@@ -15495,7 +15501,9 @@ EndIf 'planet
 		Var ttlayer=layernearroad(n)'$$
 		If plane=0 Or car>0 Then
 		  If tlayer0>-0.4 And Timer>timelayer Then 	
-		    If ttlayer>0.4 And Abs(tlayer0)<0.4 And Timer>timelayer+10 Then tlayer=ttlayer:timelayer=max(timelayer,Timer+1):mz1=mzsol00:mz=mz1 
+		    If ttlayer>0.4 And Abs(tlayer0)<0.4 And Timer>timelayer+10 Then
+		    	tlayer=ttlayer:timelayer=max(timelayer,Timer+1):mz1=mzsol00:mz=mz1 
+		    EndIf
 		    If Abs(ttlayer)<0.4 Then timelayer=max(timelayer,Timer+1)
 		    'If ttlayer<-0.4 And tlayer0>-0.4 And Timer>timelayer+12 Then tlayer=ttlayer:timelayer=max(timelayer,Timer+1):mz1=mzsol00:mz=mz1
 		    If Abs(ttlayer)<0.4 And Abs(tlayer0)>0.4 Then tlayer=ttlayer:timelayer=max(timelayer,Timer+1):mz1=mzsol00:mz=mz1
