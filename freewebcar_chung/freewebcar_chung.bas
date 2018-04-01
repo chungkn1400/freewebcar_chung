@@ -6108,7 +6108,7 @@ EndIf
  glpopmatrix
 End Sub
 Dim Shared As String myroadwayname
-Dim Shared As Integer tvideo,tgps0
+Dim Shared As Integer tvideo,tgps0,ipersovideo
 Declare Sub drawvideo(scale As Single=1)
 Sub drawgps
 Dim As Single dx,dy,rx:dx=xmax*0.80:dy=ymax*0.65'ymax-50
@@ -6116,6 +6116,7 @@ Dim As Integer i
 If mapdisplay>0 Then Exit Sub'Or volant=2 Then Exit Sub
 If (tvideo=0 And time2>timegps+130 And tgps=1) Or time2<timeinit+11 Then timegps=timer+Rnd*3  
 If time2<timegps+10 Then
+	If tvideo=0 Then ipersovideo=Int(Rnd*1.9)
    tvideo=1	
 Else
    If tvideo=1 Then timegps=time2-13
@@ -22648,7 +22649,14 @@ If mapdisplay>0 Then Exit Sub'Or volant=2 Then Exit Sub
 	Dim As Single tx=0.0,ty=0.0,dtx=1.0,dty=1.0
 	setvideotexture(dtime,itexture,tx,ty,dtx,dty)',dx,dy)
 	glenable gl_texture_2D
-	glbindtexture0(gl_texture_2D,mygltext(itexture))
+	If ipersovideo=0 Then
+		glbindtexture0(gl_texture_2D,mygltext(itexture))
+	Else 
+		glbindtexture0(gl_texture_2D,mygltext2(itexture))
+		Var tx0=(tx+tx+dtx)*0.5
+		Var dtx0=(tx+dtx-tx0)*0.75
+		tx=tx0-dtx0:dtx=tx0+dtx0-tx		
+	EndIf
 	glpushmatrix
 	glloadidentity
    glTranslatef (0,0,-50)

@@ -3,7 +3,7 @@ Dim Shared As uint fueltext,roadtext,roadbandtext,roadarrowtext,roadarrow2text,l
 Dim Shared As uint nathalietext,veroniquetext,christinetext,mywomantext,crosstext,onewaytext,parkingtext
 Dim Shared As uint railtext,crossrailtext,housetext,retrotext,roadlefttext,roadarrowlefttext,roadarrow2lefttext
 Dim Shared As uint cocacolatext,marisoltext,lamplist2,lamplist3,oneway2text
-Dim Shared As uint mygltext(11)
+Dim Shared As uint mygltext(11),mygltext2(11)
 Sub resettextures()
 aviontext=0'("objects/c150.jpg")
 avionredtext=0'("objects/c150red.jpg")
@@ -264,6 +264,10 @@ fueltext=guiloadtexture("objects/town/fuel.jpg")
 For i=0 To 11
 	If mygltext(i)<>0 Then guideletetexture(mygltext(i))
 	mygltext(i)=guiloadtexture(ExePath+"/media/image/glvideo"+Str(i)+".jpg")
+Next
+For i=0 To 11
+	If mygltext2(i)<>0 Then guideletetexture(mygltext2(i))
+	mygltext2(i)=guiloadtexture(ExePath+"/media/nkm/glvideo"+Str(i)+".jpg")
 Next
 End Sub 
 Sub loadtextures(itext As uint Ptr)
