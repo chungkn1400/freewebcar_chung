@@ -6115,6 +6115,7 @@ Dim As Single dx,dy,rx:dx=xmax*0.80:dy=ymax*0.65'ymax-50
 Dim As Integer i
 If mapdisplay>0 Then Exit Sub'Or volant=2 Then Exit Sub
 If (tvideo=0 And time2>timegps+130 And tgps=1) Or time2<timeinit+11 Then timegps=timer+Rnd*3  
+If (tvideo=0 And time2>timegps+190 And tgps=0) Or time2<timeinit+11 Then timegps=timer+Rnd*3  
 If time2<timegps+10 Then
 	If tvideo=0 Then ipersovideo=Int(Rnd*1.9)
    tvideo=1	
@@ -13425,6 +13426,7 @@ End Sub
 Dim Shared As Double timepiste,timercollide,timelayeroff
 Sub testcollideforward()
 tpiste=piste
+If Abs(tlayer0)>0.4 then exit Sub
 If time2<timercollide+0.1 Then Exit Sub
 timercollide=time2
 Var kfps0=kfps,kfps=3.0
@@ -14317,8 +14319,9 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     			EndIf 	
     		EndIf 	
     		If guitestkey(vk_8) Then
-    			guiconfirm("reset srtm ?","confirm",resp)
-    			If resp="yes" Then resetsrtm():testweb=1'resetterrain()
+    			'guiconfirm("reset srtm ?","confirm",resp)
+    			'If resp="yes" Then resetsrtm():testweb=1'resetterrain()
+    			timegps=0:Sleep 300
     			'v=50
     		   'subsettupdate():guinotice "ok"
     		'	Var resp0="wxtown1(i)="+Str(wxtown)+":wytown1(i)="+Str(wytown)+":wktown1(i)="+Str(wktown)
