@@ -2,7 +2,7 @@
 Dim Shared As uint fueltext,roadtext,roadbandtext,roadarrowtext,roadarrow2text,lamplist,barrieretext,haietext
 Dim Shared As uint nathalietext,veroniquetext,christinetext,mywomantext,crosstext,onewaytext,parkingtext
 Dim Shared As uint railtext,crossrailtext,housetext,retrotext,roadlefttext,roadarrowlefttext,roadarrow2lefttext
-Dim Shared As uint cocacolatext,marisoltext,lamplist2,lamplist3,oneway2text
+Dim Shared As uint cocacolatext,marisoltext,lamplist2,lamplist3,oneway2text,tunneltext
 Dim Shared As uint mygltext(11),mygltext2(11)
 Sub resettextures()
 aviontext=0'("objects/c150.jpg")
@@ -73,6 +73,7 @@ coptertext=0
         cockpit5text=0
         capottext=0
         roadtext=0
+        tunneltext=0
         roadbandtext=0
         roadarrowtext=0
         roadarrow2text=0
@@ -228,6 +229,7 @@ glendlist
 
 webtext=guiloadtexture("media/road.jpg")
 roadtext=guiloadtexture("media/road.jpg",200,255)
+tunneltext=guiloadtexture("media/tunnel.jpg")
 roadbandtext=guiloadtexture("media/roadband.jpg")
 roadarrowtext=guiloadtexture("media/roadarrow.jpg")
 roadarrow2text=guiloadtexture("media/roadarrow2.jpg")
@@ -7942,7 +7944,9 @@ EndIf
    Var kdd=10.0/max(Abs(ddx)+Abs(ddy),10.0)
    dddx*=kdd:dddy*=kdd:ddx*=kdd:ddy*=kdd
    For jj=1 To di
-   	pxx0=px0:pyy0=py0:pxx1=px1:pyy1=py1
+   	If jj>1 Or j<=2 Then
+   		pxx0=px0:pyy0=py0:pxx1=px1:pyy1=py1
+   	EndIf
    	px0+=ddx0:py0+=ddy0:px1+=ddx1:py1+=ddy1
       zz0=z0:zz1=z1
       pxx+=ddxx:pyy+=ddyy
@@ -8041,8 +8045,8 @@ EndIf
    If dr>dr30000 Then Continue For 
    If layer<0 And ttunnel<>1 Then
      If (((j=2 And jj=1)Or(j=n And jj=di))Or tlayer0<-0.4) Then
-         drawbuildtext=roadtext
-         glbindtexture(gl_texture_2d,roadtext)
+         drawbuildtext=tunneltext'roadtext
+         glbindtexture(gl_texture_2d,tunneltext)'roadtext)
          If tlayer0>-0.4 Then glcolor3f(0.5,1,0.8)
          Var dzz=dz:If tlayer0>-0.4 Then dzz-=86'89
          Var test=0
