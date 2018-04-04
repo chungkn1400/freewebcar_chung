@@ -6585,8 +6585,9 @@ If tnight1=1 Then'And vie>0 Then
 	glcolor3f(1,1,0.84)
    glbindtexture(gl_texture_2d,whitetext)
    'glscalef(0.9,0.9,0.99)
- x=townwaynodex(ij,i,1)-dmx0
- y=townwaynodey(ij,i,1)-dmy0
+ Var i1=towni1(ij,i)
+ x=townwaynodex(ij,i,i1)-dmx0
+ y=townwaynodey(ij,i,i1)-dmy0
  x=mx+1.005*(x-mx)
  y=my+1.005*(y-my)
  x0=x:y0=y
@@ -6594,15 +6595,24 @@ If tnight1=1 Then'And vie>0 Then
  jx=1.001
  Var z1=z-10
  For jj=2 To n
- 	jx+=di
- 	j=Int(jx)
- 	If j>n+0.99 Then Exit For 
+ 	'jx+=di
+ 	'j=Int(jx)
+ 	'If j>n+0.99 Then Exit For 
+ 	jx+=1
+ 	if jx>4.2 then exit for
+ 	if jx>4 Then
+ 		j=towni4(ij,i)
+ 	ElseIf j>3 Then
+ 		j=towni3(ij,i)
+ 	Else
+ 		j=towni2(ij,i)
+ 	EndIf
  	xx=x:yy=y
  	x=townwaynodex(ij,i,j)-dmx0
  	y=townwaynodey(ij,i,j)-dmy0
    x=mx+1.005*(x-mx)
    y=my+1.005*(y-my)
- 	If Abs(xx-x)+Abs(yy-y)<dr30000 Then
+ 	If max(Abs(xx-x),Abs(yy-y))<dr30000 Then
  		mygltexquad xx,yy,z0, x,y,z0, x,y,z1, xx,yy,z1, tx,ty,tx0', 1
  	EndIf
  Next
@@ -6644,8 +6654,9 @@ EndIf
  Else
  	glcolor4f(1,1,1,talpha)
  EndIf
- x=townwaynodex(ij,i,1)-dmx0
- y=townwaynodey(ij,i,1)-dmy0
+ Var i1=towni1(ij,i)
+ x=townwaynodex(ij,i,i1)-dmx0
+ y=townwaynodey(ij,i,i1)-dmy0
  x0=x:y0=y
  tx=0:tx0=0
  xmin=x:ymin=y:xmax=x:ymax=y
@@ -6695,9 +6706,18 @@ EndIf
  	EndIf
  EndIf
  For jj=2 To n
- 	jx+=di
- 	j=Int(jx)
- 	If j>n+0.99 Then Exit For 
+ 	'jx+=di
+ 	'j=Int(jx)
+ 	'If j>n+0.99 Then Exit For 
+ 	jx+=1
+ 	If jx>4.2 Then Exit For 
+ 	If jx>4 Then
+ 		j=towni4(ij,i)
+ 	ElseIf jx>3 Then
+ 		j=towni3(ij,i)
+ 	Else
+ 		j=towni2(ij,i)
+ 	EndIf
  	xx=x:yy=y
  	x=townwaynodex(ij,i,j)-dmx0
  	y=townwaynodey(ij,i,j)-dmy0
@@ -6774,9 +6794,10 @@ If testmygltexquad=1 And h0>46 Then
  Else
    gldisable(gl_lighting)
    'gldisable gl_normalize
- End If   
- x=x0'townwaynodex(ij,i,1)
- y=y0'townwaynodey(ij,i,1)
+ End If 
+ Var i1=towni1(ij,i)
+ x=townwaynodex(ij,i,i1)
+ y=townwaynodey(ij,i,i1)
  jx=1.001 
 'If troof=1 Or mz>z Then  
  If troof=1 Then  
@@ -6789,9 +6810,18 @@ If testmygltexquad=1 And h0>46 Then
  	glvertex3f(x,y,z)
  EndIf
  For jj=2 To n
- 	jx+=di
- 	j=Int(jx)
- 	If j>n+0.99 Then Exit For 
+ 	'jx+=di
+ 	'j=Int(jx)
+ 	'If j>n+0.99 Then Exit For 
+ 	jx+=1
+ 	If jx>4.2 Then Exit For 
+ 	If jx>4 Then
+ 		j=towni4(ij,i)
+ 	ElseIf jx>3 Then
+ 		j=towni3(ij,i)
+ 	Else
+ 		j=towni2(ij,i)
+ 	EndIf
  	'xx=x:yy=y
  	x=townwaynodex(ij,i,j)-dmx0
  	y=townwaynodey(ij,i,j)-dmy0
@@ -9910,12 +9940,22 @@ Dim As Integer i,j,k,n,p
  		  If plane=0 Or car>0 Then kxx*=0.7'0.5
  		  If (sizei<0.5 Or townwaynodesize40(ij,i)<0.5) And troad=0 Then
  		  	  Var xmin=x,ymin=y,xxmax=x,yymax=y
+ 		  	  Var i1=1,i2=1,i3=1,i4=1
  		  	  For j=2 To towniwaynode(ij,i)
+ 		  	  	Var xmin0=xmin,ymin0=ymin,xxmax0=xxmax,yymax0=yymax
  		  	  	xmin=min(xmin,townwaynodex(ij,i,j))
  		  	  	ymin=min(ymin,townwaynodey(ij,i,j))
  		  	  	xxmax=max(xxmax,townwaynodex(ij,i,j))
  		  	  	yymax=max(yymax,townwaynodey(ij,i,j))
+ 		  	  	If xmin<xmin0 Then i1=j
+ 		  	  	If ymin<ymin0 Then i2=j
+ 		  	  	If xxmax>xxmax0 Then i3=j
+ 		  	  	If yymax>yymax0 Then i4=j
  		  	  Next
+ 		  	  towni1(ij,i)=i1
+ 		  	  towni2(ij,i)=i2
+ 		  	  towni3(ij,i)=i3
+ 		  	  towni4(ij,i)=i4
  		  	  'sizei=max(xmax-xmin,ymax-ymin)*1.4
  		  	  sizei=(xxmax-xmin+yymax-ymin)*0.7
 	  	     Var sizei40=getsizei40(ij,i)
@@ -9928,12 +9968,12 @@ Dim As Integer i,j,k,n,p
  		  	  sizei=0	  
  		  EndIf
  		  If sizei>2000 Then
-   	  	  dr30000=min(15000.0,sizei*0.5)
+   	  	  dr30000=min(15000.0,sizei)'*0.5)
  		  Else
   	   	  dr30000=15000
  		  EndIf
         'If InStr(townwayname(ij,i)," Henri")>0 And troad=0 Then auxvar=sizei+0.11:auxtest=0.8
- 		  If sizei>30000 Then'15000 Then
+ 		  If sizei>15000 Then'30000 Then'15000 Then
            'If InStr(townwayname(ij,i)," Henri")>0 Then auxvar=sizei+0.1:auxtest=0.8
  		  	  townwaynodeid(ij,i)=0
  		  	  towniwaynode(ij,i)=0

@@ -4341,6 +4341,7 @@ Const As Integer nwaynode=20,ntownnode=900
 Dim Shared As Integer townnwaynode(ntown),towniwaynode(ntown,ntownnode)
 Dim Shared As Integer towni40(ntown,ntownnode)
 Dim Shared As Byte townalloc(ntown,ntownnode)
+Dim Shared As UByte towni1(ntown,ntownnode),towni2(ntown,ntownnode),towni3(ntown,ntownnode),towni4(ntown,ntownnode)
 Dim Shared As int64  townwaynodeid(ntown,ntownnode)
 Type nodexyo1
 	ReDim As Single x(0)
@@ -13426,7 +13427,7 @@ End Sub
 Dim Shared As Double timepiste,timercollide,timelayeroff
 Sub testcollideforward()
 tpiste=piste
-If Abs(tlayer0)>0.4 then exit Sub
+If (tlayer0)<-0.4 then exit Sub
 If time2<timercollide+0.1 Then Exit Sub
 timercollide=time2
 Var kfps0=kfps,kfps=3.0
