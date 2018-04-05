@@ -10294,19 +10294,21 @@ If 1 Then
  If tdark=1 And (mz<mzsol0+200) Then'(plane=0 Or car>0) Then=
  	Var dr=20.0
    gllightfv(gl_light0,GL_position,glparam4f(mx+dr*cos1*cos2,my+dr*sin1*cos2,mz+dr*sin2+5,1)) 'w=1 position GL_POSITION
-   If (itime Mod 10)=0 Then
+   glLightfv(gl_light0, GL_SPOT_DIRECTION, glparam3f(dmx,dmy,dmz-0.4))
+   If (itime Mod 60)=0 Then
    glLightf(gl_light0, GL_SPOT_EXPONENT, 0.0)'3.0)
    glLightf(gl_light0, GL_CONSTANT_ATTENUATION, 0.0)
    glLightf(gl_light0, GL_LINEAR_ATTENUATION, 0.0)
    glLightf(gl_light0, GL_QUADRATIC_ATTENUATION, 0.000004)
-   'glLightfv(gl_light0, GL_SPOT_DIRECTION, glparam4f(dmx,dmy,dmz-0.3,0))
-   'glLightf(gl_light0, GL_SPOT_CUTOFF, 32)
+   'glLightfv(gl_light0, GL_SPOT_DIRECTION, glparam4f(dmx,dmy,dmz-0.2,0))
+   glLightf(gl_light0, GL_SPOT_CUTOFF, 32.0)
    EndIf 
    glenable gl_lighting
    glenable gl_normalize
  Else 
-   gllightfv(gl_light0,GL_position,glparam4f(mx-kxsoleil*9,my-kysoleil*9,mz+kzsoleil*9,0))'w=0,directional
-   If (itime Mod 10)=0 Then
+   'gllightfv(gl_light0,GL_position,glparam4f(mx-kxsoleil*9,my-kysoleil*9,mz+kzsoleil*9,0))'w=0,directional
+   If (itime Mod 60)=0 Then
+   gllightfv(gl_light0,GL_position,glparam4f(-kxsoleil*9,-kysoleil*9,kzsoleil*9,0))'w=0,directional
    glLightf(gl_light0, GL_SPOT_EXPONENT, 0.0)'3.0)
    glLightf(gl_light0, GL_CONSTANT_ATTENUATION, 0.0)
    glLightf(gl_light0, GL_LINEAR_ATTENUATION, 0.0)

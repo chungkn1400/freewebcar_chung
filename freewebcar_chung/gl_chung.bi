@@ -3,7 +3,14 @@
 #include Once "GL/glu.bi"
 
 Static Shared As glfloat glparamfloat4(4) 
+Static Shared As glfloat glparamfloat3(3) 
 Static Shared As glint glparamint4(4) 
+Function glparam3f(ByVal x As Single,ByVal y As Single,ByVal z As Single) As glfloat Ptr 
+	glparamfloat3(0)=x
+	glparamfloat3(1)=y
+	glparamfloat3(2)=z
+Return @glparamfloat3(0)	
+End Function
 Function glparam4f(ByVal x As Single,ByVal y As Single,ByVal z As Single,ByVal t As Single) As glfloat Ptr 
 	glparamfloat4(0)=x
 	glparamfloat4(1)=y
