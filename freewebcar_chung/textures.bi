@@ -7581,7 +7581,7 @@ EndIf
  Var mx3=mx+cos1*v*15,my3=my+sin1*v*15
  Dim As Single dddx0,dddy0,dddx,dddy,ddxx,ddyy,ddx,ddy
  For j=2 To n
-   
+   glnormal3f(0,0,1)
  	If i40>0 And t40=0 Then
  		Var jj=j
  		If knode40(i40,jj)=jj Then
@@ -7974,6 +7974,7 @@ EndIf
    Var kdd=10.0/max(Abs(ddx)+Abs(ddy),10.0)
    dddx*=kdd:dddy*=kdd:ddx*=kdd:ddy*=kdd
    For jj=1 To di
+      glnormal3f(0,0,1)
    	If jj>1 Or j<=2 Then
    		pxx0=px0:pyy0=py0:pxx1=px1:pyy1=py1
    	EndIf
@@ -9968,7 +9969,7 @@ Dim As Integer i,j,k,n,p
  		  	  sizei=0	  
  		  EndIf
  		  If sizei>2000 Then
-   	  	  dr30000=min(15000.0,sizei)'*0.5)
+   	  	  dr30000=min(15000.0,sizei*0.5)'*0.5)
  		  Else
   	   	  dr30000=15000
  		  EndIf
