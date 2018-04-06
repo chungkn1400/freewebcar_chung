@@ -3815,7 +3815,8 @@ Sub getways2(text0 As String)'getways
  	     	 	   iwaynode(i)=0:waynodeid(i)=0 
                Continue For
  	     	 	EndIf
- 	     	 	Var iwaynodei=min2(nwaynode,iwaynode(i)+1)
+ 	     	 	Dim As Integer iwaynodei
+ 	     	 	iwaynodei=min2(nwaynode,iwaynode(i)+1)
  	     	 	iwaynode(i)=iwaynodei
  	     	 	If tmynode=0 Then 
  	     	 	   loni=lonnode(j)
@@ -3833,8 +3834,9 @@ Sub getways2(text0 As String)'getways
  	     	 		j40=iwaynodei
  	     	 		If j40>0 And j40<=n40 Then
  	     	 		 k40=(k0+k)*0.5+0.01
- 	     	 		 If j40=1 Or k40<k0+1.001 Or k40>k-0.001 or k40>nsplit2-0.001 Then
+ 	     	 		 If j40=1 Or k40<k0+1.0011 Or k40>k-0.0011 or k40>nsplit2-0.0011 Then
  	     	 			knode40(i40,j40)=0
+ 	     	 		   townnodelat40(i40,j40)=-99
  	     	 			townnodex40(i40,j40)=0
  	     	 			townnodey40(i40,j40)=0
  	     	 			townixy40(i40)=1
@@ -5815,7 +5817,7 @@ EndIf
      'knode40(i40,jj)=0
   	  ixy40=0:townixy40(i40)=1
   	  i40=0 
-   ElseIf ixy40<n40-1 Then 
+   ElseIf ixy40<n40-1.1 Then 
      'If Str(townwaynodeid(ij,i))="79152373" Then auxvar+=10:auxtest=0.8
      ixy40+=1
      townx40(i40,ixy40)=xxx
@@ -6016,7 +6018,7 @@ EndIf
  If Abs(x-x0)+Abs(y-y0)>0.01 Then 
   xx=x:yy=y
   x=x0:y=y0
-  If i40>0 Then
+  If i40>0 And ixy40<n40-1.1 Then
     ixy40+=1
     townx40(i40,ixy40)=x
     towny40(i40,ixy40)=y
@@ -6028,7 +6030,7 @@ EndIf
  EndIf 
  xmid=(xmin+xmax)/2
  ymid=(ymin+ymax)/2
- If i40>0 Then
+ If i40>0 And ixy40<n40-1.1 Then
  	townixy40(i40)=ixy40
  	If ixy40>nwaynode Then
  		townwaynodesize40(ij,i)=0
@@ -6177,7 +6179,7 @@ If (Int(i+time2) Mod 10)=1 Then
  EndIf 
 EndIf
 Var i40=0,rr=r,gg=g,bb=b
-If n>=nwaynode Then
+If n>nwaynode Then
 	i40=towni40(ij,i)
 	If i40=0 Then
 		i40=getolditown40(townwaynodeid(ij,i))
@@ -7370,7 +7372,7 @@ If t40=0 Then
  n=towniwaynode(ij,i)
  If n<2 Then Exit Sub 
  i40=0
- If n>=nwaynode Then
+ If n>nwaynode Then
 	i40=towni40(ij,i)
 	If i40=0 Then
 		i40=getolditown40(townwaynodeid(ij,i))
@@ -7411,7 +7413,7 @@ If t40=0 Then
  yy=townwaynodey(ij,i,1)
  x=townwaynodex(ij,i,n)
  y=townwaynodey(ij,i,n)
- If i40>0 Then
+ If i40>0 And ixy40<n40-1.1 Then
    ixy40+=1
    townx40(i40,ixy40)=xx
    towny40(i40,ixy40)=yy
@@ -7594,7 +7596,7 @@ EndIf
      knode40(i40,jj)=0
   	  ixy40=0:townixy40(i40)=1
   	  i40=0 
-   ElseIf ixy40<n40-1 Then 
+   ElseIf ixy40<n40-1.1 Then 
      ixy40+=1
      townx40(i40,ixy40)=xxx
      towny40(i40,ixy40)=yyy
@@ -7615,7 +7617,7 @@ EndIf
  	If t40=0 Then
  	 x=townwaynodex(ij,i,j)-dmx0
  	 y=townwaynodey(ij,i,j)-dmy0
-    If i40>0 Then
+    If i40>0 And ixy40<n40-1.1 Then
       ixy40+=1
       townx40(i40,ixy40)=x
       towny40(i40,ixy40)=y
@@ -9969,7 +9971,7 @@ Dim As Integer i,j,k,n,p
  		  	  sizei=0	  
  		  EndIf
  		  If sizei>2000 Then
-   	  	  dr30000=min(15000.0,sizei*0.5)'*0.5)
+   	  	  dr30000=min(15000.0,sizei*0.7)'*0.5)
  		  Else
   	   	  dr30000=15000
  		  EndIf
