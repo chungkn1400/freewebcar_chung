@@ -20995,8 +20995,8 @@ mz11=-999999
         'trapLeftmouseup("win.graph",@sublefthandup)
         guisetfocus("win.graph")
         
-        'substat()
         initgl
+        Sleep 400
         For n=1 To 2
         glclearcolor 0,0.7,0, 0.0
         glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
@@ -21016,7 +21016,9 @@ mz11=-999999
         guirefreshopenGL()
         Sleep 400
         Next n
-                
+        substat()
+        guirefreshopenGL()
+                        
         
         'Dim As Integer maxtextsize
         'glGetIntegerv(GL_MAX_TEXTURE_SIZE, @maxtextsize)
@@ -22125,7 +22127,7 @@ EndIf
 
 setficok("ok")
 
-substat()
+'substat()
 Sleep 1000
 
 guiclose

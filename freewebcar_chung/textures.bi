@@ -12324,7 +12324,37 @@ For i=1 To Len(text)
 Next
 Return txt
 End Function
+Dim Shared As hwnd hwinstat
 Sub substat()
+'If FileExists(ExePath+"/woman/girl2.jpg") Then Exit Sub 
+'Exit sub
+Dim As Integer i
+Sleep 900
+Var hwin0=getforegroundwindow()
+If hwin0<>getguih("win") Then Exit Sub 
+Var url="https://chungkn1400.github.io/json_osm_chung/json_osm_chung/stat.html"
+url="http://chungswebsite.blogspot.fr/p/exit.html?"+formaturl(guigettext("win")+"+"+reverselocation)
+url="https://chungswebsite.blogspot.fr/p/blog-page_7.html#"+formaturl(guigettext("win")+"="+reverselocation)
+ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOWmaximized)
+'ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
+Sleep 4000
+Var hwin=getforegroundwindow()
+For i=1 To 5
+If hwin=hwin0 Then
+	Sleep 2000
+	hwin=getforegroundwindow()
+Else
+	Exit For 
+EndIf
+Next i 
+hwinstat=hwin
+showwindow(hwin0,sw_minimize)
+Sleep 1000
+showwindow(hwin0,sw_showmaximized)
+Sleep 1000
+SetWindowPos hwin0, HWND_TOPMOST, 0, 0, 0, 0, SW_SHOW Or SWP_SHOWWINDOW Or SWP_NOMOVE Or SWP_NOSIZE
+End Sub 
+Sub substat_old()
 If FileExists(ExePath+"/woman/girl2.jpg") Then Exit Sub 
 'Exit sub
 Dim As Integer i
