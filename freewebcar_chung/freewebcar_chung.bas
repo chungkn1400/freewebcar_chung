@@ -14266,8 +14266,9 @@ Declare Sub testresetmz0()
 Dim Shared As String treetype 
 Dim shared as double tmxmove,tupdate,dtweb=0,ddtweb
 dim shared as single avgv,avgmx,avgmy,mxmove,mymove,o1move,avgdo1,avgo10,tkzoom=0,mzbridge=-999999
-Dim Shared As Single o333,cos333,sin333,do333
+Dim Shared As Single o333,cos333,sin333,do333,o100
 dim shared as double timehelp,timelayer0
+Dim Shared As Integer tfootmove
 declare sub drawhelp()
 Sub display ()
 Dim As Single x,y,z,aux,r,g,b
@@ -14489,6 +14490,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     glLoadIdentity ()
     glscalef(1.325,1,1.325)
     testresetmz0()
+    tfootmove=0
     yh=17
     If plane=0 Or car>0 Then
     	'Var ksc=1.38:glscalef(ksc,1,ksc)
@@ -14523,8 +14525,9 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     	Else
     		tmxmove=Timer
       EndIf
-    	If plane=0 And trun=0 Then 
-    		If Abs(mx-mx0)+Abs(my-my0)>0.01 Then o2=0:cos2=1:sin2=0:dmz=0
+    	If plane=0 And trun=0 Then
+    		If Abs(mx-mx0)+Abs(my-my0)>0.01 Then o2=0:cos2=1:sin2=0:dmz=0:tfootmove=1
+    		If Abs(o1-o100)>0.01 Then tfootmove=1
     	EndIf 	
     EndIf 
     If Abs(mx-mx0)+Abs(my-my0)>0.01 Then
@@ -14548,7 +14551,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     	ncarx(0)=mx:ncary(0)=my
     	nncarx(0)=mx:nncary(0)=my
     EndIf
-    mx0=mx:my0=my:mz0=mz
+    mx0=mx:my0=my:mz0=mz:o100=o1
     
     
     Var yhlayer0=yh:If time2<timeinit+20 Then tlayer0=tlayer00:tlayer=tlayer00
@@ -15166,7 +15169,18 @@ EndIf 'planet
     
     If plane=0 Then
        If guitestkey(vk_h) Then tfoothorse=(tfoothorse+1)Mod 2:Sleep 300
-       If tfoothorse=1 Then drawhorse()
+       If tfoothorse=1 Then
+       	drawhorse()
+       ElseIf tfootmove>0.5 Then  
+			if mz<waterz+25.1 Then
+				If Timer>tsoundfoot+0.3 Then
+					If ntownnear<2 Then soundwaterwave()
+					soundfoot(2.4)
+				EndIf
+			Else
+				soundfoot(2.4)
+			EndIf 
+       EndIf
     EndIf
 	 If (mz<(mzsol0+500) And (mzsol0-mzh)<waterz+1+dhseashore)Then'And tseashore=1 and webtext=0 Then
 		If ntownnear<1 And plane=0 Then drawseashore()
