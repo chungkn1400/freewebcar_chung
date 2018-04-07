@@ -20841,7 +20841,7 @@ mz11=-999999
         statictext("win.bing","google",965,ymax+26,60,20)
         graphicbox("win.graph",10,10,xmax,ymax,"opengl")
         'openwindow("win","my window",100,70,xmax+30,ymax+100)
-        openwindow("win","freewebcar_chung",winx,winy,xmax+30,ymax+100)
+        openwindow("win","freewebcar_chung",winx,winy,xmax+30,ymax+92)
         Sleep 200
         'showwindow(getguih("win"),sw_show)
         setforegroundwindow(getguih("win"))
