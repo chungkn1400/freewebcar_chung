@@ -20996,7 +20996,7 @@ mz11=-999999
         guisetfocus("win.graph")
         
         initgl
-        Sleep 400
+        sleep 400
         For n=1 To 2
         glclearcolor 0,0.7,0, 0.0
         glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)

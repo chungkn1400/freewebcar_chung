@@ -6179,7 +6179,7 @@ If (Int(i+time2) Mod 10)=1 Then
  EndIf 
 EndIf
 Var i40=0,rr=r,gg=g,bb=b
-If n>nwaynode Then
+If n>=nwaynode Then
 	i40=towni40(ij,i)
 	If i40=0 Then
 		i40=getolditown40(townwaynodeid(ij,i))
@@ -7372,7 +7372,7 @@ If t40=0 Then
  n=towniwaynode(ij,i)
  If n<2 Then Exit Sub 
  i40=0
- If n>nwaynode Then
+ If n>=nwaynode Then
 	i40=towni40(ij,i)
 	If i40=0 Then
 		i40=getolditown40(townwaynodeid(ij,i))
