@@ -10113,6 +10113,7 @@ Dim As Integer i,j,k,n,p
           waynodebuildy(ij,i)=y
           waynodebuildh(ij,i)=h
           waynodebuildx2(ij,i)=x2
+          waynodebuildy2(ij,i)=y2
           drawwaynodebuild(ij,i)
          EndIf  
  		EndIf
@@ -10146,6 +10147,7 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           If housetext=0 Then glbindtexture(gl_texture_2d,housetext)
           Var h=waynodebuildh(ij,i)
           Var x2=waynodebuildx2(ij,i)
+          Var y2=waynodebuildy2(ij,i)
           Var sizei=townwaynodesize(ij,i)
           Var x=waynodebuildx(ij,i)
           Var y=waynodebuildy(ij,i)
@@ -10207,7 +10209,6 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
            	      If railtext=0 Then glbindtexture(gl_texture_2d,railtext)
             	   drawbuildtext=roadtext
             	   glcolor3f(1,1,1)
-            	   h=400
             	ElseIf waynodebuild=11 Then
             	   glcolor3f(0,0.6,1)
             	   r=0:g=0.6:b=1
@@ -10216,57 +10217,48 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
             	   r=0.2:g=1:b=0.7
             	ElseIf waynodebuild=11 Then'terminal
             	   glcolor3f(0.5,1,0.5)
-            	   h=400
-            	ElseIf waynodebuild=12 Then'church
+           	   ElseIf waynodebuild=12 Then'church
             	   If churchtext=0 Then glbindtexture(gl_texture_2d,churchtext)
             	   drawbuildtext=churchtext
             	   drawbuildtx=4.5:drawbuildty=4
             	   glcolor3f(0.5,0.6,0.4)
             	   If x2>0.8*max(Abs(y2),Abs(y2)) And x2<570 Then soundvoyage()
-            	   h=400
-            	ElseIf waynodebuild=13 Then'shop
+           	   ElseIf waynodebuild=13 Then'shop
             	   If shoptext=0 Then glbindtexture(gl_texture_2d,shoptext)
             	   drawbuildtext=shoptext
             	   drawbuildtx=0.5:drawbuildty=0.5
             	   glcolor3f(0.9,0.6,0.9)
             	   If x2>0.8*max(Abs(y2),Abs(y2)) And x2<770 Then soundvoyage(4,LCase(drawbuildname))
-            	   h=400
-            	ElseIf waynodebuild=14 Then'official
+           	   ElseIf waynodebuild=14 Then'official
             	   If officialtext=0 Then glbindtexture(gl_texture_2d,officialtext)
             	   drawbuildtext=officialtext
             	   drawbuildtx=2:drawbuildty=2
             	   glcolor3f(0.999,0.999,0.6)
-            	   h=400
-            	ElseIf waynodebuild=15 Then'railstation
+           	   ElseIf waynodebuild=15 Then'railstation
            	      If railstationtext=0 Then glbindtexture(gl_texture_2d,railstationtext)
             	   drawbuildtext=railstationtext
             	   glcolor3f(0.85,1,1)'(0.9,0.5,0.5)
             	   If x2>0.8*max(Abs(y2),Abs(y2)) And x2<770 Then soundvoyage(1)
-            	   h=400
-            	ElseIf waynodebuild=16 Then'hospital
+           	   ElseIf waynodebuild=16 Then'hospital
             	   If hospitaltext=0 Then glbindtexture(gl_texture_2d,hospitaltext)
             	   drawbuildtext=hospitaltext
             	   glcolor3f(0.82,0.62,0.62)
             	   If x2>0.8*max(Abs(y2),Abs(y2)) And x2<770 Then soundvoyage(2)
-            	   h=400
-            	ElseIf waynodebuild=17 Then'fuel
+           	   ElseIf waynodebuild=17 Then'fuel
            	      If fueltext=0 Then glbindtexture(gl_texture_2d,fueltext)
             	   drawbuildtext=fueltext
             	   glcolor3f(1,1,1)
-            	   h=400
-            	ElseIf waynodebuild=18 Then'school
+           	   ElseIf waynodebuild=18 Then'school
             	   If officialtext=0 Then glbindtexture(gl_texture_2d,officialtext)
             	   drawbuildtext=officialtext
             	   drawbuildtx=3.5:drawbuildty=2
             	   glcolor3f(0.48,0.44,1)
             	   r=0.48:g=0.44:b=1
             	   If x2>0.8*max(Abs(y2),Abs(y2)) And x2<770 Then soundvoyage(3)
-            	   h=400
-            	ElseIf waynodebuild>=10 Then
+           	   ElseIf waynodebuild>=10 Then
             	   glcolor3f(0.5,1,0.5)
             	   r=0.5:g=1:b=0.5
-            	   h=400
-            	ElseIf waynodebuild>=4 Then
+           	   ElseIf waynodebuild>=4 Then
             	   glcolor3f(0.85,1,1)
             	   r=0.85:g=1:b=1
             	ElseIf waynodebuild=3 And h>200 Then

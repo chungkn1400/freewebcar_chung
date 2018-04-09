@@ -4373,7 +4373,7 @@ Dim Shared As Byte townlock(ntown),lockterrain,lockterrainbmp,lockterrain22
 Dim Shared As Integer ttsetterrain(ntown,ntownnode),ttsetterrain2(ntown,ntownnode) 
 Dim Shared As String  townwayname(ntown,ntownnode),townwayname2(ntown,ntownnode)
 Dim Shared As Single waynodebuildh(ntown,ntownnode),waynodebuildx(ntown,ntownnode),waynodebuildy(ntown,ntownnode)
-Dim Shared As Single waynodebuildx2(ntown,ntownnode)
+Dim Shared As Single waynodebuildx2(ntown,ntownnode),waynodebuildy2(ntown,ntownnode)
 Dim Shared As Single myroadlat=-99,myroadlon,myroadlat2=-99,myroadlon2
 Dim Shared As Integer mywayroadij,mywayroadi',tt2=10,ttt2=0,t8000=25000/10
 Dim Shared As Double twarning 
@@ -21432,7 +21432,7 @@ mz11=-999999
            	'	EndIf
            	'Next
 
-            If time2>timeinit+5 Then
+            If time2>timeinit+10 Then
             	guirefreshopenGL()
             Else 	
                glclearcolor 0,0.7,0, 0.0
