@@ -2425,7 +2425,7 @@ If time2>timetestocean+3 And pause=0 Then'And mz<(waterz+altwater) And imap>=4 A
  Else
  	mynwater=nwater
    If nwater>=168 Then'180 And kwater1>=0.5 Then
-      If Rnd<0.1 Then soundseagull()
+      'If Rnd<0.1 Then soundseagull()
 	   If oceansound=0 Then soundocean
 	   If mz<waterz+25 Then 
 	   	soundocean2
@@ -3864,6 +3864,57 @@ Dim As Integer i
 		nroc2=i
 		initroc()
 	EndIf
+End Sub
+Dim Shared As uint seagulltext(5)
+Dim Shared As Single seagullx,seagully,seagullz,seagullo1
+Sub initseagull()
+seagullo1=Rnd*360-180
+Var co1=Cos(degtorad*seagullo1),si1=Sin(degtorad*seagullo1)
+cos1=Cos(degtorad*o1):sin1=Sin(degtorad*o1)
+Var r=900
+seagullx=mx-r*co1+r*(Rnd-0.5)*0.5
+seagully=my-r*si1+r*(Rnd-0.5)*0.5
+If (cos1*co1+sin1*si1)>-0.25 Then
+	seagullx+=r*cos1*0.75
+	seagully+=r*sin1*0.75
+EndIf
+seagullz=((10+5*Rnd)*5+mz)
+End Sub
+Dim Shared As Double tsoundseagull
+Sub drawseagull()
+ Var co1=Cos(degtorad*seagullo1),si1=Sin(degtorad*seagullo1)
+ Var dxy=(seagullx-mx)*si1-(seagully-my)*co1
+ Var v=0.9*kfps
+ seagullx+=v*co1:seagully+=v*si1
+ Var dist=max(Abs(seagullx-mx),Abs(seagully-my))
+ If dist<180 Then
+ 	If Timer>tsoundseagull Then
+ 		tsoundseagull=Timer+Rnd*Rnd*30
+ 		soundseagull()
+ 	EndIf
+ EndIf
+ If dist>1000 Then
+ 	if Rnd<0.005*kfps Then initseagull()
+ EndIf
+ seagullz=max(mz+dist*0.15,min(mz+dist*0.3,seagullz))
+ seagullz=min(mzsol00+400,seagullz)
+ glbindtexture(gl_texture_2d,seagulltext(Int(Timer*3.6)Mod 5))
+ glenable gl_alpha_test
+ glAlphaFunc(gl_less,20/254)
+ 'gldisable gl_depth_test
+ glcolor4f(0.6,0.6,0.6,1)
+ glpushmatrix
+ 'seagullx=mx+500*cos1*cos1:seagully=my+500*sin1*cos1':seagullz=mz+100*cos1
+ gltranslatef(seagullx,seagully,seagullz)
+ If dxy>0 Then
+ 	glrotatef(o1,0,0,1)
+ Else
+ 	glrotatef(o1+180,0,0,1)
+ EndIf
+ gltexcarre2(19,19)
+ glpopmatrix
+ gldisable gl_alpha_test
+ glenable gl_depth_test 
 End Sub
 Dim Shared As uint nhouse=10,house1list,building3text,rooftext,buildingtext
 Dim Shared As uint whitetext,building32text,tnight
@@ -14927,6 +14978,7 @@ If tsphere=0 And planet=0 Then
     
     drawballoon()
     drawboeing()
+    drawseagull()
     
     gldisable gl_alpha_test
     If auxtest>0.5 Then 

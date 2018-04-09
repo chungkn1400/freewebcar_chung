@@ -281,6 +281,10 @@ For i=0 To 11
 	If mygltext3(i)<>0 Then guideletetexture(mygltext3(i))
 	mygltext3(i)=guiloadtexture(ExePath+"/media/alma/glvideo"+Str(i)+".jpg")
 Next
+For i=0 To 4
+	seagulltext(i)=guiloadtexture(ExePath+"/media/seagull/seagull"+Str(i+1)+".jpg",250)
+Next
+initseagull()
 End Sub 
 Sub loadtextures(itext As uint Ptr)
 If itext=@webtext Then *(itext)=guiloadtexture("media/road.jpg") 
