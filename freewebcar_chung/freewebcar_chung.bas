@@ -6118,7 +6118,7 @@ If mapdisplay>0 Then Exit Sub'Or volant=2 Then Exit Sub
 If (tvideo=0 And time2>timegps+130 And tgps=1) Or time2<timeinit+11 Then timegps=timer+Rnd*3  
 If (tvideo=0 And time2>timegps+190 And tgps=0) Or time2<timeinit+11 Then timegps=timer+Rnd*3  
 If time2<timegps+10 Then
-	If tvideo=0 Then ipersovideo=Int(Rnd*1.9)
+	If tvideo=0 Then ipersovideo=Int(Rnd*2.9)
    tvideo=1	
 Else
    If tvideo=1 Then timegps=time2-13
@@ -15174,7 +15174,12 @@ EndIf 'planet
        ElseIf tfootmove>0.5 Then  
 			if mz<waterz+25.1 Then
 				If Timer>tsoundfoot+0.3 Then
-					If ntownnear<2 Then soundwaterwave()
+					If ntownnear<2 Then
+						soundwaterwave()
+					ElseIf ntownnear0<2 Then
+						ntownnear0=ntownnear
+						testweb=1
+					EndIf
 					soundfoot(2.4)
 				EndIf
 			Else
@@ -21029,10 +21034,8 @@ mz11=-999999
         gldrawtext0("a program by NGUYEN.Chung",i+40,j+70,1.5)
         guirefreshopenGL()
         Sleep 400
-        Next n
+        Next n                        
         substat()
-        guirefreshopenGL()
-                        
         
         'Dim As Integer maxtextsize
         'glGetIntegerv(GL_MAX_TEXTURE_SIZE, @maxtextsize)
@@ -21429,7 +21432,11 @@ mz11=-999999
            	'	EndIf
            	'Next
 
-            If time2>timeinit+10 Then
+            If time2>timeinit+5 Then
+            	guirefreshopenGL()
+            Else 	
+               glclearcolor 0,0.7,0, 0.0
+               glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
             	guirefreshopenGL()
             EndIf 	
            	If mapdisplay<>0 Then mx=mx0:my=my0:mz=mz0:mz1=mz 
@@ -22673,11 +22680,13 @@ If mapdisplay>0 Then Exit Sub'Or volant=2 Then Exit Sub
 	glenable gl_texture_2D
 	If ipersovideo=0 Then
 		glbindtexture0(gl_texture_2D,mygltext(itexture))
-	Else 
+	ElseIf ipersovideo=1 Then  
 		glbindtexture0(gl_texture_2D,mygltext2(itexture))
 		Var tx0=(tx+tx+dtx)*0.5
 		Var dtx0=(tx+dtx-tx0)*0.75
 		tx=tx0-dtx0:dtx=tx0+dtx0-tx		
+	Else 
+		glbindtexture0(gl_texture_2D,mygltext3(itexture))
 	EndIf
 	glpushmatrix
 	glloadidentity

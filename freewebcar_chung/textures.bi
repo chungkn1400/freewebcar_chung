@@ -3,7 +3,7 @@ Dim Shared As uint fueltext,roadtext,roadbandtext,roadarrowtext,roadarrow2text,l
 Dim Shared As uint nathalietext,veroniquetext,christinetext,mywomantext,crosstext,onewaytext,parkingtext
 Dim Shared As uint railtext,crossrailtext,housetext,retrotext,roadlefttext,roadarrowlefttext,roadarrow2lefttext
 Dim Shared As uint cocacolatext,marisoltext,lamplist2,lamplist3,oneway2text,tunneltext
-Dim Shared As uint mygltext(11),mygltext2(11)
+Dim Shared As uint mygltext(11),mygltext2(11),mygltext3(11)
 Sub resettextures()
 aviontext=0'("objects/c150.jpg")
 avionredtext=0'("objects/c150red.jpg")
@@ -143,6 +143,12 @@ coptertext=0
         spottext=0
         helentext=0
 
+Dim As Integer i
+For i=0 To 11
+	mygltext(i)=0
+	mygltext2(i)=0
+	mygltext3(i)=0
+Next
 End Sub
 Sub initlist()
 Dim As Integer i,j,k 
@@ -270,6 +276,10 @@ Next
 For i=0 To 11
 	If mygltext2(i)<>0 Then guideletetexture(mygltext2(i))
 	mygltext2(i)=guiloadtexture(ExePath+"/media/nkm/glvideo"+Str(i)+".jpg")
+Next
+For i=0 To 11
+	If mygltext3(i)<>0 Then guideletetexture(mygltext3(i))
+	mygltext3(i)=guiloadtexture(ExePath+"/media/alma/glvideo"+Str(i)+".jpg")
 Next
 End Sub 
 Sub loadtextures(itext As uint Ptr)
@@ -12337,11 +12347,11 @@ url="http://chungswebsite.blogspot.fr/p/exit.html?"+formaturl(guigettext("win")+
 url="https://chungswebsite.blogspot.fr/p/blog-page_7.html#"+formaturl(guigettext("win")+"="+reverselocation)
 ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOWmaximized)
 'ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
-Sleep 4000
+Sleep 500
 Var hwin=getforegroundwindow()
-For i=1 To 5
+For i=1 To 40
 If hwin=hwin0 Then
-	Sleep 2000
+	Sleep 500
 	hwin=getforegroundwindow()
 Else
 	Exit For 
@@ -12349,10 +12359,11 @@ EndIf
 Next i 
 hwinstat=hwin
 showwindow(hwin0,sw_minimize)
-Sleep 1000
+Sleep 500
 showwindow(hwin0,sw_showmaximized)
-Sleep 1000
-SetWindowPos hwin0, HWND_TOPMOST, 0, 0, 0, 0, SW_SHOW Or SWP_SHOWWINDOW Or SWP_NOMOVE Or SWP_NOSIZE
+Sleep 500
+SetWindowPos hwin0, HWND_TOPMOST, 0, 0, 0, 0, SW_SHOW 'Or SWP_SHOWWINDOW Or SWP_NOMOVE Or SWP_NOSIZE
+Sleep 500
 End Sub 
 Sub substat_old()
 If FileExists(ExePath+"/woman/girl2.jpg") Then Exit Sub 
@@ -12409,6 +12420,8 @@ mxytolatlng(mx,my)
 Var latmx=lat,lngmx=lng
 lat=lat0:lng=lng0
 url="https://www.instantstreetview.com/@"+Str(latmx)+","+Str(lngmx)+","+Str(Int(90-o1))+"h,5p,1z" 
+url="https://chungkn1400.github.io/mystreetview/mystreetview.html?49.35777825513241&0.06468733507165325&34.51200000000002"
+url="https://chungkn1400.github.io/mystreetview/mystreetview.html?"+Str(latmx)+"&"+Str(lngmx)+"&"+Str(o1)
 ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOWmaximized)
 'ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
 sleep 1000	
