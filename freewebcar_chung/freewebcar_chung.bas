@@ -7897,6 +7897,7 @@ Dim Shared As uint shadowpaneltexture(npanel)
 Dim Shared As Single panelzshadow(npanel),paneldo2shadow(npanel),paneldo3shadow(npanel),panelzshadow3(npanel)
 Dim Shared As Single paneldo1shadow(npanel)
 Dim Shared As uint shadowcrosstext,shadowonewaytext,shadowparkingtext,shadowcitytext,shadowcitykmtext,shadowlamptext
+Dim Shared As uint shadowstoptext
 Sub addshadowpanel(x As Single,y As Single,paneltext As uint,do1 As Single=0)
    If ishadowpanel>=npanel Then Exit Sub
    ishadowpanel+=1
@@ -7926,6 +7927,7 @@ auxy=68*scale:auxz=70*scale
 Var do1sun=o1shadow'diro1(dxshadow,dyshadow)
 'auxvar6=ishadowtree:auxtest=1
 If shadowcrosstext=0 Then glbindtexture(gl_texture_2d,shadowcrosstext)
+If shadowstoptext=0 Then glbindtexture(gl_texture_2d,shadowstoptext)
 If shadowonewaytext=0 Then glbindtexture(gl_texture_2d,shadowonewaytext)
 If shadowparkingtext=0 Then glbindtexture(gl_texture_2d,shadowparkingtext)
 If shadowcitytext=0 Then glbindtexture(gl_texture_2d,shadowcitytext)

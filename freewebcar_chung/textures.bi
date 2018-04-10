@@ -2,7 +2,7 @@
 Dim Shared As uint fueltext,roadtext,roadbandtext,roadarrowtext,roadarrow2text,lamplist,barrieretext,haietext
 Dim Shared As uint nathalietext,veroniquetext,christinetext,mywomantext,crosstext,onewaytext,parkingtext
 Dim Shared As uint railtext,crossrailtext,housetext,retrotext,roadlefttext,roadarrowlefttext,roadarrow2lefttext
-Dim Shared As uint cocacolatext,marisoltext,lamplist2,lamplist3,oneway2text,tunneltext
+Dim Shared As uint cocacolatext,marisoltext,lamplist2,lamplist3,oneway2text,tunneltext,stoptext
 Dim Shared As uint mygltext(11),mygltext2(11),mygltext3(11)
 Sub resettextures()
 aviontext=0'("objects/c150.jpg")
@@ -89,6 +89,7 @@ coptertext=0
         marisoltext=0
         mywomantext=0
         crosstext=0
+        stoptext=0
         onewaytext=0
         oneway2text=0
         parkingtext=0
@@ -131,6 +132,7 @@ coptertext=0
         carpoliceshadowtext=0
         carpoliceshadowbacktext=0
         shadowcrosstext=0
+        shadowstoptext=0
         shadowonewaytext=0
         shadowparkingtext=0
         shadowcitytext=0
@@ -245,6 +247,7 @@ roadarrow2lefttext=guiloadtexture("media/roadarrow2left.jpg")
 barrieretext=guiloadtexture("media/barriere.jpg",150)
 haietext=guiloadtexture("media/haie.jpg",150)
 crosstext=guiloadtexture("media/cross.bmp",250)
+stoptext=guiloadtexture("media/stop.bmp",250)
 onewaytext=guiloadtexture("media/oneway.bmp",250)
 oneway2text=guiloadtexture("media/oneway2.bmp",250)
 parkingtext=guiloadtexture("media/parking.bmp",250)
@@ -384,6 +387,7 @@ If itext=@roadarrow2lefttext then *(itext)=guiloadtexture("media/roadarrow2left.
 If itext=@barrieretext then *(itext)=guiloadtexture("media/barriere.jpg",150)
 If itext=@haietext then *(itext)=guiloadtexture("media/haie.jpg",150)
 If itext=@crosstext then *(itext)=guiloadtexture("media/cross.bmp",250)
+If itext=@stoptext then *(itext)=guiloadtexture("media/stop.bmp",250)
 If itext=@onewaytext then *(itext)=guiloadtexture("media/oneway.bmp",250)
 If itext=@oneway2text then *(itext)=guiloadtexture("media/oneway2.bmp",250)
 If itext=@parkingtext then *(itext)=guiloadtexture("media/parking.bmp",250)
@@ -426,6 +430,7 @@ If itext=@carshadowbacktext then *(itext)=guiloadtexture("objects/carshadowback.
 If itext=@carpoliceshadowtext then *(itext)=guiloadtexture("objects/carpoliceshadow.jpg",250)
 If itext=@carpoliceshadowbacktext then *(itext)=guiloadtexture("objects/carpoliceshadowback.jpg",250)
 If itext=@shadowcrosstext then *(itext)=guiloadtexture("media/shadowcross.bmp",250)
+If itext=@shadowstoptext then *(itext)=guiloadtexture("media/shadowstop.bmp",250)
 If itext=@shadowonewaytext then *(itext)=guiloadtexture("media/shadowoneway.bmp",250)
 If itext=@shadowparkingtext then *(itext)=guiloadtexture("media/shadowparking.bmp",250)
 If itext=@shadowcitytext then *(itext)=guiloadtexture("media/shadowcity.bmp",250)
@@ -7229,12 +7234,14 @@ For i=1 To inear0road0
 	layernear0road0(i)=layernear0road(i)
 Next
 End Sub
+Dim Shared As Single rcrossnearroad
 Function getcrossnearroad(x As Single,y As Single,co11 As Single=99,si11 As Single=99)As Integer
 Dim As Integer i,n
 Dim As Single dx,dy,r,dr,co1,si1,dxx
 'If plane>0 And car=0 Then Return 0
 If max(Abs(x-mx-dmx0),Abs(y-my-dmy0))>distnearroad Then Return 0
 n=0
+rcrossnearroad=0
 Var trail=0,testrail=0
 For i=1 To inearroad0
 	r=rnearroad0(i)
@@ -7264,6 +7271,7 @@ For i=1 To inearroad0
 					  EndIf
 				   EndIf
 					n+=1
+					If r>rcrossnearroad Then rcrossnearroad=r
 					If trail=1 Then testrail=1
 					'If n>2 Then Return 1+trail
 				EndIf
@@ -7421,7 +7429,7 @@ h-=max(0.0,(2.8*30-r)*0.005)
 Var ttsetterrainij=ttsetterrain(ij,i)
 ttsetterrain(ij,i)=1 
 Var taddtree=0,taddlamp=0,taddbarriere=0,taddhaie=0,taddnathalie=0,taddcity=0,cityname1="",cityname2=""
-Var taddcitykm=0,taddcross=0,taddcross2=0,taddoneway=0,taddrail=0,taddrail2=0,taddoneway2=0
+Var taddcitykm=0,taddcross=0,taddcross2=0,taddoneway=0,taddrail=0,taddrail2=0,taddoneway2=0,taddstop=0,taddstop2=0
 If t40=0 Then 
  xx=townwaynodex(ij,i,1)
  yy=townwaynodey(ij,i,1)
@@ -7487,6 +7495,7 @@ If r>0.9*30 And r<3*30 And dr>300 Then
 EndIf 	
 If tdttestcross=1 And r>0.9*30 Then 
 	testcross=getcrossnearroad(x,y,co1,si1)
+	If testcross=1 And r<rcrossnearroad-1 Then testcross=3
 EndIf
 If r>0.9*30 And r<2.5*30 And tparking=0 Then
   If tdttestcross=1 Then 
@@ -7497,10 +7506,22 @@ If r>0.9*30 And r<2.5*30 And tparking=0 Then
 			taddoneway=1
 		EndIf
 	EndIf
+	If testcross=3 And dr>700 Then
+		taddstop=1
+		If toneway=1 And dr>900 Then 
+			taddoneway=1
+		EndIf
+	EndIf
 	If testcross=2 Then taddrail=1
 	If dr>900 Or testcross<>1 Then  
 		testcross2=getcrossnearroad(xx,yy,-co1,-si1)
-   	If testcross2=1 And dr>700 Then taddcross2=1
+   	If testcross2=1 And r<rcrossnearroad-1 Then testcross2=3
+   	If testcross2=1 And dr>700 Then
+   		taddcross2=1
+   	EndIf
+   	If testcross2=3 And dr>700 Then
+   		taddstop2=1
+   	EndIf
    	If testcross2=2 Then taddrail2=1
 	EndIf
 	ttestcross(ij,i)=testcross
@@ -7512,14 +7533,19 @@ If r>0.9*30 And r<2.5*30 And tparking=0 Then
 		taddcross=1
 		taddoneway=ttaddoneway(ij,i)
 	EndIf 
+	If testcross=3 And dr>700 Then
+		taddstop=1
+		taddoneway=ttaddoneway(ij,i)
+	EndIf 
 	If testcross=2 Then taddrail=1
 	If dr>900 Or testcross<>1 Then  
     	testcross2=ttestcross2(ij,i)
    	If testcross2=1 And dr>700 Then taddcross2=1
+   	If testcross2=3 And dr>700 Then taddstop2=1
    	If testcross2=2 Then taddrail2=1
 	EndIf
   EndIf 
-  If toneway=1 And taddcross2=1 And r<2*30 Then taddoneway2=1
+  If toneway=1 And (taddcross2=1 Or taddstop2=1) And r<2*30 Then taddoneway2=1
 EndIf
 If r>1.15*30 And r<3*30 And dr>900 And tparking=0 and (n>7 Or dr>4000) Then
 	taddcitykm=1
@@ -8520,6 +8546,68 @@ EndIf
          glpopmatrix
        EndIf
       EndIf  
+      If taddstop=1 And (j=n) And jj=di Then 
+       If max(Abs(pxx1-mx),Abs(pyy1-my))<4000 Then 	
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+         glcolor4f(1,1,1,1)
+         gldisable gl_texture_2d	 
+      	glpushmatrix
+   	   'Var dz1=z1+(z1-z0)*0.5*0.3
+   	   Var dzz1=zz1+(zz1-zz0)*0.5*0.3
+   	   gltranslatef(pxx1-co1+si1*0.3,pyy1-si1-co1*0.3,dzz1-1)
+   	   If taddshadowpanel=1 Then addshadowpanel(pxx1-co1+si1*0.3,pyy1-si1-co1*0.3,shadowstoptext)
+   	   glrotatef(do1-190,0,0,1)
+   	   glcylindre(0.75,0.75,20.9,4,2)
+   	   glcolor4f(1,1,1,1)
+   	   gltranslatef(0,0,20)
+   	   glenable gl_texture_2d
+         drawbuildtext=crosstext
+         glbindtexture(gl_texture_2d,stoptext)
+         glenable gl_alpha_test
+         glalphafunc(gl_less,100/254)
+         gltexcarre2(15,15)
+         gltranslatef(-0.3,0,1)
+         glcolor4f(0.06,0.06,0.06,1)
+         gltexcarre2(12,12)
+         glcolor4f(1,1,1,1)
+         gldisable gl_alpha_test
+         glpopmatrix
+       EndIf
+      EndIf  
+      If taddstop2=1 And (j=2) And jj=1 Then 
+       If max(Abs(px0-mx),Abs(py0-my))<4000 Then 	
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+         glcolor4f(1,1,1,1)
+         gldisable gl_texture_2d	 
+      	glpushmatrix
+   	   Var dz1=z0+(z0-z1)*0.5*0.3
+   	   'Var dzz1=zz1+(zz1-zz0)*0.5*0.3
+   	   gltranslatef(px0+co1-si1*0.3,py0+si1+co1*0.3,dz1-1)
+   	   If taddshadowpanel=1 Then addshadowpanel(px0+co1-si1*0.3,py0+si1+co1*0.3,shadowstoptext)
+   	   glrotatef(do1-190+180,0,0,1)
+   	   glcylindre(0.75,0.75,20.9,4,2)
+   	   glcolor4f(1,1,1,1)
+   	   gltranslatef(0,0,20)
+   	   glenable gl_texture_2d
+         drawbuildtext=crosstext
+         glbindtexture(gl_texture_2d,stoptext)
+         glenable gl_alpha_test
+         glalphafunc(gl_less,100/254)
+         gltexcarre2(15,15)
+         gltranslatef(-0.3,0,1)
+         glcolor4f(0.06,0.06,0.06,1)
+         gltexcarre2(12,12)
+         glcolor4f(1,1,1,1)
+         gldisable gl_alpha_test
+         glpopmatrix
+       EndIf
+      EndIf  
       If taddrail=1 And (j=n) And jj=di Then 
        If max(Abs(pxx1-mx),Abs(pyy1-my))<4000 Then 	
        	Var do1=townwaynodeo1(ij,i,j)
@@ -8850,7 +8938,7 @@ h-=max(0.0,(2.8*30-r)*0.005)
 Var ttsetterrainij=ttsetterrain(ij,i)
 ttsetterrain(ij,i)=1 
 Var taddtree=0,taddlamp=0,taddbarriere=0,taddhaie=0,taddnathalie=0,taddcity=0,cityname1="",cityname2=""
-Var taddcitykm=0,taddcross=0,taddcross2=0,taddoneway=0,taddrail=0,taddrail2=0,taddoneway2=1
+Var taddcitykm=0,taddcross=0,taddcross2=0,taddoneway=0,taddrail=0,taddrail2=0,taddoneway2=1,taddstop=0,taddstop2=0
 xx=townwaynodex(ij,i,1)
 yy=townwaynodey(ij,i,1)
 x=townwaynodex(ij,i,n)
@@ -8907,6 +8995,7 @@ If r>0.9*30 And r<2.5*30 And tparking=0 Then
 	testcross=getcrossnearroad(x,y,co1,si1)
 	If testcross=1 And dr>700 Then
 		taddcross=1
+		If r<rcrossnearroad-1 Then taddstop=1
 		If toneway=1 And dr>900 Then 
 			taddoneway=1
 		EndIf
@@ -8914,7 +9003,11 @@ If r>0.9*30 And r<2.5*30 And tparking=0 Then
 	If testcross=2 Then taddrail=1
 	If dr>900 Or testcross<>1 Then  
 		testcross2=getcrossnearroad(xx,yy,-co1,-si1)
-   	If testcross2=1 And dr>700 Then taddcross2=1:taddoneway2=1
+   	If testcross2=1 And dr>700 Then
+   		taddcross2=1
+   		If toneway=1 Then taddoneway2=1
+   		If r<rcrossnearroad-1 Then taddstop2=1
+   	EndIf
    	If testcross2=2 Then taddrail2=1
 	EndIf
 	ttestcross(ij,i)=testcross
@@ -8926,10 +9019,21 @@ If r>0.9*30 And r<2.5*30 And tparking=0 Then
 		taddcross=1
 		taddoneway=ttaddoneway(ij,i)
 	EndIf 
+	If testcross=3 And dr>700 Then
+		taddstop=1
+		taddoneway=ttaddoneway(ij,i)
+	EndIf 
 	If testcross=2 Then taddrail=1
 	If dr>900 Or testcross<>1 Then  
     	testcross2=ttestcross2(ij,i)
-   	If testcross2=1 And dr>700 Then taddcross2=1:taddoneway2=1
+   	If testcross2=1 And dr>700 Then
+   		taddcross2=1
+   		If toneway=1 Then taddoneway2=1
+   	EndIf
+   	If testcross2=3 And dr>700 Then
+   		taddstop2=1
+   		If toneway=1 Then taddoneway2=1
+   	EndIf
    	If testcross2=2 Then taddrail2=1
 	EndIf
   EndIf 	
