@@ -973,7 +973,7 @@ Dim Shared As Byte testroad(1200,1200)
 Dim Shared As UByte testroadr(1200,1200),testroadg(1200,1200),testroadb(1200,1200)
 Dim Shared As Integer testroaddx=563*2+1,testroaddy=563*2+1
 Dim Shared As Single testroadxweb,testroadyweb
-Dim Shared As Byte testtree(1200,1200)
+Dim Shared As Byte testtree(-2 To 1202,-2 To 1202)
 Dim Shared As UByte testtreer(1200,1200),testtreeg(1200,1200),testtreeb(1200,1200)
 Dim Shared As Integer testtreedx=563*2+1,testtreedy=563*2+1
 Dim Shared As Single testtreexweb,testtreeyweb
@@ -1329,7 +1329,19 @@ testroadgg=testroadg(i,j)
 testroadbb=testroadb(i,j)
 If testtree(i Shr 1,j Shr 1)=2 Then Return 4'cowland
 If testtree(i Shr 1,j Shr 1)=0 Then Return 1
-Return testroad(i,j)
+Var troad=testroad(i,j)
+If troad>0 Then Return troad
+Var ii=i Shr 1,jj=j Shr 1
+If testtree(ii-1,jj)=1 Then'forest
+ If testtree(ii+1,jj)=1 Then
+  	If testtree(ii,jj-1)=1 Then
+  		If testtree(ii,jj+1)=1 Then
+  			Return -1
+  		EndIf
+  	EndIf
+ EndIf
+EndIf
+Return 0
 End Function
 Function gettesttree(x As Single,y As Single)As Integer
 Dim As Integer i,j,k
@@ -8564,7 +8576,7 @@ EndIf
    	   glcolor4f(1,1,1,1)
    	   gltranslatef(0,0,20)
    	   glenable gl_texture_2d
-         drawbuildtext=crosstext
+         drawbuildtext=stoptext
          glbindtexture(gl_texture_2d,stoptext)
          glenable gl_alpha_test
          glalphafunc(gl_less,100/254)
@@ -8595,7 +8607,7 @@ EndIf
    	   glcolor4f(1,1,1,1)
    	   gltranslatef(0,0,20)
    	   glenable gl_texture_2d
-         drawbuildtext=crosstext
+         drawbuildtext=stoptext
          glbindtexture(gl_texture_2d,stoptext)
          glenable gl_alpha_test
          glalphafunc(gl_less,100/254)

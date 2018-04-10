@@ -517,9 +517,9 @@ Sub stopsoundavion
 End Sub
 Declare Sub addcarsmoke(dz As Single=15)
 Dim Shared As Integer tpiste
-Dim Shared As Double tpneu,tpneu2
+Dim Shared As Double tpneu,tpneu2,tavgpneu,tavgpneu0
 Sub soundpneu2
-Dim As Single ttime
+Dim As Double ttime
    ttime=Timer 
    If (tpneu2-99)>ttime Then tpneu2=ttime 'if midnight
    If ttime>(tpneu2+0.13) Then 
@@ -531,10 +531,16 @@ End Sub
 Sub soundpneu
 Dim As Double ttime
 If tpiste=0 Then soundpneu2:Exit Sub 
-   ttime=Timer 
+   ttime=Timer
    If tpneu>ttime Then tpneu=ttime 'if midnight
    If ttime>(tpneu+0.08) Then 
    	tpneu=ttime 
+      Var ttime2=max(0.1,min(40.0,ttime-tavgpneu0))
+      tavgpneu0=ttime
+      tavgpneu+=0.05/ttime2-ttime2
+      'auxvar=tavgpneu:auxtest=0.2
+      If tavgpneu>40 Then tavgpneu-=0.05/ttime2:Exit Sub
+      tavgpneu=max(0.0,tavgpneu) 
    	If Rnd<0.65 Then
    		mcisendstring("play pneu from 0",0,0,0)
    	Else 
@@ -1369,7 +1375,7 @@ With *node
  .anim=md2_other
 End With 
 End Sub
-Const As Integer narbre=2500,ncow=50
+Const As Integer narbre=2500+2500,ncow=50
 Dim Shared As Integer ntree
 Dim Shared As Single scalex=500,scalez0=20,texscale,dxterrain,scaley=500
 Dim Shared As Integer x960=1200
@@ -13892,9 +13898,13 @@ Dim As Integer i,j,k
      	  	  EndIf
      	  ElseIf changearbre=2 And arbrez(i)<-900000 Then
      	  	  arbrez(i)=-999999
-     	  ElseIf gettestroadtree(arbrex(i)+dmx0,arbrey(i)+dmy0)>=1 Then
+     	  Else
+     	  	Var testroadtree=gettestroadtree(arbrex(i)+dmx0,arbrey(i)+dmy0)
+     	  	If testroadtree>=1 Then
      	  	  arbrez(i)=-99999
-     	  Else'If testairport(arbrex(i),arbrey(i))=0 Then
+     	  	ElseIf (i And 3)<>0 And testroadtree=0 Then'forest if testroadtree=-1
+     	  	  arbrez(i)=-99999	
+     	   Else'If testairport(arbrex(i),arbrey(i))=0 Then
      	  	  arbrez(i)=getterrainheight(arbrex(i),arbrey(i))
      	  	  arbrezshadow(i)=getterrainheight(arbrex(i)+dxshadow*30,arbrey(i)+dyshadow*30)
      	  	  arbredo2shadow(i)=diro1(30*dxyshadow,arbrezshadow(i)-arbrez(i))
@@ -13909,6 +13919,7 @@ Dim As Integer i,j,k
      	  	  'If arbrezi>zwater+3200 And Rnd<0.3 Then arbretype(i)=7
      	  'Else
      	  '	  arbrez(i)=-999999'waterz-1
+     	   EndIf  
      	  EndIf
      EndIf
      If arbrez(i)>-99990 And tupdatearbres(i)<1 Then
@@ -14440,7 +14451,9 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     		  	  	  v=2.901
     		  	  	  vmx2=v*cos1:vmy2=v*sin1:vmz2=v*sin2
     		  	  	  mz11=mzsol00:mz1=mz11:mz=mz11-0.1
-    		  	  EndIf 	
+    		  	  EndIf 
+    		  Else
+    		  	  tavgpneu=0
     		  EndIf
     		  If mytestbridge=1 Or (ncariroad(0)=0 And time2>timeautopilot2+2) Then
     		  	  timeautopilot2=time2
