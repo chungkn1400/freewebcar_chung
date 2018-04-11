@@ -1341,15 +1341,15 @@ Var troad=testroad(i,j)
 If troad>0 Then Return troad
 Var ii=i Shr 1,jj=j Shr 1
 If testtree(ii,jj)=3 Then Return -1'forest
-/'If testtree(ii-1,jj)=1 Then'forest
- If testtree(ii+1,jj)=1 Then
-  	If testtree(ii,jj-1)=1 Then
-  		If testtree(ii,jj+1)=1 Then
-  			Return -1
+If testtree(ii-2,jj)=1 Then'forest
+ If testtree(ii+2,jj)=1 Then
+  	If testtree(ii,jj-2)=1 Then
+  		If testtree(ii,jj+2)=1 Then
+  			Return -2
   		EndIf
   	EndIf
  EndIf
-EndIf '/
+EndIf 
 Return 0
 End Function
 Function gettesttree(x As Single,y As Single)As Integer

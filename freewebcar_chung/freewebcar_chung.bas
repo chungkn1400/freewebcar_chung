@@ -991,7 +991,7 @@ Declare Sub initterrainlines
 Declare Sub inittownobject
 
     Dim Shared As uint pause,ianim,glnormals,restart,fullscreen=1,compas=1,compas2=1   
-    Dim Shared As uint soltexture,arbretext(10),tronctext,buissontext(2),volanttext,volanttext2,arbreflowertext
+    Dim Shared As uint soltexture,arbretext(10),tronctext,buissontext(8),volanttext,volanttext2,arbreflowertext
     Dim Shared As uint cartext,md2horsetext(4),md2zebratext(3),grasstext(10),arbreflower2text,arbresequoiatext
     Dim Shared As uint arbreautumntext,arbreautumn2text
     Dim Shared As uint sunsettext,startext,radartext,pistetext,maptexture,avionredtext
@@ -13862,7 +13862,7 @@ shadowtreeo3(i)=diro1(30*dxyshadow,z2-z0)
 shadowtreez0(i)=z0
 shadowtreez1(i)=z1
 End Sub
-Dim Shared As Integer tupdatearbres(narbre)
+Dim Shared As Integer tupdatearbres(narbre),tbusharbre(narbre)
 Sub drawarbres()
 Dim As Integer i,j,k
     If mz>(mzsol0+9000) Then Exit sub 	
@@ -13893,7 +13893,8 @@ Dim As Integer i,j,k
      While arbrey(i)<my-distarbre :arbrey(i)+=distarbre*1.999:changearbre=1:Wend 
      While arbrey(i)>my+distarbre :arbrey(i)-=distarbre*1.999:changearbre=1:Wend 
      If changearbre>=1 Then
-     	  Var test=0'testtown(i) 
+     	  Var test=0'testtown(i)
+     	  tbusharbre(i)=0 
      	  If test>0 Then
   	  	  	  arbretype(i)=10
      	  	  If test=1 Then
@@ -13911,6 +13912,7 @@ Dim As Integer i,j,k
      	  	ElseIf (i And 3)<>0 And testroadtree=0 Then'forest if testroadtree=-1
      	  	  arbrez(i)=-99999	
      	   Else'If testairport(arbrex(i),arbrey(i))=0 Then
+     	     If testroadtree=-2 Then tbusharbre(i)=1+(i And 1)
      	  	  arbrez(i)=getterrainheight(arbrex(i),arbrey(i))
      	  	  arbrezshadow(i)=getterrainheight(arbrex(i)+dxshadow*30,arbrey(i)+dyshadow*30)
      	  	  arbredo2shadow(i)=diro1(30*dxyshadow,arbrezshadow(i)-arbrez(i))
@@ -13976,7 +13978,11 @@ Dim As Integer i,j,k
      If arbreh(i)>2.3 Then 'sequoia
      	 glbindtexture(gl_texture_2d,arbresequoiatext)        
      ElseIf tflower=0 Or arbretype(i)<5 Or ((i Mod 3)=1) Then
-     	 glbindtexture(gl_texture_2d,arbretext(arbretype(i)))	
+     	 If tbusharbre(i)=0 Then
+     	 	glbindtexture(gl_texture_2d,arbretext(arbretype(i)))
+     	 Else
+     	 	glbindtexture(gl_texture_2d,buissontext(2+tbusharbre(i)))
+     	 EndIf
      ElseIf arbretype(i)<6 And tflower=2 Then
      	 glbindtexture(gl_texture_2d,arbreautumn2text)
      ElseIf tflower=2 Then
@@ -14056,7 +14062,11 @@ Var do1sun=o1shadow'diro1(dxshadow,dyshadow)
 'auxvar6=ishadowtree:auxtest=1
 For j=1 To ishadowtree
 	  i=shadowiarbre(j)
-     glbindtexture(gl_texture_2d,arbretext(arbretype(i)))	
+     If tbusharbre(i)=0 Then
+     	glbindtexture(gl_texture_2d,arbretext(arbretype(i)))
+     Else 		
+     	glbindtexture(gl_texture_2d,buissontext(2+tbusharbre(i)))
+     EndIf
      glpushmatrix
      gltranslatef(arbrex(i),arbrey(i),arbrez(i)+9+max(0.0,(arbrezshadow(i)-arbrez(i))*0.3))
      Var h=arbreh(i)
@@ -14582,7 +14592,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     		If plane=0 Then d180=80
     		Var k01=0.05*kfps
     		avgv+=(vkm-avgv)*k01:avgmx+=(mx-avgmx)*k01:avgmy+=(my-avgmy)*k01
-    		If Abs(mxmove-avgmx)>d180 Or Abs(mymove-avgmy)>d180 Or Abs(o1move-o1)>110 Or (prop<500*(1+sin2) And plane>0) Or _  
+    		If Abs(mxmove-avgmx)>d180 Or Abs(mymove-avgmy)>d180 Or Abs(o1move-o1)>130 Or (prop<500*(1+sin2) And plane>0) Or _  
     		   mapdisplay>0 Then
     			tmxmove=Timer
     			mxmove=mx:mymove=my:o1move=o1 
@@ -19081,6 +19091,8 @@ Sub initarbres
 	Next
 	buissontext(1)=arbretext(2)
 	buissontext(2)=arbretext(5)
+   buissontext(3)=guiloadtexture("media/buisson1.jpg",140)'117)'130)'180)
+   buissontext(4)=guiloadtexture("media/buisson2.jpg",200)'117)'130)'180)
 	For i=1 To nbuisson
 	  buissontype(i)=Int(Rnd*1.99)+1	
      buissonx(i)=(Rnd-0.5)*2*distbuisson
