@@ -1246,7 +1246,11 @@ EndIf
 		 	   testroad(itree+1,jtree+1)=0 And testroad(itree+2,jtree)=0 And testroad(itree,jtree+2)=0 Then
    		 	'If (itree+jtree)And 1 Then
    		 	 'If (itree+jtree)And 2 Then 	
-   		 		testtree(itree Shr 1,jtree Shr 1)=1
+   		 		If g>54 Then
+   		 			testtree(itree Shr 1,jtree Shr 1)=1
+   		 		Else 	
+   		 			testtree(itree Shr 1,jtree Shr 1)=3
+   		 		EndIf
    		 		ntree+=1
    		 	 'EndIf 	
    		 	'EndIf
@@ -1258,7 +1262,11 @@ EndIf
 		 	   testroad(itree+1,jtree+1)=0 And testroad(itree+2,jtree)=0 And testroad(itree,jtree+2)=0 Then
    		 	'If (itree+jtree)And 1 Then
    		 	 'If (itree+jtree)And 2 Then 	
-   		 		testtree(itree Shr 1,jtree Shr 1)=1
+   		 		If g>54 Then
+   		 			testtree(itree Shr 1,jtree Shr 1)=1
+   		 		Else 	
+   		 			testtree(itree Shr 1,jtree Shr 1)=3
+   		 		EndIf
    		 		ntree+=1
    		 	 'EndIf 	
    		 	'EndIf
@@ -1332,7 +1340,8 @@ If testtree(i Shr 1,j Shr 1)=0 Then Return 1
 Var troad=testroad(i,j)
 If troad>0 Then Return troad
 Var ii=i Shr 1,jj=j Shr 1
-If testtree(ii-1,jj)=1 Then'forest
+If testtree(ii,jj)=3 Then Return -1'forest
+/'If testtree(ii-1,jj)=1 Then'forest
  If testtree(ii+1,jj)=1 Then
   	If testtree(ii,jj-1)=1 Then
   		If testtree(ii,jj+1)=1 Then
@@ -1340,7 +1349,7 @@ If testtree(ii-1,jj)=1 Then'forest
   		EndIf
   	EndIf
  EndIf
-EndIf
+EndIf '/
 Return 0
 End Function
 Function gettesttree(x As Single,y As Single)As Integer
@@ -12252,8 +12261,14 @@ For i=1 To n Step 8
 	  g=testroadg(i,j)/255
 	  b=testroadb(i,j)/255
 	  If testroad(i,j)=3 Then r=0:g=0:b=0.5
-	  If testtree(i Shr 1,j Shr 1)=1 Then r=0:b=0:g=1
-	  If testtree(i Shr 1,j Shr 1)=2 Then r=0:b=0:g=0.4
+	  If testtree(i Shr 1,j Shr 1)=3 Then r=0:b=0:g=0.3'forest
+	  If testtree(i Shr 1,j Shr 1)=1 Then r=0.3:b=0.3:g=1'tree
+	  If testtree(i Shr 1,j Shr 1)=2 Then r=0:b=0:g=0.6'cow
+	  If cos1<0 then
+	   r=testtreer(i,j)/255
+	   g=testtreeg(i,j)/255
+	   b=testtreeb(i,j)/255
+	  EndIf  
 	  glcolor3f(r,g,b)
      glpushmatrix
 	  glplacecursor(xmax*0.5+270*(-1+2*i/n),ymax*0.5+270*(-1+2*j/n),-40)

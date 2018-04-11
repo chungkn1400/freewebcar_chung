@@ -1375,7 +1375,7 @@ With *node
  .anim=md2_other
 End With 
 End Sub
-Const As Integer narbre=2500+2500,ncow=50
+Const As Integer narbre=2500+17500,ncow=50
 Dim Shared As Integer ntree
 Dim Shared As Single scalex=500,scalez0=20,texscale,dxterrain,scaley=500
 Dim Shared As Integer x960=1200
@@ -1983,7 +1983,8 @@ Declare Sub getlocktown(ij As Integer)
 Declare Sub getlocktown2(ij As Integer)
 Declare Sub freelocktown(ij As Integer)
 Dim Shared As Integer tupdateroc,inearroad0,tupdatelady,tupdatetown,tupdatearbre,tupdatecow,tupdategrass
-Dim Shared As Integer tupdateseashore
+Dim Shared As Integer tupdateseashore,testcorrect
+Dim Shared As Single zcorrect
 Sub subsettupdate()
  tupdateroc=1
  tupdatetown=1
@@ -2067,6 +2068,7 @@ If time2>timecorrectterrain+5 And time2>timeinit+20 Then
 			  'mz1+=dz
 			  mz-=dz
 			  mz1-=dz
+			  testcorrect=1
 			  'auxvar+=1:auxtest=0.2
 			EndIf   
 		EndIf
@@ -5245,8 +5247,12 @@ taglcompile2+=1:If taglcompile2>(40+fpsmoy*2) Then taglcompile2=1
 'Else
 '	taglcompile=0
 'EndIf
-If testtownshow=1 Or (Abs(tlayer0-tlayer)>0.01 And taglcompile2>2) Then
+If car>0 And Abs(mz-zcorrect)>5*kfps Then testcorrect=1
+zcorrect=mz
+If testtownshow=1 Or (Abs(tlayer0-tlayer)>0.01 And taglcompile2>2) Or testcorrect=1 Then
 	If scaleview>0.9 Then'And taglcompile2>30 Then
+	   'If testcorrect=1 Then auxvar+=1:auxtest=0.2
+	   testcorrect=0
 		'taglcompile=1
 		taglcompile2=1
 	EndIf
