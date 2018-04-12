@@ -19063,6 +19063,7 @@ Sub initarbres
 	Randomize((imap)*100)
 	'distarbre=5000
    distarbre=4000*Sqr(narbre/700)
+   distarbre=4000*Sqr(2500/700)
 	distbuisson=distarbre
    If arbretext(1)=0 Then 
     For i=1 To 7
