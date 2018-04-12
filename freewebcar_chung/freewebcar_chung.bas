@@ -3559,7 +3559,7 @@ EndIf '/
 'If mz>(mzsol0+10000) And mz<(waterz0+30000) Then drawhorizon(Abs(dxterrain))
 End Sub
 'Dim Shared As uint ntree,narbre=700
-Dim Shared As uint arbrelist,distarbre=5000:distarbre=5000*Sqr(narbre/700)
+Dim Shared As uint arbrelist,distarbre=5000,distarbre0=5000:distarbre=5000*Sqr(narbre/700)
 narbre2=min2(narbre2,narbre)
 Dim Shared As Single arbrex(narbre),arbrey(narbre),arbrez(narbre),arbrerot(narbre),arbrerot0(narbre)
 Dim Shared As Single arbrescalex(narbre),arbrescalez(narbre)
@@ -13887,7 +13887,8 @@ Dim As Integer i,j,k
     	EndIf
     EndIf
     For i=1 To narbre2
-     Var changearbre=tupdatearbre	
+     Var changearbre=tupdatearbre
+     distarbre=distarbre0:If i>8000 Then distarbre+=distarbre0	
      While arbrex(i)<mx-distarbre :arbrex(i)+=distarbre*1.999:changearbre=1:Wend 
      While arbrex(i)>mx+distarbre :arbrex(i)-=distarbre*1.999:changearbre=1:Wend 	
      While arbrey(i)<my-distarbre :arbrey(i)+=distarbre*1.999:changearbre=1:Wend 
@@ -19064,6 +19065,7 @@ Sub initarbres
 	'distarbre=5000
    distarbre=4000*Sqr(narbre/700)
    distarbre=4000*Sqr(2500/700)
+	distarbre0=distarbre
 	distbuisson=distarbre
    If arbretext(1)=0 Then 
     For i=1 To 7
@@ -19074,14 +19076,22 @@ Sub initarbres
     arbresequoiatext=guiloadtexture("media/treesequoia.jpg",230)'180)
     arbreautumntext=guiloadtexture("media/autumn1.jpg",230)'180)
     arbreautumn2text=guiloadtexture("media/autumn2.jpg",230)'180)
+    buissontext(3)=guiloadtexture("media/buisson1.jpg",140)'117)'130)'180)
+    buissontext(4)=guiloadtexture("media/buisson2.jpg",200)'117)'130)'180)
    Else
    	tupdatearbre=2
    	Exit Sub 
    EndIf
 	For i=1 To narbre
 	  arbretype(i)=Int(Rnd*6.25)+1	
-     arbrex(i)=((Rnd-0.5)*2+2*Int(mx/(2*distarbre)))*distarbre
-     arbrey(i)=((Rnd-0.5)*2+2*Int(my/(2*distarbre)))*distarbre
+     If i<8000 Then
+      arbrex(i)=((Rnd-0.5)*2+2*Int(mx/(2*distarbre)))*distarbre
+      arbrey(i)=((Rnd-0.5)*2+2*Int(my/(2*distarbre)))*distarbre
+     Else
+     	Var distarbre2=distarbre+distarbre
+      arbrex(i)=((Rnd-0.5)*2+2*Int(mx/(2*distarbre2)))*distarbre2
+      arbrey(i)=((Rnd-0.5)*2+2*Int(my/(2*distarbre2)))*distarbre2
+     EndIf 
      arbrez(i)=getterrainheight(arbrex(i),arbrey(i))
      arbrerot(i)=Rnd*360 
      arbrescalex(i)=1+Rnd*0.15
@@ -19092,8 +19102,6 @@ Sub initarbres
 	Next
 	buissontext(1)=arbretext(2)
 	buissontext(2)=arbretext(5)
-   buissontext(3)=guiloadtexture("media/buisson1.jpg",140)'117)'130)'180)
-   buissontext(4)=guiloadtexture("media/buisson2.jpg",200)'117)'130)'180)
 	For i=1 To nbuisson
 	  buissontype(i)=Int(Rnd*1.99)+1	
      buissonx(i)=(Rnd-0.5)*2*distbuisson
