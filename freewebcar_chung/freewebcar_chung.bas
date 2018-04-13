@@ -303,6 +303,8 @@ Sub initsounds
    mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias rain",0,0,0)
    soundfic="sounds/sauterelle.mp3"
    mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias sauterelle",0,0,0)
+   soundfic="sounds/grillon.mp3"
+   mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias grillon",0,0,0)
    soundfic="sounds/hi.mp3"
    mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias hi",0,0,0)
    soundfic="sounds/foot.mp3"
@@ -360,6 +362,7 @@ Sub closesounds
 	'mcisendstring("close deermidi",0,0,0)
 	mcisendstring("close rain",0,0,0)
 	mcisendstring("close sauterelle",0,0,0)
+	mcisendstring("close grillon",0,0,0)
 	mcisendstring("close hi",0,0,0)
 	mcisendstring("close foot",0,0,0)
 	mcisendstring("close seagull",0,0,0)
@@ -426,6 +429,7 @@ Sub setsoundvol
 	'mcisendstring("setaudio deermidi volume to "+Str(Int(2.2*vol)),0,0,0)
 	mcisendstring("setaudio rain volume to "+Str(Int(1.7*vol)),0,0,0)
 	mcisendstring("setaudio sauterelle volume to "+Str(Int(1.7*vol)),0,0,0)
+	mcisendstring("setaudio grillon volume to "+Str(Int(1.7*vol)),0,0,0)
 	mcisendstring("setaudio hi volume to "+Str(Int(2*vol)),0,0,0)
 	mcisendstring("setaudio foot volume to "+Str(Int(0.7*vol)),0,0,0)
 	mcisendstring("setaudio seagull volume to "+Str(Int(0.7*vol)),0,0,0)
@@ -672,6 +676,19 @@ Sub stopsoundsauterelle
 	If tsoundsauterelle=1 Then
 		tsoundsauterelle=0
 		mcisendstring("stop sauterelle",0,0,0)
+	EndIf
+End Sub
+Dim Shared As Integer tsoundgrillon
+Sub soundgrillon
+	If tsoundgrillon=0 Then
+		tsoundgrillon=1
+		mcisendstring("play grillon from 0 repeat",0,0,0)
+	EndIf
+End Sub
+Sub stopsoundgrillon
+	If tsoundgrillon=1 Then
+		tsoundgrillon=0
+		mcisendstring("stop grillon",0,0,0)
 	EndIf
 End Sub
 Dim Shared As Double tsoundhi
@@ -5110,13 +5127,14 @@ If topentown=1 And itownp=0 Then drawtowps():Exit Sub
 If tinittown>0 And (itownp=0 Or topentown=0) Then Exit Sub
 drawtownnodes()
 End Sub
-Dim Shared As Integer isauterelle,taddsauterelle
-Dim Shared As Single nsauterellex(800),nsauterelley(800),nsauterellez(800)
-Sub addsauterelle(x As Single,y As Single,z As Single)
-	If isauterelle<800 Then
+Dim Shared As Integer isauterelle,taddsauterelle,iarbresauterelle(200),iarbresauterelle0
+Dim Shared As Single nsauterellex(200),nsauterelley(200),nsauterellez(200)
+Sub addsauterelle(x As Single,y As Single,z As Single,iarbre As Integer=0)
+	If isauterelle<200 Then
 		nsauterellex(isauterelle)=x
 		nsauterelley(isauterelle)=y
 		nsauterellez(isauterelle)=z
+		iarbresauterelle(isauterelle)=iarbre
 		isauterelle+=1
 	EndIf
 End Sub
@@ -5132,6 +5150,35 @@ Dim Shared As uint agllist
 Dim Shared As Single avgbuildh,navgbuildh,avgbuildh0
 Dim Shared As Integer taglcompile2
 Declare Sub subcopyshadow()
+Dim Shared As uint sauterelletext,sauterelletext2
+Dim Shared As Double timesauterelle
+Sub drawsauterelle
+	'sauterellex=mx+100:sauterelley=my:sauterellez=mzsol00
+	If Abs(sauterellex-mx)<500 Then
+	  If Abs(sauterelley-my)<500 Then
+	    If iarbresauterelle0=0 Or arbrez(iarbresauterelle0)>-99990 Then 		
+			If ((Int(time2*18)and 255)Mod 3)>0 Or time2<timesauterelle+0.2 Then
+				glbindtexture(gl_texture_2d,sauterelletext)
+			Else 
+				glbindtexture(gl_texture_2d,sauterelletext2)
+				If Rnd<0.03*kfps Then
+					timesauterelle=time2+Rnd*1.5
+				EndIf
+			EndIf
+         glenable gl_alpha_test
+         glAlphaFunc(gl_less,2/254)
+         Var r=0.1+Abs(sauterellex-mx)+Abs(sauterelley-my)
+         Var co1=(sauterellex-mx)/r,si1=(sauterelley-my)/r
+			glpushmatrix
+			gltranslatef(sauterellex-16*co1,sauterelley-16*si1,mzsol00+10)
+			glrotatef(o1+180,0,0,1)
+			gltexcarre2(19,19)
+			glpopmatrix
+         gldisable gl_alpha_test
+       EndIf   
+	  EndIf
+	EndIf
+End Sub
 Sub drawtownnodes()
 Dim As Integer i,ii,jj,ix,jx
 Dim As Single h,x,y,z,r
@@ -5142,21 +5189,25 @@ Else
 	tdttestcross=0
 EndIf
 If (itime Mod 5)=1 Then 
-If wtempmin>15 Then
+If wtempmin>14 Then'Or 1 Then
 	soundsauterelle
-	If time2>dtsoundsauterelle+2 Then
+	If time2>dtsoundsauterelle+0.4 Then
 		dtsoundsauterelle=time2
-		If taddsauterelle=1 Then
+		If taddsauterelle=1 And isauterelle>0 Then
 			taddsauterelle=0
 			i=Int(Rnd*isauterelle)
 			sauterellex=nsauterellex(i)
 			sauterelley=nsauterelley(i)
 			sauterellez=nsauterellez(i)
+			iarbresauterelle0=iarbresauterelle(i)
 		EndIf
-		Var dist=Abs(sauterellex-mx)+Abs(sauterelley-my)+Abs(sauterellez-mz)
-		If dist>3000 Then taddsauterelle=1:isauterelle=0
-		Var volsauterelle=0.03+120/(120+dist) 
-	   mcisendstring("setaudio sauterelle volume to "+Str(Int(220*volsauterelle)),0,0,0)
+		Var dist=max(Abs(sauterellex-mx),Abs(sauterelley-my))'+Abs(sauterellez-mz)
+		If iarbresauterelle0>0 And arbrez(iarbresauterelle0)<-99990 Then dist+=9999
+		If dist>2400 Then taddsauterelle=1:isauterelle=0
+		Var kcos=1+0.6*(cos1*(sauterellex-mx)+sin1*(sauterelley-my))/(1+dist)
+		Var volsauterelle=max(0.03,min(2.0,kcos*240/(120+dist)))
+		'auxvar=dist:auxtest=0.2
+	   mcisendstring("setaudio sauterelle volume to "+Str(Int(480*volsauterelle)),0,0,0)
 	EndIf
 Else
 	stopsoundsauterelle
@@ -10357,16 +10408,17 @@ End if
      glpopmatrix '/
 If 1 Then
  If tdark=1 And (mz<mzsol0+200) Then'(plane=0 Or car>0) Then=
- 	Var dr=20.0
+ 	Var dr=16.5'20.0
    gllightfv(gl_light0,GL_position,glparam4f(mx+dr*cos1*cos2,my+dr*sin1*cos2,mz+dr*sin2+5,1)) 'w=1 position GL_POSITION
    glLightfv(gl_light0, GL_SPOT_DIRECTION, glparam3f(dmx,dmy,dmz-0.4))
    If (itime Mod 60)=0 Then
    glLightf(gl_light0, GL_SPOT_EXPONENT, 0.0)'3.0)
    glLightf(gl_light0, GL_CONSTANT_ATTENUATION, 0.0)
    glLightf(gl_light0, GL_LINEAR_ATTENUATION, 0.0)
-   glLightf(gl_light0, GL_QUADRATIC_ATTENUATION, 0.000004)
+   'glLightf(gl_light0, GL_QUADRATIC_ATTENUATION, 0.000004)
+   glLightf(gl_light0, GL_QUADRATIC_ATTENUATION, 0.000002)
    'glLightfv(gl_light0, GL_SPOT_DIRECTION, glparam4f(dmx,dmy,dmz-0.2,0))
-   glLightf(gl_light0, GL_SPOT_CUTOFF, 32.0)
+   glLightf(gl_light0, GL_SPOT_CUTOFF, 33.0)'32.0)
    EndIf 
    glenable gl_lighting
    glenable gl_normalize
@@ -13605,6 +13657,7 @@ If plane>0 Or testztop=1 Then
  Var dist20=(posx20-mx)*cos1+(posy20-my)*sin1
  Var dist21=(posx21-mx)*cos1+(posy21-my)*sin1
  var d55=55.0
+ if plane=0 then d55=30.0
  If dist20<d55 And dist21>d55 Then
  	Var kkfps=3.0
  	mx=mx0-8*cos1*kkfps:my=my0-8*sin1*kkfps
@@ -13632,7 +13685,7 @@ If plane>0 Or testztop=1 Then
  	'If mytestroad2=0 Then o1+=0.1*kfps Else o1+=0.03*kfps
  	tdist20=1
  'elseif (dist20<50 Or dist21<50)And testztop=1 and(tautopilot=0 Or plane=0) Then 
- elseif (dist20<50 Or dist21<50)And(tkeyup=0) Then 
+ elseif (dist20<d55-5 Or dist21<d55-5)And(tkeyup=0) Then 
  	'If Rnd<0.5 Then
  		mx=mx0-cos1*(8+v)*kfps:my=my0-sin1*(8+v)*kfps
  	'EndIf
@@ -13921,7 +13974,7 @@ Dim As Integer i,j,k
      	  	  arbredo3shadow(i)=diro1(30*dxyshadow,arbrezshadow3(i)-arbrez(i))
      	  	  setarbreh(i)
      	  	  arbretype(i)=arbretype0(i)
-     	  	  tupdatearbres(i)=0
+     	  	  tupdatearbres(i)=0  
      	  	  'Var arbrezi=(arbrez(i))
      	  	  'If arbrezi>zwater+1900 And Rnd<0.3 Then arbretype(i)=7'pine
      	  	  'If arbrezi>zwater+2500 And Rnd<0.3 Then arbretype(i)=7
@@ -13957,7 +14010,10 @@ Dim As Integer i,j,k
    'rotavion2(arbrex(i)-mx,arbrey(i)-my)
    If arbretype(i)=10 Then Continue For  
    rotavion(arbrex(i)-mx,arbrey(i)-my,arbrez(i)-mz)
-   If x2>-400 And x2<1200 Then addshadowtree(i)	
+   If x2>-400 And x2<1200 Then addshadowtree(i)
+   If x2>1700 And x2<1800 And taddsauterelle=1 Then
+   	addsauterelle(arbrex(i),arbrey(i),arbrez(i),i)
+   EndIf
    	/'If x2>(0.9*max(Abs(y2),Abs(z2))-arbrehouseh(i)-100) Then
          gldisable gl_alpha_test
          glcolor3f(1,1,1)
@@ -15049,6 +15105,7 @@ EndIf
     EndIf
 
 If planet=0 Then
+	 glnormal3f(-cos1,-sin1,0.3)
 	 drawarbres()
     tupdatearbre=0
 
@@ -15069,7 +15126,7 @@ If planet=0 Then
     	drawgrass
     	tupdategrass=0
     EndIf
-
+    drawsauterelle()
 
     gldisable gl_alpha_test
     'gldisable(gl_normalize)
@@ -20954,6 +21011,8 @@ mz11=-999999
         If tradio=3 Then printgui("win.radio","arcade")
         If tradio=3 Then
         	  tradio=2:subradio():soundarcade()
+        ElseIf tradio=1 Then 
+        	  tradio=3:subradio():soundarcade()
         Else
         	  tradio=1:subradio():soundarcade()
         EndIf
@@ -22112,7 +22171,7 @@ If restart=1 Then restart=0:quit=0:guireset:Sleep 1000:GoTo debut
 closesounds
 closesounds2 
 myTTSclose()
-If tradio<>3 Then tradio=0
+If tradio<>3 and tradio<>1 Then tradio=0
 'While tradiomidi=1
 '	Sleep 100
 'Wend

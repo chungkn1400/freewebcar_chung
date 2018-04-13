@@ -144,6 +144,8 @@ coptertext=0
         snowtext=0
         spottext=0
         helentext=0
+        sauterelletext=0
+        sauterelletext2=0
 
 Dim As Integer i
 For i=0 To 11
@@ -264,6 +266,8 @@ official2text=guiloadtexture("objects/town/official2.jpg",253)
 railstationtext=guiloadtexture("objects/town/railstation.jpg")
 hospitaltext=guiloadtexture("objects/town/hospital.jpg")
 fueltext=guiloadtexture("objects/town/fuel.jpg")
+sauterelletext=guiloadtexture("media/sauterelle.jpg",248)
+sauterelletext2=guiloadtexture("media/sauterelle2.jpg",248)
 
            glbindtexture(gl_texture_2d,mywomantext)
            glbindtexture(gl_texture_2d,marisoltext)
@@ -8276,7 +8280,7 @@ EndIf
    	   Var dzz1=zz1+(zz1-zz0)*0.5*0.5
    	   Var xxx=(px1+pxx1+si1)*0.5,yyy=(py1+pyy1-co1)*0.5,zzz=(dz1+dzz1)*0.5-2
    	   gltranslatef(xxx,yyy,zzz)
-   	   If taddsauterelle=1 Then addsauterelle(xxx,yyy,zzz)
+   	   If taddsauterelle=1 And dist<2400 Then addsauterelle(xxx,yyy,zzz)
    	   Var sc=0.6
    	   glscalef(sc,sc,sc)
    	   glrotatef(Int(px1+pxx1)And 255,0,0,1)
@@ -9426,7 +9430,7 @@ EndIf
    	   Var dzz1=zz1+(zz1-zz0)*0.5*0.5
    	   Var xxx=(px1+pxx1+si1)*0.5,yyy=(py1+pyy1-co1)*0.5,zzz=(dz1+dzz1)*0.5-2
    	   agltranslatef(xxx,yyy,zzz)
-   	   If taddsauterelle=1 Then addsauterelle(xxx,yyy,zzz)
+   	   If taddsauterelle=1 And dist<2400 Then addsauterelle(xxx,yyy,zzz)
    	   Var sc=0.6
    	   aglscalef(sc,sc,sc)
    	   aglrotatef(Int(px1+pxx1)And 255,0,0,1)
