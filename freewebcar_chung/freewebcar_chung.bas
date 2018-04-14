@@ -5179,6 +5179,83 @@ Sub drawsauterelle
 	  EndIf
 	EndIf
 End Sub
+Dim Shared As uint grillontext,grillontext2,grillontext0
+Dim Shared As Double timegrillon
+Dim Shared As Integer testgrillon,testtreegrillon=1
+Dim Shared As Single grillonx,grillony,grillonz,grillonx1,grillony1,grillono1=1
+Sub movegrillon()
+Var dist=max(Abs(grillonx-mx),Abs(grillony-my))'+Abs(grillonz-mz)
+If dist>2400 Or testgrillon=0 Or testtreegrillon>0 Then
+	Var do1=Rnd*360
+	grillonx1=mx+(1700+Rnd*700)*Cos(degtorad*do1)
+	grillony1=my+(1700+Rnd*700)*Sin(degtorad*do1)
+ElseIf Rnd<0.2 Then 
+	grillonx1=grillonx+(Rnd-0.5)*16*cos1+Rnd*sin1*9*grillono1
+	grillony1=grillony+(Rnd-0.5)*16*sin1-Rnd*cos1*9*grillono1
+	If Rnd<0.05 Then grillono1=-grillono1
+Else 	
+	Exit Sub 
+EndIf
+Var testroadtree=gettestroadtree(grillonx1,grillony1)
+If testroadtree<=0 Or testtreegrillon>0 Then'forest if testroadtree=-1
+   testtreegrillon=testroadtree
+   grillonx=grillonx1
+   grillony=grillony1
+   grillonz=getterrainheight(grillonx,grillony)
+   dist=max(Abs(grillonx-mx),Abs(grillony-my))'+Abs(grillonz-mz)
+   If dist<2400 And testroadtree<=0 Then
+   	testgrillon=1
+   	soundgrillon()
+   Else
+   	testgrillon=0
+   EndIf
+EndIf 		
+End Sub
+Sub drawgrillon
+   If wtempmin<10 Then Exit Sub 
+	If auxtest>0.21 Then
+		grillonx=mx+50*cos1*cos1*cos1:grillony=my:grillonz=getterrainheight(grillonx,grillony)'mzsol00-20
+	EndIf
+   Var dist=max(Abs(grillonx-mx),Abs(grillony-my))'+Abs(grillonz-mz)
+   Var kcos=1+0.6*(cos1*(grillonx-mx)+sin1*(grillony-my))/(1+dist)
+   Var volgrillon=max(0.03,min(2.0,kcos*240/(120+dist)))
+   'auxvar=dist:auxtest=0.2
+   If dist>2500 Then
+   	testgrillon=0
+   	stopsoundgrillon()
+   	movegrillon()
+   Else
+      mcisendstring("setaudio grillon volume to "+Str(Int(400*volgrillon)),0,0,0)
+   EndIf 
+	If Abs(grillonx-mx)<500 Then
+	  If Abs(grillony-my)<500 Then
+			If ((Int(time2*2)And 255)Mod 2)>0 Or time2<timegrillon+0.5 Then
+				glbindtexture(gl_texture_2d,grillontext)
+				If grillontext0<>grillontext Then movegrillon()
+				grillontext0=grillontext
+			Else 
+				glbindtexture(gl_texture_2d,grillontext2)
+				If grillontext0<>grillontext2 Then movegrillon()
+				grillontext0=grillontext2
+				If Rnd<0.03*kfps Then
+					timegrillon=time2+Rnd*2
+				EndIf
+			EndIf
+         glenable gl_alpha_test
+         glAlphaFunc(gl_less,2/254)
+			glpushmatrix
+			gltranslatef(grillonx,grillony,grillonz+5)
+			If grillono1>0.5 Then
+				glrotatef(o1+180,0,0,1)
+			Else 
+				glrotatef(o1,0,0,1)
+			EndIf
+			gltexcarre2(5,4)
+			glpopmatrix
+         gldisable gl_alpha_test
+	  EndIf
+	EndIf
+End Sub
 Sub drawtownnodes()
 Dim As Integer i,ii,jj,ix,jx
 Dim As Single h,x,y,z,r
@@ -14665,7 +14742,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     		tmxmove=Timer
       EndIf
     	If plane=0 And trun=0 Then
-    		If Abs(mx-mx0)+Abs(my-my0)>0.01 Then o2=0:cos2=1:sin2=0:dmz=0:tfootmove=1
+    		If Abs(mx-mx0)+Abs(my-my0)>0.01 And piste=1 Then o2=0:cos2=1:sin2=0:dmz=0:tfootmove=1
     		If Abs(o1-o100)>0.01 Then tfootmove=1
     	EndIf 	
     EndIf 
@@ -15127,6 +15204,7 @@ If planet=0 Then
     	tupdategrass=0
     EndIf
     drawsauterelle()
+    drawgrillon()
 
     gldisable gl_alpha_test
     'gldisable(gl_normalize)
