@@ -5212,11 +5212,12 @@ If testroadtree<=0 Or testtreegrillon>0 Then'forest if testroadtree=-1
 EndIf 		
 End Sub
 Sub drawgrillon
-   If wtempmin<10 Then Exit Sub 
+   If wtempmin<10 Or mz>mzsol00+2400 Then stopsoundgrillon():Exit Sub 
 	If auxtest>0.21 Then
 		grillonx=mx+50*cos1*cos1*cos1:grillony=my:grillonz=getterrainheight(grillonx,grillony)'mzsol00-20
 	EndIf
-   Var dist=max(Abs(grillonx-mx),Abs(grillony-my))'+Abs(grillonz-mz)
+   Var dist=max(Abs(grillonx-mx),Abs(grillony-my))
+   dist=max(dist,Abs(grillonz-mz))
    Var kcos=1+0.6*(cos1*(grillonx-mx)+sin1*(grillony-my))/(1+dist)
    Var volgrillon=max(0.03,min(2.0,kcos*240/(120+dist)))
    'auxvar=dist:auxtest=0.2
@@ -5266,7 +5267,7 @@ Else
 	tdttestcross=0
 EndIf
 If (itime Mod 5)=1 Then 
-If wtempmin>14 Then'Or 1 Then
+If wtempmin>-14 And mz<mzsol00+2400 Then'Or 1 Then
 	soundsauterelle
 	If time2>dtsoundsauterelle+0.4 Then
 		dtsoundsauterelle=time2
@@ -5278,7 +5279,8 @@ If wtempmin>14 Then'Or 1 Then
 			sauterellez=nsauterellez(i)
 			iarbresauterelle0=iarbresauterelle(i)
 		EndIf
-		Var dist=max(Abs(sauterellex-mx),Abs(sauterelley-my))'+Abs(sauterellez-mz)
+		Var dist=max(Abs(sauterellex-mx),Abs(sauterelley-my))
+		dist=max(dist,Abs(sauterellez-mz))
 		If iarbresauterelle0>0 And arbrez(iarbresauterelle0)<-99990 Then dist+=9999
 		If dist>2400 Then taddsauterelle=1:isauterelle=0
 		Var kcos=1+0.6*(cos1*(sauterellex-mx)+sin1*(sauterelley-my))/(1+dist)
