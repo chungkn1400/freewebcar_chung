@@ -5267,7 +5267,7 @@ Else
 	tdttestcross=0
 EndIf
 If (itime Mod 5)=1 Then 
-If wtempmin>-14 And mz<mzsol00+2400 Then'Or 1 Then
+If wtempmin>14 And mz<mzsol00+2400 Then'Or 1 Then
 	soundsauterelle
 	If time2>dtsoundsauterelle+0.4 Then
 		dtsoundsauterelle=time2
