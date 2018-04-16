@@ -19236,16 +19236,30 @@ Sub initarbres
    	tupdatearbre=2
    	Exit Sub 
    EndIf
+   Var lat0=lat,lng0=lng
+   mxytolatlng(mx,my)
+   Var latxx=lat,lngxx=lng
+   mxytolatlng(mx+distarbre*2,my+distarbre*2)
+   Var dlatx=lat-latxx,dlngx=lng-lngxx
+   latxx=Int(latxx/dlatx)*dlatx
+   lngxx=Int(lngxx/dlngx)*dlngx
+   Dim As single mmx,mmy
+   latlngtomxy(latxx,lngxx,mmx,mmy)
+   lat=lat0:lng=lng0
 	For i=1 To narbre
 	  arbretype(i)=Int(Rnd*6.25)+1	
      If i<8000 Then
-      arbrex(i)=((Rnd-0.5)*2+2*Int(mx/(2*distarbre)))*distarbre
-      arbrey(i)=((Rnd-0.5)*2+2*Int(my/(2*distarbre)))*distarbre
+      'arbrex(i)=((Rnd-0.5)*2+2*Int(mx/(2*distarbre)))*distarbre
+      'arbrey(i)=((Rnd-0.5)*2+2*Int(my/(2*distarbre)))*distarbre
+      arbrex(i)=((Rnd-0.5)*2+2*Int(0/(2*distarbre)))*distarbre+mmx
+      arbrey(i)=((Rnd-0.5)*2+2*Int(0/(2*distarbre)))*distarbre+mmy
      Else
      	Var distarbre2=distarbre+distarbre
-      arbrex(i)=((Rnd-0.5)*2+2*Int(mx/(2*distarbre2)))*distarbre2
-      arbrey(i)=((Rnd-0.5)*2+2*Int(my/(2*distarbre2)))*distarbre2
-     EndIf 
+      'arbrex(i)=((Rnd-0.5)*2+2*Int(mx/(2*distarbre2)))*distarbre2
+      'arbrey(i)=((Rnd-0.5)*2+2*Int(my/(2*distarbre2)))*distarbre2
+      arbrex(i)=((Rnd-0.5)*2+2*Int(0/(2*distarbre2)))*distarbre2+mmx
+      arbrey(i)=((Rnd-0.5)*2+2*Int(0/(2*distarbre2)))*distarbre2+mmy
+     EndIf
      arbrez(i)=getterrainheight(arbrex(i),arbrey(i))
      arbrerot(i)=Rnd*360 
      arbrescalex(i)=1+Rnd*0.15
