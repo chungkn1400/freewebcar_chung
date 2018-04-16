@@ -12485,9 +12485,9 @@ ShellExecute(NULL,"open","firefox.exe",url,NULL,SW_SHOWmaximized)
 'ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
 Sleep 500
 Var hwin=getforegroundwindow()
-For i=1 To 30
+For i=1 To 20
   If hwin=hwin0 Then
-	 Sleep 500
+	 Sleep 900
 	 hwin=getforegroundwindow()
   Else
 	 Exit For 
@@ -12495,9 +12495,9 @@ For i=1 To 30
 Next i 
 If hwin=hwin0 Then
    ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOWmaximized)
-   For i=1 To 30
+   For i=1 To 20
      If hwin=hwin0 Then
-	    Sleep 500
+	    Sleep 900
 	    hwin=getforegroundwindow()
      Else
 	    Exit For 

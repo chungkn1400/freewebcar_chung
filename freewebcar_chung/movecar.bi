@@ -315,7 +315,11 @@ if tourelle=1 Then
 Else
    If car>=1 Then
    	if abs(v)<1 And joy0>1 Then soundmoteur
-      volantrot+=joy*40
+      If tautopilot>0 Or typeautopilot=1 Then
+      	volantrot+=joy*20*kfps'40
+      Else
+      	volantrot+=joy*7*min(2.5,kfps)
+      EndIf
    	joy=joy*4*Sgn2(dirv)
    	queue2
    Else  	
@@ -332,7 +336,11 @@ if tourelle=1 Then
 Else
    If car>=1 Then
    	if abs(v)<1 And joy0>1 Then soundmoteur
-      volantrot+=joy*40
+      If tautopilot>0 Or typeautopilot=1 Then
+      	volantrot+=joy*20*kfps'40
+      Else
+      	volantrot+=joy*7*min(2.5,kfps)
+      EndIf
    	joy=joy*4*Sgn2(dirv)
    	queue2
    Else  	

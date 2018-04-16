@@ -1072,7 +1072,7 @@ Dim Shared As Single k8=6,k88=6,vautopilot=3
 Dim Shared As Single nearaerowaylat(18),nearaerowaylon(18),nearaerowayx(18),nearaerowayy(18)
 Dim Shared As String nearaerowayname(18)
 Dim Shared As Single to1car,to2car,to1plane,to2plane,retroto1,retroto2,tlayer=0,tlayer2,tlayer0,tlayer00,layero1
-Dim Shared As Integer tshadow=1,tfoothorse=0,typeautopilot,tbing=1,tgps=0,dyh0,tradar2
+Dim Shared As Integer tshadow=1,tfoothorse=0,typeautopilot,tbing=1,tgps=0,dyh0,tradar2,typeautopilot0
 Dim Shared As Double timelayer
 Dim Shared As int64  idlayer,idlayer0
 #Include "./movecar.bi"
@@ -1270,6 +1270,8 @@ tradar2=0
 If Not Eof(file) Then Line Input #file,ficin:tradar2=Val(ficin)
 tradio=0
 If Not Eof(file) Then Line Input #file,ficin:tradio=Val(ficin)
+typeautopilot0=0
+If Not Eof(file) Then Line Input #file,ficin:typeautopilot0=Val(ficin)
 Close #file
 carb=max(1000.0,min(carb+1000.0,carb0))
 kscalex=500:kscalex00=500
@@ -7122,7 +7124,11 @@ Sub drawvolant
  If volantrot>120 Then volantrot=120
  If volantrot<-120 Then volantrot=-120
  glrotatef(volantrot+volantrots0,0,0,1)
- volantrot=0.75*volantrot+1e-10
+ If tautopilot>0 Or typeautopilot=1 Or Abs(volantrot)<19*kfps Then
+ 	volantrot=0.75*volantrot+1e-10
+ Else
+ 	o1+=volantrot*0.01*kfps
+ EndIf
  gltexcarre(5)
  glpopmatrix
  glenable gl_depth_test
@@ -8496,7 +8502,11 @@ If tautopilot>=1 And plane>0 And car>0 Then'And scaleview>0.9 Then
       EndIf     
    EndIf
 Else'If scaleview>0.9 Then 
-	volantrots0-=volantrots0*kfps*0.05
+	If tautopilot>0 Or typeautopilot=1 Then
+		volantrots0-=volantrots0*kfps*0.05
+	Else
+		volantrots0=max(-120.0,min(120.0,volantrots0))
+	EndIf
 EndIf
 ncari1=i1
 ncar22=0
@@ -9064,7 +9074,11 @@ Sub drawvolant2(x As Single=0.47,y As Single=0.768,z As Single=-30)
  If volantrot>120 Then volantrot=120
  If volantrot<-120 Then volantrot=-120
  glrotatef(volantrot+volantrots0-2.5,0,0,1)
- volantrot=0.75*volantrot+1e-10
+ If tautopilot>0 Or typeautopilot=1 Or Abs(volantrot)<19*kfps Then
+ 	volantrot=0.75*volantrot+1e-10
+ Else
+ 	o1+=volantrot*0.01*kfps
+ EndIf
  gltexcarre(4.5*kx)
  glpopmatrix
  gldisable gl_alpha_test
@@ -16222,6 +16236,7 @@ If i>0 Then'And i<>icartext Then
 EndIf
 guisetfocus("win.graph")
 End Sub '/
+Declare Sub subtypeautopilot()
 Dim Shared As Integer tgetcombo1=1
 Sub subcombo1()
 Dim As Integer typeship0,airshipmove0,airshipvie00,i
@@ -16316,8 +16331,10 @@ Dim As Integer typeship0,airshipmove0,airshipvie00,i
 	EndIf
 	tgetcombo1=1
 	tourelle=0
-   If tautopilot=1 And plane>0 And car>0 And volant>0 Then
+   If (tautopilot=1 Or 1) And plane>0 And car>0 And volant>0 Then
    	showgui("win.typeauto")
+   	typeautopilot-=1
+   	subtypeautopilot()
    Else
    	hidegui("win.typeauto")
    EndIf
@@ -20807,9 +20824,17 @@ End Sub
 Sub subtypeautopilot
 	typeautopilot=(typeautopilot+1)Mod 2
 	If typeautopilot=0 Then 
-		printgui("win.typeauto","auto0")
+		If tautopilot>0 Then
+			printgui("win.typeauto","auto0")
+		Else		
+		   printgui("win.typeauto","turn0")
+		EndIf    
 	Else
-		printgui("win.typeauto","auto1")
+		If tautopilot>0 Then
+			printgui("win.typeauto","auto1")
+		Else		
+		   printgui("win.typeauto","turn1")
+		EndIf    
 	EndIf
 	soundclick()
 	Sleep 100
@@ -20817,6 +20842,8 @@ Sub subtypeautopilot
 End Sub
 Sub subautopilot
 	stopsoundavion
+	Var typeauto0=typeautopilot0
+	Var typeauto=typeautopilot
 	If tautopilot=0 Then
 		confirm("set autopilot on ?","autopilot",resp)
 		If resp="yes" Then
@@ -20825,16 +20852,22 @@ Sub subautopilot
 			nncarx(0)=mx:nncary(0)=my:nncarz(0)=mz
 			ncarx(0)=mx:ncary(0)=my:ncarz(0)=mz
 			avgo1=o1
+			typeautopilot=typeautopilot0
+			typeautopilot0=typeauto
 		EndIf
 	Else
 		confirm("set autopilot off ?","autopilot",resp)
 		If resp="yes" Then
 			tautopilot=0
+			typeautopilot=typeautopilot0
+			typeautopilot0=typeauto
 		EndIf
 	EndIf
 	soundavion
-	if tautopilot=1 And plane>0 And car>0 And volant>0 Then
+	if (tautopilot=1 Or 1)And plane>0 And car>0 And volant>0 Then
 		showgui("win.typeauto")
+		typeautopilot-=1
+		subtypeautopilot()
 	Else
 		hidegui("win.typeauto")
 	EndIf
@@ -21099,11 +21132,8 @@ mz11=-999999
         tshowradio=1':hidegui("win.radio")
         hidegui("win.typeauto")
         hidegui("win.gps")
-	     If typeautopilot=0 Then 
-		     printgui("win.typeauto","auto0")
-	     Else
-	        printgui("win.typeauto","auto1")
-	     EndIf
+	     typeautopilot-=1
+	     subtypeautopilot()
 	     If tbing=1 Then
 	     	  printgui("win.bing","bing    ")
 	     Else
@@ -22348,6 +22378,7 @@ Print #file,reverselocation
 Print #file,dyh0
 Print #file,tradar2
 Print #file,tradio
+Print #file,typeautopilot0
 Close #file
 ''If townchanged=1 Or Rnd<0.2 Then savetownvie()
 If (planet=0 And orbit=1) And topentown=1 And tinittown0<=0 Then
