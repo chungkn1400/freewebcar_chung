@@ -303,6 +303,8 @@ Sub initsounds
    mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias rain",0,0,0)
    soundfic="sounds/sauterelle.mp3"
    mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias sauterelle",0,0,0)
+   soundfic="sounds/cigale.mp3"
+   mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias cigale",0,0,0)
    soundfic="sounds/grillon.mp3"
    mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias grillon",0,0,0)
    soundfic="sounds/hi.mp3"
@@ -362,6 +364,7 @@ Sub closesounds
 	'mcisendstring("close deermidi",0,0,0)
 	mcisendstring("close rain",0,0,0)
 	mcisendstring("close sauterelle",0,0,0)
+	mcisendstring("close cigale",0,0,0)
 	mcisendstring("close grillon",0,0,0)
 	mcisendstring("close hi",0,0,0)
 	mcisendstring("close foot",0,0,0)
@@ -429,6 +432,7 @@ Sub setsoundvol
 	'mcisendstring("setaudio deermidi volume to "+Str(Int(2.2*vol)),0,0,0)
 	mcisendstring("setaudio rain volume to "+Str(Int(1.7*vol)),0,0,0)
 	mcisendstring("setaudio sauterelle volume to "+Str(Int(1.7*vol)),0,0,0)
+	mcisendstring("setaudio cigale volume to "+Str(Int(1.7*vol)),0,0,0)
 	mcisendstring("setaudio grillon volume to "+Str(Int(1.7*vol)),0,0,0)
 	mcisendstring("setaudio hi volume to "+Str(Int(2*vol)),0,0,0)
 	mcisendstring("setaudio foot volume to "+Str(Int(0.7*vol)),0,0,0)
@@ -665,17 +669,32 @@ End Sub
 Sub stopsoundrain
    	mcisendstring("stop rain",0,0,0)
 End Sub
-Dim Shared As Integer tsoundsauterelle
+Dim Shared As Integer tsoundsauterelle,tsoundcigale,tcigale
 Sub soundsauterelle
+If tcigale=0 Then
 	If tsoundsauterelle=0 Then
 		tsoundsauterelle=1
 		mcisendstring("play sauterelle from 0 repeat",0,0,0)
+		tsoundcigale=0
+		mcisendstring("stop cigale",0,0,0)
 	EndIf
+Else
+	If tsoundcigale=0 Then
+		tsoundcigale=1
+		mcisendstring("play cigale from 0 repeat",0,0,0)
+		tsoundsauterelle=0
+		mcisendstring("stop sauterelle",0,0,0)
+   EndIf 
+EndIf
 End Sub
 Sub stopsoundsauterelle
 	If tsoundsauterelle=1 Then
 		tsoundsauterelle=0
 		mcisendstring("stop sauterelle",0,0,0)
+	EndIf
+	If tsoundcigale=1 Then
+		tsoundcigale=0
+		mcisendstring("stop cigale",0,0,0)
 	EndIf
 End Sub
 Dim Shared As Integer tsoundgrillon
@@ -5129,7 +5148,7 @@ If topentown=1 And itownp=0 Then drawtowps():Exit Sub
 If tinittown>0 And (itownp=0 Or topentown=0) Then Exit Sub
 drawtownnodes()
 End Sub
-Dim Shared As Integer isauterelle,taddsauterelle,iarbresauterelle(200),iarbresauterelle0
+Dim Shared As Integer isauterelle,taddsauterelle,iarbresauterelle(200),iarbresauterelle0,iarbrecigale0
 Dim Shared As Single nsauterellex(200),nsauterelley(200),nsauterellez(200)
 Sub addsauterelle(x As Single,y As Single,z As Single,iarbre As Integer=0)
 	If isauterelle<200 Then
@@ -5140,7 +5159,7 @@ Sub addsauterelle(x As Single,y As Single,z As Single,iarbre As Integer=0)
 		isauterelle+=1
 	EndIf
 End Sub
-Dim Shared As Single o1show,xshow,yshow,wtempmin,sauterellex,sauterelley,sauterellez
+Dim Shared As Single o1show,xshow,yshow,wtempmin,sauterellex,sauterelley,sauterellez,cigalex,cigaley,cigalez
 Dim Shared As Double to1show,dtsoundsauterelle,dttestcross
 Dim Shared As Integer testposx0,tdttestcross,ishadow,ishadow0,tishadow,taddshadowtree,ishadowtree2,taddshadowquad
 Dim Shared As Integer ishadowpanel,taddshadowpanel,taddshadowroc,trun,nshowtown,nshowbuild,nshowbuild0,nshowbuild1
@@ -5152,10 +5171,12 @@ Dim Shared As uint agllist
 Dim Shared As Single avgbuildh,navgbuildh,avgbuildh0
 Dim Shared As Integer taglcompile2
 Declare Sub subcopyshadow()
+Declare Sub drawcigale()
 Dim Shared As uint sauterelletext,sauterelletext2
 Dim Shared As Double timesauterelle
 Sub drawsauterelle
-	'sauterellex=mx+100:sauterelley=my:sauterellez=mzsol00
+	'sauterellex=mx+100*cos1*cos1*cos1:sauterelley=my:sauterellez=mzsol00
+	If tcigale=1 Then drawcigale:Exit Sub 
 	If Abs(sauterellex-mx)<500 Then
 	  If Abs(sauterelley-my)<500 Then
 	    If iarbresauterelle0=0 Or arbrez(iarbresauterelle0)>-99990 Then 		
@@ -5175,6 +5196,37 @@ Sub drawsauterelle
 			gltranslatef(sauterellex-16*co1,sauterelley-16*si1,mzsol00+10)
 			glrotatef(o1+180,0,0,1)
 			gltexcarre2(19,19)
+			glpopmatrix
+         gldisable gl_alpha_test
+       EndIf   
+	  EndIf
+	EndIf
+End Sub
+Dim Shared As uint cigaletext,cigaletext2
+Dim Shared As Double timecigale
+Sub drawcigale
+	cigalex=sauterellex:cigaley=sauterelley:cigalez=sauterellez
+	iarbrecigale0=iarbresauterelle0
+	'cigalex=mx+100*cos1*cos1*cos1:cigaley=my:cigalez=mzsol00
+	If Abs(cigalex-mx)<500 Then
+	  If Abs(cigaley-my)<500 Then
+	    If iarbrecigale0=0 Or arbrez(iarbrecigale0)>-99990 Then 		
+			If ((Int(time2*18)and 255)Mod 3)>0 Or time2<timecigale+0.2 Then
+				glbindtexture(gl_texture_2d,cigaletext)
+			Else 
+				glbindtexture(gl_texture_2d,cigaletext2)
+				If Rnd<0.03*kfps Then
+					timecigale=time2+Rnd*1.5
+				EndIf
+			EndIf
+         glenable gl_alpha_test
+         glAlphaFunc(gl_less,2/254)
+         Var r=0.1+Abs(cigalex-mx)+Abs(cigaley-my)
+         Var co1=(cigalex-mx)/r,si1=(cigaley-my)/r
+			glpushmatrix
+			gltranslatef(cigalex-16*co1,cigaley-16*si1,mzsol00+10)
+			glrotatef(o1+180,0,0,1)
+			gltexcarre2(12,12)
 			glpopmatrix
          gldisable gl_alpha_test
        EndIf   
@@ -5280,15 +5332,21 @@ If wtempmin>14 And mz<mzsol00+2400 Then'Or 1 Then
 			sauterelley=nsauterelley(i)
 			sauterellez=nsauterellez(i)
 			iarbresauterelle0=iarbresauterelle(i)
+			tcigale=Int(Rnd*2)
 		EndIf
+		If auxtest>0.21 Then tcigale=1
 		Var dist=max(Abs(sauterellex-mx),Abs(sauterelley-my))
 		dist=max(dist,Abs(sauterellez-mz))
 		If iarbresauterelle0>0 And arbrez(iarbresauterelle0)<-99990 Then dist+=9999
-		If dist>2400 Then taddsauterelle=1:isauterelle=0
+		If dist>2400 Or sauterellez<waterz+1 Then taddsauterelle=1:isauterelle=0
 		Var kcos=1+0.6*(cos1*(sauterellex-mx)+sin1*(sauterelley-my))/(1+dist)
 		Var volsauterelle=max(0.03,min(2.0,kcos*240/(120+dist)))
 		'auxvar=dist:auxtest=0.2
-	   mcisendstring("setaudio sauterelle volume to "+Str(Int(480*volsauterelle)),0,0,0)
+	   If tcigale=0 Then
+	   	mcisendstring("setaudio sauterelle volume to "+Str(Int(480*volsauterelle)),0,0,0)
+	   Else 
+	   	mcisendstring("setaudio cigale volume to "+Str(Int(380*volsauterelle)),0,0,0)
+	   EndIf
 	EndIf
 Else
 	stopsoundsauterelle

@@ -146,6 +146,8 @@ coptertext=0
         helentext=0
         sauterelletext=0
         sauterelletext2=0
+        cigaletext=0
+        cigaletext2=0
         grillontext=0
         grillontext2=0
 
@@ -270,6 +272,8 @@ hospitaltext=guiloadtexture("objects/town/hospital.jpg")
 fueltext=guiloadtexture("objects/town/fuel.jpg")
 sauterelletext=guiloadtexture("media/sauterelle.jpg",248)
 sauterelletext2=guiloadtexture("media/sauterelle2.jpg",248)
+cigaletext=guiloadtexture("media/cigale.jpg",248)
+cigaletext2=guiloadtexture("media/cigale2.jpg",248)
 grillontext=guiloadtexture("media/grillon_1.jpg",250)
 grillontext2=guiloadtexture("media/grillon_2.jpg",250)
 
