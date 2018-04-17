@@ -5299,13 +5299,13 @@ Sub drawgrillon
          glenable gl_alpha_test
          glAlphaFunc(gl_less,2/254)
 			glpushmatrix
-			gltranslatef(grillonx,grillony,grillonz+5)
+			gltranslatef(grillonx,grillony,grillonz+6)
 			If grillono1>0.5 Then
 				glrotatef(o1+180,0,0,1)
 			Else 
 				glrotatef(o1,0,0,1)
 			EndIf
-			gltexcarre2(5,4)
+			gltexcarre2(6,5)
 			glpopmatrix
          gldisable gl_alpha_test
 	  EndIf
@@ -15770,22 +15770,22 @@ EndIf 'planet
 	 		If dxx<0 Then
 	 			If Abs(dxy)>19 Or Abs(dxx)<0.47 Then
 	 				o1+=(dyy)*kfps*3
-	 				mx+=Sgn(dxy)*sin1*kfps*1.25
-	 				my-=Sgn(dxy)*cos1*kfps*1.25
+	 				mx+=Sgn(dxy)*sin1*kfps'*1.25
+	 				my-=Sgn(dxy)*cos1*kfps'*1.25
 	 			Else'If Abs(dyy)>0.(1 Then 
 	 				o1+=(dyy)*kfps*0.6
-	 				mx+=dyy*sin1*kfps
-	 				my-=dyy*cos1*kfps
+	 				mx+=dyy*sin1*kfps*0.5
+	 				my-=dyy*cos1*kfps*0.5
 	 			EndIf
 	 		Else 	
 	 			If Abs(dxy)>19 Or Abs(dxx)<0.47 Then
 	 				o1-=(dyy)*kfps*3
-	 				mx-=Sgn(dxy)*sin1*kfps*1.25
-	 				my+=Sgn(dxy)*cos1*kfps*1.25
+	 				mx-=Sgn(dxy)*sin1*kfps'*1.25
+	 				my+=Sgn(dxy)*cos1*kfps'*1.25
 	 			Else'If Abs(dyy)>0.1 Then 
 	 				o1-=(dyy)*kfps*0.6
-	 				mx-=dyy*sin1*kfps
-	 				my+=dyy*cos1*kfps
+	 				mx-=dyy*sin1*kfps*0.5
+	 				my+=dyy*cos1*kfps*0.5
 	 			EndIf
 	 		EndIf
   		  EndIf 
