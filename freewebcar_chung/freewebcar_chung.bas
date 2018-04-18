@@ -2406,6 +2406,13 @@ End Sub
 dim shared as Single dhmaree,dhmaree0
 Sub glvertex3fx(x As Single,y As Single,z as Single)
 	glvertex3f(x,y,z)
+	If Abs(x-mx)<2000 Then
+		If Abs(y-my)<2000 Then
+			If Abs(z-mzsol00)>1000 Then
+				testweb=1
+			EndIf
+		EndIf
+	EndIf
 	Return 
 	'glvertex3f(x,y,z)
 	'Return 
@@ -8724,7 +8731,8 @@ For i=i1 To ncar
     	 	If time2>timenear0road+22 Then
     	 		ncaro1(i)=avgo1
     	 	   nncaro1(i)=avgo1
-    	 		timenear0road=time2-22+0.04*kfps
+    	 		'timenear0road=time2-22+0.04*kfps
+    	 		timenear0road=time2-21+0.04*kfps
     	 	EndIf
     	 EndIf	
     	 'If dxxx<-0.1 Then'And time2>timenear0road+25 Then 
@@ -8747,7 +8755,7 @@ For i=i1 To ncar
 	 Var xx=xnearroad(n)+si1*0.5*r
 	 Var yy=ynearroad(n)-co1*0.5*r
     Var dx=x-xx,dy=y-yy
-    Var dxy=(dx*si1-dy*co1)+(i And 3)*1.4
+    Var dxy=max(-8.0,min(8.0,((dx*si1-dy*co1)+(i And 3)*1.4)))
     nncarx(i)=x-dxy*si1+co1
     nncary(i)=y+dxy*co1+si1
   	 ncarco1(i)=Cos(degtorad*ncaro1(i))
@@ -15632,6 +15640,7 @@ EndIf 'planet
         If timer<timehelp+120 Then drawhelp()	
        EndIf
         Var vv=min(v*3,Sqr((xkm-mx)*(xkm-mx)+(ykm-my)*(ykm-my)+(zkm-mz)*(zkm-mz))*fps/15)'/25
+        If (xkm-mx)*cos1+(ykm-my)*sin1>0 Then vv=-vv
         xkm=mx:ykm=my:zkm=mz
         If car>0 Then vkm+=(vv*4.75-vkm)*0.07*kfps Else vkm+=(vv*7-vkm)*0.03*kfps'v*17
         gldrawtext("prop= "+Str(Int(prop))+"  v= "+Str(Int(vkm))+"."+Str(Int(vkm*10+1000)Mod 10),15,ymax-35,1.2)
@@ -15768,24 +15777,26 @@ EndIf 'planet
 	 		Var dyy=co1*sin1-si1*cos1
 	 		Var dxx=co1*cos1+si1*sin1
 	 		If dxx<0 Then
+ 				Var kkfps=kfps*min(1.0,r/60)
 	 			If Abs(dxy)>19 Or Abs(dxx)<0.47 Then
 	 				o1+=(dyy)*kfps*3
-	 				mx+=Sgn(dxy)*sin1*kfps'*1.25
-	 				my-=Sgn(dxy)*cos1*kfps'*1.25
+	 				mx+=Sgn(dxy)*sin1*kkfps'*1.25
+	 				my-=Sgn(dxy)*cos1*kkfps'*1.25
 	 			Else'If Abs(dyy)>0.(1 Then 
 	 				o1+=(dyy)*kfps*0.6
-	 				mx+=dyy*sin1*kfps*0.5
-	 				my-=dyy*cos1*kfps*0.5
+	 				mx+=dyy*sin1*kkfps*0.5
+	 				my-=dyy*cos1*kkfps*0.5
 	 			EndIf
 	 		Else 	
+ 				Var kkfps=kfps*min(1.0,r/60)
 	 			If Abs(dxy)>19 Or Abs(dxx)<0.47 Then
 	 				o1-=(dyy)*kfps*3
-	 				mx-=Sgn(dxy)*sin1*kfps'*1.25
-	 				my+=Sgn(dxy)*cos1*kfps'*1.25
+	 				mx-=Sgn(dxy)*sin1*kkfps'*1.25
+	 				my+=Sgn(dxy)*cos1*kkfps'*1.25
 	 			Else'If Abs(dyy)>0.1 Then 
 	 				o1-=(dyy)*kfps*0.6
-	 				mx-=dyy*sin1*kfps*0.5
-	 				my+=dyy*cos1*kfps*0.5
+	 				mx-=dyy*sin1*kkfps*0.5
+	 				my+=dyy*cos1*kkfps*0.5
 	 			EndIf
 	 		EndIf
   		  EndIf 
@@ -21565,6 +21576,7 @@ mz11=-999999
         	   'If guitestkey(vk_f12)<>0 Then submapworld()
         	   If guitestkey(vk_f4)<>0 Then substars()
         	   If guitestkey(vk_m)<>0 And guitestkey(vk_shift)=0 And guitestkey(vk_control)=0 And imap>=4 Then
+        	   	testweb=1
         	   	If testworld=0 Then
         	   		mapdisplay=(mapdisplay+1)Mod 3
         	   	Else

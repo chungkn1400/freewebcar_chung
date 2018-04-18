@@ -3912,6 +3912,11 @@ Sub getways2(text0 As String)'getways
  	     	 				'Else
  	     	 				  'auxvar+=1:auxtest=0.8
  	     	 				'EndIf 
+ 	     	 			/'Else 	
+ 	       	 		   townnodelat40(i40,j40)=-99
+ 	      	 			townnodex40(i40,j40)=0
+ 	     	   			townnodey40(i40,j40)=0
+ 	     	 	   		townixy40(i40)=1 '/
  	     	 			EndIf
  	     	 		 EndIf 
  	     	 		EndIf
