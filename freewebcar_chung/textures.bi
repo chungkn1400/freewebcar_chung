@@ -12490,11 +12490,11 @@ Var url="https://chungkn1400.github.io/json_osm_chung/json_osm_chung/stat.html"
 url="http://chungswebsite.blogspot.fr/p/exit.html?"+formaturl(guigettext("win")+"+"+reverselocation)
 url="https://chungswebsite.blogspot.fr/p/blog-page_7.html#"+formaturl(guigettext("win")+"="+reverselocation)
 'ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOWmaximized)
-ShellExecute(NULL,"open","firefox.exe",url,NULL,SW_SHOWmaximized)
+ShellExecute(NULL,"open","chrome.exe",url,NULL,SW_SHOWmaximized)
 'ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
 Sleep 500
 Var hwin=getforegroundwindow()
-For i=1 To 20
+For i=1 To 14
   If hwin=hwin0 Then
 	 Sleep 900
 	 hwin=getforegroundwindow()
@@ -12502,6 +12502,19 @@ For i=1 To 20
 	 Exit For 
   EndIf
 Next i 
+If hwin=hwin0 Then
+   ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
+   'ShellExecute(NULL,"open","chrome.exe",url,NULL,SW_SHOWmaximized)
+   'ShellExecute(NULL,"open","firefox.exe",url,NULL,SW_SHOWmaximized)
+   For i=1 To 14
+     If hwin=hwin0 Then
+	    Sleep 900
+	    hwin=getforegroundwindow()
+     Else
+	    Exit For 
+     EndIf
+   Next i 	
+EndIf
 If hwin=hwin0 Then
    ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOWmaximized)
    For i=1 To 20

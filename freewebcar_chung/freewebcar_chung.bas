@@ -13761,7 +13761,7 @@ Var ky=0.19*ymax
 'If tautopilot=1 Then
 	ky=0.07*ymax
 'EndIf
-winx = xmax/2
+winx = xmax*0.5
 winy = ymax*0.5+ky
 glReadPixels( winx,winy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, @winZ )
 gluUnProject(winX,winY,winz,@modelview(0),@projection(0),@viewport(0),@posX,@posY,@posZ)   
@@ -13777,7 +13777,22 @@ If dist<100 And dist>0 Then
       testcrash():Exit Sub 
 	EndIf
 EndIf
-If plane>0 And car=0 Then Exit Sub 
+If plane>0 And car=0 Then
+   winx = xmax*0.5
+   winy = ymax*0.35
+   glReadPixels( winx,winy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, @winZ )
+   gluUnProject(winX,winY,winz,@modelview(0),@projection(0),@viewport(0),@posX,@posY,@posZ) 
+   If max(Abs(posx-mx),Abs(posy-my))+Abs(posz-mz)<80 Then
+   	'auxvar=mz-posz-mzh:auxtest=0.2:auxvar2=vcruise
+   	posz+=mzh
+   	If Abs(v)<2.5 And vcruise<10 Then v=0:mx=mx0:my=my0
+   	mz=max(mz0,posz)
+   	mz1=max(mz0,posz)
+   	'mzsol00=max(mzsol00,posz-0.4)
+   	'mzsol0=max(mzsol0,posz-0.4)
+   EndIf
+	Exit Sub 
+EndIf
 If plane>0 And (mytestroad2=0 And time2<timecollide2+1 And time2<timecollide22+1)And time2>timebridge+2 Then 
  	If (tkeyup) Then Exit Sub 
 EndIf

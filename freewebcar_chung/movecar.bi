@@ -718,15 +718,16 @@ If avion="ballon" Then
 EndIf
 If avion="copter" Then
 	vmz3=0
-	Var si2=sin2,si22=(o2+17)*0.01
+	Var si2=sin2,si22=(o2+19)*0.01
 	If sin2<0.9 Then
 		If o2>-20 Then si2=-0.0022
-		If o2>0 And o2<25 Then si22=0.08
+		If o2>0 Then si2=-0.0018
+		If (prop<2000 And o2>-10 And o2<20) Then si22=0.28
 		si22=min(si22,0.45)
 		v=max(-8.0,min(30.0,v-(si22-0.09)*prop*0.002*kfps))
 	EndIf
-	mz1+=max(-1.5*kfps,(v+prop*0.0003)*(0.002+si2)*kfps)
-	mz1-=max(0.0,(1500-prop)*0.002*kfps)
+	mz1+=max(-1.5*kfps,(max(0.0,v)+prop*0.0003)*(0.002+si2)*kfps)
+	If o2<10 Or prop<1000 Or  prop>1500 Then mz1-=(1500-prop)*0.001*kfps
 	If Abs(sin3)>0.6 Then o2=max(-85.0,o2-Abs(sin3*cos2)*0.25*kfps)
 	If o2<-80 Then o1+=o3:o3=0	
 EndIf
