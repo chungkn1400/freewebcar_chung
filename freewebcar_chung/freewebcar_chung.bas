@@ -13785,9 +13785,11 @@ If plane>0 And car=0 Then
    If max(Abs(posx-mx),Abs(posy-my))+Abs(posz-mz)<80 Then
    	'auxvar=mz-posz-mzh:auxtest=0.2:auxvar2=vcruise
    	posz+=mzh
-   	If Abs(v)<2.5 And vcruise<10 Then v=0:mx=mx0:my=my0
-   	mz=max(mz0,posz)
-   	mz1=max(mz0,posz)
+   	If Abs(v)<2.5 And vcruise<10 Then v=0:mx=mx0:my=my0:mz=mz0
+   	If piste=0 Then
+   	 mz=max(mz0,posz)
+   	 mz1=max(mz0,posz)
+   	EndIf  
    	'mzsol00=max(mzsol00,posz-0.4)
    	'mzsol0=max(mzsol0,posz-0.4)
    EndIf
@@ -14839,7 +14841,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     		tmxmove=Timer
       EndIf
     	If plane=0 And trun=0 Then
-    		If Abs(mx-mx0)+Abs(my-my0)>0.01 And piste=1 Then o2=0:cos2=1:sin2=0:dmz=0:tfootmove=1
+    		If Abs(mx-mx0)+Abs(my-my0)>0.01 And piste>=1 Then o2=0:cos2=1:sin2=0:dmz=0:tfootmove=1
     		If Abs(o1-o100)>0.01 Then tfootmove=1
     	EndIf 	
     EndIf 
@@ -20353,6 +20355,7 @@ Print #file,icombomap
 Print #file,tlayer
 Close #file
 End Sub
+Dim Shared As Single mzinit
 Sub load(ByVal fic As String)
 Dim As Integer File,icar0,imap0,ihorse,iboat,iship,i
 Dim As Single kscalex0,dmx0000,dmy0000,mx0000,my0000,mz0000
@@ -20477,6 +20480,7 @@ Close #file
 
 tinitloadmx=0
 loadmx=mx:loadmy=my:loadmz=mz
+mzinit=mz
 
 If addonname<>"" Then
 	For i=1 To 100
@@ -21529,6 +21533,7 @@ mz11=-999999
         'Dim Shared As ubyte mybmpretro(4*1000*1000)
         timeinit=Timer 
         testinit=0
+        mzinit=mz
         'guinotice "ok"
         
         Var tquit=Timer,tframe=tquit-5,tactive=Timer
@@ -21800,6 +21805,11 @@ mz11=-999999
                glclearcolor 0,0.7,0, 0.0
                glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
             	guirefreshopenGL()
+            	If time2<timeinit+8 And Abs(mzinit)>0.001 Then
+            		mz=mzinit:mz1=mz:piste=1:piste0=1
+            	Else
+            		mzinit=0
+            	EndIf 	
             EndIf 	
            	If mapdisplay<>0 Then mx=mx0:my=my0:mz=mz0:mz1=mz 
             If time2<tcrashz+1 Then mz=mzcrash:mz1=mz

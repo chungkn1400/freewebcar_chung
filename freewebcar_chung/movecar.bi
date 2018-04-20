@@ -745,7 +745,7 @@ If (mz>=mzsol00+0.102) Then aterrissage=1
 If mz<=(min(mzsol0,mzsol00+10)+0.1) Then
    'ysol0=NGetTerrainHeight(Terrain,x,z)+yh
    piste=0'mytestairport() Or piste
-   If piste=1 Then
+   If piste>=1 Then
     o22=Rnd*0.14:o33=0:If Abs(v)<1 Then o22=0
    Else  	
     mmy=20
@@ -814,7 +814,7 @@ If mz<=(min(mzsol0,mzsol00+10)+0.1) Then
       o3=o33-0.75*(o3-o33)
    else
       o3=o33
-      If piste=1 Or piste=2 Then
+      If piste>=1 Then
       	o3=0:sin3=0
       	If plane>0 And car=0 Then o2=max(-0.1,o2)
       EndIf
@@ -985,8 +985,8 @@ Else
          do33=(Rnd-0.5)*3*1.1045*min(1.1,abs(v)/4.5)
        Else
        	Var rnd2=Rnd,rnd3=Rnd
-       	do22=(Rnd-0.4)*rnd2*Rnd2*3*0.4845*min(1.1,abs(v)/4.5)
-         do33=(Rnd-0.5)*Rnd3*Rnd3*2*0.4855*min(1.1,abs(v)/4.5)
+       	do22=(Rnd-0.4)*rnd2*Rnd2*3*0.4845*min(1.1,Abs(v)/4.5)
+         do33=(Rnd-0.5)*Rnd3*Rnd3*2*0.4855*min(1.1,Abs(v)/4.5)
        EndIf 	
       EndIf  
       o2=o2-do22:o222-=do22'(o2-do22)-o2
