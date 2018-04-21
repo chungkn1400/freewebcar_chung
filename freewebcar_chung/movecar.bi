@@ -160,7 +160,7 @@ End If
 If avion="copter" Then
    kpitch=0.8:kroll=2:kqueue=2:kprop=1.5
    poids=0.15
-   vcruise=8.0'5.0
+   vcruise=9.0'5.0
    altmax=70000
 End If
 If avion="avion1" Then
