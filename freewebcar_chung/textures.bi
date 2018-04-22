@@ -10292,23 +10292,25 @@ End Sub
 Dim Shared As Single kfpsmoy,kfpsmoy2
 Sub drawwaynodebuild(ij As Integer,i As Integer) 	 		
           Var h=waynodebuildh(ij,i)
-          If itown>5 Then
+          Var x2=waynodebuildx2(ij,i)
+          Var y2=waynodebuildy2(ij,i)
+          Var sizei=townwaynodesize(ij,i)
+      	 Var waynodebuild=townwaynodebuild(ij,i)
+          If waynodebuild<>100 And (mz>mzsol00+900 Or x2<-100-sizei Or x2>900+sizei) Then 
+           If itown>5 Then
           	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
           	kfpsmoy2=max(1.0,kfpsmoy2)
           	if h<200+(itown-6)*200*0.3*kfpsmoy Then Exit Sub 
-          ElseIf itown>3 Then  
+           Else'If itown>2 Then  
           	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
           	kfpsmoy2=max(1.0,kfpsmoy2)
-          	if h<(itown-3)*200*0.3*kfpsmoy Then Exit Sub 
-          EndIf
-      	 Var waynodebuild=townwaynodebuild(ij,i)
+          	if h<(itown)*200*0.3*kfpsmoy Then Exit Sub 
+           EndIf
+          EndIf  
           drawbuildtext=building3text
           If housetext=0 Then glbindtexture(gl_texture_2d,housetext)
-          Var x2=waynodebuildx2(ij,i)
-          Var y2=waynodebuildy2(ij,i)
-          Var sizei=townwaynodesize(ij,i)
           Var x=waynodebuildx(ij,i)
           Var y=waynodebuildy(ij,i)
           Var troad=0
