@@ -6100,8 +6100,9 @@ EndIf
  	If h>dxy*7 Then townwaynodeh(ij,i)=dxy*7+4000*Int(hmin+0.5)
  EndIf
 If testmygltexquad=1 And h0>46 Then  
- Var dz=max(0.0,z),troof=1
- If h<200*(1-dz/(700+dz)) And sizei<1500 Then'z<200 Then
+ Var dz=max(0.0,z),troof=1,h200=200.0
+ If itown>5 Then h200=350
+ If h<h200*(1-dz/(700+dz)) And sizei<1500 Then'z<200 Then
  	'z1=z+24+(max(0,Abs(xmax-xmin)-200)+max(0,(ymax-ymin)-200))*0.051:glcolor4f(0.9,0.3,0.4,talpha)
  	z1=z+24+min(max(0,Abs(xmax-xmin)-200),max(0,abs(ymax-ymin)-200))*0.1:glcolor4f(0.9,0.3,0.4,talpha)
  Else
@@ -6166,7 +6167,7 @@ If hmin>10 Then
    EndIf
  Next
  'xx=x:yy=y
- If Abs(x-x0)+Abs(y-y0)>0.01 Then 
+ If Abs(x-x0)+Abs(y-y0)>0.1 Then 
   x=x0:y=y0
   'gltriangle xx,yy,z0, xmid,ymid,z0, x,y,z0
   If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
@@ -6483,7 +6484,7 @@ EndIf
  If testname=0 And drawbuildname<>"" Then
  	townnametype(ij,i)=1
  EndIf
- If Abs(x-x0)+Abs(y-y0)>0.00001 Then 
+ If Abs(x-x0)+Abs(y-y0)>0.1 Then 
   xx=x:yy=y
   x=x0:y=y0
   tx0+=tx
@@ -6499,8 +6500,9 @@ EndIf
  	If h>dxy*7 Then townwaynodeh(ij,i)=dxy*7+4000*Int(hmin+0.5)
  EndIf
 If testmygltexquad=1 And h0>46 Then  
- Var dz=max(0.0,z),troof=1
- If h<200*(1-dz/(700+dz)) And sizei<1500 Then'z<200 Then
+ Var dz=max(0.0,z),troof=1,h200=200.0
+ If itown>5 Then h200=350
+ If h<h200*(1-dz/(700+dz)) And sizei<1500 Then'z<200 Then
  	'z1=z+24+(max(0,Abs(xmax-xmin)-200)+max(0,(ymax-ymin)-200))*0.051:glcolor4f(0.9,0.3,0.4,talpha)
  	z1=z+24+min(max(0,Abs(xmax-xmin)-200),max(0,abs(ymax-ymin)-200))*0.1
  	glcolor4f(1,0.2,0.23,talpha)
@@ -6570,7 +6572,7 @@ If hmin>10 Then
    EndIf
  Next
  'xx=x:yy=y
- If Abs(x-x0)+Abs(y-y0)>0.01 Then 
+ If Abs(x-x0)+Abs(y-y0)>0.1 Then 
   x=x0:y=y0
   'gltriangle xx,yy,z0, xmid,ymid,z0, x,y,z0
   If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
@@ -6890,7 +6892,7 @@ If testmygltexquad=1 And h0>46 Then
    EndIf
  Next
  'xx=x:yy=y
- If Abs(x-x0)+Abs(y-y0)>0.01 Then 
+ If Abs(x-x0)+Abs(y-y0)>0.1 Then 
   x=x0:y=y0
   'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
   If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
@@ -10286,12 +10288,24 @@ Dim As Integer i,j,k,n,p
     EndIf  
    EndIf   
  EndIf	
-End sub
+End Sub
+Dim Shared As Single kfpsmoy,kfpsmoy2
 Sub drawwaynodebuild(ij As Integer,i As Integer) 	 		
+          Var h=waynodebuildh(ij,i)
+          If itown>5 Then
+          	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
+          	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
+          	kfpsmoy2=max(1.0,kfpsmoy2)
+          	if h<200+(itown-6)*200*0.3*kfpsmoy Then Exit Sub 
+          Else 
+          	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
+          	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
+          	kfpsmoy2=max(1.0,kfpsmoy2)
+          	if h<(itown)*200*0.3*kfpsmoy Then Exit Sub 
+          EndIf
       	 Var waynodebuild=townwaynodebuild(ij,i)
           drawbuildtext=building3text
           If housetext=0 Then glbindtexture(gl_texture_2d,housetext)
-          Var h=waynodebuildh(ij,i)
           Var x2=waynodebuildx2(ij,i)
           Var y2=waynodebuildy2(ij,i)
           Var sizei=townwaynodesize(ij,i)

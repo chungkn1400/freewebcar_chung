@@ -4131,22 +4131,27 @@ If tnight1=1 Then
 	gldisable gl_alpha_test
 EndIf
 End Sub
-Function setbuildh(h As Single) As Single
+Function setbuildh(h0 As Single) As Single
+	Var iitown=itown,h=h0
+	If itown>5 Then
+		iitown-=5
+		'If h>200 Then h-=50
+	EndIf
 	'Dim As Single kh=1.0 
 	'If h<50 Then Return h '<200
 	'If h>1200-itown*40 Then Return h
-	Var hh=600-itown*40.0
+	Var hh=600-iitown*40.0
 	If h>hh Then Return h
 	'If h>480-itown*20 Then Return h
 	'kh=itown/(2+itown)
 	Var h80=50.0,hhh=h
 	If h<h80 Then Return h '<200
-	If itown=6 Then hhh=h80+(h-h80)*1.1'*2
-	If itown=5 Then hhh=h80+(h-h80)*0.8'*2
-	If itown=4 Then hhh=h80+(h-h80)*0.5'*2 
-	If itown=3 Then hhh=h80+(h-h80)*0.3'*2
-	If itown=2 Then hhh=h80+(h-h80)*0.2'*2
-	If itown=1 Then hhh=h80+(h-h80)*0.15'*2
+	If iitown=1 Then hhh=h80+(h-h80)*0.15'*2
+	If iitown=2 Then hhh=h80+(h-h80)*0.2'*2
+	If iitown=3 Then hhh=h80+(h-h80)*0.3'*2
+	If iitown=4 Then hhh=h80+(h-h80)*0.5'*2 
+	If iitown=5 Then hhh=h80+(h-h80)*0.8'*2
+	'If iitown=6 Then hhh=h80+(h-h80)*1.1'*2
 	hhh=min(hh,hhh)
 	Var kh=(h-h80)/(hh-h80)
 	Return hhh*(1-kh)+kh*h 
@@ -21185,7 +21190,7 @@ mz11=-999999
         button("win.gps","gps",@subgps,xmax-110,ymax-20,40,26) 
         button("win.typeauto","auto0",@subtypeautopilot,xmax*0.5-22,ymax-20,45,26) 
         button("win.quit","quit",@subquit,10,ymax+24,45,24) 
-        combobox("win.town",@subtown,241,ymax+24,60,400) 
+        combobox("win.town",@subtown,233,ymax+24,67,400) 
         button("win.help","help",@subhelp,310,ymax+24,45,24) 
         button("win.add","add",@subadd,645-48,ymax+24,40,19) 
         button("win.load","load",@subload,645,ymax+24,40,19) 
@@ -21315,6 +21320,11 @@ mz11=-999999
         addcombo("win.town","town3")
         addcombo("win.town","town4")
         addcombo("win.town","town5")
+        addcombo("win.town","build1")
+        addcombo("win.town","build2")
+        addcombo("win.town","build3")
+        addcombo("win.town","build4")
+        addcombo("win.town","build5")
         selectcomboindex("win.town",itown)
         'addcombo("win.sol","sol")
         'addcombo("win.sol","herbe")
