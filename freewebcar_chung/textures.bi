@@ -10297,7 +10297,7 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
           	kfpsmoy2=max(1.0,kfpsmoy2)
           	if h<200+(itown-6)*200*0.3*kfpsmoy Then Exit Sub 
-          Else 
+          ElseIf itown>1 Then  
           	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
           	kfpsmoy2=max(1.0,kfpsmoy2)
