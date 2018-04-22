@@ -10297,11 +10297,11 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
           	kfpsmoy2=max(1.0,kfpsmoy2)
           	if h<200+(itown-6)*200*0.3*kfpsmoy Then Exit Sub 
-          ElseIf itown>1 Then  
+          ElseIf itown>3 Then  
           	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
           	kfpsmoy2=max(1.0,kfpsmoy2)
-          	if h<(itown)*200*0.3*kfpsmoy Then Exit Sub 
+          	if h<(itown-3)*200*0.3*kfpsmoy Then Exit Sub 
           EndIf
       	 Var waynodebuild=townwaynodebuild(ij,i)
           drawbuildtext=building3text
