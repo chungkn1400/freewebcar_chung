@@ -10301,12 +10301,14 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
           	kfpsmoy2=max(1.0,kfpsmoy2)
-          	if h<200+(itown-6)*200*0.3*kfpsmoy Then Exit Sub 
+          	Var xx2=1200.0:If mz<mzsol00+200 Then xx2=max(1200.0,Abs(x2))
+          	if h<200+(itown-6)*200*0.3*kfpsmoy*(xx2+xx2+xx2)/(2400+xx2) Then Exit Sub 
            Else'If itown>2 Then  
           	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
           	kfpsmoy2=max(1.0,kfpsmoy2)
-          	if h<(itown)*200*0.3*kfpsmoy Then Exit Sub 
+          	Var xx2=1200.0:If mz<mzsol00+200 Then xx2=max(1200.0,Abs(x2))
+          	if h<(itown)*200*0.3*kfpsmoy*(xx2+xx2+xx2)/(2400+xx2) Then Exit Sub 
            EndIf
           EndIf  
           drawbuildtext=building3text
@@ -12506,11 +12508,11 @@ Var url="https://chungkn1400.github.io/json_osm_chung/json_osm_chung/stat.html"
 url="http://chungswebsite.blogspot.fr/p/exit.html?"+formaturl(guigettext("win")+"+"+reverselocation)
 url="https://chungswebsite.blogspot.fr/p/blog-page_7.html#"+formaturl(guigettext("win")+"="+reverselocation)
 'ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOWmaximized)
-ShellExecute(NULL,"open","chrome.exe",url,NULL,SW_SHOWmaximized)
-'ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
+'ShellExecute(NULL,"open","chrome.exe",url,NULL,SW_SHOWmaximized)
+ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
 Sleep 500
 Var hwin=getforegroundwindow()
-For i=1 To 14
+For i=1 To 15
   If hwin=hwin0 Then
 	 Sleep 900
 	 hwin=getforegroundwindow()
@@ -12519,10 +12521,10 @@ For i=1 To 14
   EndIf
 Next i 
 If hwin=hwin0 Then
-   ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
-   'ShellExecute(NULL,"open","chrome.exe",url,NULL,SW_SHOWmaximized)
+   'ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
+   ShellExecute(NULL,"open","chrome.exe",url,NULL,SW_SHOWmaximized)
    'ShellExecute(NULL,"open","firefox.exe",url,NULL,SW_SHOWmaximized)
-   For i=1 To 14
+   For i=1 To 15
      If hwin=hwin0 Then
 	    Sleep 900
 	    hwin=getforegroundwindow()
@@ -12533,7 +12535,7 @@ If hwin=hwin0 Then
 EndIf
 If hwin=hwin0 Then
    ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOWmaximized)
-   For i=1 To 20
+   For i=1 To 15
      If hwin=hwin0 Then
 	    Sleep 900
 	    hwin=getforegroundwindow()
