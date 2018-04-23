@@ -1021,7 +1021,7 @@ Declare Sub subjoystick
 Declare Sub testorbit
 Declare Sub suborbit 
 Declare Sub initairport
-Declare Sub inittown
+Declare Sub inittown(fic0 As String="")
 Declare Sub initterrainlines
 'Declare Sub setmapautotextures()
 Declare Sub inittownobject
@@ -17990,13 +17990,30 @@ Sub inittown2(ByVal userdata As Any Ptr)
 	inittown()
 	tloadwebtext2=33
 End Sub
-Sub inittown() 
+Sub inittownfic0(fic0 As String="") 
+If topentown=1 Then
+	'If itownp=0 And tinitload=1 Then
+		'tinitload=0
+		tmapchanged=1
+		inittown3()
+		loadtownxy3(fic0)
+		copytown00()
+		tmapchanged=1
+		inittowp3()
+		inittown3()
+		itownp=1
+		xweb1=xweb-999999
+		tloadwebtext=Timer-10-1
+	'endif 	
+EndIf 	
+End Sub 		
+Sub inittown(fic0 As String="") 
 If topentown=1 Then
 	If itownp=0 And tinitload=1 Then
 		tinitload=0
 		tmapchanged=1
 		inittown3()
-		loadtownxy3()
+		loadtownxy3(fic0)
 		copytown00()
 		tmapchanged=1
 		inittowp3()
@@ -20581,15 +20598,18 @@ If Right(fic,5)=".save" Then
 	Var fic0=Left(fic,Len(fic)-5)+".townxy3"
 	If FileExists(fic) Then
 	 if FileExists(fic0) Then
-		load(fic)
-		itownp=0
       resetaeroway()
       resetmxweb()
-      resettownwaynode()
+      'resettownwaynode()
+      'resettownwaynode2()
       resetfuel()
-		loadtownxy3(fic0)
-		copytown00()
-		reverselocation=""
+      subreset(1)
+		load(fic)
+		itownp=0
+		inittownfic0(fic0)
+		'loadtownxy3(fic0)
+		'copytown00()
+		'reverselocation=""
 		If car>0 Then volume=1500
 		ficload=fic0
 	 Else

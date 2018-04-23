@@ -3921,6 +3921,7 @@ Sub getways2(text0 As String)'getways
  	     	 		 EndIf 
  	     	 		EndIf
  	     	 	EndIf
+ 	     	 	'If i40>0 Then iwaynode(i)=-iwaynodei
  	     	 	If testtype=0 Then
  	     	 		If latmin>lati Then latmin=lati
  	     	 		If latmax<lati Then latmax=lati
@@ -3940,7 +3941,7 @@ Sub getways2(text0 As String)'getways
  	     	 EndIf
 	       'If InStr(LCase(wayname(i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
   	 		 'If Str(wayid)="79152373" Then auxvar+=1000:auxtest=0.8
- 	     	 If iwaynode(i)<2 Or (iwaynode(i)<3 And testhighway=0) Then
+ 	     	 If Abs(iwaynode(i))<2 Or (iwaynode(i)<3 And testhighway=0) Then
  	     	 	iwaynode(i)=0:waynodeid(i)=0
  	     	 ElseIf testtype=0 And wayheightmin(i)<1 Then 
  	     	 	Var typei=testtypenodei(latmin,latmax,lonmin,lonmax,latlonmax)
@@ -4401,12 +4402,13 @@ Dim As Integer i,j,k,ij,di,dj
  mxytolatlng(xweb,yweb)
  For ij=1 To ntown2
  	for i=1 To townnwaynode(ij)
- 		For j=1 To towniwaynode(ij,i)
+ 		For j=1 To Abs(towniwaynode(ij,i))
  			townwaynodex(ij,i,j)+=dxcopy
  			townwaynodey(ij,i,j)+=dycopy
  		Next
  	Next
  Next
+ resettownxy40()
  For i=1 To narbre
  	arbrex(i)+=dxcopy
  	arbrey(i)+=dycopy
@@ -4524,7 +4526,7 @@ For ij=0 To ntown2
 	If n>0 Then
 	 getlocktown(ij)
 	 For i=1 To n
-		'For j=1 To towniwaynode(ij,i)
+		'For j=1 To abs(towniwaynode(ij,i))
 			townwaynodez(ij,i)=getterrainheight2(townwaynodex(ij,i,1)-dmx0,townwaynodey(ij,i,1)-dmy0)
 		'Next 	
 	 Next
@@ -4555,7 +4557,7 @@ endif
 p=0
 For i=1 To n
 	id0=townwaynodeid(ij,i)
-	If id0=0 Or towniwaynode(ij,i)<2 Or (id=id0)Then' And (waytheight(k)=100 Or addwaynodebuild(k)=100))Then
+	If id0=0 Or Abs(towniwaynode(ij,i))<2 Or (id=id0)Then' And (waytheight(k)=100 Or addwaynodebuild(k)=100))Then
 		If p=0 Then p=i:'auxvar+=0.00001
 		'If id=id0 Then p=i:Exit For 
 	EndIf
@@ -4790,7 +4792,7 @@ EndIf
  'EndIf
 'EndIf  
 townwaynodeid(ij,i)=id
-iwaynode(k)=min2(nwaynode,iwaynode(k))
+iwaynode(k)=max2(-nwaynode,min2(nwaynode,iwaynode(k)))
 towniwaynode(ij,i)=iwaynode(k)
 townwaynodeh(ij,i)=wayheight(k)
 townwayname(ij,i)=wayname(k)
@@ -4841,7 +4843,7 @@ townwayname(ij,i)=wayname(k)
 townwaynodez(ij,i)=-999999
 'latweb=lat:lngweb=lng
 'latlngtomxy(latweb,lngweb,mxweb,myweb)
-For j=1 To iwaynode(k)
+For j=1 To Abs(iwaynode(k))
 	'latlngtomxy(waynodey(k,j),waynodex(k,j),mxx,myy)
 	''townwaynodex(ij,i,j)=mxweb+(waynodex(k,j)-lngweb)*(mxweb2-mxweb)/0.00114
 	''townwaynodey(ij,i,j)=myweb+(waynodey(k,j)-latweb)*(myweb2-myweb)/0.00114
@@ -5599,7 +5601,7 @@ Dim As Integer j,n
 h=max(20,townwaynodeh(ij,i))
 If h>4000 Then hmin=Int(h/4000):h=h-4000*hmin
 h=setbuildh(h)
-n=towniwaynode(ij,i)
+n=abs(towniwaynode(ij,i))
 If n<2 Then Exit Sub 
 x=200:y=200
 z=h+townwaynodez(ij,i):z1=z+20:z0=-800+z-h
@@ -5675,7 +5677,7 @@ Var h0=setbuildh(h)
 'If InStr(townwayname(ij,i)," Henri")>0 Then auxvar+=0:h0=3000:auxtest=0.8:auxtext=townwayname(ij,i)
 h=h0'*scalexyh
 hmin=setbuildh(hmin)
-n=towniwaynode(ij,i)
+n=Abs(towniwaynode(ij,i))
 If n<2 Then Exit Sub
 If (Int(i+time2) Mod 10)=1 Then
  If testweb=0 And time2>max(ttonneau,timeinit)+20 Then
@@ -6224,7 +6226,11 @@ avgbuildh+=h:navgbuildh+=1
 Var h0=setbuildh(h)
 h=h0'*scalexyh
 hmin=setbuildh(hmin)
-n=towniwaynode(ij,i)
+'n=Abs(towniwaynode(ij,i))
+Var i40=0
+If kmxlat>10 Then i40=towni40(ij,i)
+If i40<=0 Then Exit Sub 
+n=townixy40(i40)
 If n<2 Then Exit Sub
 If (Int(i+time2) Mod 10)=1 Then
  If testweb=0 And time2>max(ttonneau,timeinit)+20 Then
@@ -6236,7 +6242,7 @@ If (Int(i+time2) Mod 10)=1 Then
 	EndIf
  EndIf 
 EndIf
-Var i40=0,rr=r,gg=g,bb=b
+Var rr=r,gg=g,bb=b
 If n>=nwaynode Then
 	i40=towni40(ij,i)
 	If i40=0 Then
@@ -6608,7 +6614,7 @@ EndIf
 Var h0=setbuildh(h)
 h=h0'*scalexyh
 hmin=setbuildh(hmin)
-n=towniwaynode(ij,i)
+n=Abs(towniwaynode(ij,i))
 If n<=4 Then
 	di=1.001
 Else
@@ -7419,7 +7425,7 @@ Var zlayer=0.0
 tcolor=0
 'If (i Mod 4)=0 Then tcolor=1
 If auxtest>0.0071 And tcolor=1 Then rcolor=1:gcolor=0:bcolor=0
-If townwaynoder(ij,i)>0.91 and towniwaynode(ij,i)>2 Then
+If townwaynoder(ij,i)>0.91 and Abs(towniwaynode(ij,i))>2 Then
 	layer=1:If townwaynodeg(ij,i)<-0.5 Then layer=-1'$$
 	If layer<-0.9 Then
 		zlayer=-100
@@ -7431,7 +7437,7 @@ EndIf
 h=2'4'8
 hr=-0.2
 If t40=0 Then
- n=towniwaynode(ij,i)
+ n=Abs(towniwaynode(ij,i))
  If n<2 Then Exit Sub 
  i40=0
  If n>=nwaynode Then
@@ -8958,7 +8964,7 @@ If taglcompile>1 Then
 EndIf
 h=4'8
 hr=-0.2
-n=towniwaynode(ij,i)
+n=Abs(towniwaynode(ij,i))
 If n<2 Then Exit Sub 
 r=max(5.0,townwaynodeh(ij,i))
 If r>2000 Then r-=2000:tparking=1
@@ -10028,7 +10034,7 @@ Dim As Integer i,j,k,n,p
    If testshow=0 Then  
       testmygltexquad0=0
       'If InStr(LCase(townwayname(ij,i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
- 		If towniwaynode(ij,i)>1 And townwaynodeid(ij,i)<>0 Then
+ 		If Abs(towniwaynode(ij,i))>1 And townwaynodeid(ij,i)<>0 Then
         Var waynodebuild=townwaynodebuild(ij,i)
         'If waynodebuild=100 And taglcompile<>1 And taglcompile2<>1 Then Continue For   	
         'If waynodebuild<>100 And taglcompile2<>1 And taglcompile2<>1 Then Continue For   	
@@ -10102,7 +10108,7 @@ Dim As Integer i,j,k,n,p
  		  If (sizei<0.5 Or townwaynodesize40(ij,i)<0.5) And troad=0 Then
  		  	  Var xmin=x,ymin=y,xxmax=x,yymax=y
  		  	  Var i1=1,i2=1,i3=1,i4=1
- 		  	  For j=2 To towniwaynode(ij,i)
+ 		  	  For j=2 To Abs(towniwaynode(ij,i))
  		  	  	Var xmin0=xmin,ymin0=ymin,xxmax0=xxmax,yymax0=yymax
  		  	  	xmin=min(xmin,townwaynodex(ij,i,j))
  		  	  	ymin=min(ymin,townwaynodey(ij,i,j))
@@ -10168,7 +10174,7 @@ Dim As Integer i,j,k,n,p
  		  	  test=1
  		  EndIf 	  
  		  If troad=1 Then 'road
- 		     n=towniwaynode(ij,i)
+ 		     n=Abs(towniwaynode(ij,i))
  		     Var xx=x,yy=y,dk=1
  		     For j=2 To n
  		      xx=x:yy=y
@@ -10301,14 +10307,14 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
           	kfpsmoy2=max(1.0,kfpsmoy2)
-          	Var xx2=1200.0:If mz<mzsol00+200 Then xx2=max(1200.0,Abs(x2))
-          	if h<200+(itown-6)*200*0.3*kfpsmoy*(xx2+xx2+xx2)/(2400+xx2) Then Exit Sub 
+          	Var xx2=1800.0:If mz<mzsol00+200 Then xx2=max(1800.0,Abs(x2))
+          	if h<200+(itown-6)*200*0.3*kfpsmoy*(xx2+xx2)/(1800+xx2) Then Exit Sub 
            Else'If itown>2 Then  
           	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
           	kfpsmoy2=max(1.0,kfpsmoy2)
-          	Var xx2=1200.0:If mz<mzsol00+200 Then xx2=max(1200.0,Abs(x2))
-          	if h<(itown)*200*0.3*kfpsmoy*(xx2+xx2+xx2)/(2400+xx2) Then Exit Sub 
+          	Var xx2=1800.0:If mz<mzsol00+200 Then xx2=max(1800.0,Abs(x2))
+          	if h<(itown)*200*0.3*kfpsmoy*(xx2+xx2)/(1800+xx2) Then Exit Sub 
            EndIf
           EndIf  
           drawbuildtext=building3text
@@ -10318,7 +10324,7 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           Var troad=0
           If waynodebuild=100 Then troad=1
           If h<120 And troad=0 Then
-          	Var n=towniwaynode(ij,i)
+          	Var n=Abs(towniwaynode(ij,i))
           	If Abs(x-townwaynodex(ij,i,Int(n*0.5)))<300 Then
           	 If Abs(y-townwaynodey(ij,i,Int(n*0.5)))<300 Then
           		drawbuildtext=housetext
@@ -10524,7 +10530,7 @@ For k=1 To nway2
    if i>-i50 and i<i50 and j>-i50 And j<i50 Then
    	Var ij=(i+i50)*i101+j+i50+1
    	If ij>0 And ij<ntowp2 Then	
-   	  If iwaynode(k)>1 Then
+   	  If Abs(iwaynode(k))>1 Then
    			If ij<>0 Then getlocktown(0)	
     			getlocktown(ij)
     			addtownwaynode(ij,k)
@@ -10634,7 +10640,7 @@ For k=1 To nway2
    if i>-i50 and i<i50 and j>-i50 And j<i50 Then
    	Var ij=(i+i50)*i101+j+i50+1
    	If ij>0 And ij<ntown2 Then	
-   	  If iwaynode(k)>1 Then
+   	If iwaynode(k)>1 Then
    			If ij<>0 Then getlocktown(0)	
    			getlocktown(ij)
    			addtownwaynode(ij,k)
@@ -12509,7 +12515,7 @@ url="http://chungswebsite.blogspot.fr/p/exit.html?"+formaturl(guigettext("win")+
 url="https://chungswebsite.blogspot.fr/p/blog-page_7.html#"+formaturl(guigettext("win")+"="+reverselocation)
 'ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOWmaximized)
 'ShellExecute(NULL,"open","chrome.exe",url,NULL,SW_SHOWmaximized)
-ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
+ShellExecute(NULL,"open","iexplore.exe",url,NULL,1)'SW_SHOWmaximized)
 Sleep 500
 Var hwin=getforegroundwindow()
 For i=1 To 15
@@ -12522,7 +12528,7 @@ For i=1 To 15
 Next i 
 If hwin=hwin0 Then
    'ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
-   ShellExecute(NULL,"open","chrome.exe",url,NULL,SW_SHOWmaximized)
+   ShellExecute(NULL,"open","chrome.exe",url,NULL,1)'SW_SHOWmaximized)
    'ShellExecute(NULL,"open","firefox.exe",url,NULL,SW_SHOWmaximized)
    For i=1 To 15
      If hwin=hwin0 Then
@@ -12534,7 +12540,7 @@ If hwin=hwin0 Then
    Next i 	
 EndIf
 If hwin=hwin0 Then
-   ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOWmaximized)
+   ShellExecute(NULL,"open",url,NULL,NULL,1)'SW_SHOWmaximized)
    For i=1 To 15
      If hwin=hwin0 Then
 	    Sleep 900
@@ -12548,7 +12554,7 @@ hwinstat=hwin
 If hwin=hwin0 Then Exit Sub 
 showwindow(hwin0,sw_minimize)
 Sleep 500
-showwindow(hwin0,sw_showmaximized)
+showwindow(hwin0,1)'sw_showmaximized)
 Sleep 500
 SetWindowPos hwin0, HWND_TOPMOST, 0, 0, 0, 0, SW_SHOW 'Or SWP_SHOWWINDOW Or SWP_NOMOVE Or SWP_NOSIZE
 Sleep 500
