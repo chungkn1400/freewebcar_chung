@@ -1029,7 +1029,7 @@ Declare Sub inittownobject
     Dim Shared As uint pause,ianim,glnormals,restart,fullscreen=1,compas=1,compas2=1   
     Dim Shared As uint soltexture,arbretext(10),tronctext,buissontext(8),volanttext,volanttext2,arbreflowertext
     Dim Shared As uint cartext,md2horsetext(4),md2zebratext(3),grasstext(10),arbreflower2text,arbresequoiatext
-    Dim Shared As uint arbreautumntext,arbreautumn2text
+    Dim Shared As uint arbreautumntext,arbreautumn2text,pinetext
     Dim Shared As uint sunsettext,startext,radartext,pistetext,maptexture,avionredtext
     Dim Shared As uint aviontext,helicetext,feutext,feutext2,md2iavion,maptext,boattext,boattext2,boattext3
     Dim Shared As uint windtext,windtext2,cockpittext1,boattext4,corsairtext,firetext,sfiretext
@@ -14111,6 +14111,7 @@ shadowtreeo3(i)=diro1(30*dxyshadow,z2-z0)
 shadowtreez0(i)=z0
 shadowtreez1(i)=z1
 End Sub
+Dim Shared As String treetype
 Dim Shared As Integer tupdatearbres(narbre),tbusharbre(narbre)
 Sub drawarbres()
 Dim As Integer i,j,k
@@ -14228,12 +14229,17 @@ Dim As Integer i,j,k
     EndIf
     If x2>(Abs(z2)-h150) Then
      glenable gl_alpha_test
-     If arbreh(i)>2.3 Then 'sequoia
+     Var h=arbreh(i)
+     Var tpine=1:If treetype="broad" Then tpine=0
+     If h>2.3 Then 'sequoia
      	 glbindtexture(gl_texture_2d,arbresequoiatext)        
-     ElseIf tflower=0 Or arbretype(i)<5 Or ((i Mod 3)=1) Then
-     	 If tbusharbre(i)=0 Then
+     ElseIf tflower=0 Or arbretype(i)<5 Or ((i Mod 3)=1) Or ((i And tpine)=1) Then
+     	 If tbusharbre(i)=0 And ((i And tpine)=0 ) Then
      	 	glbindtexture(gl_texture_2d,arbretext(arbretype(i)))
-     	 Else
+     	 ElseIf ((i And tpine)=1) Then'Or treetype="needle" Then
+     	 	glbindtexture(gl_texture_2d,pinetext)
+     	 	h*=1.70
+     	 Else 	
      	 	glbindtexture(gl_texture_2d,buissontext(2+tbusharbre(i)))
      	 EndIf
      ElseIf arbretype(i)<6 And tflower=2 Then
@@ -14248,7 +14254,6 @@ Dim As Integer i,j,k
      glpushmatrix
      gltranslatef(arbrex(i),arbrey(i),arbrez(i))
      glrotatef(arbrerot(i),0,0,1)
-     Var h=arbreh(i)
      If h>2.3 Then 'sequoia
      	glscalef(arbrescalex(i)*h*0.5/scalexy,arbrescalex(i)*h*0.5/scalexy,arbrescalez(i)*h) 	
      Else 
@@ -14313,16 +14318,20 @@ Dim As Single auxy,auxz,scale=2
 auxy=68*scale:auxz=70*scale
 Var do1sun=o1shadow'diro1(dxshadow,dyshadow)
 'auxvar6=ishadowtree:auxtest=1
+Var tpine=1:If treetype="broad" Then tpine=0
 For j=1 To ishadowtree
 	  i=shadowiarbre(j)
-     If tbusharbre(i)=0 Then
-     	glbindtexture(gl_texture_2d,arbretext(arbretype(i)))
-     Else 		
-     	glbindtexture(gl_texture_2d,buissontext(2+tbusharbre(i)))
+     Var h=arbreh(i)
+     If tbusharbre(i)=0 And ((i And tpine)=0 ) Then
+      	glbindtexture(gl_texture_2d,arbretext(arbretype(i)))
+     ElseIf ((i And tpine)=1) Then'Or treetype="needle" Then
+     	 	glbindtexture(gl_texture_2d,pinetext)
+     	 	h*=1.70
+     Else 	
+     	 	glbindtexture(gl_texture_2d,buissontext(2+tbusharbre(i)))
      EndIf
      glpushmatrix
      gltranslatef(arbrex(i),arbrey(i),arbrez(i)+9+max(0.0,(arbrezshadow(i)-arbrez(i))*0.3))
-     Var h=arbreh(i)
      Var auxyy=auxy*arbrescalex(i)*h/scalexy
      Var auxzz=auxz*arbrescalez(i)*h*min(2.0,dxyshadow/max(0.001,Abs(dzshadow)))
      'Var dr=auxyy*0.7
@@ -14596,7 +14605,6 @@ Sub displayback(tdraw As integer=1)
 End Sub
 Declare Sub resetmxy0()
 Declare Sub testresetmz0()
-Dim Shared As String treetype 
 Dim shared as double tmxmove,tupdate,dtweb=0,ddtweb
 dim shared as single avgv,avgmx,avgmy,mxmove,mymove,o1move,avgdo1,avgo10,tkzoom=0,mzbridge=-999999
 Dim Shared As Single o333,cos333,sin333,do333,o100
@@ -19357,6 +19365,7 @@ Sub initarbres
     arbreautumn2text=guiloadtexture("media/autumn2.jpg",230)'180)
     buissontext(3)=guiloadtexture("media/buisson1.jpg",140)'117)'130)'180)
     buissontext(4)=guiloadtexture("media/buisson2.jpg",200)'117)'130)'180)
+    pinetext=guiloadtexture("media/pine4.jpg",235)'152)'130)'180)
    Else
    	tupdatearbre=2
    	Exit Sub 

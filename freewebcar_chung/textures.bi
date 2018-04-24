@@ -12520,6 +12520,7 @@ Sleep 500
 Var hwin=getforegroundwindow()
 For i=1 To 15
   If hwin=hwin0 Then
+  	 guiscan
 	 Sleep 900
 	 hwin=getforegroundwindow()
   Else
@@ -12532,6 +12533,7 @@ If hwin=hwin0 Then
    'ShellExecute(NULL,"open","firefox.exe",url,NULL,SW_SHOWmaximized)
    For i=1 To 15
      If hwin=hwin0 Then
+	    guiscan
 	    Sleep 900
 	    hwin=getforegroundwindow()
      Else
@@ -12543,6 +12545,7 @@ If hwin=hwin0 Then
    ShellExecute(NULL,"open",url,NULL,NULL,1)'SW_SHOWmaximized)
    For i=1 To 15
      If hwin=hwin0 Then
+	    guiscan
 	    Sleep 900
 	    hwin=getforegroundwindow()
      Else
