@@ -9150,6 +9150,18 @@ Sub drawvolant2(x As Single=0.47,y As Single=0.768,z As Single=-30)
  glrotatef(volantrot+volantrots0-2.5,0,0,1)
  If tautopilot>0 Or typeautopilot=1 Or Abs(volantrot)<19*kfps Then
  	volantrot=0.75*volantrot+1e-10
+ 	If Abs(volantrot)>30 Then 
+ 	  'o1+=volantrot*0.01*kfps
+ 	  If piste=0 And tautopilot>0 Then 
+ 	    'ncaro1(0)=o1
+ 	    'nncaro1(0)=o1
+ 	    Var vv=v*Sgn(volantrot)
+ 	    mx+=(-sin1*vv)*kfps
+ 	    my+=(cos1*vv)*kfps
+ 	    ncarx(0)=mx
+ 	    ncary(0)=my
+ 	  EndIf   
+ 	EndIf  
  Else
  	o1+=volantrot*0.01*kfps
  EndIf
