@@ -311,7 +311,7 @@ End Sub
 Sub keyLeft(ByVal joy0 As Single=2)
 joy=joy0*kjoy
 if tourelle=1 Then
-	to1=to1+joy
+	to1=to1+joy*2
 Else
    If car>=1 Then
    	if abs(v)<1 And joy0>1 Then soundmoteur
@@ -332,7 +332,7 @@ End Sub
 Sub keyRight(ByVal joy0 As Single=2)
 joy=-joy0*kjoy
 if tourelle=1 Then
-	to1=to1+joy
+	to1=to1+joy*2
 Else
    If car>=1 Then
    	if abs(v)<1 And joy0>1 Then soundmoteur
@@ -353,7 +353,7 @@ End Sub
 Sub keyleft2
 joy=1*kjoy
 if tourelle=1 Then
-	to1=to1+joy
+	to1=to1+joy*2
 Else
    volantrot+=joy*40
    If car>=1 Then
@@ -367,7 +367,7 @@ End Sub
 Sub keyright2
 joy=-1*kjoy
 if tourelle=1 Then
-	to1=to1+joy
+	to1=to1+joy*2
 Else
    volantrot+=joy*40
    If car>=1 Then
@@ -381,7 +381,7 @@ End Sub
 Sub keyup
 joy=-2*kjoy
 If tourelle=1 Then
-	to2=to2-joy
+	to2=to2-joy*2
 Else
 	If car>=1 Then
 		if abs(v)<2.5 then soundmoteur:mx+=dmx*4*kfps:my+=dmy*4*kfps
@@ -394,7 +394,7 @@ End Sub
 Sub keydown
 joy=2*kjoy
 If tourelle=1 Then
-	to2=to2-joy
+	to2=to2-joy*2
 Else
 	If car>=1 Then
 		if v>=0 And v<0.25 then soundmoteur:mx-=dmx*1.2*kfps:my-=dmy*1.2*kfps
@@ -623,7 +623,7 @@ If plane=1 And mapdisplay<>4 Then
 	v=0
 EndIf
 End Sub 
-Dim Shared As Integer aterrissage,piste,tdrawwind,piste0
+Dim Shared As Integer aterrissage,tdrawwind,piste0
 Dim Shared As Single windvx,windvy,windco1,windsi1
 Dim Shared As Single pistez,pz
 Dim Shared As Single dmmx,dmmy,dmmz,o22,o33,sin22,sin33,vmx1,vmy1,vmz1,mzh=25
@@ -744,8 +744,9 @@ EndIf
 If (mz>=mzsol00+0.102) Then aterrissage=1
 If mz<=(min(mzsol0,mzsol00+10)+0.1) Then
    'ysol0=NGetTerrainHeight(Terrain,x,z)+yh
-   piste=0'mytestairport() Or piste
-   If piste>=1 Then
+   'piste=0'mytestairport() Or piste
+   piste=piste0
+   If 0 then'piste>=1 Then
     o22=Rnd*0.14:o33=0:If Abs(v)<1 Then o22=0
    Else  	
     mmy=20
@@ -1050,7 +1051,7 @@ If mz<=mzsol0+3 Then
 EndIf
 'v=v+air*prop*poids/8000-air*v/100+p1
 'v=v+prop/4000-0.02*v
-if v>-0.09 And v<0.03 then v=0:vmx2=0:vmy2=0:vmz2=0
+If v>-0.09 And v<0.03 then v=0:vmx2=0:vmy2=0:vmz2=0
 Dim As Single dv,dvmx1,dvmy1,dvmz1,dvmx2,dvmy2,dvmz2
 dv=v
 dvmx1=dv*cos1:dvmy1=dv*sin1

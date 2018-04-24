@@ -5643,7 +5643,7 @@ Var ktx=tx*0.5/x
 glcolor3f(1,1,1)
 End Sub '/  
 Dim Shared As String drawbuildname
-Dim Shared As uint drawbuildtext
+'Dim Shared As uint drawbuildtext
 Dim Shared As Single drawbuildtx=1,drawbuildty=1,dr30000=15000
 Dim Shared As Integer hlight3=2
 Declare Sub drawbuildingnode40(ij As Integer,i As Integer,dist As Single=1,r As Single=-1,g As Single=0,b As Single=0)

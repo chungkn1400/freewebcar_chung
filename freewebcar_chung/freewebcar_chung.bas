@@ -524,7 +524,7 @@ Sub stopsoundavion
    mcisendstring("stop avion2",0,0,0)
 End Sub
 Declare Sub addcarsmoke(dz As Single=15)
-Dim Shared As Integer tpiste
+Dim Shared As Integer piste'tpiste
 Dim Shared As Double tpneu,tpneu2,tavgpneu,tavgpneu0
 Sub soundpneu2
 Dim As Double ttime
@@ -538,7 +538,7 @@ Dim As Double ttime
 End Sub
 Sub soundpneu
 Dim As Double ttime
-If tpiste=0 Then soundpneu2:Exit Sub 
+If piste=0 Then soundpneu2:Exit Sub 
    ttime=Timer
    If tpneu>ttime Then tpneu=ttime 'if midnight
    If ttime>(tpneu+0.08) Then 
@@ -4131,8 +4131,11 @@ If tnight1=1 Then
 	gldisable gl_alpha_test
 EndIf
 End Sub
+Dim Shared As uint drawbuildtext,churchtext
 Function setbuildh(h0 As Single) As Single
 	Var iitown=itown,h=h0
+	If h<1.0 Then Return h
+   If drawbuildtext=churchtext Then h=max(220.0,h)
 	If itown>5 Then
 		iitown-=5
 		'If h>200 Then h-=50
@@ -4209,7 +4212,7 @@ If tnight1=1 Then
 	gldisable gl_alpha_test
 EndIf
 End Sub
-Dim Shared As uint churchtext
+'Dim Shared As uint churchtext
 Sub drawchurch(ByVal h As Single,x As Single=200,y As Single=200,vie As Single=1,dist As Single=1,r As Single=-1,g As Single=0,b As Single=0)
 Dim As Single z,z1,tx,ty,z0
 z=h:z1=z+20:z0=-800
@@ -13709,7 +13712,7 @@ auxvar6=teststenciltop+0.1:auxtest=0.8
 End Sub
 Dim Shared As Double timepiste,timercollide,timelayeroff
 Sub testcollideforward()
-tpiste=piste
+'tpiste=piste
 If (tlayer0)<-0.4 then exit Sub
 If time2<timercollide+0.1 Then Exit Sub
 timercollide=time2
@@ -14650,7 +14653,8 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     		'	prompt(resp0,resp0)
     		EndIf
          'If tautopilot=0 And v>10 And car>0 Then volume=min(volume,2200.0)
-    		If plane>0 And car>0 And tautopilot=1 And mapdisplay<>1 And tourelle=0 Then
+    		If plane>0 And car>0 And tautopilot=1 And mapdisplay<>1 Then'And tourelle=0 Then
+    		 If tourelle=0 Then 
     		  If guitestkey(vk_left) And guitestkey(vk_space)=0 Then
     		  	  timeautopilot=time2-2
     		  	  avgo1=o1+29.22
@@ -14665,11 +14669,12 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     		  	  timeautopilot=time2-2.1'2.5
     		  	  avgo1=o1
     		  EndIf
-    		  If v<1 Or mytestbridge=1 Then timeautopilot=time2-2.5 
     		  testjoy=0:testjoy2=0
     		  If guitestkey(vk_up) Then vautopilot+=0.012*kfps
     		  If guitestkey(vk_down) Then vautopilot-=0.012*kfps
     		  vautopilot=max(3.0,min(8.0,vautopilot))
+    		 EndIf  
+    		  If v<1 Or mytestbridge=1 Then timeautopilot=time2-2.5 
            'If mytestroad2=1 Or mytestroad0=1 Then  
     		    While avgo1<o1-180:avgo1+=360:Wend
     		    While avgo1>o1+180:avgo1-=360:Wend
@@ -15799,7 +15804,7 @@ EndIf 'planet
 	 		Var dyy=co1*sin1-si1*cos1
 	 		Var dxx=co1*cos1+si1*sin1
 	 		If dxx<0 Then
- 				Var kkfps=kfps*min(1.0,r/60)
+ 				Var kkfps=kfps*min(1.0,r/40)'/60
 	 			If Abs(dxy)>19 Or Abs(dxx)<0.47 Then
 	 				o1+=(dyy)*kfps*3
 	 				mx+=Sgn(dxy)*sin1*kkfps'*1.25
