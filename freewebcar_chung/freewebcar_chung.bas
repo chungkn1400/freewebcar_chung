@@ -18937,9 +18937,13 @@ Dim As Single h,dx,dy,z00,z10,z01,z11
 Dim As Integer i,j,i1,j1
 If orbit=0 And planet=1 Then Return -99999
 	i=Int(x/scalex+100000)-100000
-	If i<=-100-256 Or i>=612-256-2 Then Return -99999
+	If i<=-100-256 Or i>=612-256-2 Then
+		Return -99999
+	EndIf
 	j=Int(y/scalex+100000)-100000
-	If j<=-100-256 Or j>=612-256-2 Then Return -99999
+	If j<=-100-256 Or j>=612-256-2 Then
+		Return -99999
+	EndIf
 	dx=x/scalex-i
 	dy=y/scalex-j
 	i+=256
@@ -21865,6 +21869,7 @@ mz11=-999999
             		mz=mzinit:mz1=mz:piste=1:piste0=1
             	Else
             		mzinit=0
+            		testweb=1
             	EndIf 	
             EndIf 	
            	If mapdisplay<>0 Then mx=mx0:my=my0:mz=mz0:mz1=mz 

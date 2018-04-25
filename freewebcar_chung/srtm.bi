@@ -47,6 +47,32 @@ Dim Shared As Integer isrtm,toksrtm=1
 Dim Shared As String srtmfiles(4),msgsrtm
 Dim Shared As Single srtmlati(4),srtmlngi(4),srtmdata(4,610,610)
 Dim Shared As Integer tloadwebtext2=0
+Sub formatsrtmdata(ii As Integer)
+Dim As Integer i,j,k
+Dim As Single x,xx,xxx
+For i=0 To 600-1
+	For j=0 To 600-1
+		xx=x
+		x=srtmdata(ii,i,j)
+		If Abs(xx-x)>100 Then
+			x=(xx+srtmdata(ii,i,j+1))*0.5
+			srtmdata(ii,i,j)=x
+			'auxvar+=1:auxtest=0.2
+		EndIf
+	Next
+Next
+For j=0 To 600-1
+	For i=0 To 600-1
+		xx=x
+		x=srtmdata(ii,i,j)
+		If Abs(xx-x)>100 Then
+			x=(xx+srtmdata(ii,i+1,j))*0.5
+			srtmdata(ii,i,j)=x
+			'auxvar2+=1:auxtest=0.2
+		EndIf
+	Next
+Next
+End Sub
 Function loadwebsrtmtext(fic As String)As Integer 
 Dim As Integer i
 i=InStr(fic,"/srtm/")
@@ -166,7 +192,8 @@ getsrtmlock()
 	EndIf
 	If x0<xmin Then xmin=x0
 	If x0>xmax Then xmax=x0
- Wend  
+ Wend 
+ formatsrtmdata(ii)
  'guinotice "ix="+Str(ix)+" jx="+Str(jx)+" min="+Str(xmin)+" max="+Str(xmax)+"/"+Str(600*600) 	
  freesrtmlock()
 End Sub
@@ -267,6 +294,32 @@ If dx<=(1.0-dy) Then
 Else 
     Return ( (1-dx)*(z01-z11) +(1-dy)*(z10-z11) +z11 )
 EndIf 
+End Function
+function getsrtmheightfast(laty As single,lngx As single)As single 
+	'var wx=worldx+(px-xmaxmin2)*scaletexture*10 
+	'var wy=worldy+(py-ymaxmin2)*scaletexture*10 
+Dim As Integer i,j,k,ii,jj	
+	testhsrtm=0
+	jj=-1 
+	for ii=0 To 3 
+	  if(Abs(lngx-srtmlngi(ii))<2.5001) then 
+	   if(abs(laty-srtmlati(ii))<2.5001) Then 
+	     jj=ii:Exit For
+	   EndIf
+	  EndIf 
+	Next ii  
+	if(jj<0) Then return -0.5
+	testhsrtm=1    
+	var nny=0.00001+599.999*(lngx-srtmlngi(jj)+2.5)/5 
+	var nnx=0.00001+599.999*(laty-srtmlati(jj)+2.5)/5 
+	nnx=599.5-nnx 
+	nny-=0.5 
+	'if(nnx>=600) then nnx=600-1   
+	'if(nny>=600) then nny=600-1   
+	if(nnx<0.00001) then nnx=0.00001   
+	if(nny<0.00001) then nny=0.00001   
+	'i=Int(nnx):j=Int(nny) 
+   Return srtmdata(jj,Int(nnx),Int(nny)) 
 End Function
 'MercatorLatLngtosrtmlatlng(49,0.2)
 'guinotice Str(getsrtmheight(srtmlat,srtmlng))
