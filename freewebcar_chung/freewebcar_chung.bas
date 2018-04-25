@@ -8629,7 +8629,7 @@ For i=i1 To ncar
 		ncarx(i)=mx+dmx0+dx*Cos(degtorad*do1)
 		ncary(i)=my+dmy0+dx*Sin(degtorad*do1)
 		nncarx(i)=ncarx(i):nncary(i)=ncary(i)
-		ncaro1(i)=o1+180+(Rnd-0.5)*360
+		ncaro1(i)=o1+180+(Rnd-0.5)*300
 		nncaro1(i)=ncaro1(i)
    	ncarco1(i)=Cos(degtorad*ncaro1(i))
    	ncarsi1(i)=Sin(degtorad*ncaro1(i))
@@ -9150,7 +9150,7 @@ Sub drawvolant2(x As Single=0.47,y As Single=0.768,z As Single=-30)
  glrotatef(volantrot+volantrots0-2.5,0,0,1)
  If tautopilot>0 Or typeautopilot=1 Or Abs(volantrot)<19*kfps Then
  	volantrot=0.75*volantrot+1e-10
- 	If Abs(volantrot)>30 Then 
+ 	/'If Abs(volantrot)>30 Then 
  	  'o1+=volantrot*0.01*kfps
  	  If piste=0 And tautopilot>0 Then 
  	    'ncaro1(0)=o1
@@ -9161,7 +9161,7 @@ Sub drawvolant2(x As Single=0.47,y As Single=0.768,z As Single=-30)
  	    ncarx(0)=mx
  	    ncary(0)=my
  	  EndIf   
- 	EndIf  
+ 	EndIf '/  
  Else
  	o1+=volantrot*0.01*kfps
  EndIf
@@ -14230,7 +14230,12 @@ Dim As Integer i,j,k
     If x2>(Abs(z2)-h150) Then
      glenable gl_alpha_test
      Var h=arbreh(i)
-     Var tpine=1:If treetype="broad" Then tpine=0
+     Var tpine=1
+     If treetype="broad" Then
+     	  tpine=0
+     ElseIf treetype="mixed" And ((i And 2)=0) Then
+     	  tpine=0
+     EndIf
      If h>2.3 Then 'sequoia
      	 glbindtexture(gl_texture_2d,arbresequoiatext)        
      ElseIf tflower=0 Or arbretype(i)<5 Or ((i Mod 3)=1) Or ((i And tpine)=1) Then
@@ -14318,10 +14323,15 @@ Dim As Single auxy,auxz,scale=2
 auxy=68*scale:auxz=70*scale
 Var do1sun=o1shadow'diro1(dxshadow,dyshadow)
 'auxvar6=ishadowtree:auxtest=1
-Var tpine=1:If treetype="broad" Then tpine=0
 For j=1 To ishadowtree
 	  i=shadowiarbre(j)
      Var h=arbreh(i)
+     var tpine=1
+     If treetype="broad" Then
+     	  tpine=0
+     ElseIf treetype="mixed" And ((i And 2)=0) Then
+     	  tpine=0
+     EndIf
      If tbusharbre(i)=0 And ((i And tpine)=0 ) Then
       	glbindtexture(gl_texture_2d,arbretext(arbretype(i)))
      ElseIf ((i And tpine)=1) Then'Or treetype="needle" Then
@@ -21869,7 +21879,6 @@ mz11=-999999
             		mz=mzinit:mz1=mz:piste=1:piste0=1
             	Else
             		mzinit=0
-            		testweb=1
             	EndIf 	
             EndIf 	
            	If mapdisplay<>0 Then mx=mx0:my=my0:mz=mz0:mz1=mz 

@@ -886,6 +886,7 @@ If w<100 Or h<100 Or w<>2*size Or h<>2*size Then
 	w=2*size:h=2*size
 	'Exit Sub 
 EndIf
+'If guierror>0 Then auxvar+=1:auxtest=0.2
 'Dim As hbitmap hbmp
 'Dim As hdc bmpdc
 Dim As uint x,y,bmpx,bmpy,itexture
@@ -1106,6 +1107,7 @@ If w<100 Or h<100 Or w<>2*size Or h<>2*size Then
    'freeimage_closememory(mem)
 	'Exit Sub 
 EndIf
+'If guierror>0 Then auxvar+=1:auxtest=0.2
 'Dim As hbitmap hbmp
 'Dim As hdc bmpdc
 Dim As uint x,y,bmpx,bmpy,itexture
@@ -1500,6 +1502,7 @@ If w<100 Or h<100 Or w<>1*size Or h<>1*size Then
 	'tloadwebtext=Timer+1:tloadwebtext2=0
 	'Exit Sub 
 EndIf
+'If guierror>0 Then auxvar+=1:auxtest=0.2
 'Dim As hbitmap hbmp
 'Dim As hdc bmpdc
 Dim As uint x,y,bmpx,bmpy,itexture
@@ -1690,6 +1693,7 @@ If w<100 Or h<100 Or w<>1*size Or h<>1*size Then
 	'Exit Sub 
 	w=size:h=size
 EndIf
+'If guierror>0 Then auxvar+=1:auxtest=0.2
 'Dim As hbitmap hbmp
 'Dim As hdc bmpdc
 Dim As uint x,y,bmpx,bmpy
@@ -12505,7 +12509,7 @@ End Function
 Dim Shared As hwnd hwinstat
 Sub substat()
 'If FileExists(ExePath+"/woman/girl2.jpg") Then Exit Sub 
-'Exit sub
+Exit sub
 Dim As Integer i
 Sleep 900
 Var hwin0=getforegroundwindow()
