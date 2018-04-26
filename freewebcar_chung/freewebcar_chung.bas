@@ -8194,13 +8194,14 @@ gldisable gl_alpha_test
 gldisable gl_blend
 End Sub
 Const As Integer ncar=50
-dim shared as integer ncariroad(ncar),ncar22
+dim shared as integer ncariroad(ncar),ncar22,ncarcolor(ncar)
 Dim Shared As Single ncarx(ncar),ncary(ncar),ncarz(ncar),ncaro1(ncar),ncaro2(ncar),ncaro3(ncar)
 Dim Shared As Single nncarx(ncar),nncary(ncar),nncarz(ncar),nncaro1(ncar),nncaro2(ncar),nncaro3(ncar)
 Dim Shared As Single ncarv(ncar),ncarco1(ncar),ncarsi1(ncar),nncarv(ncar),loganwheelrot(ncar),volantrots(ncar)
 Dim Shared As Single ncarvv(ncar),ncarxx0(ncar),ncaryy0(ncar),nvmx2,nvmy2
 Dim Shared As Double ncartimeroad(ncar)
-Dim Shared As uint ncartext,logantext,wheellist,ncarlist,ncarpolicelist,ncarpolicetext
+Dim Shared As uint ncartext,logantext,wheellist,ncarlist,ncarpolicelist,ncarpolicetext,ncargreentext,ncarbluetext
+Dim Shared As uint ncarredtext
 Sub setmyroadlatlon()
 	'myroadlat=-99
 	Var nn=ncariroad(0)
@@ -8481,7 +8482,15 @@ Sub drawncar(i As Integer)
 glscalef(0.7,0.7,0.9)
 If tcarpolice=1 Then drawncarpolice(i):Exit sub
 glenable gl_texture_2d
-glbindtexture(gl_texture_2d,ncartext)
+If ncarcolor(i)=0 Then
+	glbindtexture(gl_texture_2d,ncartext)
+ElseIf ncarcolor(i)=1 Then	
+	glbindtexture(gl_texture_2d,ncarbluetext)
+ElseIf ncarcolor(i)=2 Then	
+	glbindtexture(gl_texture_2d,ncargreentext)
+Else
+	glbindtexture(gl_texture_2d,ncarredtext)
+EndIf
 glcalllist ncarlist
       'glscalef(1.2,1.2,1.2)
 		'myglcalllist roverlist
@@ -8517,12 +8526,16 @@ End Sub
 Sub initncar()
 Dim As integer i 	
  	ncartext=guiloadtexture("objects/car2.jpg",240,245)
+ 	ncarbluetext=guiloadtexture("objects/car3.jpg",240,245)
+ 	ncargreentext=guiloadtexture("objects/car.jpg",240,245)
+ 	ncarredtext=guiloadtexture("objects/car4.jpg",240,245)
  	logantext=guiloadtexture("objects/logan.jpg")
  	ncarpolicetext=guiloadtexture("objects/policecar_lowpoly.jpg")
 	For i=1 To ncar
 		ncarx(i)=mx+dmx0+Rnd*200
 		ncary(i)=my+dmy0+Rnd*200
 		ncarz(i)=999999
+		ncarcolor(i)=(i-1) Mod 4
 	Next
 End Sub
 Dim Shared As Integer ncari1,thighway,tinverse,myibridge
@@ -8856,11 +8869,11 @@ For i=i1 To ncar
    	ncaro3(i)=0
     EndIf 	
    EndIf
-	Var k=i Mod 4
-	If k=1 then	glcolor3f(1,1,1)
-	If k=2 then	glcolor3f(0.2,1,0.2)
-	If k=3 then	glcolor3f(1,0,0.2)
-	If k=0 then	glcolor3f(1,0.5,0)
+	'Var k=i Mod 4
+	'If k=1 then	glcolor3f(1,1,1)
+	'If k=2 then	glcolor3f(0.2,1,0.2)
+	'If k=3 then	glcolor3f(1,0,0.2)
+	'If k=0 then	glcolor3f(1,0.5,0)
 	'ncarx(1)=mx+100:ncary(1)=my':ncarz(1)=mz
 	'nncarx(1)=mx+100:nncary(1)=my':nncarz(1)=mz
    glpushmatrix
@@ -22106,8 +22119,10 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    	t11=4:t111=Timer
    	'xweb1=mx+dmx0+0.5*cos1*dxx:yweb1=my+dmy0+0.5*sin1*dyy
    	If Abs(xweb1-mx-dmx0)>99990 Then resetmxweb()
-   	xweb1=mx+dmx0+cos1*dxx*0.7:yweb1=my+dmy0+sin1*dyy*0.7
-   	dxweb1=dxweb:dyweb1=dyweb
+   	xweb1=mx+dmx0+cos1*max(10000.0,dxx*0.7)
+   	yweb1=my+dmy0+sin1*max(10000.0,dyy*0.7)
+   	dxweb1=dxweb
+   	dyweb1=dyweb
       If testworld=1 Then
    	 If max(Abs(xweb1),Abs(yweb1))>2500000 Then
          Var aux=(8/40)/(4*k8*512*scalex)  
@@ -22170,7 +22185,7 @@ ElseIf tinittown=0 And tinittown0=0 And testweb2=11 And httpon<>1 And tloadwebte
       xweb=xweb1:yweb=yweb1:dxweb=dxweb1:dyweb=dyweb1:klon=klon1
       'subsettupdate()
       If testworld=0 Then
-      	y+=(yweb-y)*0.5
+      	'y+=(yweb-y)*0.5
       EndIf
       loadwebtext2()
       threaddetach(ThreadCreate(@subsetmapautotextures))

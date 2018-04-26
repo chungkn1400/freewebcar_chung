@@ -1985,7 +1985,8 @@ EndIf'/
      	EndIf
 		Var latx=mylatweb+mydlatweb*(yy-myyweb)/mydyweb
 		Var lngx=mylngweb+mydlngweb*(xx-myxweb)/mydxweb
-		MercatorLatLngtosrtmlatlng(latx,lngx)
+		'MercatorLatLngtosrtmlatlng(latx,lngx)
+	   srtmlat=latx:srtmlng=lngx 
 		'Var hsrtm=max(-0.0,0.4*(getsrtmheight(srtmlat,srtmlng)-14))
 		Var hsrtm=max(-0.0,0.8*(getsrtmheight(srtmlat,srtmlng)-14))
      	If test=0 Then

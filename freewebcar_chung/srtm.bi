@@ -261,8 +261,8 @@ Dim As Integer i,j,k,ii,jj
 	testhsrtm=0
 	jj=-1 
 	for ii=0 To 3 
-	  if(Abs(lngx-srtmlngi(ii))<2.5001) then 
-	   if(abs(laty-srtmlati(ii))<2.5001) Then 
+	  if(Abs(lngx-srtmlngi(ii))<2.50001) then 
+	   if(abs(laty-srtmlati(ii))<2.50001) Then 
 	     jj=ii:Exit For
 	   EndIf
 	  EndIf 
