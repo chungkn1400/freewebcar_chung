@@ -48,6 +48,7 @@ Dim Shared As String srtmfiles(4),msgsrtm
 Dim Shared As Single srtmlati(4),srtmlngi(4),srtmdata(4,610,610)
 Dim Shared As Integer tloadwebtext2=0
 Sub formatsrtmdata(ii As Integer)
+Exit Sub 	
 Dim As Integer i,j,k
 Dim As Single x,xx,xxx
 For i=0 To 600-1

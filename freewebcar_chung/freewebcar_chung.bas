@@ -1457,7 +1457,7 @@ EndIf
 	glcolor4f(r1,r1,r1,0)
 'EndIf
 End Sub
-Dim Shared As Single dmx0,dmy0,xtown,ytown,dxtown,dytown,townbmpx,townbmpy
+Dim Shared As Single dmx0,dmy0,xtown,ytown,dxtown=-1,dytown,townbmpx,townbmpy
 Dim Shared As Single ktownh=1,dktownh=1
 Dim Shared As Single xweb=-99999999,yweb,dxweb=75000,dyweb=75000
 Dim Shared As Single xwebzoom=-99999999,ywebzoom,dxwebzoom=10000,dywebzoom=1,xwebzoom1=-9999999,ywebzoom1
@@ -1468,10 +1468,10 @@ Dim Shared As Single kxweb=(1-512/563.0)/2
 Sub mygltexcoord2f(tx As Single,ty As Single) 
 Dim As Single x,y
 If topview<=2 Then 
- If mapautotext=towntext Then
-	x=(tx*texscale-256)*scalex+dmx0
-	y=(ty*texscale-256)*scalex+dmy0
-	gltexcoord2f((x-xtown+dxtown)*0.48/dxtown,(y-ytown+dytown)*0.48/dytown)
+ 'If mapautotext=towntext Then
+	'x=(tx*texscale-256)*scalex+dmx0
+	'y=(ty*texscale-256)*scalex+dmy0
+	'gltexcoord2f((x-xtown+dxtown)*0.48/dxtown,(y-ytown+dytown)*0.48/dytown)
  /'ElseIf (mapautotext=webtextzoom And planet=0) Then
 	x=(tx*texscale-256)*scalex+dmx0
 	y=(ty*texscale-256)*scalex+dmy0
@@ -1480,7 +1480,7 @@ If topview<=2 Then
 	'If (tyy-Int(tyy))<k06 Then tyy+=k88
 	Var txx=k06+k88*(x-xwebzoom+dxwebzoom)*0.5/dxwebzoom
 	gltexcoord2f(txx,tyy) '/
- ElseIf mapautotext=snowtext Then 	
+ If mapautotext=snowtext Then 	
 	gltexcoord2f(tx*4,ty*4)
  ElseIf (mapautotext=webtext And planet=0) Or testsea=0 Then
 	x=(tx*texscale-256)*scalex+dmx0
@@ -2187,13 +2187,15 @@ For j=-100 To 612
 		testhrgb(i,j)=0
 	Next
 Next
+'xtown=-999999
+'ytown=-999999
 For i=-100 To 612
 	hrgb0=0:hrgb1=0
 	For j=-100 To 612
 	  x=i-256:y=j-256
      xx=(x*scalex+dmx0)
      yy=(y*scalex+dmy0)
-     If Abs(xx-xtown)<dxtown And Abs(yy-ytown)<dytown And (testworld=0 or topview>0) Then
+     If 0 Then'Abs(xx-xtown)<dxtown And Abs(yy-ytown)<dytown And (testworld=0 or topview>0) Then
      	mapautotext=towntext
      	setwebwater2(i,j,-99999999,0)
      'ElseIf Abs(xx-xwebzoom)<dxwebzoom2 And Abs(yy-ywebzoom)<dywebzoom2 And webtextzoom>0 And planet=0 Then
@@ -14677,6 +14679,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     			'guiconfirm("reset srtm ?","confirm",resp)
     			'If resp="yes" Then resetsrtm():testweb=1'resetterrain()
     			timegps=0:Sleep 300
+    			testweb=1
     			'v=50
     		   'subsettupdate():guinotice "ok"
     		'	Var resp0="wxtown1(i)="+Str(wxtown)+":wytown1(i)="+Str(wytown)+":wktown1(i)="+Str(wktown)
@@ -21590,7 +21593,7 @@ mz11=-999999
         init=1
         worldname="world"'guigettext("win.map")
         If worldname="world" Then testworld=1:loadmapworld() Else testworld=0
-        xtown=-9999999:itown4=0:settown() 
+        xtown=-999999:itown4=0':settown() 
         stopsoundocean()
         stopsoundocean2()
         'stopsoundarcade()
