@@ -3453,6 +3453,10 @@ Sub getways2(text0 As String)'getways
 		      	addfuel(id,nodelati,nodeloni,720*3)
 		      	'addnodei(id,nodelati,nodeloni,"communications_tower")
 		      	'guinotice "comm"
+		      ElseIf InStr(wtext2,"bus_stop")>1 Then 	
+		      	addfuel(id,nodelati,nodeloni,720*4)
+		      	'addnodei(id,nodelati,nodeloni,"bus_stop")
+		      	'guinotice "busstop"
 		      EndIf
 		      freelocktown(0)
 	         waylat(i)=-91
@@ -10935,6 +10939,9 @@ For i=1 To nfuel
  		  	drawsilo(x+dmx0,y+dmy0,z)
  		  ElseIf do1<720*3+360 Then
  		  	drawcommtower(x+dmx0,y+dmy0,z)
+ 		  ElseIf do1<720*4+360 Then
+ 		  	'drawcommtower(x+dmx0,y+dmy0,z)
+ 		  	drawbusstop(x+dmx0,y+dmy0,z,do1,35)
  		  Else 	
  		  	glcolor3f(1,0.35,0.35)
  		  	drawwatertower(x+dmx0,y+dmy0,z)
@@ -11389,6 +11396,7 @@ keyway+=";node[aeroway~'aerodrome']"+latlon3
 keyway+=";node['man_made'~'water_tower|storage_tank|silo']"+latlon3
 keyway+=";node['man_made'~'communications_tower|tower']"+latlon3
 keyway+=";node[amenity~'fuel|hospital|cinema']"+latlon2+";node[railway~'station']"+latlon2
+keyway+=";node[highway~'bus_stop']"+latlon'2
 If nshop>180 Or nshop0>180 Then
 	keyway+=";node[shop~'mall|supermarket|books']"+latlon2
 Else 	

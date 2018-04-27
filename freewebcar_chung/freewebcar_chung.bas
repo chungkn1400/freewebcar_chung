@@ -17637,7 +17637,7 @@ If Abs(dij-dij0)<0.005 And Abs(i500-i50)<0.005 And Abs(ntown22-ntown2)<0.005 The
 EndIf 
 Close #file
 End Sub 
-Const As Integer nfuel=100
+Const As Integer nfuel=140
 Dim Shared As int64 fuelid(nfuel)
 Dim Shared As Integer ifuel
 Dim Shared As Single fuelx(nfuel),fuely(nfuel),fuelz(nfuel),fueldo1(nfuel)
@@ -17965,16 +17965,17 @@ If Abs(dij-dij0)<0.005 And Abs(i500-i50)<0.005 And ntown22=ntown2 And _
  If Not Eof(file) Then
  	Var nfuel2=nfuel
  	Get #file,,nfuel2
- 	If nfuel2<=nfuel Then
+ 	'If nfuel2<=nfuel Then
  	   Get #file,,ifuel
- 		For i=1 To nfuel2
+ 		For ii=1 To nfuel2
+ 			i=min2(ii,nfuel)
  			Get #file,,fuelid(i)
  			Get #file,,fuelx(i)
  			Get #file,,fuely(i)
  			Get #file,,fueldo1(i)
  			fuelz(i)=-999999 			
  		Next
- 	EndIf
+ 	'EndIf
  EndIf
  If Not Eof(file) Then
  	Var nreverse2=nreverse

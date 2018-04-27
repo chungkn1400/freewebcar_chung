@@ -8,7 +8,7 @@ Dim Shared As uint archelist,notredamelist,pantheonlist,radiolist,cnitlist
 Dim Shared As uint jussieulist,trocaderolist,assembleelist,airporttowerlist
 Dim Shared As uint gasstationtext,gasstationlist,gasstation2list,tennistext,tennislist,stade2text,stade2list
 Dim Shared As uint buddahtext,capitoletext,christriotext,libertystatuetext,tajmahaltext,airporttowertext
-Dim Shared As uint watertowertext,commtowertext,balloontext,balloon1text,balloon2text
+Dim Shared As uint watertowertext,commtowertext,balloontext,balloon1text,balloon2text,busstoptext,busstoplist
 Sub inittownobject()
 gizeh0text=0:gizeh1text=0:gizeh2text=0:gizeh3text=0
 gizeh0list=0:gizeh1list=0:gizeh2list=0:gizeh3list=0
@@ -21,7 +21,7 @@ jussieulist=0:trocaderolist=0:assembleelist=0
 gasstationtext=0:gasstationlist=0:gasstation2list=0:airporttowerlist=0
 buddahtext=0:capitoletext=0:christriotext=0:libertystatuetext=0:tajmahaltext=0
 tennistext=0:tennislist=0:stade2text=0:stade2list=0:airporttowertext=0:watertowertext=0:commtowertext=0
-balloontext=0:balloon1text=0:balloon2text=0
+balloontext=0:balloon1text=0:balloon2text=0:busstoptext=0:busstoplist=0
 End Sub 
 Sub myguiloadtexture(ByRef texture As uint,ficname As String,ByVal maxcolor As uint=255)
 If texture<>0 Then Exit Sub
@@ -33,7 +33,8 @@ If list<>0 Then Exit Sub
 glpushmatrix
 list=glgenlists(1)
 glnewlist list,gl_compile 
-loadobjsize(ficname,@"",@"",size)
+If LCase(Right(ficname,4))=".obj" Then loadobjsize(ficname,@"",@"",size)
+If LCase(Right(ficname,4))=".3ds" Then load3dssize(ficname,@"",@"",size)
 glendlist	
 glpopmatrix
 End Sub
@@ -116,6 +117,47 @@ Dim As Single z1,size
 			glscalef(kx/630,kx/630,kx/630)
 			glcalllist(gasstation2list)
 			glpopmatrix
+		EndIf
+End Sub
+Sub drawbusstop(x As Single,y As Single,z As Single,do1 As Single,size0 As Single)
+Dim As Single z1,size
+      size=max(20.0,size0)
+		rotavion(x-mx-dmx0,y-my-dmy0,z-mz)
+		If x2>(0.9*max(y2,z2)-size*kscalex/500-100) And x2<dxterrain*scalex Then
+			myguiloadtexture(busstoptext,"media/bus.jpg",250)
+			'myguiloadtexture(busstoptext,"objects/town/busstop.jpg")
+			/'myguiloadlist(busstoplist,"objects/town/busstop.3ds",630)
+			Var kx=(kscalex/500)*size
+         z1=min(z,getterrainheight(x-dmx0-kx,y-dmy0-kx*0.64))
+         z1=min(z1,getterrainheight(x-dmx0-kx,y-dmy0+kx*0.64))
+         z1=min(z1,getterrainheight(x-dmx0+kx,y-dmy0-kx*0.64))
+         z1=min(z1,getterrainheight(x-dmx0+kx,y-dmy0+kx*0.64))
+			glpushmatrix
+			glbindtexture(gl_texture_2d,busstoptext)
+			gltranslatef(x-dmx0,y-dmy0,z1)
+			glrotatef(do1,0,0,1)
+			glscalef(kx/630,kx/630,kx/600)
+			glcalllist(busstoplist)
+			glpopmatrix '/
+         z1=getterrainheight(x,y)
+         glcolor4f(1,1,1,1)
+         gldisable gl_texture_2d	 
+      	glpushmatrix
+			gltranslatef(x-dmx0,y-dmy0,z1)
+			glrotatef(o1,0,0,1)
+   	   glcylindre(0.75,0.75,32.3,4,2)
+   	   glcolor4f(1,1,1,1)
+   	   gltranslatef(0,0,32)
+   	   glenable gl_texture_2d
+         glbindtexture(gl_texture_2d,busstoptext)
+         glenable gl_alpha_test
+         glalphafunc(gl_less,100/254)
+         gltexcarre2(14,15)
+         'gltranslatef(-0.3,0,0)
+         'gltexcarre2(-15,15)
+         'glcolor4f(1,1,1,1)
+         gldisable gl_alpha_test
+         glpopmatrix			
 		EndIf
 End Sub
 Sub drawwatertower(x As single,y As single,z As Single,w As Single=1)
