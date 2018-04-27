@@ -1016,13 +1016,13 @@ For i=2 To 512-2
 		EndIf
 		If test=1 Then 
 			var zz=zwater1+Int((terrain22(i,j)-zwater)/5.0)*5.0
-			terrain22(i,j)=zz
-			terrain22(i+1,j)=zz
-			terrain22(i-1,j)=zz
-			terrain22(i,j+1)=zz
-			terrain22(i,j-1)=zz
-			terrain22(i+1,j+1)=zz
-			terrain22(i-1,j-1)=zz
+			If terrain22(i,j)<zz Then terrain22(i,j)=zz
+			'If terrain22(i+1,j)<zz Then terrain22(i+1,j)=zz
+			'If terrain22(i-1,j)<zz Then terrain22(i-1,j)=zz
+			'If terrain22(i,j+1)<zz Then terrain22(i,j+1)=zz
+			'If terrain22(i,j-1)<zz Then terrain22(i,j-1)=zz
+			'If terrain22(i+1,j+1)<zz Then terrain22(i+1,j+1)=zz
+			'If terrain22(i-1,j-1)<zz Then terrain22(i-1,j-1)=zz
 		EndIf
 	  EndIf 	
 	Next
@@ -1927,10 +1927,11 @@ Return h
 End Function
 Sub setwebwater2(i As Integer,j As Integer,xx As Single,yy As Single)
 If testworld=0 Then
-	setwebwater(i,j,xx,yy):Exit Sub 
+	'setwebwater(i,j,xx,yy):Exit Sub 
 EndIf
 Dim As Integer ipix,jpix,pix,r,g,b
-Dim As Integer k,l,test=0
+Dim As Integer k,l
+Var test=0
 If xx<-99999990 Then
 	water(i,j)=0
    terrain22(i,j)=max(terrain22(i,j),-60+dhmareemax+0.1)

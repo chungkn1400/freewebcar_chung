@@ -2193,8 +2193,8 @@ For i=-100 To 612
 	hrgb0=0:hrgb1=0
 	For j=-100 To 612
 	  x=i-256:y=j-256
-     xx=(x*scalex+dmx0)
-     yy=(y*scalex+dmy0)
+     xx=(x*scalex)'+dmx0)
+     yy=(y*scalex)'+dmy0)
      If 0 Then'Abs(xx-xtown)<dxtown And Abs(yy-ytown)<dytown And (testworld=0 or topview>0) Then
      	mapautotext=towntext
      	setwebwater2(i,j,-99999999,0)
@@ -2209,7 +2209,7 @@ For i=-100 To 612
      	mapautotext=soltexture0
      	If testworld=1 Then setwebwater2(i,j,xx,yy)
      Else
-	   mapautoix=535+worldx+(x*scalex+dmx0)*aux*535
+	   /'mapautoix=535+worldx+(x*scalex+dmx0)*aux*535
 	   mapautoiy=(276+worldy)-(y*scalex+dmy0)*aux*276*2
   		xx=mapautoix*750/535:yy=mapautoiy*(750/2)/276
   		Var pix00=Point(xx,yy,worldbmp)
@@ -2255,7 +2255,7 @@ For i=-100 To 612
 			EndIf 
 		Else
 			mapautotext=maptexture':i=1
-		EndIf
+		EndIf '/
 	  EndIf 	
      mapautotexture2(i,j)=mapautotext
 	Next j
@@ -2299,7 +2299,7 @@ If testworld=1 Then
 			n=0
 			For k=i-di To i+di
 				For l=j-di To j+di
-					If water(k,l)<>1 Or topview>0 Then
+					If water(k,l)<>1 then'Or topview>0 Then
    				   terrain22(k,l)=hwater0
 						n+=1
 						'If Abs(k-i)+Abs(l-j)<1 Then 
@@ -22119,8 +22119,10 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    	t11=4:t111=Timer
    	'xweb1=mx+dmx0+0.5*cos1*dxx:yweb1=my+dmy0+0.5*sin1*dyy
    	If Abs(xweb1-mx-dmx0)>99990 Then resetmxweb()
-   	xweb1=mx+dmx0+cos1*max(10000.0,dxx*0.7)
-   	yweb1=my+dmy0+sin1*max(10000.0,dyy*0.7)
+   	'xweb1=mx+dmx0+cos1*max(10000.0,dxx*0.7)
+   	'yweb1=my+dmy0+sin1*max(10000.0,dyy*0.7)
+   	xweb1=mx+dmx0+cos1*max(0.0,dxx*0.7)
+   	yweb1=my+dmy0+sin1*max(0.0,dyy*0.7)
    	dxweb1=dxweb
    	dyweb1=dyweb
       If testworld=1 Then
