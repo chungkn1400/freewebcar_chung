@@ -5301,14 +5301,14 @@ Sub drawgrillon
    EndIf 
 	If Abs(grillonx-mx)<500 Then
 	  If Abs(grillony-my)<500 Then
-			If ((Int(time2*2)And 255)Mod 2)>0 Or time2<timegrillon+0.5 Then
-				glbindtexture(gl_texture_2d,grillontext)
-				If grillontext0<>grillontext Then movegrillon()
-				grillontext0=grillontext
-			Else 
+			If (((Int(time2*2)And 255)Mod 2)>0 Or time2<timegrillon+0.5)And (Int(time2*4)And 1)=1 Then
 				glbindtexture(gl_texture_2d,grillontext2)
 				If grillontext0<>grillontext2 Then movegrillon()
 				grillontext0=grillontext2
+			Else 
+				glbindtexture(gl_texture_2d,grillontext)
+				If grillontext0<>grillontext Then movegrillon()
+				grillontext0=grillontext
 				If Rnd<0.03*kfps Then
 					timegrillon=time2+Rnd*2
 				EndIf
@@ -8650,7 +8650,10 @@ For i=i1 To ncar
    	ncarsi1(i)=Sin(degtorad*ncaro1(i))
 		Var n=getrandomnearroad(ncarx(i),ncary(i),-1,ncarco1(i),ncarsi1(i))
 		ncariroad(i)=n
-		If n>0 Then
+		If n<=0 Then
+			ncarx(i)=-999999
+			ncarz(i)=-999999
+		Else 	
 		  Var dist=0.0,xx=0.0,yy=0.0
 		  For n=0 To nrandomnearroad-1	
 			For j=0 To 14

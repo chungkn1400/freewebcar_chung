@@ -4169,12 +4169,12 @@ End Sub
 Function formatname(text0 As String)As String
 	Dim As String abcd="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 '-_����&�,;:!*?./"
 	Dim As String abcd2="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789����&�"
-	Dim As String utf8="éèçàùâêîôûÂÊÎÔÛäëïöüÄËÏÖÜÉÈÇ"+"àãĩ"
+	Dim As String utf8="éèçàùâêîôûÂÊÎÔÛäëïöüÄËÏÖÜÉÈÇ"+"àãĩ"+"œ"
 	Dim As String utf82="ÀÂÃÄÅÆÇÈÉÊËÌÎÑÒÓÔÕÖÙÚÛÜàáâãäåæçèéêëìíîïðñòóôõöùúûüýþÿ"
 	Dim As String utf822="ǎǑǒǓǔǕǖǗǙǚǛǜǞǟǡǢǣǤǥǦǧǨǩǪǫǬǭǮǯǰǴǵǶǷǸǹǺǻǼǽǾǿȀȂȃȄȅȆȇȈȉȊȋȌȎȑȒȓȔȕȖȗșȚțȜȞȟȡȢȣȤȥȦȧȨȩȪȫȬȭȮȯȰȱȲȳ"
 	Dim As String utf83="ộộủệ"
 	Dim As String ansi3="ooie"
-   Dim As String ansi="eecauaeiouAEIOUaeiouAEIOUEEC"+"aai" '"����������������������������"
+   Dim As String ansi="eecauaeiouAEIOUaeiouAEIOUEEC"+"aai"+"e" '"����������������������������"
    Dim As String ansi2="AAAAAACEEEEIINOOOOOUUUUYaaaaaaceeeeiiiionooooouuuuypy"
    Dim As String ansi22="aOoUuUuUUuUuAaaAaGgGgKkQqQq33JGgHPNnAaAaOoAAaEeEeIiIiOOrRrUuUusTt3Hhd88ZzAaEeOoOoOoOoYy"
 	Dim As String text,c,cc,ccc
