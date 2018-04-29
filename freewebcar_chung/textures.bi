@@ -5726,6 +5726,9 @@ If hmin>10 Then t800=-hmin'*0.84
 z=h+townwaynodez(ij,i):z1=z+20:z0=-t800+z-h
 tx=drawbuildtx*x/150:ty=drawbuildty*(h0+t800)/120'(z-z0)/(120)
 If h>240 Then ty/=scalexy
+If drawbuildtext=housetext Then 
+	ty=max(0.5,0.5*Int(ty+ty))+0.1
+EndIf
 Var ktx=tx*0.5/x
 glenable(gl_texture_2d)
 testmygltexquad=0
@@ -6282,6 +6285,9 @@ If hmin>10 Then t800=-hmin'*0.84
 z=h+townwaynodez(ij,i):z1=z+20:z0=-t800+z-h
 tx=drawbuildtx*x/150:ty=drawbuildty*(h0+t800)/120'(z-z0)/(120)
 If h>240 Then ty/=scalexy
+If drawbuildtext=housetext Then 
+	ty=max(0.5,0.5*Int(ty+ty))+0.1
+EndIf
 Var ktx=tx*0.5/x
 glenable(gl_texture_2d)
 testmygltexquad=0
@@ -6650,6 +6656,9 @@ If hmin>10 Then t800=-hmin'*0.84
 z=h+townwaynodez(ij,i):z1=z+20:z0=-t800+z-h
 tx=drawbuildtx*x/150:ty=drawbuildty*(h0+t800)/120'(z-z0)/(120)
 If h>240 Then ty/=scalexy
+If drawbuildtext=housetext Then 
+	ty=max(0.5,0.5*Int(ty+ty))+0.1
+EndIf
 Var ktx=tx*0.5/x
 glenable(gl_texture_2d)
 testmygltexquad=0
