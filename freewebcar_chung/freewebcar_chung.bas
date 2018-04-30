@@ -15690,7 +15690,7 @@ EndIf 'planet
         'drawviseur
         'glcolor3f(0.85,0,0)
         glcolor3f(0.4,1,0.4)
-        gldrawtext("fps "+Str(Int(fpsmoy)),15,12,1.2)
+        gldrawtext0("fps "+Str(Int(fpsmoy)),15,12,1.2)
         'gldrawtext("nvertices "+Str(Int(md2_nodes(1)->md2model->header.num_vertices)),15,35,1.2)
         If (icar=2 Or icar=5 Or icar=16) And tourelle=0 Then 
         	glcolor3f(0.3,0.4,1)
