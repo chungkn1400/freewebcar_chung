@@ -35,7 +35,7 @@ Function write_callback CDecl _
 
     '' just print it..
     '? Left(*zstr,100)
-    If ibytes<12500000-myidata And ibytes>0 Then
+    If ibytes<17500000-myidata And ibytes>0 Then
     	'myztext+=*zstr
       For ibyte=0 To ibytes-1
       	recvdatacurl(myidata)=buffer[ibyte]

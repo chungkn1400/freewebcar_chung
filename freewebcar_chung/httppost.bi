@@ -53,9 +53,9 @@ hostname="en.wikipedia.org"
 path="/w/api.php?action=opensearch&search="+"lennon"+"&limit=5&namespace=0&format=json&redirects=resolve"
 '/
 
-Dim Shared As UByte recvdata(12512016)
-Dim Shared As UByte recvdatagoogle(12512016)
-Dim Shared As UByte recvdatacurl(12512016)
+Dim Shared As UByte recvdata(17512016)
+Dim Shared As UByte recvdatagoogle(17512016)
+Dim Shared As UByte recvdatacurl(17512016)
 Dim Shared As Integer tquitweb=0,httpon,httpidata,webidata,googleerror=1,tgoogle=1,icurl
 Dim Shared As Byte tlockchanged
 Dim Shared As String httphost

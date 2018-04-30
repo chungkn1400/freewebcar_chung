@@ -5516,6 +5516,11 @@ If scaleview>0.9 And time2>timeaddshadowtree+2 And taglcompile2=1 Then
 	ishadowpanel=0  
 	taddshadowroc=1
 	ishadowroc=0
+	If tdark<>0 Then
+	  taddshadowtree=0
+	  'taddshadowpanel=0
+	  taddshadowroc=0		
+	EndIf
 Else
 	taddshadowtree=0
 	taddshadowpanel=0
@@ -6753,6 +6758,7 @@ glcolor3f(0.9,1,1)
 Var distmax2=Sqr(mx*mx+my*my)
 If distmax2<distmax Then distmax2=distmax
 gldrawtext "+",dx+rx*mx/distmax2,dy-rx*my/distmax2
+If volant=0 Then glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)
 /'glcolor3f(0.9,1,0)
 gldrawtext "+",dx+rx*avionx/distmax,dy-rx*aviony/distmax
 i=1
@@ -7179,6 +7185,7 @@ Else
  drawboussole	
 EndIf 	
 'glenable GL_DEPTH_TEST
+glColorMask(GL_truE, GL_truE, GL_truE, GL_truE)
 End Sub
 Dim Shared As Single volantrots0,handrot
 Dim Shared As Integer thand
@@ -11782,6 +11789,7 @@ Dim Shared As Single clouddz(ncloud),testcloud(11,11)
 Dim Shared As Double timecloudshadow
 Dim Shared As Integer tupdatecloudshadow
 Sub drawcloudshadow(ByVal i As Integer)
+	      If tdark<>0 Then Exit sub
 	      Var xx=cloudx(i)
 	      Var yy=cloudy(i)
 	      Var zz=max(0.0,cloudz(i)-getterrainheight(xx,yy))
@@ -11817,7 +11825,7 @@ Sub drawcloudshadow(ByVal i As Integer)
 	       clouddz(i)=testcloud(ii,jj)
 	       testcloud(ii,jj)+=0.5
 	      EndIf  
-	      Var cc=0.4
+	      Var cc=0.6'0.4
       	'cc*=min(1.0,max(0.001,0.25*9000/(1000+Abs(xx-mx)+Abs(yy-my))))
       	'cc*=min(1.0,max(0.001,(mz-zz)*Abs(x2)*0.002*0.002))
 	      glcolor4f(cc,cc,cc,cc)

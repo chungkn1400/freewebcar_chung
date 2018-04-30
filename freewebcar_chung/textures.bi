@@ -4885,7 +4885,7 @@ Dim Shared As Integer testmygltexquad,testmygltexquad0,buildrottype
 Sub addshadowquad(ByVal x10 As Single,ByVal y10 As Single,ByVal z10 As Single, _ 
 	                ByVal x20 As Single,ByVal y20 As Single,ByVal z20 As Single,ByVal dr As Single,ByVal rank As Integer=0)
 Dim As Integer i,j,k
-If ishadow>=nshadow Then Exit Sub
+If ishadow>=nshadow Or tdark<>0 Then Exit Sub
 'ishadow+=1
     'Var x=x1,y=y1,z=z1,xx=x2,yy=y2,zz=z2,xxx=x1+dr*dxshadow,yyy=y1+dr*dyshadow,zzz=z1+dr*dzshadow
     /'setnorm(xxx-x,yyy-y,zzz-z, xx-x,yy-y,zz-z)
@@ -11489,11 +11489,11 @@ EndIf
 If testworld=1 Then keyway=keyway+";way['bridge']"+latlon1+";way['man_made'~'bridge']"+latlon1
 wayurl=myoverpass2+"interpreter?data=[out:json][timeout:45];%28"+keyway
 'If myroadwayid<>"" Then wayurl+=";.myway"
-wayurl+=";.myrel;.myrelway%29%3Bout%20qt%2029999%3B"
+wayurl+=";.myrel;.myrelway%29%3Bout%20qt%2049999%3B"
 'wayurl+="%29%3Bout%20qt%209999%3B"
 nodeurl=myoverpass2+"interpreter?data=[out:json][timeout:45];%28node"+latlon
 'nodeurl+="node"+latlon
-nodeurl+="%29%3Bout%20skel%2029999%3B"
+nodeurl+="%29%3Bout%20skel%2059999%3B"
 Var hostname=myoverpass
 path=nodeurl
 var myquery="format=xml&lat="+Str(lat)+"&lon="+Str(lng)+"&zoom=10&addressdetails=1&accept-language=en"
