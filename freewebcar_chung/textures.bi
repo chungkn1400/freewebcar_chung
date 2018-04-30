@@ -5668,7 +5668,7 @@ Dim As Integer j,n,k
 'If InStr(LCase(townwayname(ij,i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
 If tlayer<-0.1 Then Exit Sub 
 Var i40=0
-If kmxlat>10 Then i40=towni40(ij,i)
+If kmxlat>10 And detail40=1 Then i40=towni40(ij,i)
 'If Str(townwaynodeid(ij,i))="79152373" And i40>0 Then auxtest=0.8:auxvar2=i40+0.1
 If i40>0 Then
   If townixy40(i40)>nwaynode then	
@@ -5705,7 +5705,7 @@ If (Int(i+time2) Mod 10)=1 Then
 EndIf
 i40=0
 Var rr=r,gg=g,bb=b
-If n>=nwaynode Then
+If n>=nwaynode And detail40=1 Then
 	i40=towni40(ij,i)
 	If i40=0 Then
 		i40=getolditown40(townwaynodeid(ij,i))
@@ -7434,7 +7434,7 @@ Dim As Integer j,n,jj,toneway=0,tparking=0,trail=0,trunway=0,taddspot=0,tmainway
 '	Exit sub
 'EndIf
 Var i40=0,ixy40=0,t40=0,tcolor=0,rcolor=0.515,gcolor=rcolor,bcolor=rcolor
-If kmxlat>10 Then i40=towni40(ij,i)
+If kmxlat>10 And detail40=1 Then i40=towni40(ij,i)
 If i40>0 Then
   If townixy40(i40)>nwaynode then	
 	 t40=1
@@ -7463,7 +7463,7 @@ If t40=0 Then
  n=Abs(towniwaynode(ij,i))
  If n<2 Then Exit Sub 
  i40=0
- If n>=nwaynode Then
+ If n>=nwaynode And detail40=1 Then
 	i40=towni40(ij,i)
 	If i40=0 Then
 		i40=getolditown40(townwaynodeid(ij,i))
@@ -8044,7 +8044,7 @@ EndIf
       testmygltexquad=0
       If ttunnel<>1 and (ttunnel=0 or (j=2 or j=n))Then 
    		gltexquad pxx0,pyy0,zz0, px0,py0,z0, px1,py1,z1+hr, pxx1,pyy1,zz1+hr, tx,ty,tx0	
-   	   If Abs(layer)<0.4 And tlayer0>-0.1 Then 
+   	   If Abs(layer)<0.4 And tlayer0>-0.1 And Abs(px0-mx)<800 And Abs(py0-my)<800 Then 
    	    glcolor3f(0,1,0)
    	    glbindtexture(gl_texture_2d,webtext)
    	    Var t4=7.0,t8=5.0
@@ -8166,7 +8166,7 @@ EndIf
    	'If dr<dr30000 And ttunnel<>1 And (ttunnel=0 Or (j=2 And jj=1) Or (j=n And jj=di)) Then
    	If  ttunnel<>1 And (ttunnel=0 Or (j=2 And jj=1) Or (j=n And jj=di)) Then
    		gltexquad pxx0,pyy0,dz+zz0, px0,py0,dz+z0, px1,py1,dz+z1+hr, pxx1,pyy1,dz+zz1+hr, txx,ty,tx0
-   	   If Abs(layer)<0.4 And tlayer0>-0.1 Then 
+   	   If Abs(layer)<0.4 And tlayer0>-0.1 And Abs(px0-mx)<800 And Abs(py0-my)<800 Then 
      	    glcolor3f(0,1,0)
           glbindtexture(gl_texture_2d,webtext)
      	    Var t4=7.0,t8=5.0

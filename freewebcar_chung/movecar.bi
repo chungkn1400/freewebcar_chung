@@ -724,10 +724,14 @@ If avion="copter" Then
 		If o2>0 Then si2=-0.0018
 		If (prop<2000 And o2>-10 And o2<20) Then si22=0.28
 		si22=min(si22,0.45)
-		v=max(-8.0,min(30.0,v-(si22-0.09)*prop*0.002*kfps))
+		If piste=0 Then
+			v=max(-8.0,min(30.0,v-(si22-0.09)*prop*0.002*kfps))
+		Else
+			v=max(-8.0,min(30.0,v+(0.03)*prop*0.002*kfps))
+		EndIf
 	EndIf
 	mz1+=max(-1.5*kfps,(max(0.0,v)+prop*0.0003)*(0.002+si2)*kfps)
-	If o2<10 Or prop<1000 Or  prop>1500 Then mz1-=(1500-prop)*0.001*kfps
+	If o2<10 Or prop<1000 Or  prop>1500 Then mz1-=(1500-prop)*0.0015*kfps
 	If Abs(sin3)>0.6 Then o2=max(-85.0,o2-Abs(sin3*cos2)*0.25*kfps)
 	If o2<-80 Then o1+=o3:o3=0	
 EndIf

@@ -72,8 +72,12 @@ End Sub
 #Undef glendlist
 #Define glnewlist myglnewlist
 #Define glendlist myglendlist
+Dim Shared As uint oldbindtexture
 Sub glbindtexture0(gltexture2d As uint,itexture As uint)
-	glbindtexture(gltexture2d,itexture)
+	If oldbindtexture<>itexture Then
+		oldbindtexture=itexture
+		glbindtexture(gltexture2d,itexture)
+	EndIf
 End Sub
 Declare Sub myglbindtexture(gltexture2d As uint,itext As uint Ptr)
 #Undef glbindtexture
@@ -1067,7 +1071,7 @@ Dim Shared As String msg,resp
 Dim Shared As uint narbre2=2500,ismooth=0,nboat2=9
 Dim Shared As Single distscale=1.0,kwave=1.0
 Dim Shared As Single x1,y1,z1,x2,y2,z2,px1,py1,pz1,px2,py2,pz2
-Dim Shared As Integer startoption=0
+Dim Shared As Integer startoption=0,detail40=1
 Dim Shared As Integer iaux,iship,nship=18,nship2=10
 Dim Shared As Single airshipo1(nship),airshipo2(nship),airshipo3(nship),aux,aux2
 Dim Shared As Single airshipx(nship),airshipy(nship),airshipz(nship),airshipwar(nship)
@@ -1291,6 +1295,8 @@ tradio=0
 If Not Eof(file) Then Line Input #file,ficin:tradio=Val(ficin)
 typeautopilot0=0
 If Not Eof(file) Then Line Input #file,ficin:typeautopilot0=Val(ficin)
+detail40=1
+If Not Eof(file) Then Line Input #file,ficin:detail40=Val(ficin)
 Close #file
 carb=max(1000.0,min(carb+1000.0,carb0))
 kscalex=500:kscalex00=500
@@ -5328,6 +5334,7 @@ Sub drawgrillon
 	  EndIf
 	EndIf
 End Sub
+Dim Shared As uint drawbuildtext0
 Sub drawtownnodes()
 Dim As Integer i,ii,jj,ix,jx
 Dim As Single h,x,y,z,r
@@ -5337,6 +5344,7 @@ If time2>dttestcross Then
 Else
 	tdttestcross=0
 EndIf
+drawbuildtext0=0
 If (itime Mod 5)=1 Then 
 If wtempmin>14 And mz<mzsol00+2400 Then'Or 1 Then
 	soundsauterelle
@@ -13751,7 +13759,7 @@ End Sub
 Dim Shared As Double timepiste,timercollide,timelayeroff
 Sub testcollideforward()
 'tpiste=piste
-If (tlayer0)<-0.4 then exit Sub
+If (tlayer0)<-0.4 Then exit Sub
 If time2<timercollide+0.1 Then Exit Sub
 timercollide=time2
 Var kfps0=kfps,kfps=3.0
@@ -16028,6 +16036,15 @@ Dim As Single x
 	x=max(0.3,min(3.0,x))
 	If x<>distscale Then
 		distscale=x
+	EndIf
+End Sub
+Sub subdetail40
+	If detail40=1 Then
+		confirm("set detail40 off ?","confirm",resp)
+		If resp="yes" Then detail40=0
+	Else
+		confirm("set detail40 on ?","confirm",resp)
+		If resp="yes" Then detail40=1
 	EndIf
 End Sub
 Dim Shared As Single scalex0=500
@@ -20994,7 +21011,7 @@ msg+="ctrl+O => start option (reset/continue)"+cr
 msg+="ctrl+G => fly to geocoding (world mode)"+cr
 msg+="shift+G => google maps webtext (enable/basic/disable)"+cr
 'msg+="ctrl+I => internet openstreetmap buildings"+cr
-msg+="ctrl+S => shadow (on/off)"+cr'smooth terrain"+cr
+msg+="ctrl+S => shadow (on/off)   /  shift+D => detail40 buildings"+cr'smooth terrain"+cr
 msg+="shift+T => retroviseur "+cr
 msg+="shift+O => change server"+cr
 msg+="ctrl+shift => walk (foot mode)  /   H => horse"+cr
@@ -21595,12 +21612,12 @@ mz11=-999999
         initgrass
         'inittownjpg
         planetsat=0
-        If planet=1 Then 
+        /'If planet=1 Then 
           If FileExists("addon/"+addon(imap)+"sat.jpg") Then
           	planetsat=1
           	planetsattext=guiloadtexture("addon/"+addon(imap)+"sat.jpg")
           EndIf
-        EndIf
+        EndIf '/
         
         If imap>=4 Then
         	If maptext<>0 Then guideletetexture(maptext)
@@ -21731,6 +21748,7 @@ mz11=-999999
         	   	EndIf
         	   EndIf
         	   If guitestkey(vk_d)<>0 And guitestkey(vk_control)<>0 Then subdistscale
+        	   If guitestkey(vk_d)<>0 And guitestkey(vk_shift)<>0 Then subdetail40
         	   If guitestkey(vk_r)<>0 And guitestkey(vk_control)<>0 Then
         	   	If guitestkey(vk_shift)=0 Then subreset Else subresettown
         	   EndIf
@@ -21897,13 +21915,13 @@ mz11=-999999
            	'	EndIf
            	'Next
 
-            If time2>timeinit+10 Then
+            If timer>timeinit+10 Then
             	guirefreshopenGL()
             Else 	
-               glclearcolor 0,0.7,0, 0.0
-               glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
-            	guirefreshopenGL()
-            	If time2<timeinit+8 And Abs(mzinit)>0.001 Then
+               'glclearcolor 0,0.7,0, 0.0
+               'glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
+            	'guirefreshopenGL()
+            	If timer<timeinit+8 And Abs(mzinit)>0.001 Then
             		mz=mzinit:mz1=mz:piste=1:piste0=1
             	Else
             		mzinit=0
@@ -22590,6 +22608,7 @@ Print #file,dyh0
 Print #file,tradar2
 Print #file,tradio
 Print #file,typeautopilot0
+Print #file,detail40
 Close #file
 ''If townchanged=1 Or Rnd<0.2 Then savetownvie()
 If (planet=0 And orbit=1) And topentown=1 And tinittown0<=0 Then
@@ -23042,6 +23061,7 @@ While alt>100000 And orbit=0 _ '11000
         	   'EndIf
         	   If guitestkey(vk_t)<>0 And guitestkey(vk_control)<>0 Then subnarbre
         	   If guitestkey(vk_d)<>0 And guitestkey(vk_control)<>0 Then subdistscale
+        	   If guitestkey(vk_d)<>0 And guitestkey(vk_shift)<>0 Then subdetail40
         	   If guitestkey(vk_r)<>0 And guitestkey(vk_control)<>0 Then subreset
         	   If guitestkey(vk_f)<>0 And guitestkey(vk_control)<>0 Then submaxfps
         	   If guitestkey(vk_s)<>0 And guitestkey(vk_control)<>0 Then subshadow'subsmooth
