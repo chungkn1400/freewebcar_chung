@@ -2648,7 +2648,7 @@ Const As Integer nnode=99999,nway=29000,naeroway=120
 dim shared as integer nnode2=0
 Dim Shared As int64 nodeid(nnode)
 Dim Shared As Single latnode(nnode),lonnode(nnode)
-Dim Shared As Integer nway2=0,waytheight(nway),nway20
+Dim Shared As Integer nway2=0,waytheight(nway),nway20,nwaymax,nnodemax,testnwaymax,testnnodemax
 Dim Shared As int64 waynode(nway)
 Dim Shared As Single waylat(nway),waylon(nway),wayheight(nway),waywidth(nway),waydo1(nway),waylength(nway)
 Dim Shared As Single waynodez(nway),wayheightmin(nway),wayred,waygreen,wayblue,wayr(nway),wayg(nway),wayb(nway)
@@ -2958,6 +2958,8 @@ Sub getnodes(text0 As String) 'getnodes
 	'printmsg
 	'guinotice wsplit(1)
 	nnode2=nsplit
+	testnnodemax=0
+	If nnode2>=nnodemax Then testnnodemax=1
 	For i=1 To nsplit
 		If quit2=1 Or quit=1 Then Exit For 
 		wtext1=wsplit(i)
@@ -3166,6 +3168,8 @@ Sub getways2(text0 As String)'getways
    'If nsplit<2 Then setioverpass():If auxtest>0.81 Then guinotice Left(text0,800)
 	nway2=nsplit
 	nway20=nway2
+	testnwaymax=0
+	If nway2>nwaymax Then testnwaymax=1
 	myiasknode=0
 	myiaskway=0
 	nbroad=0
@@ -11347,6 +11351,7 @@ guinotice "data saved as "+fic
 End Sub
 dim shared as Double tidle,tidle2
 Dim Shared As Integer tbuildheight=15
+Dim Shared As Single knway=1
 Sub loadopentown()
 tidle2=tidle
 'Var lat=48.891977155490395,lng=2.237673523003608'paris defense
@@ -11368,6 +11373,12 @@ If dtweb<12 Then kdxweb=min(1.0,kdxweb*1.15)
 'auxvar=inearroad0:auxtest=0.3
 If (plane=0 Or car>0) And inearroad0>130 Then kdx*=0.7
 Var dx0=kdx*1.3*360/40000',klon=1.4
+If testnwaymax=1 Or testnnodemax=1 Then
+	knway=max(0.3,0.7*knway)
+Else
+	knway=min(1.0,knway+0.03)
+EndIf
+dx0*=knway
 if plane=0 or car>0 then kdx*=kdxweb
 Var dx=dx0*kdxweb
 dmxweb(imxweb)=dx0*0.7
@@ -11489,10 +11500,12 @@ EndIf
 If testworld=1 Then keyway=keyway+";way['bridge']"+latlon1+";way['man_made'~'bridge']"+latlon1
 wayurl=myoverpass2+"interpreter?data=[out:json][timeout:45];%28"+keyway
 'If myroadwayid<>"" Then wayurl+=";.myway"
-wayurl+=";.myrel;.myrelway%29%3Bout%20qt%2049999%3B"
+nwaymax=39990
+wayurl+=";.myrel;.myrelway%29%3Bout%20qt%2039999%3B"
 'wayurl+="%29%3Bout%20qt%209999%3B"
 nodeurl=myoverpass2+"interpreter?data=[out:json][timeout:45];%28node"+latlon
 'nodeurl+="node"+latlon
+nnodemax=59990
 nodeurl+="%29%3Bout%20skel%2059999%3B"
 Var hostname=myoverpass
 path=nodeurl
