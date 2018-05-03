@@ -752,7 +752,9 @@ Sub loadwebtext(ByVal userdata As Any Ptr)
 	EndIf 
 	dxweb1=100000*1500/max(1,worldmx0-worldmx)
 	dyweb1=100000*1500/max(1,worldmy0-worldmy)
-	If tbing=1 And plane>0 And car=0 Then dxweb1*=0.5:dyweb1*=0.5
+	If tbing=1 And plane>0 And car=0 Then
+		'dxweb1*=0.5:dyweb1*=0.5
+	EndIf
    'size=563
    'dxweb1=size*(2^(20-zoom1))
    'dyweb1=size*(2^(20-zoom1))
@@ -794,7 +796,7 @@ If tbing=1 Then
  'Var apikeybing="&key=%20Aq0npnXsrnwL9eY3rCUQsJZJJedr8Za9hIH-XsWnppaizf92DYjKS1syE9K3HqVr"
  Var msize=Int(scale*size)
  'path="/REST/v1/Imagery/Map/aerial/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=png"
- If plane=0 Or car>0 Then
+ If 1 Then'plane=0 Or car>0 Then
  	path="/REST/v1/Imagery/Map/Aerial/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1+1)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg"
  Else 
    path="/REST/v1/Imagery/Map/Aerial/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1+2)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg"
@@ -962,7 +964,7 @@ guierror=0
 
   If (mz-mzsol0)<20000 And mapdisplay<>5 Then
   	  Sleep t300'1000
-  	  If tbing=1 And plane>0 And car=0 Then
+  	  If 0 Then'tbing=1 And plane>0 And car=0 Then
   	  	loadwebtext3(zoom1+1):ttestroad=1
   	  Else 
   	  	loadwebtext3(zoom1):ttestroad=1
@@ -4173,20 +4175,31 @@ End Sub
 Function formatname(text0 As String)As String
 	Dim As String abcd="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 '-_����&�,;:!*?./"
 	Dim As String abcd2="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789����&�"
-	Dim As String utf8="éèçàùâêîôûÂÊÎÔÛäëïöüÄËÏÖÜÉÈÇ"+"àãĩ"+"œ"
-	Dim As String utf82="ÀÂÃÄÅÆÇÈÉÊËÌÎÑÒÓÔÕÖÙÚÛÜàáâãäåæçèéêëìíîïðñòóôõöùúûüýþÿ"
+	Dim As String utf8="éèçàùâêîôûÂÊÎÔÛäëïöüÄËÏÖÜÉÈÇ"+"àãĩ"+"œÆÄÄčćżśơườn�nĐāمسقطţŭăŁłńź"
+	'Dim As String utf82="ÀÂÃÄÅÆÇÈÉÊËÌÎÑÒÓÔÕÖÙÚÛÜàáâãäåæçèéêëìíîïðñòóôõöùúûüýþÿ"
+	Dim As String utf82="ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ"
 	Dim As String utf822="ǎǑǒǓǔǕǖǗǙǚǛǜǞǟǡǢǣǤǥǦǧǨǩǪǫǬǭǮǯǰǴǵǶǷǸǹǺǻǼǽǾǿȀȂȃȄȅȆȇȈȉȊȋȌȎȑȒȓȔȕȖȗșȚțȜȞȟȡȢȣȤȥȦȧȨȩȪȫȬȭȮȯȰȱȲȳ"
 	Dim As String utf83="ộộủệ"
 	Dim As String ansi3="ooie"
-   Dim As String ansi="eecauaeiouAEIOUaeiouAEIOUEEC"+"aai"+"e" '"����������������������������"
-   Dim As String ansi2="AAAAAACEEEEIINOOOOOUUUUYaaaaaaceeeeiiiionooooouuuuypy"
+   Dim As String ansi="eecauaeiouAEIOUaeiouAEIOUEEC"+"aai"+"eEAAcczsou���Dapwu�tuaLlnz" '"����������������������������"
+   ''utf8+="ŠŒŽšœžŸ¢£¥§ÀÃÄÅÆÇÈÉÊËÌÎÑÒÓÔÕÖ×ÙÚÛÜÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ"   
+   ''ansi+="sEZsezycLysAAAAECEEEEIINOOOOOxOUUUpBaaaaaaeceeeeiiiionoooooouuuuypy"
+   utf8+="ƒŠŒŽšœžŸ¢£¤¥¦§©ª®ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ"
+   ansi+="fSEZsezYcLoyIscarAAAAAAECEEEEIIIIDNOOOOOxOUUUUYpBaaaaaaeceeeeiiiionoooooouuuuypy"
+   'Dim As String ansi2="AAAAAACEEEEIINOOOOOUUUUYaaaaaaceeeeiiiionooooouuuuypy"
+   Dim As String ansi2="AAAAAAECEEEEIIIIDNOOOOOxOUUUUYpBaaaaaaeceeeeiiiionoooooouuuuypy"
    Dim As String ansi22="aOoUuUuUUuUuAaaAaGgGgKkQqQq33JGgHPNnAaAaOoAAaEeEeIiIiOOrRrUuUusTt3Hhd88ZzAaEeOoOoOoOoYy"
+   'auxvar=Len(utf8)-Len(ansi)*2+0.1:auxtest=0.2
+   'auxvar2=Len(utf82)-Len(ansi2)*2+0.1:auxtest=0.2
 	Dim As String text,c,cc,ccc
 	Dim As Integer i,li,j,k,tok=0,ic,iskip,i2,i3,i22
 	text="":li=Len(text0)
 	For i=1 To li
 		c=Mid(text0,i,1)
 		ic=Asc(c)
+		'If InStr(abcd,c)<=0 Then
+		'	If InStr(utf8,c)>0 Then ic+=1000
+		'EndIf
 		'If ic>=192 And ic<=255 And c<>"�" Then auxvar+=1:auxtest=0.2
 		If InStr(abcd,c)>0 Then
 			text+=c
@@ -4194,7 +4207,7 @@ Function formatname(text0 As String)As String
 				If InStr(abcd2,c)>0 Then tok=1
 			EndIf
 			iskip=0
-		ElseIf ic>=192 And ic<=198 And c<>"�" Then
+		/'ElseIf ic>=192 And ic<=198 Then'And c<>"�" Then
 			text+="A"
 		ElseIf ic>=199 And ic<=199 Then
 			text+="C"
@@ -4225,7 +4238,7 @@ Function formatname(text0 As String)As String
 		ElseIf ic>=249 And ic<=252 Then
 			text+="u"
 		ElseIf ic>=253 And ic<=255 Then
-			text+="y"
+			text+="y" '/
 		ElseIf i<li Then
 			cc=Mid(text0,i,2)
 			j=InStr(utf8,cc)
@@ -4263,9 +4276,11 @@ Function formatname(text0 As String)As String
 				text+=Right(cc,1):i+=1
 				iskip=0
 			ElseIf iskip=0 Then  	
-				text+="."
+				text+="."'Str(Asc(c))+"."+Str(Asc(Right(cc,1)))'"."
 				iskip=1
+				auxtext=text0+"("+Str(i)+")"+text+cc+"."+c+"."
 			EndIf
+			If Right(text,1)="�" Then text=Left(text,Len(text)-1)
 		Else  	
 			text+="."
 		EndIf
@@ -11060,7 +11075,7 @@ latreversei(j)=latx
 lngreversei(j)=lngx
 namereversei(j)=namei
 End Sub
-Function formatutf8name(text0 As String)As String
+/'Function formatutf8name(text0 As String)As String
     Dim As String abcd="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 '-_����&�,;:!*?./"
     Dim As String abcd2="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789����&�"
     Dim As String utf8="éèç� ùâêîôûÂÊÎÔÛäëïöüÄËÏÖÜÉÈÇ"
@@ -11124,7 +11139,7 @@ Function formatutf8name(text0 As String)As String
     Next
     If tok=0 Then Return ""
     Return text
-End Function
+End Function '/
 Const As Integer ncity=10000,ncitynear=1000
 Dim Shared As int64 cityid(ncity)
 Dim Shared As Integer ncity2,citycapital(ncity),citypopulation(ncity)
@@ -11306,7 +11321,8 @@ EndIf
 		  wtext2=nextwords(wtext1,"""name""")
 		  cityname(i)=(nextdata0(wtext2,"""",""""))
 		EndIf
-		cityname(i)=formatutf8name(cityname(i))
+		'cityname(i)=formatutf8name(cityname(i))
+		cityname(i)=formatname(cityname(i))
 		wtext2=nextwords(wtext1,"""population""")
 		citypopulation(i)=Val(nextdata0(wtext2,"""",""""))
     	wtext2=nextwords(wtext1,"""is_in:country""")

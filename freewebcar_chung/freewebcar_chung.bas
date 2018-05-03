@@ -12506,6 +12506,7 @@ x1=x*0.5:x0=0-x1
     Next i 
 End Sub
 Sub drawhelice0
+	  glnormal3f(-1,0,0)
      glbindtexture(gl_texture_2d,helicetext)	
      glEnable GL_BLEND
      'glBlendFunc GL_SRC_color,GL_ONE_MINUS_SRC_color
@@ -12764,7 +12765,7 @@ If tdark=1 Then
     glenable gl_lighting
     glcolor3f(1,1,1)
    EndIf 
-EndIf    
+EndIf
 End Sub
 Sub drawc150red
 'If tdark=0 Then 
@@ -14707,6 +14708,9 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     				resetmxy0()
     			EndIf 	
     		EndIf 	
+    		If guitestkey(vk_7) And auxtext<>"" Then
+    			prompt("formatname utf8/ansi chars",auxtext)
+    		EndIf 	
     		If guitestkey(vk_8) Then
     			'guiconfirm("reset srtm ?","confirm",resp)
     			'If resp="yes" Then resetsrtm():testweb=1'resetterrain()
@@ -15008,6 +15012,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     		If Abs(mouseo2)>3 Then ddmz+=mouseo2/30.0
     		glulookat(mx,my,mz+yh+dyh, mx+1000*ddmx,my+1000*ddmy,mz+1000*ddmz+yh+dyh, 0,0,1)
     	EndIf
+      glnormal3f(-cos1,-sin1,0.3)
     Else 
     	to2=max2(-89,min2(89,to2))
     	While to1<-180:to1+=360:Wend
@@ -15018,6 +15023,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     	tcos3=1.0:tsin3=0.0
       tdx=tcos1*tcos2:tdy=tsin1*tcos2:tdz=tsin2   	
       glulookat(mx,my,mz+yh,mx+tdx*1000,my+tdy*1000,mz+tdz*1000+yh, -tsin3*tsin1,tsin3*tcos1,tcos3)
+      glnormal3f(-cos1,-sin1,0.3)
     EndIf
     gldisable(GL_FOG)
     If guitestkey(vk_f12)<>0 _   
@@ -22000,7 +22006,9 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    	xweb1=xweb-999999:yweb1=yweb:dxweb1=dxweb:dyweb1=dyweb 
    EndIf
    If x960>2000 Then dxx*=1.5:dyy*=1.5
-   If plane>0 And car=0 And tbing=1 Then dxx*=0.5:dyy*=0.5
+   If plane>0 And car=0 And tbing=1 Then
+   	'dxx*=0.5:dyy*=0.5
+   EndIf 	
    If testworld=0 Then dyy*=0.75
    Var dxx1=dxx*2,dyy1=dyy*2
    If mapdisplay=1 Then dxx1=30:dyy1=30
