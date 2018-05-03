@@ -1030,6 +1030,11 @@ For i=2 To 512-2
 	Next
 Next
 End Sub
+Dim Shared As uint bmpwebx2=100,bmpweby2=100
+Dim Shared As uint bmpwebx20=100,bmpweby20=100
+ReDim Shared As uint webpicr(1 To bmpwebx20*bmpweby20)
+ReDim Shared As uint webpicg(1 To bmpwebx20*bmpweby20)
+ReDim Shared As uint webpicb(1 To bmpwebx20*bmpweby20)
 Sub loadwebtext3(zoom1 As Integer)
 scale=2:size=563':kxweb=(1-512/563)/2'Int(512/(1-0.12))'512
 'If (mz-mzsol0)<500 Then scale=1
@@ -1046,12 +1051,38 @@ If mapdisplay=5 Then
 EndIf
 Var iretry=9
 retry2:
-Var hostname="maps.googleapis.com"
-If googleerror=0 Then 
-	webidata=httppost(hostname,path+myapikey)
-Else
+If tbing=1 Then
+ 'http://dev.virtualearth.net/REST/v1/Imagery/Map/aerial/47.619048,-122.35384/15?mapSize=500,500&key=%20Aq0npnXsrnwL9eY3rCUQsJZJJedr8Za9hIH-XsWnppaizf92DYjKS1syE9K3HqVr	
+ Var hostname="dev.virtualearth.net"
+ 'Var apikeybing="&key=%20Aq0npnXsrnwL9eY3rCUQsJZJJedr8Za9hIH-XsWnppaizf92DYjKS1syE9K3HqVr"
+ Var msize=Int(scale*size)
+ 'path="/REST/v1/Imagery/Map/aerial/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=png"
+ If 1 Then'plane=0 Or car>0 Then
+ 	path="/REST/v1/Imagery/Map/Road/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1+1)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg"
+ Else 
+   path="/REST/v1/Imagery/Map/Road/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1+2)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg"
+ EndIf 
+ If googleerror=0 Then 
+	webidata=httppost(hostname,path+apikeybing)
+	'guinotice Str(webidata)+" "+Str(msize)
+	'Var i=0,mwtext=""
+	'For i=0 To 6'00
+	'	mwtext+=Chr(recvdata(i))
+	'Next
+	'If Left(mwtext,4)<>"ÿØÿà" Then guinotice "ÿØÿà"
+	'If Left(mwtext,4)<>"‰PNG" Then guinotice "‰PNG"
+	'guinotice Left(mwtext,600)
+ Else
 	webidata=0
-EndIf 
+ EndIf 
+Else 
+ Var hostname="maps.googleapis.com"
+ If googleerror=0 Then 
+	webidata=httppost(hostname,path+myapikey)
+ Else
+	webidata=0
+ EndIf
+EndIf  
 If webidata>2 Then
 	'guinotice Str(Asc("ÿ"))+" "+Str(Asc("Ù"))+"  "+Str(&hD9)+" "+Str(recvdata(webidata-1))'217
 	If recvdatagoogle(webidata-1)<>217 Or recvdatagoogle(webidata-2)<>255 Then
@@ -1179,7 +1210,7 @@ EndIf
      k+=d
     Else  
      r=70:g=170:b=70
-  	 EndIf  
+  	 EndIf
     testroadr(iroad,jroad)=r
     testroadg(iroad,jroad)=g
     testroadb(iroad,jroad)=b
@@ -1443,12 +1474,38 @@ path="/maps/api/staticmap?center="+Str(lat1)+","+Str(lng1)+"&zoom="+Str(webzoom1
 'path="/maps/api/staticmap?center="+Str(lat)+","+Str(lng)+"&zoom="+Str(6)+"&scale="+Str(1)+"&size="+Str(256)+"x"+Str(256)+"&maptype=terrain&format="+typejpg+mapstyle
 Var iretry=9
 retry3:
-Var hostname="maps.googleapis.com"
-If googleerror=0 Or tinittown0>1 Then 
-	webidata=httppost(hostname,path+myapikey)
-Else
+If tbing=1 Then
+ 'http://dev.virtualearth.net/REST/v1/Imagery/Map/aerial/47.619048,-122.35384/15?mapSize=500,500&key=%20Aq0npnXsrnwL9eY3rCUQsJZJJedr8Za9hIH-XsWnppaizf92DYjKS1syE9K3HqVr	
+ Var hostname="dev.virtualearth.net"
+ 'Var apikeybing="&key=%20Aq0npnXsrnwL9eY3rCUQsJZJJedr8Za9hIH-XsWnppaizf92DYjKS1syE9K3HqVr"
+ Var msize=Int(scale*size)
+ 'path="/REST/v1/Imagery/Map/aerial/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=png"
+ If 1 Then'plane=0 Or car>0 Then
+ 	path="/REST/v1/Imagery/Map/AerialWithLabels/"+Str(lat1)+","+Str(lng1)+"/"+Str(webzoom1+1)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg"
+ Else 
+   path="/REST/v1/Imagery/Map/AerialWithLabels/"+Str(lat1)+","+Str(lng1)+"/"+Str(webzoom1+2)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg"
+ EndIf 
+ If googleerror=0 Then 
+	webidata=httppost(hostname,path+apikeybing)
+	'guinotice Str(webidata)+" "+Str(msize)
+	'Var i=0,mwtext=""
+	'For i=0 To 6'00
+	'	mwtext+=Chr(recvdata(i))
+	'Next
+	'If Left(mwtext,4)<>"ÿØÿà" Then guinotice "ÿØÿà"
+	'If Left(mwtext,4)<>"‰PNG" Then guinotice "‰PNG"
+	'guinotice Left(mwtext,600)
+ Else
 	webidata=0
-EndIf 
+ EndIf 
+Else 
+ Var hostname="maps.googleapis.com"
+ If googleerror=0 Or tinittown0>1 Then 
+	webidata=httppost(hostname,path+myapikey)
+ Else
+	webidata=0
+ EndIf
+EndIf  
 If webidata>2 Then
 	'guinotice Str(Asc("ÿ"))+" "+Str(Asc("Ù"))+"  "+Str(&hD9)+" "+Str(recvdata(webidata-1))'217
 	If recvdatagoogle(webidata-1)<>217 Or recvdatagoogle(webidata-2)<>255 Then
@@ -1563,10 +1620,6 @@ Sleep t300'1000
 tloadwebtext2=4
  
 End Sub
-Dim Shared As uint bmpwebx2=1,bmpweby2=1
-ReDim Shared As uint webpicr(1 To bmpwebx2*bmpweby2)
-ReDim Shared As uint webpicg(1 To bmpwebx2*bmpweby2)
-ReDim Shared As uint webpicb(1 To bmpwebx2*bmpweby2)
 Dim Shared As Single xweb10=0,yweb10=0,dxweb10=1,dyweb10=1
 Dim Shared As Double tloadwebmap=0
 Sub loadwebmap()
@@ -1621,10 +1674,20 @@ Sub subloadwebmap(ByVal userdata As Any Ptr)
 	tloadwebtext2=0
 End Sub
 Sub loadwebterrain(zoom1 As integer)
+If tbing=1 And 0 Then
+  /'Dim As Integer i	
+  Var bmpx=bmpwebx2,bmpy=bmpweby2 
+  For i=1 To bmpx*bmpy
+    webpicr(i)=70
+    webpicg(i)=170
+    webpicb(i)=70
+  Next
+  '/
+Else 
 'https://maps.googleapis.com/maps/api/staticmap?key=YOUR_API_KEY&center=-33.9,151.14999999999998&zoom=12&format=png
 '&maptype=roadmap&style=element:geometry%7Ccolor:0xf5f5f5&style=element:labels%7Cvisibility:off&style=element:labels.icon%7Cvisibility:off&style=element:labels.text.fill%7Ccolor:0x616161&style=element:labels.text.stroke%7Ccolor:0xf5f5f5&style=feature:administrative%7Celement:geometry%7Cvisibility:off&style=feature:administrative.land_parcel%7Cvisibility:off&style=feature:administrative.land_parcel%7Celement:labels.text.fill%7Ccolor:0xbdbdbd&style=feature:administrative.neighborhood%7Cvisibility:off&style=feature:poi%7Cvisibility:off&style=feature:poi%7Celement:geometry%7Ccolor:0xeeeeee&style=feature:poi%7Celement:labels.text.fill%7Ccolor:0x757575&style=feature:poi.park%7Celement:geometry%7Ccolor:0xe5e5e5&style=feature:poi.park%7Celement:labels.text.fill%7Ccolor:0x9e9e9e&style=feature:road%7Cvisibility:off&style=feature:road%7Celement:geometry%7Ccolor:0xffffff&style=feature:road%7Celement:labels.icon%7Cvisibility:off&style=feature:road.arterial%7Celement:labels.text.fill%7Ccolor:0x757575&style=feature:road.highway%7Celement:geometry%7Ccolor:0xdadada&style=feature:road.highway%7Celement:labels.text.fill%7Ccolor:0x616161&style=feature:road.local%7Celement:labels.text.fill%7Ccolor:0x9e9e9e&style=feature:transit%7Cvisibility:off&style=feature:transit.line%7Celement:geometry%7Ccolor:0xe5e5e5&style=feature:transit.station%7Celement:geometry%7Ccolor:0xeeeeee&style=feature:water%7Celement:geometry%7Ccolor:0xc9c9c9&style=feature:water%7Celement:labels.text.fill%7Ccolor:0x9e9e9e&size=480x360 
 'https://maps.googleapis.com/maps/api/staticmap?key=YOUR_API_KEY&center=-33.91219906720679,151.10270729064936&zoom=15&format=png&maptype=roadmap&style=element:labels%7Cvisibility:off&style=feature:administrative%7Celement:geometry%7Cvisibility:off&style=feature:administrative.land_parcel%7Cvisibility:off&style=feature:administrative.neighborhood%7Cvisibility:off&style=feature:poi%7Cvisibility:off&style=feature:road%7Cvisibility:off&style=feature:road%7Celement:labels.icon%7Cvisibility:off&style=feature:transit%7Cvisibility:off&size=480x360 
-Dim As Integer size=512
+Dim As Integer scale=1,size=512
 'If (mz-mzsol0)<700 Then size=256
 'If (mz-mzsol0)<100 Then size=256
 'Var mapstyle2="&style=feature:road%7Cvisibility:off&style=element:labels%7Cvisibility:off&style=element:geometry.stroke%7Cvisibility:off"
@@ -1635,12 +1698,38 @@ Var mapstyle2="&style=element:labels%7Cvisibility:off&style=feature:administrati
 Var path2="/maps/api/staticmap?center="+Str(lat)+","+Str(lng)+"&zoom="+Str(zoom1-3)+"&scale="+Str(1)+"&size="+Str(size)+"x"+Str(size)+"&maptype=terrain&format="+typejpg+mapstyle2
 Var iretry=9
 retry4:
-Var hostname="maps.googleapis.com"
-If googleerror=0 Then 
-	webidata=httppost(hostname,path2+myapikey)
-Else
+If tbing=1 Then
+ 'http://dev.virtualearth.net/REST/v1/Imagery/Map/aerial/47.619048,-122.35384/15?mapSize=500,500&key=%20Aq0npnXsrnwL9eY3rCUQsJZJJedr8Za9hIH-XsWnppaizf92DYjKS1syE9K3HqVr	
+ Var hostname="dev.virtualearth.net"
+ 'Var apikeybing="&key=%20Aq0npnXsrnwL9eY3rCUQsJZJJedr8Za9hIH-XsWnppaizf92DYjKS1syE9K3HqVr"
+ Var msize=Int(scale*size)
+ 'path="/REST/v1/Imagery/Map/aerial/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=png"
+ If 1 Then'plane=0 Or car>0 Then
+ 	path="/REST/v1/Imagery/Map/Road/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1-3)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg"
+ Else 
+   path="/REST/v1/Imagery/Map/Road/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1-2)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg"
+ EndIf 
+ If googleerror=0 Then 
+	webidata=httppost(hostname,path+apikeybing)
+	'guinotice Str(webidata)+" "+Str(msize)
+	'Var i=0,mwtext=""
+	'For i=0 To 6'00
+	'	mwtext+=Chr(recvdata(i))
+	'Next
+	'If Left(mwtext,4)<>"ÿØÿà" Then guinotice "ÿØÿà"
+	'If Left(mwtext,4)<>"‰PNG" Then guinotice "‰PNG"
+	'guinotice Left(mwtext,600)
+ Else
 	webidata=0
-EndIf 
+ EndIf 
+Else 
+ Var hostname="maps.googleapis.com"
+ If googleerror=0 Then 
+	webidata=httppost(hostname,path2+myapikey)
+ Else
+	webidata=0
+ EndIf
+EndIf  
 If webidata>2 Then
 	'guinotice Str(Asc("ÿ"))+" "+Str(Asc("Ù"))+"  "+Str(&hD9)+" "+Str(recvdata(webidata-1))'217
 	If recvdatagoogle(webidata-1)<>217 Or recvdatagoogle(webidata-2)<>255 Then
@@ -1702,12 +1791,13 @@ Dim As uint x,y,bmpx,bmpy
 x=w:y=h
 bmpx=x:bmpy=y
 'getlockterrain2()
-If bmpwebx2*bmpweby2<bmpx*bmpy Then 
- bmpwebx2=bmpx:bmpweby2=bmpy
+If bmpwebx20*bmpweby20<bmpx*bmpy Then 
+ bmpwebx20=bmpx:bmpweby20=bmpy
  ReDim As uint webpicr(1 To bmpx*bmpy)
  ReDim As uint webpicg(1 To bmpx*bmpy)
  ReDim As uint webpicb(1 To bmpx*bmpy)
-EndIf  
+EndIf 
+bmpwebx2=bmpx:bmpweby2=bmpy
 Dim As uint pix,k,r,g,b,a:Dim As uint i,j
 k=0:a=255 Shl 24
 'For i=1 To bmpx*bmpy'UBound(picbits)
@@ -1737,6 +1827,7 @@ freeimage_unload(bmp)
 freeimage_closememory(mem)
 guierror=0
 
+EndIf'tbing
 'guinotice "srtm "+Str(toksrtm)
 If toksrtm>=1 And tinternet>=3 Then
 	testloadsrtm()
@@ -1994,7 +2085,9 @@ EndIf'/
 		Var hsrtm=max(-0.0,0.8*(getsrtmheight(srtmlat,srtmlng)-14))
      	If test=0 Then
      	  Var h=0.0'max(0,(r+g)/2-b)*2'4'*0.1
-   	  h=hrgb(r,g,b)'120*4000*(g+g-b-r)/(30+r*r+g*g+b*b)
+     	  If tbing=0 Then
+   	    h=hrgb(r,g,b)'120*4000*(g+g-b-r)/(30+r*r+g*g+b*b)
+   	  EndIf  
    	  Var h80=10.0
 		  If thrgb0=1 Then 
 		   If Abs(h-hrgb0)<h80 Then
@@ -2022,7 +2115,7 @@ EndIf'/
 		   	h*=0.2
 		   'EndIf
 		   h=max(0.0,min(256.0,h))
-		  EndIf  
+		  EndIf 
      	  'h=h+hsrtm-60+dhmareemax+0.1
      	  h=hsrtm+h'-60+dhmareemax+0.1
      	  'myzmin+=(max(-65.0,min(myzmin,h))-myzmin)*0.001

@@ -15815,6 +15815,8 @@ EndIf 'planet
         	 glcolor3f(0,1,1)
           If InStr(httphost,"google")>0 Then
           	gldrawtext("load...",10,310,1)
+          ElseIf InStr(httphost,"virtualearth")>0 Then
+          	gldrawtext("load..",10,310,1)
           Else 
           	gldrawtext("load.."+Str(Int(dtweb))+" "+Str(tinittown),10,310,1)
           EndIf
@@ -20233,12 +20235,14 @@ If plane=0 Then
     		Sleep 300
     	EndIf 	
   	 EndIf
-    If trun=1 Then
-      	If tfoothorse=0 Then
+    If trun=1 Or Abs(mx-mx0)+Abs(my-my0)>0.01 Then
+         If trun=1 Then 
+      	 If tfoothorse=0 Then
       		mx+=vv*0.2*cos1*kfps:my+=vv*0.2*sin1*kfps
-      	Else 
+      	 Else 
       		mx+=vv*0.35*cos1*kfps:my+=vv*0.35*sin1*kfps
-      	EndIf
+      	 EndIf
+      	EndIf  
       	mzh=25+(0.9-Abs(Cos(Timer*3.2)))
       	If mzh<25.15 And tfoothorse=0 Then
       		If mz<waterz+25.1 Then
