@@ -80,6 +80,7 @@ Dim As Integer iwait,i
    tlockchanged=1
    Sleep 100
    icurl= httppostcurl(hostname0,path)
+   'If InStr(hostname0,"google")>0 Then auxvar+=1:auxtest=0.2
    If InStr(hostname0,"google")>0 Or InStr(hostname0,"virtualearth")>0 Then
       For i=0 To icurl
       	recvdatagoogle(i+cdatagoogle)=recvdatacurl(i)

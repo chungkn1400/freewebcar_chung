@@ -11853,6 +11853,7 @@ Sub drawcloudshadow(ByVal i As Integer)
 	      glpopmatrix
 	   EndIf    
 End Sub 
+Dim Shared As Integer tshadow0
 Sub drawcloudshadows()
 Dim As Integer i,j,k
 Dim As Integer test
@@ -15562,7 +15563,7 @@ EndIf 'planet
     If tnight=0 And tshadow=1 Then
     	drawcloudshadows()
     EndIf
-    drawshadow()
+    If tshadow0=1 Then drawshadow()
 
     drawrain()
     
@@ -16284,10 +16285,10 @@ End Sub
 Sub subshadow
 	If tshadow=0 Then 
 		confirm("set shadow on ?","confirm",resp)
-		If resp="yes" Then tshadow=1
+		If resp="yes" Then tshadow=1:tshadow0=1
 	Else
 		confirm("set shadow off ?","confirm",resp)
-		If resp="yes" Then tshadow=0
+		If resp="yes" Then tshadow=0:tshadow0=1
 	EndIf
 End Sub
 Sub subsmooth
@@ -21679,6 +21680,13 @@ mz11=-999999
 				tframe=Timer 
         	   If guitestkey(vk_escape)<>0 Then quit=1
         	   If quit=0 Then tquit=max(tquit,tframe+2)
+        	   
+        	   If tshadow0=1 Then
+        	   	tshadow=1
+        	   	If mz>mzsol00+1100 Then tshadow0=0
+        	   ElseIf tshadow=1 Then
+        	   	If mz<mzsol00+1100 Then tshadow0=1
+        	   EndIf 
         	   
          	guiscan
        	   subtestmousewheel()
