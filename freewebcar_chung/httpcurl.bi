@@ -35,7 +35,7 @@ Function write_callback CDecl _
 
     '' just print it..
     '? Left(*zstr,100)
-    If ibytes<17500000-myidata And ibytes>0 Then
+    If ibytes<12500000-myidata And ibytes>0 Then
     	'myztext+=*zstr
       For ibyte=0 To ibytes-1
       	recvdatacurl(myidata)=buffer[ibyte]
@@ -75,6 +75,9 @@ Var url=host
     If Left(url,4)<>"http" Then
     	If InStr(LCase(url),"google")>0 Then
     		url="https://"+url
+    	ElseIf InStr(LCase(url),"overpass")>0 Or InStr(LCase(url),"openstreetmap")>0 Then
+    		'url=Left("https://"+url,4000)'"overpass-api.de/api/interpreter?"'url
+    		url="https://"+url'"overpass-api.de/api/interpreter?"'url
     	Else 	
     		url="http://"+url
     	EndIf

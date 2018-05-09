@@ -12,6 +12,7 @@ Dim Shared As uint Ptr aglptr(nagl)
 #Define glend aglend
 #Define gltexcoor2f aglcoord2f
 #Define '/ 
+/'
 Dim Shared As Integer kc1=-1
 Sub aglenableexecute(k As integer)
 	kc1=k
@@ -256,4 +257,5 @@ For i=1 To iagl
    	EndIf
 Next i 
 End Sub
-
+'/
+ 

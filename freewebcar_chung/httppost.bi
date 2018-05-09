@@ -53,9 +53,10 @@ hostname="en.wikipedia.org"
 path="/w/api.php?action=opensearch&search="+"lennon"+"&limit=5&namespace=0&format=json&redirects=resolve"
 '/
 
-Dim Shared As UByte recvdata(17512016)
-Dim Shared As UByte recvdatagoogle(17512016)
-Dim Shared As UByte recvdatacurl(17512016)
+Dim Shared As UByte recvdata(12512016)
+Dim Shared As UByte recvdatagoogle(4000016)
+Dim Shared As UByte recvdataboeing(400016)
+Dim Shared As UByte recvdatacurl(12512016)
 Dim Shared As Integer tquitweb=0,httpon,httpidata,webidata,googleerror=1,tgoogle=1,icurl
 Dim Shared As Byte tlockchanged
 Dim Shared As String httphost
@@ -82,10 +83,17 @@ Dim As Integer iwait,i
    icurl= httppostcurl(hostname0,path)
    'If InStr(hostname0,"google")>0 Then auxvar+=1:auxtest=0.2
    If InStr(hostname0,"google")>0 Or InStr(hostname0,"virtualearth")>0 Then
+      icurl=min2(icurl,4000000)
       For i=0 To icurl
       	recvdatagoogle(i+cdatagoogle)=recvdatacurl(i)
       Next
+   ElseIf InStr(hostname0,"adsbexchange")>0 Then
+      icurl=min2(icurl,400000)
+      For i=0 To icurl
+      	recvdataboeing(i)=recvdatacurl(i)
+      Next
    Else 
+   	icurl=min2(icurl,12500000)
       For i=0 To icurl
       	recvdata(i)=recvdatacurl(i)
       Next

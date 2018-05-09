@@ -3,7 +3,7 @@
 '#Define guinogfx 'dont use freebasic gfx 
 Dim Shared As double auxvar,auxvar2,auxvar3,auxvar4,auxvar5,auxvar6,auxtest=0,auxtest0=0.8
 Dim Shared As Single kfps=1,xmax,ymax
-Dim Shared As String auxtext
+Dim Shared As String auxtext,auxtext2
 Dim Shared As Integer quit=0,guierror=0
 Dim As Integer i,j,k,n
 Dim Shared As Integer tshowradio,tradio,fre00
@@ -1095,7 +1095,7 @@ Dim Shared As Single k8=6,k88=6,vautopilot=3
 Dim Shared As Single nearaerowaylat(18),nearaerowaylon(18),nearaerowayx(18),nearaerowayy(18)
 Dim Shared As String nearaerowayname(18)
 Dim Shared As Single to1car,to2car,to1plane,to2plane,retroto1,retroto2,tlayer=0,tlayer2,tlayer0,tlayer00,layero1
-Dim Shared As Integer tshadow=1,tfoothorse=0,typeautopilot,tbing=1,tgps=0,dyh0,tradar2,typeautopilot0
+Dim Shared As Integer tshadow=1,tfoothorse=0,typeautopilot,tbing=1,tgps=0,dyh0,tradar2,typeautopilot0,nboeing2=12
 Dim Shared As Double timelayer
 Dim Shared As int64  idlayer,idlayer0
 #Include "./movecar.bi"
@@ -1297,6 +1297,8 @@ typeautopilot0=0
 If Not Eof(file) Then Line Input #file,ficin:typeautopilot0=Val(ficin)
 detail40=1
 If Not Eof(file) Then Line Input #file,ficin:detail40=Val(ficin)
+nboeing2=10
+If Not Eof(file) Then Line Input #file,ficin:nboeing2=Val(ficin)
 Close #file
 carb=max(1000.0,min(carb+1000.0,carb0))
 kscalex=500:kscalex00=500
@@ -4586,6 +4588,32 @@ Function  ptownwaynodeo12(ntowni As integer,ntownnodei As integer,nwaynodei As I
 End Function
 #Define tt2 10
 #Define t8000 25000/10
+Dim Shared As Integer lockboeing
+Sub getlockboeing()
+'Exit sub
+Dim As Integer i
+For i=1 To 100
+	If lockboeing=0 Then lockboeing=1:tlockchanged=1:Exit Sub
+	If quit=1 Then Exit Sub
+	Sleep 100
+Next
+lockboeing+=1
+End Sub
+Sub getlockboeing2()
+'Exit sub
+Dim As Integer i
+For i=1 To 100
+	If lockboeing=0 Then lockboeing=1:tlockchanged=1:Exit Sub
+	If quit=1 Then Exit Sub
+	Sleep 100
+Next
+lockboeing+=1
+End Sub
+Sub freelockboeing()
+'Exit sub
+	lockboeing=max2(0,lockboeing-1):tlockchanged=1
+	'Sleep ttt2
+End Sub
 Sub getlockterrain()
 'Exit sub
 Dim As Integer i
@@ -5473,7 +5501,7 @@ If testtownshow=1 Or (Abs(tlayer0-tlayer)>0.01 And taglcompile2>2) Or testcorrec
 	EndIf
 EndIf 
 'taglcompile=1
-If taglcompile=1 Then aglreset()
+'If taglcompile=1 Then aglreset()
 If taglcompile2=1 Then
 	inearroad=0:inearroad2=0:inear0road=0
    tlayer0=tlayer 
@@ -5655,7 +5683,7 @@ If taglcompile2=1 Then
 EndIf 
 If agllist<>0 And taglcompile2<>1 Then glcalllist(agllist)    
 
-If taglcompile=19999 then
+/'If taglcompile=19999 then
 	aglpushmatrix
 	agltranslatef(mx+800*cos1,my+800*sin1,mz)
 	agltexsphere 300
@@ -5665,6 +5693,7 @@ EndIf
 If 0 Then'taglcompile>=1 Then
 	aglexecute()
 EndIf
+'/
 'gldisable(gl_lighting)
 'gldisable(gl_normalize) 
 'gldisable gl_blend
@@ -6747,6 +6776,7 @@ End Select
 End Function
 Dim Shared As Single stationx,stationy,stationz,stationvie,boeingportx,boeingporty,boeingx,boeingy,boeingz
 Dim Shared As Single mnearaerowayx,mnearaerowayy,mynearaerowayz,mdistnearaeroway=999999
+Declare sub drawnboeingradar(dx as single,dy as Single)
 Sub drawradar
 Dim As Integer i
 Dim As Single dx=35,dy=85-15,rx=30*ymax/520
@@ -6894,6 +6924,8 @@ If plane=1 And (volant>=1 Or tradar2=1) And tourelle=0 Then
          'EndIf
        EndIf
      EndIf 
+     
+     If nboeing2>0 Then drawnboeingradar(dx,dy)
  /'
  if tsphere=1 Or planet=1 Then
      dmx=stationx-mx:dmy=stationy-my
@@ -9521,7 +9553,7 @@ End Sub
 Dim Shared As uint avionlist,corsair0list,corsairlist,vg33list,zerolist,b25list,alphajetlist
 Dim Shared As uint alphajet0list,vg330list,spitfirelist,spitfire0list,bf109list,bf1090list
 Dim Shared As uint p51dlist,p51d0list,f14list,f140list,zero0list,c150list,c1500list,boeing737list,boeing737lowlist
-Dim Shared As uint eurofighterlist,eurofighter0list,fighterlist,fighter0list
+Dim Shared As uint eurofighterlist,eurofighter0list,fighterlist,fighter0list,boeing737lowlist2
 Dim Shared As uint spaceshiplist,spaceship0list
 /'
 Sub drawcorsair0
@@ -10489,10 +10521,8 @@ Dim Shared As Single timeh,timedo1,timedo2,dhseashore
 Dim Shared As Double timemaree
 'Dim Shared As Single dxshadow,dyshadow,dzshadow,dxyshadow,o1shadow
 Dim Shared As Single dxshadow0,dyshadow0,dzshadow0,dxyshadow0,o1shadow0
-Sub drawsun
-Dim As Single x,y,z,aux
-Dim As Integer i,j
-    If guitestkey(vk_f3) Then
+Sub subchangehour()
+    'If guitestkey(vk_f3) Then
     	confirm("change time of day ?","confirm",resp)
     	If resp="yes" Then
     	  timehour1=timehour+dtimehour'heure	
@@ -10508,7 +10538,11 @@ Dim As Integer i,j
         'timemaree=-9999
         'xweb1=xweb-999999
     	EndIf   
-    EndIf 
+    'EndIf 	
+End Sub
+Sub drawsun
+Dim As Single x,y,z,aux
+Dim As Integer i,j
 tsun-=kfps
 if tsun<0 Or time2<timeinit+10 Then
   tsun=600'200
@@ -10571,11 +10605,11 @@ if tsun<0 Or time2<timeinit+10 Then
   	  aux=sqr(kxsoleil*kxsoleil+kysoleil*kysoleil+kzsoleil*kzsoleil+1)
   	  ixsun=0.53*kxsoleil/aux'0.52
   	  iysun=0.53*kysoleil/aux
-     For i=0 To 512
-	    For j=0 To 512
-		    terraincolor(i,j).y=terraincolory0(i,j)
-	    Next
-     Next 
+     'For i=0 To 512
+	  '  For j=0 To 512
+	  '    terraincolor(i,j).y=terraincolory0(i,j)
+	  '  Next
+     'Next 
      Var b=ksoleil^1.4:b=1.15+(ksoleil-1)*0.6'0.5
      Var c=min(1.0,b)
      Var a=c*c*0.471'0.65'0.14'0.07
@@ -10619,7 +10653,7 @@ End if
      gllightfv(gl_light0,GL_position,glparam4f(mx-kxsoleil*9,my-kysoleil*9,mz+kzsoleil*9,0))'w=0,directional
      glpopmatrix '/
 If 1 Then
- If tdark=1 And (mz<mzsol0+200) Then'(plane=0 Or car>0) Then=
+ If tdark=1 Then'And (mz<mzsol0+200) Then'(plane=0 Or car>0) Then=
  	Var dr=16.5'20.0
    gllightfv(gl_light0,GL_position,glparam4f(mx+dr*cos1*cos2,my+dr*sin1*cos2,mz+dr*sin2+5,1)) 'w=1 position GL_POSITION
    glLightfv(gl_light0, GL_SPOT_DIRECTION, glparam3f(dmx,dmy,dmz-0.4))
@@ -12769,6 +12803,7 @@ If tdark=1 Then
 EndIf
 End Sub
 Sub drawc150red
+'glcolor3f(0.86,1,0.4)
 'If tdark=0 Then 
   glenable(gl_lighting)
 'Else 
@@ -12865,6 +12900,26 @@ gltranslatef(0,0,18)
 	EndIf	
 gldisable(gl_light3)	
 End Sub
+Sub draw737low2
+glenable(gl_lighting)
+glenable(gl_light3)
+'If mz>mzsol00+80 And piste=0 Then gltranslatef(0,0,18)
+gltranslatef(0,0,18)
+'if icar=12 Then 
+'	glbindtexture(gl_texture_2d,zero2text)
+'Else 
+	glbindtexture(gl_texture_2d,boeing737text)
+'EndIf
+	If boeing737lowlist2<>0 Then
+		glcalllist(boeing737lowlist2)
+	Else
+		boeing737lowlist2=glgenlists(1)
+		glnewlist boeing737lowlist2,gl_compile
+		load3dssize("objects/737lowpoly3.3ds",@"",@"",100)
+      glendlist
+	EndIf	
+gldisable(gl_light3)	
+End Sub 
 Dim Shared As uint spottext
 Sub drawspot(px As single,py As single,pz As single,dr As Single,r As Single,g As Single,b As Single,a As Single)
 If (Int(time2)Mod 2)=1 Then Exit sub
@@ -12886,6 +12941,12 @@ glenable gl_texture_2D
 End Sub
 Dim Shared As Single boeingo1,boeingo2,boeingo3,boeingx0,boeingy0,boeingtx,boeingty,boeingx2
 Dim Shared As Single boeingco1,boeingsi1,boeingzsol,boeingdz3000=3000
+Dim Shared As Single nboeingo1,nboeingo2,nboeingo3,nboeingx0,nboeingy0,nboeingtx,nboeingty,nboeingx2
+Dim Shared As Single nboeingco1,nboeingsi1,nboeingzsol,nboeingdz3000=3000,nboeingx,nboeingy,nboeingz,nboeingalt
+Dim Shared As Single nboeingkvol,nboeingv
+Dim Shared As Double timeboeing,timeboeing0
+Dim Shared As Integer tcopyboeing
+Dim Shared As String nboeingmodel
 Sub drawboeing()
 	Var dmax=30000.0
 	'boeingx=mx+600+(1+Cos(Timer*3/30))*14000:boeingy=my:boeingz=mz+(boeingx-mx)*0.200
@@ -12926,6 +12987,7 @@ Sub drawboeing()
   		'auxvar=dist1:auxtest=0.2
       Var kvol=990.0/max(990.0,dist1)
       kvol=max(2.0,998*kvol*kvol)
+      kvol=max(nboeingkvol,kvol)
   		mcisendstring("setaudio boeing volume to "+str(Int(kvol)),0,0,0)
   	EndIf
    If Abs(boeingtx)+Abs(boeingty)>0.001 Then
@@ -12974,7 +13036,11 @@ Sub drawboeing()
    glrotatef(-boeingo2,0,1,0)
    glrotatef(-boeingo3,1,0,0)
    glscalef(4,4,5)
-   draw737low()
+   If x2<10000 Then
+   	draw737low()
+   Else
+   	draw737low2()
+   EndIf
    If (Int(time2)Mod 2)=1 Then 
     gldisable gl_texture_2D
     gldisable gl_lighting
@@ -14657,12 +14723,14 @@ Dim Shared As Single o333,cos333,sin333,do333,o100
 dim shared as double timehelp,timelayer0
 Dim Shared As Integer tfootmove
 declare sub drawhelp()
+Declare Sub loadairtraffic()
+Declare Sub drawnboeings()
 Sub display ()
 Dim As Single x,y,z,aux,r,g,b
 Dim As Integer changearbre,changebuisson,changehouse,changehouse2,changedome
 Dim As Integer i,j,k,test
 	
-If time2<timeinit+10 Then Exit sub
+'If time2<timeinit+10 Then Exit sub
 
 	 scaleview=1
     trepair=0
@@ -14708,6 +14776,10 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     			If max(Abs(mx),Abs(my))>250000 Then
     				resetmxy0()
     			EndIf 	
+    		EndIf 	
+    		'If guitestkey(vk_6) And tloadwebtext2=0 Then tloadwebtext2=2:loadairtraffic():tloadwebtext2=0
+    		If guitestkey(vk_6) And auxtext2<>"" Then
+    			prompt("test text",auxtext2)
     		EndIf 	
     		If guitestkey(vk_7) And auxtext<>"" Then
     			prompt("formatname utf8/ansi chars",auxtext)
@@ -15106,8 +15178,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     Else 	
      	gldisable(gl_lighting)
     EndIf
-            
-            	
+                    	
     time1=Timer*1000
     If time1<time0 Or pause=1 Then time0=time1 'midnight
     glcolor3f(1,1,1)
@@ -15324,6 +15395,7 @@ If tsphere=0 And planet=0 Then
     
     drawballoon()
     drawboeing()
+    If nboeing2>0 Then drawnboeings()
     drawseagull()
     
     gldisable gl_alpha_test
@@ -15683,12 +15755,12 @@ EndIf 'planet
     	EndIf
     EndIf
     
-    If mz>mzsol00+5000 And mapdisplay=0 Then
+    /'If mz>mzsol00+5000 And mapdisplay=0 Then
       glsetrange(36.0*14,14*2*170000.0)
       gldisable gl_fog
     	drawcitynear()
     	setrangeGL(0)
-    EndIf
+    EndIf '/
     drawtest()
 
         glLoadIdentity ()
@@ -15733,7 +15805,7 @@ EndIf 'planet
         If Abs(auxvar4)>0.00001 Then gldrawtext("aux4= "+Str(auxvar4),15,ymax-139,1.2)
         If Abs(auxvar5)>0.00001 Then gldrawtext("aux5= "+Str(auxvar5),15,ymax-159,1.2)
         If Abs(auxvar6)>0.00001 Then gldrawtext("aux6= "+Str(auxvar6),15,ymax-179,1.2)
-        If auxtext<>"" Then gldrawtext(auxtext,15,ymax-199,1.2)
+        If auxtext<>"" Then gldrawtext(Str(auxtext),15,ymax-199,1.2)
        EndIf
        If auxtest<0.1 And mapdisplay=0 Then 
         If timer<timehelp+120 Then drawhelp()	
@@ -15818,6 +15890,8 @@ EndIf 'planet
           	gldrawtext("load...",10,310,1)
           ElseIf InStr(httphost,"virtualearth")>0 Then
           	gldrawtext("load..",10,310,1)
+          ElseIf InStr(httphost,"adsbexchange")>0 Then
+          	gldrawtext("load.traffic",10,310,1)
           Else 
           	gldrawtext("load.."+Str(Int(dtweb))+" "+Str(tinittown),10,310,1)
           EndIf
@@ -15830,7 +15904,7 @@ EndIf 'planet
         drawradar
 	     If tgps<=1 Then drawgps
         cursorx0=0:cursory0=0:cursorz0=0
-        drawhand
+        'drawhand
         
     If quit=1 Then
    	glpushmatrix
@@ -16288,7 +16362,7 @@ Sub subshadow
 		If resp="yes" Then tshadow=1:tshadow0=1
 	Else
 		confirm("set shadow off ?","confirm",resp)
-		If resp="yes" Then tshadow=0:tshadow0=1
+		If resp="yes" Then tshadow=0:tshadow0=0
 	EndIf
 End Sub
 Sub subsmooth
@@ -16355,7 +16429,7 @@ End Sub
 Sub subncar
 Dim As Integer i  	
 	resp=Str(ncar2)
-	msg="number of cars : enter a number (1.."+Str(ncar)+")  last="+resp
+	msg="max number of cars : enter a number (1.."+Str(ncar)+")  last="+resp
 	prompt(msg,resp)
 	i=Val(resp)
 	i=max2(1,min2(ncar,i))
@@ -16379,6 +16453,17 @@ Dim As Integer i
 	i=max2(0,min2(nship10,i))
 	If i<>nship2 Then
 	  nship2=i
+	EndIf
+	Sleep 1000
+	guiscan
+	resp=Str(nboeing2)
+	Var nboeing10=20
+	msg="max number of boeings : enter a number (0.."+Str(nboeing10)+")  last="+resp
+	prompt(msg,resp)
+	i=Val(resp)
+	i=max2(0,min2(nboeing10,i))
+	If i<>nboeing2 Then
+	  nboeing2=i
 	EndIf
 End Sub
 Sub sublevel
@@ -16592,7 +16677,7 @@ Sub subtown
   getcomboindex("win.town",itown)
   guisetfocus("win.graph")
 End Sub
-Sub substars()
+/'Sub substars()
 confirm("change stars ?","confirm",resp)
 If resp="yes" Then
   istars+=1:If istars>4 Then istars=1	
@@ -16601,7 +16686,7 @@ If resp="yes" Then
   If starspacetext2<>0 Then guideletetexture(starspacetext2):starspacetext2=0
   myglbindtexture(gl_texture_2d,@starspacetext2)
 EndIf 
-End Sub 
+End Sub '/ 
 Sub submapauto()
 mapauto=1
 If imapsol<>4 Or maptexture=0 or planet=1 Then
@@ -20064,6 +20149,7 @@ If Abs(x-drawmapx)<50 And Abs(y-drawmapy)<50 And (imap>=4) _
 EndIf
 guisetfocus("win.graph")
 End Sub
+Declare Sub updatenboeing()
 Sub initterrain3
 If tinittown=2 Then Sleep 4000
 Dim As Single x,y
@@ -20143,6 +20229,9 @@ EndIf 'planet
    	 airshipy(i)+=my-my0
      EndIf
    Next i
+   
+   updatenboeing()
+   
 End Sub
 Sub testjoystick
 Dim As Integer i  	
@@ -21007,7 +21096,7 @@ msg+="R  => repair,radio  / shift+,M  => google map,zoom map"+cr
 'msg+="1,2,3,4 => give wingmen orders /  W  => declare war"+cr
 msg+="ctrl+T => number of trees   /   shift+T => set retro view"+cr
 msg+="ctrl+D => distmax  /  shift,ctrl,mousewheel => gaz (hand mode)"+cr
-msg+="ctrl+N => number of cars/planes"+cr
+msg+="ctrl+N => number of cars/planes/boeings"+cr
 msg+="ctrl+F => max/min fps"+cr
 msg+="ctrl+I => internet on/off"+cr
 msg+="ctrl+C => number of clouds"+cr
@@ -21212,6 +21301,7 @@ Next
 imxweb=1
 End Sub
 #Include "textures.bi"
+#Include "boeing.bi"
 Sub main
 End Sub
         
@@ -21280,7 +21370,7 @@ mz11=-999999
         bf109list=0:bf1090list=0:p51dlist=0:p51d0list=0:f14list=0:f140list=0:zero0list=0
         eurofighterlist=0:eurofighter0list=0:c150list=0:c1500list=0:ballonlist=0:c150grplist=0
         fighterlist=0:fighter0list=0:spaceshiplist=0:spaceship0list=0:copterlist=0:coptercockpitlist=0
-        boeing737list=0:boeing737lowlist=0
+        boeing737list=0:boeing737lowlist=0:boeing737lowlist2=0
         cowtext=0:soltexture=0:cartext=0:cieltext=0:maptexture=0:maptexture2=0
         maptexture3=0:maptexture4=0:maptexture5=0:towntext=0:webtext=0:webtextzoom=0
         orbit=1
@@ -21713,6 +21803,7 @@ mz11=-999999
          	'	guirefreshwindowh(hwin)'settown()
          	'EndIf 	
          		
+        	   If guitestkey(vk_f3)<>0 Then subchangehour()
         	   If guitestkey(vk_9)<>0 And topview=0 Then subtest()
         	   If guitestkey(vk_0)<>0 Then subsounds2()
         	   If guitestkey(vk_f9)<>0 Then subscreen
@@ -21727,7 +21818,7 @@ mz11=-999999
         	    EndIf 	
         	   EndIf
         	   'If guitestkey(vk_f12)<>0 Then submapworld()
-        	   If guitestkey(vk_f4)<>0 Then substars()
+        	   'If guitestkey(vk_f4)<>0 Then substars()
         	   If guitestkey(vk_m)<>0 And guitestkey(vk_shift)=0 And guitestkey(vk_control)=0 And imap>=4 Then
         	   	testweb=1
         	   	If testworld=0 Then
@@ -21835,7 +21926,7 @@ mz11=-999999
            	glviewport(0,0,xmax,ymax)
             gldisable gl_lighting
             gldisable gl_alpha_test
-           	display()
+           	If time2>timeinit+10 Then display()
            	
            If mapdisplay=4 Then
            	  drawtexture(webtext)
@@ -22151,6 +22242,7 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    If time2>timeinit+200 And timeinit>time2-1000 Then timeinit=time2-30:testweb=1
    If time2>timeinit+20 And testinit=0 Then testinit=1:testweb=1:subsettupdate()
    If timeinit>time2-6 Then testinit=0
+   'auxvar5=tloadwebtext2+0.1'Timer-tloadwebtext
    If tquitweb=1 Then
    	If quit=1 Then testweb=0
    	If tloadwebtext2=200 Then tloadwebtext2=0
@@ -22196,7 +22288,10 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
          'resettownwaynode()
          Sleep 100
       EndIf
-  	   threaddetach(ThreadCreate(@loadwebtext))    
+  	   threaddetach(ThreadCreate(@loadwebtext)) 
+ElseIf nboeing2>0 And Timer>timeboeing And tloadwebtext2=0 And tcopyboeing=0 Then
+  	   tloadwebtext2=2
+  	   threaddetach(ThreadCreate(@subloadairtraffic))
 ElseIf tinittown=0 And tinittown0=0 And testweb2=11 And httpon<>1 And tloadwebtext2=0 Then
    	   tloadwebtext2=2
    	   testweb2=0
@@ -22290,7 +22385,7 @@ ElseIf tinittown=0 And tinittown0=0 And testweb2=11 And httpon<>1 And tloadwebte
    	subsettupdate()
       'updateworldobjects
       'initterrainlines
-   ElseIf testweb=0 And tloadwebtext2=0 And tinittown=0 And tinittown0<=0 And topentown=1 And Timer>tloadwebtext+t10+2.3 And _  
+   ElseIf testweb=0 And tloadwebtext2=0 And tinittown=0 And tinittown0<=0 And topentown=1 And Timer>tloadwebtext+t10+2.3+(1-toverpass)*40 And _  
    	    abs(sin3)<0.60 And quit2=0 And tinternet>=2 And mapdisplay=0 And  _   
    	    guitestkey(vk_left)=0 And guitestkey(vk_right)=0 And guitestkey(vk_down)=0 Then '<0.67
      If mapdisplay=0 And testweb2=0 And time2>timeinit+20 Then 
@@ -22629,6 +22724,7 @@ Print #file,tradar2
 Print #file,tradio
 Print #file,typeautopilot0
 Print #file,detail40
+Print #file,nboeing2
 Close #file
 ''If townchanged=1 Or Rnd<0.2 Then savetownvie()
 If (planet=0 And orbit=1) And topentown=1 And tinittown0<=0 Then
@@ -23075,7 +23171,7 @@ While alt>100000 And orbit=0 _ '11000
         	      setvol()
         	   EndIf
         	   'If guitestkey(vk_f12)<>0 Then submapworld()
-        	   If guitestkey(vk_f4)<>0 Then substars()
+        	   'If guitestkey(vk_f4)<>0 Then substars()
         	   'If guitestkey(vk_m)<>0 And imap>=4 Then
         	   '	mapdisplay=(mapdisplay+1)Mod 3:Sleep 200:guiscan 
         	   'EndIf
@@ -23166,19 +23262,22 @@ Else
    EndIf
 EndIf    
 End Sub
-Sub setvideotexture(ByVal dtime As Double,ByRef itexture As Integer,ByRef tx As Single,ByRef ty As Single, _  
-	                 ByRef dtx As Single,ByRef dty As Single,ByVal dx As Integer=0,ByVal dy As Integer=0)
-	itexture=Int(dtime)Mod 12
+Dim Shared As integer videoitexture=0
+Dim Shared As Single videotx=0.0,videoty=0.0,videodtx=1.0,videodty=1.0
+'Sub setvideotexture(ByVal dtime As Double,ByRef itexture As Integer,ByRef tx As Single,ByRef ty As Single, _  
+'	                 ByRef dtx As Single,ByRef dty As Single,ByVal dx As Integer=0,ByVal dy As Integer=0)
+Sub setvideotexture(ByVal dtime As Double,ByVal dx As Integer=0,ByVal dy As Integer=0)
+	videoitexture=max2(0,min2(11,(Int(dtime) Mod 12)))
 	'glbindtexture gl_texture_2D,mygltext(itexture)
 	Var dtime1=dtime-Int(dtime)
 	Var ix=Int(dtime1*2)
 	Var iy=Int((dtime1*2-ix)*4)
 	var videodx=4*Int(512\4)
-	Var videody=4*Int(256\4)		
-	tx=(ix)/2+dx/videodx
-	ty=(3-iy)/4+dy/videody
-	dtx=1/2-dx*2/videodx
-	dty=1/4-dy*2/videody         
+	Var videody=4*Int(256\4)
+	videotx=(ix)/2+dx/videodx
+	videoty=(3-iy)/4+dy/videody
+	videodtx=1/2-dx*2/videodx
+	videodty=1/4-dy*2/videody         
 End Sub
 Dim Shared As Double time0video
 Sub drawvideo(scale As Single=1)
@@ -23188,10 +23287,10 @@ If mapdisplay>0 Then Exit Sub'Or volant=2 Then Exit Sub
  gldisable gl_depth_test
  glviewport(dx,ymax-dy-ymax*0.25,xmax*0.2,ymax*0.3)
 	If time0video<1 Then time0video=Timer 
-	Var dtime=(time2-time0video)*1.1
-	Dim As integer itexture=0
-	Dim As Single tx=0.0,ty=0.0,dtx=1.0,dty=1.0
-	setvideotexture(dtime,itexture,tx,ty,dtx,dty)',dx,dy)
+	Dim As Double dtime=(time2-time0video)*1.1
+	'setvideotexture(dtime,videoitexture,videotx,videoty,videodtx,videodty)',dx,dy)
+	setvideotexture(dtime)',dx,dy)
+	Var itexture=videoitexture,tx=videotx,ty=videoty,dtx=videodtx,dty=videodty
 	glenable gl_texture_2D
 	If ipersovideo=0 Then
 		glbindtexture0(gl_texture_2D,mygltext(itexture))

@@ -283,7 +283,7 @@ grillontext2=guiloadtexture("media/grillon_2.jpg",250)
            glbindtexture(gl_texture_2d,veroniquetext)
            glbindtexture(gl_texture_2d,christinetext)
            glbindtexture(gl_texture_2d,cocacolatext)
-
+ 
 For i=0 To 11
 	If mygltext(i)<>0 Then guideletetexture(mygltext(i))
 	mygltext(i)=guiloadtexture(ExePath+"/media/image/glvideo"+Str(i)+".jpg")
@@ -350,15 +350,16 @@ If itext=@radartext then *(itext)=guiloadtexture("media/radar.jpg",253)
 If itext=@pistetext then *(itext)=guiloadtexture("media/piste.jpg")
 If itext=@bullettext then *(itext)=guiloadtexture("media/impactballe.jpg",253)
 If itext=@worldtext Then
-	If planet=0 Or FileExists("addon/"+addon(imap)+"world.jpg")=0 Then
-		*(itext)=guiloadtexture("media/world1024.jpg")
-	Else
-		*(itext)=guiloadtexture("addon/"+addon(imap)+"world.jpg")
-	EndIf
+	'If planet=0 Or FileExists("addon/"+addon(imap)+"world.jpg")=0 Then
+		*(itext)=guiloadtexture("media/world.jpg")'world1024.jpg")
+	'Else
+	'	*(itext)=guiloadtexture("addon/"+addon(imap)+"world.jpg")
+	'EndIf
 EndIf
 If itext=@starspacetext then *(itext)=guiloadtexture("media/starspace.jpg",80)
 If itext=@starspacetext2 Then
-	Select Case istars Mod 4
+	*(itext)=guiloadtexture("media/starspace.jpg")
+	/'Select Case istars Mod 4
 		Case 1
 			*(itext)=guiloadtexture("media/galaxy11.jpg")
 		Case 2
@@ -369,7 +370,7 @@ If itext=@starspacetext2 Then
 			*(itext)=guiloadtexture("media/orion.jpg")
 		Case Else 
 			*(itext)=guiloadtexture("media/galaxy11.jpg")
-	End Select
+	End Select '/
 EndIf
 If itext=@debristext then *(itext)=guiloadtexture("media/debris.jpg",250)
 If itext=@seawavetext then *(itext)=guiloadtexture("media/seawave2.jpg")
@@ -2492,13 +2493,13 @@ Dim As integer i,j,k,i2,lline
 Dim As char c,icc,iccc
 ztext=wwline
 lline=Len(wwline)
-If lline>=8000000 Then Return ""
+If lline>=12600000-4 Then Return ""
 ztext2="":i2=0
 icc=Asc(cc):iccc=Asc(ccc)
 	j=1
 	k=InStr(wwline,cc)
 	If k<=0 Then Return ""
-	For i=k+1 To lline
+	For i=k+1-1 To lline-1
 		c=ztext[i]
 		If c=iccc Then
 			j-=1
@@ -2518,6 +2519,83 @@ End Function
 Dim Shared As String wsplit(99999)
 Dim Shared As Integer nsplit=1
 Sub split(wwline As String,cc As String)
+Dim As Integer i,j,k,kk,k0,p,pp,n,lcc=Len(cc)
+dim as char c,c1,c2,cc1,cc2,c3,cc3
+'ReDim As String wsplit(99999)
+nsplit=0
+j=0:k=0:kk=Len(wwline)
+If kk>=12600000-4 Then Exit Sub 
+ztext=wwline
+zcc=cc
+c1=Asc("["):c2=Asc("{")':c3=Asc("(")
+cc1=Asc("]"):cc2=Asc("}")':cc3=Asc(")")
+p=0:k=-1
+For i=0 To kk
+	'wline=Mid(wline,k)
+	If k>=kk-1 Then Exit For
+	k0=k+2
+	For pp=0 To kk-k-1
+	  k+=1
+	  If k>=kk Then Exit For 
+	  c=ztext[k]
+     If c=c1 Or c=c2 Then p+=1
+	  If p=0 Then
+	  	 For n=0 To lcc-1
+	  	 	If ztext[n+k]<>zcc[n] Then Exit For
+	  	 	If n=lcc-1 Then Exit For,For
+	  	 Next
+	  EndIf
+	  If c=cc1 Or c=cc2 Then p-=1
+	Next pp  	  
+	'k=InStr(wline,cc)
+	'If k<=0 Then Exit For
+	j+=1:wsplit(j)=Trim(mid(wwline,k0,k-k0+1))
+	If j>=99998 Then Exit For 
+	k+=lcc-1
+Next
+nsplit=j
+End Sub
+'split("{ok,ok},{ok2,ok2}",",")
+'guinotice wsplit(1)
+'guinotice wsplit(2)
+Sub split_old(wwline As String,cc As String)
+Dim As Integer i,j,k,kk,k0,p,pp,n,lcc=Len(cc)
+dim as char c,c1,c2,cc1,cc2,c3,cc3
+'ReDim As String wsplit(99999)
+nsplit=0
+j=0:k=0:kk=Len(wwline)
+If kk>=12600000-4 Then Exit Sub 
+ztext=wwline
+zcc=cc
+c1=Asc("["):c2=Asc("{"):c3=Asc("(")
+cc1=Asc("]"):cc2=Asc("}"):cc3=Asc(")")
+p=0
+For i=1 To kk
+	'wline=Mid(wline,k)
+	If k>=kk Then Exit For
+	k0=k+1 
+	For pp=0 To kk-k
+	  k+=1
+	  If k>=kk Then Exit For 
+	  c=ztext[k]
+     If c=c1 Or c=c2 Or c=c3 Then p+=1
+	  If p=0 Then
+	  	 For n=0 To lcc-1
+	  	 	If ztext[n+k]<>zcc[n] Then Exit For
+	  	 	If n=lcc-1 Then Exit For,For
+	  	 Next
+	  EndIf
+	  If c=cc1 Or c=cc2 Or c=cc3 Then p-=1
+	Next pp  	  
+	'k=InStr(wline,cc)
+	'If k<=0 Then Exit For
+	j+=1:wsplit(j)=Trim(mid(wwline,k0,k-k0+1))
+	If j>=99998 Then Exit For 
+	k+=lcc
+Next
+nsplit=j
+End Sub
+Sub split_0(wwline As String,cc As String)
 Dim As Integer i,j,k,kk,k0,p,pp,n,lcc=Len(cc)
 dim as char c,c1,c2,cc1,cc2
 'ReDim As String wsplit(99999)
@@ -3242,7 +3320,7 @@ For i=1 To nnodei
 Next
 Return ""
 End Function
-Dim Shared As Integer taddbridge,irelation,irelationway(100)
+Dim Shared As Integer taddbridge,irelation,irelationway(100),erroverpass
 Dim Shared As int64 relationwayid(100,20)
 Dim Shared As String relationname(100),relationcolor(100)
 Dim Shared As Single relationheight(100),relationheightmin(100)
@@ -3255,6 +3333,8 @@ Sub getways2(text0 As String)'getways
 	If wline="" Then
 		setioverpass():Sleep 1000
 	   If auxtest>1.01 Then guinotice(Left(text0,800))
+	Else 
+		erroverpass=0
 	EndIf
 	wtext0=nextdata(wline,"[","]")
 	'printmsg "wtext0="+wtext0
@@ -4371,7 +4451,7 @@ Function formatname(text0 As String)As String
 			ElseIf iskip=0 Then  	
 				text+="."'Str(Asc(c))+"."+Str(Asc(Right(cc,1)))'"."
 				iskip=1
-				auxtext=text0+"("+Str(i)+")"+text+cc+"."+c+"."
+				'If auxtest>0.5 Then auxtext=text0+"("+Str(i)+")"+text+cc+"."+c+"."
 			EndIf
 			If Right(text,1)="§" Then text=Left(text,Len(text)-1)
 		Else  	
@@ -5267,7 +5347,7 @@ EndIf 'testposx
 testmygltexquad=1
 testmygltexquad0=1 
 'If mytnormal=0 Then
-If tagl=0 Then     
+'If tagl=0 Then     
  glBegin GL_QUADS
  glTexCoord2f tx0,0
  glVertex3f x1,y1,z1
@@ -5278,7 +5358,7 @@ If tagl=0 Then
  glTexCoord2f tx0,ty
  glVertex3f x4,y4,z4
  glEnd
-Else
+/'Else
  aglbegin GL_QUADS
  agltexcoord2f tx0,0
  aglvertex3f x1,y1,z1
@@ -5289,7 +5369,7 @@ Else
  agltexcoord2f tx0,ty
  aglvertex3f x4,y4,z4
  aglend
-EndIf  
+EndIf '/  
 /'Else
  glBegin GL_QUADS
  'glnormal3f mynormalx,mynormaly,mynormalz
@@ -9086,6 +9166,7 @@ Else
 EndIf   
 'gldisable(gl_lighting)
 End Sub
+/'
 Sub drawroadnode_agl(ij As Integer,i As Integer)
 Dim As Single x,y,z,z1,h,tx,ty,z0,xx,yy,tx0,x0,y0,xx0,yy0,x1,y1,xx1,yy1,r,dr,dx,dy,co1,si1,ddx0,ddy0,ddx1,ddy1,hr
 dim as single co10,si10,zz0,zz1
@@ -10116,7 +10197,7 @@ Else
    agldisable(gl_normalize)
 EndIf   
 'agldisable(gl_lighting)
-End Sub
+End Sub '/
 Declare Sub drawwaynodebuild(ij As Integer,i As Integer)
 Dim Shared As Integer tupdateterrain
 Sub drawtownnode(ij As Integer)
@@ -11072,6 +11153,7 @@ For i=1 To nfuel
 Next  	
 End Sub 
 Dim Shared As ZString*12600000 zwebtext,zwebtext0
+Dim Shared As ZString*400016 zwebtextboeing
 Sub subtest2(ByVal userdata As Any Ptr)
 'guinotice("ok")
 'tloadwebtext2=0
@@ -11089,14 +11171,25 @@ lat=lat0:lng=lng0
 tloadwebtext2=0:Exit Sub 
 End Sub
 Dim Shared As String overpass(20),overpass2(20)
-Dim Shared As Integer toverpasserror=0',ioverpass=0
+Dim Shared As Integer toverpasserror=0,toverpass=1',ioverpass=0
 overpass(0)="overpass-api.de":overpass2(0)="api/"
 overpass(1)="overpass.osm.rambler.ru":overpass2(1)="cgi/"
 overpass(2)="api.openstreetmap.fr":overpass2(2)="oapi/"
+overpass(0)="overpass-api.de":overpass2(0)="api/"
+overpass(1)="api.openstreetmap.fr":overpass2(1)="api/"
+overpass(2)="api.openstreetmap.fr":overpass2(2)="api/"
 Sub setioverpass()
 	If toverpasserror=0 Then
 		ioverpass+=1:If ioverpass>2 Then ioverpass=0
 	EndIf
+	If erroverpass<=6 Then
+	 erroverpass+=1
+	 If erroverpass>6 And toverpass=1 Then
+		toverpass=0
+		guinotice "overpass disabled !"
+      guinotice Left(zwebtext,800)
+	 EndIf
+	EndIf  
 	toverpasserror=1 
 	'tquitweb=1
 	'guinotice(Left(zwebtext,800))
@@ -11595,10 +11688,11 @@ keyway+=";relation['building']"+latlon+"->.myrel;way(r.myrel:outer)->.myrelway"'
 'wayurl+="way['man_made'~'bridge']"+latlon1+";";
 'wayurl+="way['bridge']"+latlon1+";";
 'auxvar6=myiaskway+0.1
+Var k3900=3900
 If myiaskway>0 Then
 	For i=1 To myiaskway
 		keyway+=";way%28"+Str(myaskwayid(i))+"%29"
-		If Len(keyway)>3900 Then
+		If Len(keyway)>k3900 Then
 			If auxtest>0.1 Then guinotice "keyway len="+Str(Len(keyway))+"/"+Str(i)
 			Exit For 
 		EndIf
@@ -11610,12 +11704,12 @@ If testworld=1 Then keyway=keyway+";way['bridge']"+latlon1+";way['man_made'~'bri
 wayurl=myoverpass2+"interpreter?data=[out:json][timeout:45];%28"+keyway
 'If myroadwayid<>"" Then wayurl+=";.myway"
 nwaymax=39990
-wayurl+=";.myrel;.myrelway%29%3Bout%20qt%2039999%3B"
+wayurl+=";.myrel;.myrelway;%29%3Bout%20qt%2039999%3B"
 'wayurl+="%29%3Bout%20qt%209999%3B"
 nodeurl=myoverpass2+"interpreter?data=[out:json][timeout:45];%28node"+latlon
 'nodeurl+="node"+latlon
 nnodemax=59990
-nodeurl+="%29%3Bout%20skel%2059999%3B"
+nodeurl+=";%29%3Bout%20skel%2059999%3B"
 Var hostname=myoverpass
 path=nodeurl
 var myquery="format=xml&lat="+Str(lat)+"&lon="+Str(lng)+"&zoom=10&addressdetails=1&accept-language=en"
@@ -11684,6 +11778,7 @@ If Timer>tinittown00 Then
    	   zwebtext[i]=recvdata(i)
       Next
       zwebtext[idata]=0
+      'guinotice Left(zwebtext,400)
       If quit2=1 Or tquitweb=1 Then Exit Sub
       Var lngreverse0=lngreverse,latreverse0=latreverse,reverselocation0=reverselocation,countrycode0=countrycode
       getreverse(zwebtext)
@@ -11693,8 +11788,26 @@ If Timer>tinittown00 Then
     EndIf  
    EndIf
 
+If toverpass=1 Then
+	'Var path2="api.openstreetmap.fr/api/interpreter?data=[out:json][timeout:45];%28node%2848.93421886%2C2.32926519%2C48.96209764%2C2.3076059%29;%29%3Bout%20skel%209%3B"
+	'Var path2="overpass-api.de/api/interpreter?data=[out:json][timeout:45];%28node%2848.93421886%2C2.32926519%2C48.96209764%2C2.3076059%29;%29%3Bout%20skel%209%3B"
+	'Var path2="overpass.osm.rambler.ru/api/interpreter?data=[out:json][timeout:45];%28node%2848.93421886%2C2.32926519%2C48.96209764%2C2.3076059%29;%29%3Bout%20skel%209%3B"
+	'Var myoverpass22="api.openstreetmap.fr"
+	'Var path2="api/interpreter?data=[out:json][timeout:45];(node(48.93%2C2.3%2C48.930001%2C2.30001))%3Bout%20skel%2059%3B"
+	'var myoverpass22="overpass-api.de" '/api/ (api.openstreetmap.fr"
+	'Var path2="/api/interpreter?data=[out:json][timeout:45];(node(48.9%2C2.3%2C48.9600001%2C2.300001);)%3Bout%20skel%2059%3B"
+   'auxtext2=Left(right(path,120),40)
+'overpass(0)="overpass-api.de":overpass2(0)="api/"
+'overpass(1)="overpass.osm.rambler.ru":overpass2(1)="cgi/"
+'overpass(2)="api.openstreetmap.fr":overpass2(2)="api/"
+
+   'guinotice myoverpass+"/"+path
    idata=httppost(myoverpass,path)
-   If idata=0 Then setioverpass():Exit Sub
+   If idata=0 Then
+   	setioverpass()
+   	'guinotice "err"
+   	Exit Sub
+   EndIf
    For i=0 To idata-1
    	zwebtext[i]=recvdata(i)
    Next
@@ -11702,23 +11815,36 @@ If Timer>tinittown00 Then
    'guinotice Left(zwebtext,400)
    If quit2=1 Or tquitweb=1 Then Exit Sub 
    getnodes(zwebtext)
-      
+EndIf 
+
 	sleep t300
 EndIf 
 End Sub
 Sub loadopentown2()
 Dim As Integer i,idata
-
+If toverpass=1 Then     
    If quit2=1 Or tquitweb=1 Then Exit Sub 
 	ddtweb=Timer 
+	'Var myoverpass22="overpass-api.de" '/api/ (api.openstreetmap.fr"
+	'Var myoverpass22="api.openstreetmap.fr"
+	'guinotice myoverpass+"/"+path
 	idata=httppost(myoverpass,wayurl)
-   If idata=0 Then setioverpass():Exit Sub
+   If idata=0 Then
+   	setioverpass()
+   	'guinotice "err2"
+   	Exit Sub
+   EndIf
 	dtweb=Timer-ddtweb
    For i=0 To idata-1
    	zwebtext[i]=recvdata(i)
    Next
    zwebtext[idata]=0
    'guinotice Left(zwebtext,400)
+   If Timer>timeboeing And tcopyboeing=0 Then
+   	'guinotice "loadboeing"
+   	Sleep t300
+   	loadairtraffic()
+   EndIf
    'If InStr(zwebtext,"man_made")>0 Then guinotice Mid(zwebtext,InStr(zwebtext,"man_made"),800)
    If quit2=1 Or tquitweb=1 Then Exit Sub
    Sleep t300:tloadwebtext2=200 
@@ -11728,11 +11854,13 @@ Dim As Integer i,idata
    If quit2=1 Or tquitweb=1 Then Exit Sub 
    updateways()
    tcancel=0
-   'auxvar=nway2
+   'auxvar=nway2   
    sleep t300
+EndIf    
 End Sub
 Sub loadopentown3(tgetway As Integer=0)
 Dim As Integer i,idata
+If toverpass=1 Then
 If myiasknode>0 Then
 	zwebtext0=zwebtext
 	myiasknode2=0
@@ -11799,6 +11927,7 @@ If myiasknode>0 Then
 	sleep t300
 EndIf
 
+EndIf 
    'guinotice("ok nnode="+Str(nnode2)+"  nway="+Str(nway2))
    auxvar3+=1000
    'auxvar2=nnode2
@@ -11809,8 +11938,12 @@ Sub inittown22(ByVal userdata As Any Ptr)
 	tcancel=1
 	t11=2
 	loadopentown()
+   If Timer>timeboeing And tcopyboeing=0 Then loadairtraffic()
 	tinittown=22
-	If quit2=1 Or tquitweb=1 Or toverpasserror>0 Then tinittown=0:tloadwebtext=0:tquitweb=0:tcancel=0
+	If quit2=1 Or tquitweb=1 Or toverpasserror>0 Or toverpass=0 Then
+		tinittown=0:tloadwebtext=0:tquitweb=0:tcancel=0
+		'guinotice "inittown22 exit"
+	EndIf
 	'tloadwebtext2=22
 	'tinittown=0
 	t11=2
@@ -11822,9 +11955,13 @@ Sub inittown222(ByVal userdata As Any Ptr)
 	tcancel=1
 	t11=2'0
 	loadopentown2()
+   If Timer>timeboeing And tcopyboeing=0 Then loadairtraffic()
 	tcancel=0
 	tinittown=23
-	If quit2=1 Or tquitweb=1 Or toverpasserror>0 Then tinittown=0:tloadwebtext=0:tcancel=0
+	If quit2=1 Or tquitweb=1 Or toverpasserror>0 Or toverpass=0 Then
+		tinittown=0:tloadwebtext=0:tcancel=0
+		'guinotice "inittown222 exit"
+	EndIf
 	If tloadwebtext2=200 Or tquitweb=1 Or toverpasserror>0 Then tloadwebtext2=0
 	tquitweb=0
 	t11=2'0
@@ -11834,7 +11971,9 @@ Sub inittown223(ByVal userdata As Any Ptr)
 	tcancel=0
 	t11=0
 	loadopentown3()
+   If Timer>timeboeing And tcopyboeing=0 Then loadairtraffic()
 	tcancel=0
+	'guinotice "inittown223 exit"
 	tinittown=0:tloadwebtext=0:tquitweb=0
 	tloadwebtext2=0
 	myroadlat=-99
@@ -12134,7 +12273,7 @@ latmx=lat:lngmx=lng
 lat=lat0:lng=lng0
 Var dlatx=10*360.0/40000,dlonx=dlatx*klon
 mzbridge=-999999
-if tdark=199 Then
+if 0 Then'tdark=1 Then
 	glenable gl_lighting
 	glenable gl_normalize
 Else
