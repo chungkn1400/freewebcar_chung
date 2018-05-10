@@ -3830,6 +3830,7 @@ End Sub
 Dim Shared As Single suntan2=1
 Sub drawshadowroc()
 If tshadow=0 Or ishadowroc=0 Then Exit Sub
+If mz>mzsol00+400 Then Exit Sub 
 Dim As Integer i,j,k
 glenable gl_alpha_test
 glAlphaFunc(gl_less,100/254)
@@ -9554,7 +9555,7 @@ Dim Shared As uint avionlist,corsair0list,corsairlist,vg33list,zerolist,b25list,
 Dim Shared As uint alphajet0list,vg330list,spitfirelist,spitfire0list,bf109list,bf1090list
 Dim Shared As uint p51dlist,p51d0list,f14list,f140list,zero0list,c150list,c1500list,boeing737list,boeing737lowlist
 Dim Shared As uint eurofighterlist,eurofighter0list,fighterlist,fighter0list,boeing737lowlist2
-Dim Shared As uint spaceshiplist,spaceship0list
+Dim Shared As uint spaceshiplist,spaceship0list,fokkerlist,fokkerlowlist
 /'
 Sub drawcorsair0
 glenable gl_texture_2d
@@ -12832,7 +12833,8 @@ If tdark=1 Then
     glpushmatrix
     gltranslatef(0,93,14)
     glcolor3f(1,0.1,0)
-    Var dr=max(2.4,min(10.0,Abs(x2)/1200))
+    'Var dr=max(2.4,min(10.0,Abs(x2)/1200))
+    Var dr=max(3.0,min(12.5,Abs(x2)/1000))
     glsphere(dr,4,4)
     glcolor3f(0,1,0.1)
     gltranslatef(0,-186,0)
@@ -12920,6 +12922,47 @@ gltranslatef(0,0,18)
 	EndIf	
 gldisable(gl_light3)	
 End Sub 
+Dim Shared As uint fokkertext
+Sub drawfokker
+glenable(gl_lighting)
+glenable(gl_light3)
+'If mz>mzsol00+80 And piste=0 Then gltranslatef(0,0,18)
+gltranslatef(0,0,18)
+'if icar=12 Then 
+'	glbindtexture(gl_texture_2d,zero2text)
+'Else 
+	glbindtexture(gl_texture_2d,fokkertext)
+'EndIf
+	If fokkerlist<>0 Then
+		glcalllist(fokkerlist)
+	Else
+		fokkerlist=glgenlists(1)
+		glnewlist fokkerlist,gl_compile
+		loadobjsize("objects/fokker50.obj",@"",@"",100)
+      glendlist
+	EndIf	
+gldisable(gl_light3)
+End Sub
+Sub drawfokkerlow
+glenable(gl_lighting)
+glenable(gl_light3)
+'If mz>mzsol00+80 And piste=0 Then gltranslatef(0,0,18)
+gltranslatef(0,0,18)
+'if icar=12 Then 
+'	glbindtexture(gl_texture_2d,zero2text)
+'Else 
+	glbindtexture(gl_texture_2d,fokkertext)
+'EndIf
+	If fokkerlowlist<>0 Then
+		glcalllist(fokkerlowlist)
+	Else
+		fokkerlowlist=glgenlists(1)
+		glnewlist fokkerlowlist,gl_compile
+		loadobjsize("objects/fokker50low.obj",@"",@"",100)
+      glendlist
+	EndIf	
+gldisable(gl_light3)	
+End Sub
 Dim Shared As uint spottext
 Sub drawspot(px As single,py As single,pz As single,dr As Single,r As Single,g As Single,b As Single,a As Single)
 If (Int(time2)Mod 2)=1 Then Exit sub
@@ -12944,12 +12987,12 @@ Dim Shared As Single boeingco1,boeingsi1,boeingzsol,boeingdz3000=3000
 Dim Shared As Single nboeingo1,nboeingo2,nboeingo3,nboeingx0,nboeingy0,nboeingtx,nboeingty,nboeingx2
 Dim Shared As Single nboeingco1,nboeingsi1,nboeingzsol,nboeingdz3000=3000,nboeingx,nboeingy,nboeingz,nboeingalt
 Dim Shared As Single nboeingkvol,nboeingv
-Dim Shared As Double timeboeing,timeboeing0
+Dim Shared As Double timeboeing,timeboeing0,timeboeing10
 Dim Shared As Integer tcopyboeing
 Dim Shared As String nboeingmodel
 Sub drawboeing()
 	Var dmax=30000.0
-	'boeingx=mx+600+(1+Cos(Timer*3/30))*14000:boeingy=my:boeingz=mz+(boeingx-mx)*0.200
+	'boeingx=mx+600+(1+Cos(Timer*3/30))*1400:boeingy=my:boeingz=mz+(boeingx-mx)*0.200:boeingo1=o1*2
 	'drawspot(mx+100,my,mz,1,0,1,0.1,1)
 	'drawspot(mx+100,my+20,mz,1,1,0.1,0,1)
 	boeingco1=Cos(boeingo1*degtorad)
@@ -12988,6 +13031,7 @@ Sub drawboeing()
       Var kvol=990.0/max(990.0,dist1)
       kvol=max(2.0,998*kvol*kvol)
       kvol=max(nboeingkvol,kvol)
+      nboeingkvol=0
   		mcisendstring("setaudio boeing volume to "+str(Int(kvol)),0,0,0)
   	EndIf
    If Abs(boeingtx)+Abs(boeingty)>0.001 Then
@@ -13038,9 +13082,35 @@ Sub drawboeing()
    glscalef(4,4,5)
    If x2<10000 Then
    	draw737low()
+   	'drawfokker()
    Else
    	draw737low2()
+   	'drawfokkerlow()
    EndIf
+   /'
+   glpushmatrix
+   gltranslatef(27,28,10)
+   glscalef(0.65,0.65,0.65)
+   drawhelice0()
+   glpopmatrix
+   glpushmatrix
+   gltranslatef(28,-28,10)
+   glscalef(0.65,0.65,0.65)
+   drawhelice0()
+   glpopmatrix
+   If (Int(time2)Mod 2)=1 Then 
+    gldisable gl_texture_2D
+    gldisable gl_lighting
+    gltranslatef(4,100,15)
+    glcolor3f(1,0.1,0)
+    Var dr=max(3.0,min(12.5,Abs(x2)/1000))
+    glsphere(dr,4,4)
+    glcolor3f(0,1,0.1)
+    gltranslatef(0,-199,0)
+    glsphere(dr,4,4)
+    glenable gl_texture_2D
+    glcolor3f(1,1,1)
+   EndIf '/ 
    If (Int(time2)Mod 2)=1 Then 
     gldisable gl_texture_2D
     gldisable gl_lighting
@@ -14719,9 +14789,10 @@ Declare Sub resetmxy0()
 Declare Sub testresetmz0()
 Dim shared as double tmxmove,tupdate,dtweb=0,ddtweb
 dim shared as single avgv,avgmx,avgmy,mxmove,mymove,o1move,avgdo1,avgo10,tkzoom=0,mzbridge=-999999
-Dim Shared As Single o333,cos333,sin333,do333,o100
+Dim Shared As Single o333,cos333,sin333,do333,o100,latmx,lngmx
 dim shared as double timehelp,timelayer0
 Dim Shared As Integer tfootmove
+Dim Shared As String textload
 declare sub drawhelp()
 Declare Sub loadairtraffic()
 Declare Sub drawnboeings()
@@ -14731,6 +14802,13 @@ Dim As Integer changearbre,changebuisson,changehouse,changehouse2,changedome
 Dim As Integer i,j,k,test
 	
 'If time2<timeinit+10 Then Exit sub
+
+if (itime mod 30)=0 then 
+ Var lat0=lat,lng0=lng
+ mxytolatlng(mx,my)'xweb,yweb)
+ latmx=lat:lngmx=lng
+ lat=lat0:lng=lng0
+EndIf    
 
 	 scaleview=1
     trepair=0
@@ -22289,7 +22367,7 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
          Sleep 100
       EndIf
   	   threaddetach(ThreadCreate(@loadwebtext)) 
-ElseIf nboeing2>0 And Timer>timeboeing And tloadwebtext2=0 And tcopyboeing=0 Then
+ElseIf nboeing2>0 And Timer>max(timeboeing10,timeinit+10) And tloadwebtext2=0 And tcopyboeing=0 Then
   	   tloadwebtext2=2
   	   threaddetach(ThreadCreate(@subloadairtraffic))
 ElseIf tinittown=0 And tinittown0=0 And testweb2=11 And httpon<>1 And tloadwebtext2=0 Then

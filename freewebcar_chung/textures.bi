@@ -24,6 +24,7 @@ fightertext2=0
 spaceshiptext=0
 ballontext=0
 boeing737text=0
+fokkertext=0
 coptertext=0
 
         tronctext=0'("media/tronc.jpg")
@@ -307,6 +308,7 @@ If itext=@aviontext then *(itext)=guiloadtexture("objects/c150.jpg")
 If itext=@avionredtext then *(itext)=guiloadtexture("objects/c150red.jpg")
 If itext=@ballontext then *(itext)=guiloadtexture("objects/ballon.jpg")
 If itext=@boeing737text then *(itext)=guiloadtexture("objects/737.jpg")
+If itext=@fokkertext then *(itext)=guiloadtexture("objects/fokker50.jpg")
 If itext=@coptertext then *(itext)=guiloadtexture("objects/copter.jpg",250)
 'If itext=@corsairtext then *(itext)=guiloadtexture("objects/f4u.jpg")
 'If itext=@vg33text then *(itext)=guiloadtexture("objects/vg33.jpg")
@@ -552,7 +554,7 @@ End Function
 'Dim Shared As Single myworldx=0,myworldy=-145
 Declare Sub loadwebterrain(zoom1 As integer)
 Declare Sub loadwebterrainmap(zoom1 As integer)
-Dim Shared As Single dlat=0.1,dlon=0.1,latmx,lngmx,xweb0=999000,yweb0=999000,latweb0,lngweb0',klon=1
+Dim Shared As Single dlat=0.1,dlon=0.1,xweb0=999000,yweb0=999000,latweb0,lngweb0',klon=1
 'Dim Shared As Integer webzoom=13
 Sub latlngtomxy(ByVal latxx As single,ByVal lngxx As Single ,ByRef mxx As Single,ByRef myy As Single)
 	If kmxlat<10 Then mxx=0:myy=0:Exit Sub 
@@ -11840,7 +11842,7 @@ If toverpass=1 Then
    Next
    zwebtext[idata]=0
    'guinotice Left(zwebtext,400)
-   If Timer>timeboeing And tcopyboeing=0 Then
+   If nboeing2>0 And Timer>timeboeing-10 And tcopyboeing=0 Then
    	'guinotice "loadboeing"
    	Sleep t300
    	loadairtraffic()
@@ -11879,8 +11881,10 @@ If myiasknode>0 Then
    Next
    zwebtext[idata]=0
    'guinotice Left(zwebtext,400)
+   If nboeing2>0 And Timer>timeboeing10 And tcopyboeing=0 Then loadairtraffic()
    If quit2=1 Or tquitweb=1 Then Exit Sub 
    addasknodes(zwebtext)
+   If nboeing2>0 And Timer>timeboeing10 And tcopyboeing=0 Then loadairtraffic()
    If myiasknode2>1 Then 
      nodeurl=myoverpass2+"interpreter?data=[out:json];%28"
 	  For i=myiasknode2+1 To myiasknode
@@ -11896,9 +11900,11 @@ If myiasknode>0 Then
      Next
      zwebtext[idata]=0
      'guinotice Left(zwebtext,400)
+     If nboeing2>0 And Timer>timeboeing10 And tcopyboeing=0 Then loadairtraffic()
      If quit2=1 Or tquitweb=1 Then Exit Sub 
      addasknodes(zwebtext)
    EndIf
+   If nboeing2>0 And Timer>timeboeing10 And tcopyboeing=0 Then loadairtraffic()
    If myiasknode3>1 Then 
      nodeurl=myoverpass2+"interpreter?data=[out:json];%28"
 	  For i=myiasknode3+1 To myiasknode
@@ -11917,6 +11923,7 @@ If myiasknode>0 Then
      If quit2=1 Or tquitweb=1 Then Exit Sub 
      addasknodes(zwebtext)
    EndIf
+   If nboeing2>0 And Timer>timeboeing10 And tcopyboeing=0 Then loadairtraffic()
    If quit2=1 Or tquitweb=1 Then Exit Sub 
    If tgetway=0 Then
    	getways2bridge(zwebtext0)
@@ -11937,8 +11944,9 @@ End Sub
 Sub inittown22(ByVal userdata As Any Ptr)
 	tcancel=1
 	t11=2
+	textload="loadopentown"
 	loadopentown()
-   If Timer>timeboeing And tcopyboeing=0 Then loadairtraffic()
+   If nboeing2>0 And Timer>timeboeing10 And tcopyboeing=0 Then loadairtraffic()
 	tinittown=22
 	If quit2=1 Or tquitweb=1 Or toverpasserror>0 Or toverpass=0 Then
 		tinittown=0:tloadwebtext=0:tquitweb=0:tcancel=0
@@ -11954,8 +11962,9 @@ End Sub
 Sub inittown222(ByVal userdata As Any Ptr)
 	tcancel=1
 	t11=2'0
+	textload="loadopentown2"
 	loadopentown2()
-   If Timer>timeboeing And tcopyboeing=0 Then loadairtraffic()
+   If nboeing2>0 And Timer>timeboeing10 And tcopyboeing=0 Then loadairtraffic()
 	tcancel=0
 	tinittown=23
 	If quit2=1 Or tquitweb=1 Or toverpasserror>0 Or toverpass=0 Then
@@ -11970,8 +11979,9 @@ End Sub
 Sub inittown223(ByVal userdata As Any Ptr)
 	tcancel=0
 	t11=0
+	textload="loadopentown3"
 	loadopentown3()
-   If Timer>timeboeing And tcopyboeing=0 Then loadairtraffic()
+   If nboeing2>0 And Timer>timeboeing10 And tcopyboeing=0 Then loadairtraffic()
 	tcancel=0
 	'guinotice "inittown223 exit"
 	tinittown=0:tloadwebtext=0:tquitweb=0
@@ -11979,6 +11989,7 @@ Sub inittown223(ByVal userdata As Any Ptr)
 	myroadlat=-99
 	t11=0
 	Sleep t300'1000
+	textload=""
 	tloadwebtext=Timer-t10-99
 	'If t11>1 then tloadwebtext=max(tloadwebtext,Timer-t10)
 End Sub 
@@ -12267,10 +12278,10 @@ End Function
 Sub drawbridges()
 Dim As Integer i,j,k
 Dim As Single x,y,z,size,do1,dxy,xx,yy,dx,dy
-Var lat0=lat,lng0=lng
-mxytolatlng(mx,my)'xweb,yweb)
-latmx=lat:lngmx=lng
-lat=lat0:lng=lng0
+'Var lat0=lat,lng0=lng
+'mxytolatlng(mx,my)'xweb,yweb)
+'latmx=lat:lngmx=lng
+'lat=lat0:lng=lng0
 Var dlatx=10*360.0/40000,dlonx=dlatx*klon
 mzbridge=-999999
 if 0 Then'tdark=1 Then

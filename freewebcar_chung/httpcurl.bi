@@ -120,7 +120,7 @@ Var url=host
     	retcode=curl_easy_perform( curl )
     EndIf '/
 
-    '?"retcode="+Str(retcode)
+    'guinotice "retcode="+Str(retcode)
     If retcode<>0 Then
     	If auxtest>0.61 Then guinotice "error curl="+Str(retcode)+"  "+url'curl_easy_strerror(retcode))
     	myidata=0

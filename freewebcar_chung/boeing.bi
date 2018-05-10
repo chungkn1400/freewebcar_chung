@@ -109,6 +109,7 @@ For i=1 To nsplit
   	   If InStr(aux,"donnell")>0 Then model="douglas" 
   	   If InStr(aux,"tupolev")>0 Then model="tupolev" 
   	   If InStr(aux,"embraer")>0 Then model="embraer" 
+  	   If InStr(aux,"fokker")>0 Then model="fokker" 
   	   If model="" Then model=aux'Continue For 
   	   boeingmodel(n)=model
   	  EndIf   
@@ -122,6 +123,8 @@ For i=1 To nsplit
   	  	  boeingtype=Val(aux)
   	  	  If boeingtype<>2 And boeingtype<>3 Then' 1=piston,2=turboprop,3=jet 
   	  	  	  boeingmodel(n)="cessna" 
+  	  	  ElseIf boeingtype=2 Then
+  	  	  	  boeingmodel(n)="fokker"
   	  	  EndIf
   	  EndIf
    EndIf
@@ -141,6 +144,7 @@ nboeing0=n-1
 'auxtext=boeingmodel(0)+"."
 'auxvar4=nsplit+0.001
 End Sub
+Dim Shared As Double timecopyboeing
 Sub loadairtraffic()
 If tcopyboeing<>0 Then Exit Sub
 tcopyboeing=-1
@@ -148,28 +152,32 @@ tcopyboeing=-1
 'https://public-api.adsbexchange.com/VirtualRadar/AircraftList.json?lat=33.433638&lng=-112.008113&fDstL=0&fDstU=7	
 Var airhost="https://public-api.adsbexchange.com"
 'Var airurl="VirtualRadar/AircraftList.json?lat=33.433638&lng=-112.008113&fDstL=0&fDstU=6"	
-Var airurl="VirtualRadar/AircraftList.json?lat="+Str(latmx)+"&lng="+Str(lngmx)+"&fDstL=0&fDstU=7"	
+Var airurl="VirtualRadar/AircraftList.json?lat="+Str(lat)+"&lng="+Str(lng)+"&fDstL=0&fDstU=7"	
 If nboeing0<nboeing*0.3 Then
-	airurl="VirtualRadar/AircraftList.json?lat="+Str(latmx)+"&lng="+Str(lngmx)+"&fDstL=0&fDstU=12"	
+	airurl="VirtualRadar/AircraftList.json?lat="+Str(lat)+"&lng="+Str(lng)+"&fDstL=0&fDstU=12"	
 ElseIf nboeing0<nboeing*0.5 Then
-	airurl="VirtualRadar/AircraftList.json?lat="+Str(latmx)+"&lng="+Str(lngmx)+"&fDstL=0&fDstU=10"	
+	airurl="VirtualRadar/AircraftList.json?lat="+Str(lat)+"&lng="+Str(lng)+"&fDstL=0&fDstU=10"	
 ElseIf nboeing0<nboeing*0.7 Then
-	airurl="VirtualRadar/AircraftList.json?lat="+Str(latmx)+"&lng="+Str(lngmx)+"&fDstL=0&fDstU=8"	
+	airurl="VirtualRadar/AircraftList.json?lat="+Str(lat)+"&lng="+Str(lng)+"&fDstL=0&fDstU=8"	
 EndIf
+'guinotice airhost+"/"+airurl
 Var idata=httppost(airhost,airurl)
+Sleep t300
+'guinotice Str(idata)
 If idata>0 Then  
   Dim As Integer i,j,k
   For i=0 To idata-1
    	 zwebtextboeing[i]=recvdataboeing(i)
   Next
   zwebtextboeing[idata]=0
-  'guinotice Left(zwebtext,800)
+  'guinotice Left(zwebtextboeing,800)
   getairtraffic(zwebtextboeing)
   tcopyboeing=1
 Else
+  'guinotice "err traffic"	
   timeboeing=Timer+10
   tcopyboeing=0
-EndIf   
+EndIf
 End Sub
 'loadairtraffic()
 Sub subloadairtraffic(ByVal userdata As Any Ptr)
@@ -327,7 +335,7 @@ For i=0 To nboeing
 	EndIf
 Next
 nboeing00=0
-Var ncessna=0
+Var ncessna=0,nfokker=0
 For i=0 To nboeing
 	If irepeatboeing(i)<-90 Then
 		 irepeatboeing(i)=0
@@ -341,6 +349,7 @@ For i=0 To nboeing
 	  	 nnboeingdz(i)=0
 	  	 nboeing00+=1
 	  	 If nboeingmodel0(i)="cessna" Then ncessna+=1
+	  	 If nboeingmodel0(i)="fokker" Then nfokker+=1
 		 Continue For 
 	EndIf
 	If nboeingid0(i)="" Then
@@ -354,7 +363,7 @@ For i=0 To nboeing
    	  	irepeatboeing(i)=99
 	  	 	Continue For 
 	  	 EndIf
-	  	 If dist<30000 Then irepeatboeing(i)=0
+	  	 If dist<30000 And nnboeingalt(i)>600 Then irepeatboeing(i)=0
 	  	 nnnboeingo1(i)=nnboeingo1(i)
 	  	 nnnboeingo2(i)=0
 	  	 nnboeingo2(i)=0
@@ -365,11 +374,13 @@ For i=0 To nboeing
 	  	 nnboeingdz(i)=0
 	  	 nboeing00+=1
 	  	 If nboeingmodel0(i)="cessna" Then ncessna+=1
+	  	 If nboeingmodel0(i)="fokker" Then nfokker+=1
 	  	 Continue For 
 	  EndIf 	
 	EndIf
 	nboeing00+=1
 	If nboeingmodel0(i)="cessna" Then ncessna+=1
+ 	If nboeingmodel0(i)="fokker" Then nfokker+=1
 	Var lat0=lat,lng0=lng,x=mx,y=my
 	latlngtomxy(nboeinglat0(i),nboeinglng0(i),x,y)
 	lat=lat0:lng=lng0
@@ -438,12 +449,14 @@ For i=0 To nboeing
 	nnboeingo3(i)=0
 	nnboeingdo3(i)=0
 Next
-auxtext="boeing="+Str(nboeing00-ncessna)+" cessna="+Str(ncessna)
+auxtext="boeing="+Str(nboeing00-ncessna-nfokker)+" fokker="+Str(nfokker)+" cessna="+Str(ncessna)
+'auxtest=0.2
+'guinotice auxtext
 'freelockboeing()
 End Sub
 Sub drawnboeing()
 	Var dmax=150000.0
-	'boeingx=mx+600+(1+Cos(Timer*3/30))*14000:boeingy=my:boeingz=mz+(boeingx-mx)*0.200
+	'nboeingx=mx+200+(1+Cos(Timer*3/10))*1400:nboeingy=my:nboeingz=getterrainheight(nboeingx,nboeingy)+(boeingx-mx)*0.00:nboeingo1=3*o1:nboeingo3=0
 	'drawspot(mx+100,my,mz,1,0,1,0.1,1)
 	'drawspot(mx+100,my+20,mz,1,1,0.1,0,1)
 	'nboeingco1=Cos(nboeingo1*degtorad)
@@ -482,11 +495,47 @@ Sub drawnboeing()
    glrotatef(-nboeingo3,1,0,0)
    
   If nboeingmodel="cessna" Then
+  	gltranslatef(0,0,15)
    If scalexy>1.1 Then glscalef(1,1,scalexy)
-   glcolor3f(0.86,1,0.4)
+   glcolor4f(0.86,1,0.4,1)
    drawc150red()   
-   glcolor3f(1,1,1)
-  Else 	
+   glcolor4f(1,1,1,1)
+   gltranslatef(41,0,0)
+   drawhelice0()
+  ElseIf nboeingmodel="fokker" Then  	
+   glcolor3f(0.86,1,0.55)
+   gltranslatef(0,0,-47)
+   glscalef(4,4,5)
+   If x2<10000 Then
+   	drawfokker()
+   Else
+   	drawfokkerlow()
+   EndIf
+   glcolor4f(1,1,1,1)
+   glpushmatrix
+   gltranslatef(27,28,10)
+   glscalef(0.65,0.65,0.65)
+   drawhelice0()
+   glpopmatrix
+   glpushmatrix
+   gltranslatef(28,-28,10)
+   glscalef(0.65,0.65,0.65)
+   drawhelice0()
+   glpopmatrix
+   If (Int(time2)Mod 2)=1 Then 
+    gldisable gl_texture_2D
+    gldisable gl_lighting
+    gltranslatef(4,100,15)
+    glcolor3f(1,0.1,0)
+    Var dr=max(3.0,min(12.5,Abs(x2)/1000))
+    glsphere(dr,4,4)
+    glcolor3f(0,1,0.1)
+    gltranslatef(0,-199,0)
+    glsphere(dr,4,4)
+    glenable gl_texture_2D
+    glcolor3f(1,1,1)
+   EndIf 
+  Else  	
    glscalef(4,4,5)
    If x2<10000 Then
    	draw737low()
@@ -514,18 +563,26 @@ Sub drawnboeings()
 Dim As Integer i,j,k	
 Var t30=30.0
 auxvar6=Int(timeboeing+t30-timer)+0.1
-If time2<timeinit+12 Then
+If time2<timeinit+15 And time2>timecopyboeing+0.5 And tcopyboeing=0 Then
+   tcopyboeing=-1
+   timeboeing0=Timer-15.1
+   timeboeing=timeboeing0+30
+   timeboeing10=timeboeing
+   timecopyboeing=Timer+10
    For i=0 To nboeing
    	nboeingid0(i)=""
    	nnboeingid(i)=""
    	irepeatboeing(i)=99
-   Next 	
+   Next
+   tcopyboeing=0
 EndIf
-If tcopyboeing=1 Then
+If tcopyboeing=1 And time2>timecopyboeing+0.5 Then
+   timecopyboeing=Timer 
 	copyboeing0()
-	tcopyboeing=0
    timeboeing0=Timer-0.1 
    timeboeing=timeboeing0+t30
+   timeboeing10=timeboeing
+	tcopyboeing=0
 EndIf
 Var dt=0.0,dt4=0.0
 If ttimeboeing<timer-200 Then ttimeboeing=timer
@@ -582,9 +639,10 @@ For irecent=0 To 1
 	If nboeingv>2000 Or Abs(nboeingx-mx)>10000 Or Abs(nboeingy-my)>10000 Then
 		nboeingz=nnboeingz(i)+nnboeingdz(i)*dt
 	Else
-		nboeingz=getterrainheight(nboeingx,nboeingy)
+		Var nboeingzol=getterrainheight(nboeingx,nboeingy)
+		nboeingz=max(nboeingzsol,nboeingz-nboeingv*dt)
 		nnboeingz(i)=nboeingz
-		nnboeingdz(i)=0
+		'nnboeingdz(i)=0
 		auxvar5=nboeingz
 	EndIf
 	If dt4>0.000001 Then 
@@ -666,4 +724,5 @@ For irecent=0 To 1
 Next irecent  
 auxvar2=k:'auxtest=0.2
 auxvar2=nboeing00
+'auxtext=textload
 End Sub
