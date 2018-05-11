@@ -8470,6 +8470,50 @@ glbindtexture(gl_texture_2D,shadow737text)
 'gldisable gl_alpha_test
 gldisable gl_blend
 End Sub
+Dim Shared As uint shadowfokkertext
+Sub drawfokkershadow(mmx As Single,mmy As Single,mmz As Single,mmzsol00 As Single,scale As Single,ccos1 As Single,csin1 As Single,ccos2 As Single,ccos3 As single)
+Var z9=14.0
+Var xx=mmx+(mmz+z9-mmzsol00)*sunco1*suntan2
+Var yy=mmy+(mmz+z9-mmzsol00)*sunsi1*suntan2
+Var zz=getterrainheight(xx,yy)
+rotavion(xx-mx,yy-my,zz-mz)
+If x2<0.85*max(Abs(y2),Abs(z2))-1000 Then Exit Sub
+Var co2=0.5+0.5*ccos2
+Var co3=0.5+0.5*ccos3
+Var x70=70.0*scale
+Var x95=95.0*scale  
+Var xx0=xx+x70*ccos1*co2-x95*csin1*co3
+Var yy0=yy+x70*csin1*co2+x95*ccos1*co3
+Var zz0=getterrainheight(xx0,yy0)
+Var xx1=xx+x70*ccos1*co2+x95*csin1*co3
+Var yy1=yy+x70*csin1*co2-x95*ccos1*co3
+Var zz1=getterrainheight(xx1,yy1)
+Var x0=xx-(xx1-xx)
+Var y0=yy-(yy1-yy)
+Var z0=zz-(zz1-zz)
+Var x1=xx-(xx0-xx)
+Var y1=yy-(yy0-yy)
+Var z1=zz-(zz0-zz)
+Var z11=(mz-mmzsol00)*0.06+15+max(0.0,x2)*0.005
+'gldisable gl_alpha_test
+'glAlphaFunc(gl_less,10/254)
+glEnable GL_BLEND
+glBlendFunc GL_zero,GL_one_minus_src_ALPHA
+glcolor4f(1,1,1,1)
+glbindtexture(gl_texture_2D,shadowfokkertext)
+	glbegin(gl_quads)
+	glTexCoord2f(0,0)
+	glvertex3f(x0,y0,z0+z11)
+	gltexcoord2f(1,0)
+	glvertex3f(x1,y1,z1+z11)
+	glTexCoord2f(1,1)
+	glvertex3f(xx1,yy1,zz1+z11)
+	gltexcoord2f(0,1)
+	glvertex3f(xx0,yy0,zz0+z11)
+	glend()
+'gldisable gl_alpha_test
+gldisable gl_blend
+End Sub
 Dim Shared As uint shadowballontext
 Sub drawballonshadow(mmx As Single,mmy As Single,mmz As Single,mmzsol00 As Single,scale As Single,ccos1 As Single,csin1 As Single,ccos2 As Single,ccos3 As single)
 Var z9=14.0
@@ -14700,7 +14744,7 @@ Sub displayback(tdraw As integer=1)
       glpushmatrix
       gldisable(gl_lighting)
       glbindtexture(GL_TEXTURE_2D,skydometext)
-      gltranslatef(0.9*mx,0.9*my,0)
+      gltranslatef(0.98*mx,0.98*my,0)
       o1sky-=Rnd*0.0159
       glrotatef(o1sky,0,0,1)
       'glcolor3f(1,1,1)
@@ -14796,6 +14840,7 @@ Dim Shared As String textload
 declare sub drawhelp()
 Declare Sub loadairtraffic()
 Declare Sub drawnboeings()
+Declare Sub drawnboeingshadow()
 Sub display ()
 Dim As Single x,y,z,aux,r,g,b
 Dim As Integer changearbre,changebuisson,changehouse,changehouse2,changedome
@@ -15204,13 +15249,13 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
       	gldisable(gl_lighting)
       EndIf
       glbindtexture(GL_TEXTURE_2D,skydometext)
-      gltranslatef(0.9*mx,0.9*my,0)
+      gltranslatef(0.98*mx,0.98*my,0)
       o1sky-=Rnd*0.0159
       glrotatef(o1sky,0,0,1)
       'glcolor3f(1,1,1)
       glcolor3f ksoleil, ksoleil, min(1.0,2.0*ksoleil)
       'gltexsphere(49000,12,12)
-      drawskydome(max(70000.0,49000*distscale),12,12)'49000,12,12)
+      drawskydome(max(100000.0,49000*distscale),12,12)'49000,12,12)
       glpopmatrix
       glEnable GL_BLEND
       glBlendFunc GL_SRC_color,GL_ONE'_MINUS_SRC_color
@@ -15782,6 +15827,7 @@ EndIf 'planet
      Var balloonsi1=Sin(degtorad*balloondo1)
      drawballonshadow(balloonx,balloony,balloonz,balloonzsol,1.6,balloonco1,balloonsi1,balloonco2,balloonco3)   
     EndIf
+    If tdark=0 And time2>timeinit+20 Then drawnboeingshadow()
     glenable gl_depth_test
 
     setrangeGL(0)

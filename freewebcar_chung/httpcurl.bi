@@ -91,8 +91,9 @@ Var url=host
         Return 0
     End If
     Var res=curl_easy_setopt( curl, CURLOPT_URL, url)
+    res=curl_easy_setopt( curl, CURLOPT_TIMEOUT, 60L)
     res=curl_easy_setopt( curl, CURLOPT_WRITEFUNCTION, @write_callback )
-    res=curl_easy_setopt(curl, CURLOPT_BUFFERSIZE, 100000L)
+    res=curl_easy_setopt( curl, CURLOPT_BUFFERSIZE, 100000L)
     If InStr(url,"https")>0 Then res=curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L)'no verify'1L)
     '?"CURLOPT_SSL_VERIFYPEER "+Str(res)
     If InStr(url,"google")<=0 Then

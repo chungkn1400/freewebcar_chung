@@ -176,6 +176,7 @@ If idata>0 Then
 Else
   'guinotice "err traffic"	
   timeboeing=Timer+10
+  timeboeing10=timeboeing
   tcopyboeing=0
 EndIf
 End Sub
@@ -716,7 +717,11 @@ For irecent=0 To 1
          	  glcolor3f(1,0.3,0.3)           	
            EndIf
          EndIf 	
-       	  gldrawtext(".", dx-mapy,dy-mapx,1.2)'0.6)'1.2 )    	
+       	If nboeingmodel0(i)="fokker" Then
+       		 gldrawtext("+", dx-mapy,dy-mapx,0.8)'0.6)'1.2 )    	
+       	Else 
+       		 gldrawtext(".", dx-mapy,dy-mapx,1.2)'0.6)'1.2 )    	
+       	EndIf
          'EndIf
        EndIf
      EndIf 
@@ -726,3 +731,61 @@ auxvar2=k:'auxtest=0.2
 auxvar2=nboeing00
 'auxtext=textload
 End Sub
+Sub drawnboeingshadow()
+Dim As Integer i,j,k
+Dim As Single dmx,dmy,dmz  
+k=0
+Var irecent=0
+For irecent=0 To 1
+ For i=0 To nboeing
+     If nboeingid0(i)="" And nnboeingid(i)="" Then Continue For
+     Var testrecent=0,id=nboeingid0(i)
+     If id="" Then id=nnboeingid(i)
+     For j=0 To irecentboeing
+     	  If id=recentboeingid(i) Then
+     	  	  testrecent=1:Exit For
+     	  EndIf
+     Next
+     If irecent=0 Then
+     	  If testrecent=0 Then Continue For
+     Else
+     	  If testrecent=1 Then Continue For 
+     EndIf
+     k+=1:If k>nboeing2 Then Exit For 
+     dmx=nnboeingx(i)-mx:dmy=nnboeingy(i)-my:dmz=nnboeingz(i)-mz
+     If max(Abs(dmx),Abs(dmy))>35000 Then Continue For
+     rotavion(dmx,dmy,dmz)
+     If Abs(x2)<25000 Then 
+      Var boeingzsol=getterrainheight(nnboeingx(i),nnboeingy(i))  
+      If x2>-1000-(nnboeingz(i)-boeingzsol)*suntan2 Then 
+        Var boeingco2=Cos(degtorad*nnboeingo2(i))
+        Var boeingco3=Cos(degtorad*nnboeingo3(i))
+        Var boeingco1=Cos(degtorad*nnboeingo1(i))
+        Var boeingsi1=Sin(degtorad*nnboeingo1(i))
+        If nboeingmodel0(i)="cessna" Then
+        	 Var scale=1.3
+          drawc150shadow(nnboeingx(i),nnboeingy(i),nnboeingz(i),boeingzsol,scale,boeingco1,boeingsi1,boeingco2,boeingco3)   
+        ElseIf nboeingmodel0(i)="fokker" Then  
+        	 drawfokkershadow(nnboeingx(i),nnboeingy(i),nnboeingz(i),boeingzsol,4.5,boeingco1,boeingsi1,boeingco2,boeingco3)   
+        Else 
+        	 draw737shadow(nnboeingx(i),nnboeingy(i),nnboeingz(i),boeingzsol,4.5,boeingco1,boeingsi1,boeingco2,boeingco3)   
+        EndIf
+      EndIf   
+     EndIf 
+ Next i
+Next irecent 
+	
+End Sub
+
+
+
+
+
+
+
+
+
+
+
+
+

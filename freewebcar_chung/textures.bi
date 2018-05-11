@@ -140,6 +140,9 @@ coptertext=0
         shadowcitykmtext=0
         shadowlamptext=0
         shadowroctext=0
+        shadowc150text=0
+        shadow737text=0
+        shadowfokkertext=0
         horsetext=0
         handtext=0
         snowtext=0
@@ -454,6 +457,7 @@ If itext=@shadowlamptext then *(itext)=guiloadtexture("media/shadowlamp.bmp",250
 If itext=@shadowroctext then *(itext)=guiloadtexture("media/shadowroc.bmp",250)
 If itext=@shadowc150text then *(itext)=guiloadtexture("media/shadowc150.jpg",250,110)
 If itext=@shadow737text then *(itext)=guiloadtexture("media/shadow737.jpg",250,110)
+If itext=@shadowfokkertext then *(itext)=guiloadtexture("media/shadowfokker.jpg",250,110)
 If itext=@shadowballontext then *(itext)=guiloadtexture("media/shadowballon.jpg",250,110)
 If itext=@horsetext then *(itext)=guiloadtexture("objects/horseheadlow.jpg")
 If itext=@handtext then *(itext)=guiloadtexture("media/hand.jpg",252)
