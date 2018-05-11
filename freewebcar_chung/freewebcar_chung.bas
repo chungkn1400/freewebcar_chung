@@ -16003,7 +16003,9 @@ EndIf 'planet
         If plane>0 And car=0 And volant=2 Then
         	   glcolor3f(1,0,0.6):gldrawtext("QZSD = head",10,290,1)
         EndIf
-        If tlockchanged=1 Then'mapdisplay=0 Then
+        'auxvar=myhttplock+0.1:auxtest=0.2
+        If (itime Mod 10)=0 Then myhttplock=httplock
+        If tlockchanged=1 And myhttplock=0 Then'mapdisplay=0 Then
          tlockchanged=0 
          If auxtest>0.5 Then 
           If tloadwebtext2>0 Or testweb>0 Then gldrawtext("loading "+Str(tloadwebtext2)+" "+Str(testweb)+" "+Str(tinittown),10,310,1)

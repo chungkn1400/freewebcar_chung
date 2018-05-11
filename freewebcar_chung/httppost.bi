@@ -57,8 +57,8 @@ Dim Shared As UByte recvdata(12512016)
 Dim Shared As UByte recvdatagoogle(4000016)
 Dim Shared As UByte recvdataboeing(400016)
 Dim Shared As UByte recvdatacurl(12512016)
-Dim Shared As Integer tquitweb=0,httpon,httpidata,webidata,googleerror=1,tgoogle=1,icurl
-Dim Shared As Byte tlockchanged
+Dim Shared As Integer tquitweb=0,httpon,httpidata,webidata,googleerror=1,tgoogle=1,icurl,myhttpon
+Dim Shared As Byte tlockchanged,httplock,myhttplock
 Dim Shared As String httphost
 Dim Shared as ZString * RECVBUFFLEN+2 recvbuffer
 Dim Shared As Integer cdatagoogle0,cdatagoogle
@@ -68,20 +68,28 @@ cdatagoogle=0'16-(cdatagoogle0 Mod 16)
 Declare Function httppostcurl(ByRef hostname0 As string,ByRef path As string)As Integer'String
 Function httppost(ByRef hostname0 As string,ByRef path As string)As Integer'String
 Dim As Integer iwait,i
+   httplock=1
+   myhttplock=1
    httphost=hostname0
    Sleep 100
    If httpon<>0 And httpon<>-1 Then
-   	For iwait=1 To 800
+   	For iwait=1 To 100
    		Sleep 100
    		If httpon=0 Or httpon=-1 Then Exit For 
    	Next
    EndIf
-   If httpon<>0 And httpon<>-1 Then Return 0
+   If httpon<>0 And httpon<>-1 Then
+   	If auxtest>0.19 Then guinotice "http busy"
+   	httplock=0:Return 0
+   EndIf
    httpon=1
-   tlockchanged=1
+   'tlockchanged=1
    Sleep 100
+   httplock=0
    icurl= httppostcurl(hostname0,path)
    'If InStr(hostname0,"google")>0 Then auxvar+=1:auxtest=0.2
+   httplock=1
+   myhttplock=1
    If InStr(hostname0,"google")>0 Or InStr(hostname0,"virtualearth")>0 Then
       icurl=min2(icurl,4000000)
       For i=0 To icurl
@@ -98,8 +106,9 @@ Dim As Integer iwait,i
       	recvdata(i)=recvdatacurl(i)
       Next
    EndIf
+   httpon=myhttpon
    If httpon<>-1 Then httpon=0
-   tlockchanged=1
+   httplock=0
    Return icurl
    
    /'

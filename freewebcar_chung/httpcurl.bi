@@ -145,7 +145,7 @@ Var url=host
     
 If tquitweb=1 Or quit=1 Then Return 0
 'guinotice url+"="+Str(myidata)
-   httpon=0
+   myhttpon=0
    /'If InStr(LCase(httphost),"nominatim")>0 Then 'And InStr(UCase(Left(recvbuffer,30)),"HTTP")>0 Then
       guinotice url+"="+Str(myidata)
    	For i=0 To 500
