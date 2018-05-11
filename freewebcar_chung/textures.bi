@@ -3140,6 +3140,7 @@ Sub getnodes(text0 As String) 'getnodes
 	'printmsg
 	'guinotice wsplit(1)
 	nnode2=nsplit
+	'guinotice "nnodes="+str(nnode2)
 	testnnodemax=0
 	If nnode2>=nnodemax Then testnnodemax=1
 	For i=1 To nsplit
@@ -3353,6 +3354,7 @@ Sub getways2(text0 As String)'getways
    'If nsplit<2 Then setioverpass():If auxtest>0.81 Then guinotice Left(text0,800)
 	nway2=nsplit
 	nway20=nway2
+	'guinotice "nways="+Str(nway2)
 	testnwaymax=0
 	If nway2>nwaymax Then testnwaymax=1
 	myiasknode=0
@@ -11716,7 +11718,9 @@ If myiaskway>0 Then
 	myiaskway=0
 	'resetmxweb()
 EndIf
-If testworld=1 Then keyway=keyway+";way['bridge']"+latlon1+";way['man_made'~'bridge']"+latlon1
+'If testworld=1 Then 
+	keyway=keyway+";way['bridge']"+latlon1+";way['man_made'~'bridge']"+latlon1
+'EndIf
 wayurl=myoverpass2+"interpreter?data=[out:json][timeout:45];%28"+keyway
 'If myroadwayid<>"" Then wayurl+=";.myway"
 nwaymax=39990
@@ -11724,9 +11728,10 @@ wayurl+=";.myrel;.myrelway;%29%3Bout%20qt%2039999%3B"
 'wayurl+="%29%3Bout%20qt%209999%3B"
 nodeurl=myoverpass2+"interpreter?data=[out:json][timeout:45];%28node"+latlon
 'nodeurl+="node"+latlon
-nodeurl+=");(way[aeroway~'aerodrome|runway|taxiway']"+latlon3+";node(w)"
+nodeurl+=";way[aeroway~'aerodrome|runway|taxiway']"+latlon3+";node(w)"
 nodeurl+=";way[aeroway~'terminal']"+latlon2+";node(w)"
 nodeurl+=";way['highway'~'motorway|trunk']"+latlon2+";node(w)"
+'nodeurl+=";way['bridge']"+latlon1+";node(w);way['man_made'~'bridge']"+latlon1+";node(w)"
 nnodemax=59990
 nodeurl+=";%29%3Bout%20skel%2059999%3B"
 Var hostname=myoverpass
@@ -11824,7 +11829,7 @@ If toverpass=1 Then
    idata=httppost(myoverpass,path)
    If idata=0 Then
    	setioverpass()
-   	guinotice "err loadnodes"
+   	'guinotice "err loadnodes"
    	Exit Sub
    EndIf
    For i=0 To idata-1
