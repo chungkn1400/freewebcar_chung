@@ -14751,7 +14751,7 @@ Sub displayback(tdraw As integer=1)
       glcolor3f ksoleil, ksoleil, min(1.0,2.0*ksoleil)
       'gltexsphere(49000,12,12)
       'drawskydome(49000*distscale,12,12)'49000,12,12)
-      drawskydome(max(100000.0,49000*distscale),12,12)'49000,12,12)
+      drawskydome(max(80000.0,49000*distscale),12,12)'49000,12,12)
       glpopmatrix
       glEnable GL_BLEND
       glBlendFunc GL_SRC_color,GL_ONE'_MINUS_SRC_color
@@ -15255,7 +15255,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
       'glcolor3f(1,1,1)
       glcolor3f ksoleil, ksoleil, min(1.0,2.0*ksoleil)
       'gltexsphere(49000,12,12)
-      drawskydome(max(100000.0,49000*distscale),12,12)'49000,12,12)
+      drawskydome(max(80000.0,49000*distscale),12,12)'49000,12,12)
       glpopmatrix
       glEnable GL_BLEND
       glBlendFunc GL_SRC_color,GL_ONE'_MINUS_SRC_color

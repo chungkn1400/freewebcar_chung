@@ -3121,6 +3121,7 @@ Next
 nerr+=1000
 Return 0
 End Function
+Dim Shared As Integer erroverpass
 Sub getnodes(text0 As String) 'getnodes
 	Dim As Integer i,j,k
 	Dim As String c
@@ -3128,6 +3129,8 @@ Sub getnodes(text0 As String) 'getnodes
 	If wline="" Then
 		setioverpass():Sleep 1000
 	   If auxtest>1.01 Then guinotice(Left(text0,800))
+	Else 
+		erroverpass=0
 	EndIf
 	wtext0=nextdata(wline,"[","]")
 	'printmsg "wtext0="+Left(wtext0,400)
@@ -3142,6 +3145,7 @@ Sub getnodes(text0 As String) 'getnodes
 	For i=1 To nsplit
 		If quit2=1 Or quit=1 Then Exit For 
 		wtext1=wsplit(i)
+      If InStr(wtext1,"""node""")<=0 Then Continue For 
 		wtext2=nextwords(wtext1,"""id""")
 		nodeid(i)=Val(nextdata0(wtext2,":",","))
 		wtext2=nextwords(wtext2,"""lat""")
@@ -3326,7 +3330,7 @@ For i=1 To nnodei
 Next
 Return ""
 End Function
-Dim Shared As Integer taddbridge,irelation,irelationway(100),erroverpass
+Dim Shared As Integer taddbridge,irelation,irelationway(100)
 Dim Shared As int64 relationwayid(100,20)
 Dim Shared As String relationname(100),relationcolor(100)
 Dim Shared As Single relationheight(100),relationheightmin(100)
@@ -3496,7 +3500,7 @@ Sub getways2(text0 As String)'getways
 	 If testrecent And tmassload=1 Then Continue For 
     'If InStr(wtext1,"284893655")>0 Then guinotice "ok"
  	 'If wayid=176985151 Then guinotice "ok"
-	 Var trunway=0
+	 Var trunway=0,testterminal=0
 	 wtext4=nextwords(wtext1,"""aeroway"":")
 	 If wtext4<>"" Then
 	 	waytype(i)=nextdata0(wtext4,"""","""")
@@ -3505,6 +3509,8 @@ Sub getways2(text0 As String)'getways
 	         waylat(i)=-91
 	         waylon(i)=-181	
 	 	      Continue For
+	 		Else
+	 			testterminal=1
 	 		EndIf
 	 	Else
 	 		trunway=1
@@ -3565,19 +3571,19 @@ Sub getways2(text0 As String)'getways
 		      EndIf
 		      freelocktown(0)
 	      EndIf 
-	      waylat(i)=-91
-	      waylon(i)=-181	
+	      'waylat(i)=-91
+	      'waylon(i)=-181	
 	      If trunway=0 Then
-	 		  If waytype(i)<>"terminal" Or InStr(wtext1,"""building"":")<=0 Then
+	 		  If waytype(i)<>"terminal" Then'Or InStr(wtext1,"""building"":")<=0 Then
 	      	 Continue For
 	        EndIf  	  
 	      EndIf
-	 	ElseIf InStr(wtext1,"""building"":")<=0 And trunway=0 Then  
-	      waylat(i)=-91
-	      waylon(i)=-181	
-	 	   'If trunway=0 Then
-	 	   	Continue For
-	 	   'EndIf
+	 	'ElseIf InStr(wtext1,"""building"":")<=0 And trunway=0 Then  
+	   '   waylat(i)=-91
+	   '   waylon(i)=-181	
+	 	'   'If trunway=0 Then
+	 	'   	Continue For
+	 	'   'EndIf
 	 	EndIf    
 	 EndIf
     If InStr(wtext1,"""node""")>0 Then
@@ -3841,7 +3847,7 @@ Sub getways2(text0 As String)'getways
 	  	ElseIf InStr(wtext2,"""amenity""")>0 Then
 	   	testofficial=1
 	   	testbuilding=1 
-	   EndIf 
+	  	EndIf 
 	   Var test=0,test2=0,testcolor=0,testname=0
 	   If testhighway=1 Then
 	   	wayheight(i)=getroadh(LCase(waytype(i)))
@@ -4799,7 +4805,8 @@ For i=1 To n
                 EndIf
             ElseIf waytype(k)="terminal" Then
    				townwaynodebuild(ij,i)=11
-   			ElseIf waytheight(k)=1 Then
+               townwaynodeh(ij,i)=max(100.0,wayheight(k))
+            ElseIf waytheight(k)=1 Then
    				'townwaynodeh(ij,i)=wayheight(k)
    				If wayheight(k)>=4000 Then townwaynodebuild(ij,i)=5'+Int(Rnd*2) 
    				If wayheightmin(k)>10 and wayheight(k)<4000 then
@@ -5011,7 +5018,8 @@ townwayname(ij,i)=wayname(k)
                 EndIf
             ElseIf waytype(k)="terminal" Then
    				townwaynodebuild(ij,i)=11
-   			ElseIf waytheight(k)=1 Then
+               townwaynodeh(ij,i)=max(100.0,wayheight(k))
+            ElseIf waytheight(k)=1 Then
    				townwaynodebuild(ij,i)=4+Int(Rnd*3)
    				If wayheight(k)>=4000 Then townwaynodebuild(ij,i)=5'+Int(Rnd*2) 
    				if wayheightmin(k)>10 and wayheight(k)<4000 then
@@ -10520,7 +10528,7 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           Var y2=waynodebuildy2(ij,i)
           Var sizei=townwaynodesize(ij,i)
       	 Var waynodebuild=townwaynodebuild(ij,i)
-          If waynodebuild<>100 And (mz>mzsol00+900 Or x2<-100-sizei Or x2>900+sizei) Then 
+          If waynodebuild<>100 And waynodebuild<>11 And (mz>mzsol00+900 Or x2<-100-sizei Or x2>900+sizei) Then 
            If itown>5 Then
           	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
@@ -11618,7 +11626,7 @@ myoverpass2=overpass2(ioverpass)
 'var wayurl=http+overpass+"interpreter?data=[out:json];%28node[aeroway~'aerodrome']"+latlon+";"
 'Var keyway="way['building:height']"+latlon+";way['building']['height']"+latlon+";way['building']['levels']"+latlon+";way['building:levels']"+latlon
 'Var keyway="way[aeroway~'aerodrome|terminal']"+latlon3
-Var keyway="way[aeroway~'aerodrome']"+latlon3+";way[aeroway~'runway|taxiway']"+latlon3
+Var keyway="way[aeroway~'aerodrome|runway|taxiway']"+latlon3+";way[aeroway~'terminal']"+latlon2
 'keyway+=";node[aeroway~'aerodrome|runway']"+latlon1
 keyway+=";node[aeroway~'aerodrome']"+latlon3
 keyway+=";node['man_made'~'water_tower|storage_tank|silo']"+latlon3
@@ -11644,6 +11652,7 @@ Else
  'If myroadwayid<>"" Then
  '   keyway+=";(way("+myroadwayid+");way(around:0)[highway~'motorway|trunk|primary|secondary'])->.myway"
  'EndIf
+ keyway+=";way['highway'~'motorway|trunk']"+latlon2
  keyway+=";way['highway']"+latlon'latlon
 EndIf 
 'setmyroadlatlon()
@@ -11652,7 +11661,8 @@ If myroadlat>-90 And dtweb<18 And fpsmoy>17 Then
  Var lat14=myroadlat-dx,lon14=myroadlon-dx*klon
  Var lat24=myroadlat+dx,lon24=myroadlon+dx*klon
  Var latlon4="%28"+Str(lat14)+"%2C"+Str(lon14)+"%2C"+Str(lat24)+"%2C"+Str(lon24)+"%29"
- keyway+=";way['highway'~'motorway|trunk|primary|secondary']"+latlon4
+ keyway+=";way['highway'~'motorway|trunk']"+latlon2
+ keyway+=";way['highway'~'primary|secondary']"+latlon4
  /'dx=0.4*360/40000
  lat14+=dx*sin1:lon14+=dx*cos1*klon
  lat24+=dx*sin1:lon24+=dx*cos1*klon
@@ -11714,6 +11724,9 @@ wayurl+=";.myrel;.myrelway;%29%3Bout%20qt%2039999%3B"
 'wayurl+="%29%3Bout%20qt%209999%3B"
 nodeurl=myoverpass2+"interpreter?data=[out:json][timeout:45];%28node"+latlon
 'nodeurl+="node"+latlon
+nodeurl+=");(way[aeroway~'aerodrome|runway|taxiway']"+latlon3+";node(w)"
+nodeurl+=";way[aeroway~'terminal']"+latlon2+";node(w)"
+nodeurl+=";way['highway'~'motorway|trunk']"+latlon2+";node(w)"
 nnodemax=59990
 nodeurl+=";%29%3Bout%20skel%2059999%3B"
 Var hostname=myoverpass
@@ -11811,14 +11824,14 @@ If toverpass=1 Then
    idata=httppost(myoverpass,path)
    If idata=0 Then
    	setioverpass()
-   	'guinotice "err"
+   	guinotice "err loadnodes"
    	Exit Sub
    EndIf
    For i=0 To idata-1
    	zwebtext[i]=recvdata(i)
    Next
    zwebtext[idata]=0
-   'guinotice Left(zwebtext,400)
+   'guinotice Left(zwebtext,800)
    If quit2=1 Or tquitweb=1 Then Exit Sub 
    getnodes(zwebtext)
 EndIf 
