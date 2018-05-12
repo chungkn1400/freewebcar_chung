@@ -11206,12 +11206,14 @@ overpass(0)="overpass-api.de":overpass2(0)="api/"
 overpass(1)="api.openstreetmap.fr":overpass2(1)="api/"
 overpass(2)="api.openstreetmap.fr":overpass2(2)="api/"
 Sub setioverpass()
-	If toverpasserror=0 Then
+	If quit=1 Or tquitweb=1 Then Exit Sub 
+	If toverpasserror=0 And erroverpass>=3 Then
 		ioverpass+=1:If ioverpass>=2 Then ioverpass=0
 	EndIf
-	If erroverpass<=6 Then
+	If erroverpass<=8 Then
 	 erroverpass+=1
-	 If erroverpass>6 And toverpass=1 Then
+	 'guinotice "erroverpass="+Str(erroverpass)+"  ioverpass="+Str(ioverpass)
+	 If erroverpass>8 And toverpass=1 Then
 		toverpass=0
 		guinotice "overpass disabled !"
       guinotice Left(zwebtext,800)
@@ -12114,7 +12116,7 @@ tsnow=0
 If wtempmin<3 And whumidity>=80 Then tsnow=1
 'guinotice Left(zwebtext,400)
 Sleep 500
-If Timer>(timeinit+60) Then
+If Timer>(timeinit+25) Then
 	tloadwebtext2=0:Exit Sub 
 EndIf 	
 myoverpass=overpass(ioverpass)'"overpass-api.de"

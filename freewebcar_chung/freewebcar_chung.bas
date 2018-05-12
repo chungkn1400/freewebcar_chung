@@ -15921,6 +15921,7 @@ EndIf 'planet
            	  reverselocation0=reverselocation
            EndIf
         EndIf
+     If mapdisplay=0 Then    
        If auxtest>0.01 Then  
         If Abs(auxvar)>0.00001 Then gldrawtext("aux= "+Str(auxvar),15,ymax-79,1.2)
        EndIf
@@ -15932,7 +15933,7 @@ EndIf 'planet
         If Abs(auxvar6)>0.00001 Then gldrawtext("aux6= "+Str(auxvar6),15,ymax-179,1.2)
         If auxtext<>"" Then gldrawtext(Str(auxtext),15,ymax-199,1.2)
        EndIf
-       If auxtest<0.1 And mapdisplay=0 Then 
+       If auxtest<0.1 Then 
         If timer<timehelp+120 Then drawhelp()	
        EndIf
         Var vv=min(v*3,Sqr((xkm-mx)*(xkm-mx)+(ykm-my)*(ykm-my)+(zkm-mz)*(zkm-mz))*fps/15)'/25
@@ -15969,31 +15970,34 @@ EndIf 'planet
         If testworld=1 Then carb=max(1000,carb)
         If carb<carb0*0.1 Then glcolor3f(1,0,0) Else glcolor3f(0,1,1)
         gldrawtext("carb="+Str(Int(carb)),10,270,1)
+      EndIf   
         If mapdisplay>0 And auxtest<0.699 Then
         	  glcolor3f(1,1,1)
+        	  Var i20=10
         	  If dkzoom>6.1 Then
-        	  	  gldrawtext("[A][Z]zoom = 2",10,320,1.2)
+        	  	  gldrawtext("[A][Z]zoom = 2",10,320+i20,1.2)
         	  ElseIf dkzoom>1.1 Then
-        	  	  gldrawtext("[A][Z]zoom = 1",10,320,1.2)
+        	  	  gldrawtext("[A][Z]zoom = 1",10,320+i20,1.2)
         	  ElseIf dkzoom>0.5 then 	  
-        	  	  gldrawtext("[A][Z]zoom = 0",10,320,1.2)
+        	  	  gldrawtext("[A][Z]zoom = 0",10,320+i20,1.2)
         	  ElseIf dkzoom>0.1 then 	  
-        	  	  gldrawtext("[A][Z]zoom = -1",10,320,1.2)
+        	  	  gldrawtext("[A][Z]zoom = -1",10,320+i20,1.2)
         	  Else 	  
-        	  	  gldrawtext("[A][Z]zoom = -2",10,320,1.2)
+        	  	  gldrawtext("[A][Z]zoom = -2",10,320+i20,1.2)
         	  EndIf
-        	  gldrawtext("visibility = "+Str(wfog),10,340,1.2)
-        	  gldrawtext("clouds = "+Str(wclouds),10,360,1.2)
-        	  gldrawtext("humidity = "+Str(whumidity),10,380,1.2)
-        	  gldrawtext("temp min = "+Str(wtempmin),10,400,1.2)
+        	  gldrawtext("visibility = "+Str(wfog),10,340+i20,1.2)
+        	  gldrawtext("clouds = "+Str(wclouds),10,360+i20,1.2)
+        	  gldrawtext("humidity = "+Str(whumidity),10,380+i20,1.2)
+        	  gldrawtext("temp min = "+Str(wtempmin),10,400+i20,1.2)
         	  glcolor3f(1,0,0)
-        	  gldrawtext("arrows : move",10,425,1.7)
+        	  gldrawtext("arrows : move",10,425+i20,1.7)
         	  glcolor3f(1,1,1)
-        	  gldrawtext("nbuild = "+Str(nbuilds)+"/"+Str(copydoubles),10,450,1.2)
-        	  gldrawtext("itown40 = "+Str(itown40),10,470,1.2)
-        	  gldrawtext(treetype,10,490,1.2)
-        	  gldrawtext("Fre(0)="+Str(Fre(0)\1000000)+"M/"+Str(fre00\1000000)+"M",10,510,1.2)       	  
+        	  gldrawtext("nbuild = "+Str(nbuilds)+"/"+Str(copydoubles),10,450+i20,1.2)
+        	  gldrawtext("itown40 = "+Str(itown40),10,470+i20,1.2)
+        	  gldrawtext(treetype,10,490+i20,1.2)
+        	  gldrawtext("Fre(0)="+Str(Fre(0)\1000000)+"M/"+Str(fre00\1000000)+"M",10,510+i20,1.2)       	  
         EndIf
+      If mapdisplay=0 Then   
         If tautopilot=1 And ((plane>0 And car>0)Or plane=0) Then
         	 If typeautopilot=0 Then
         	 	glcolor3f(1,1,1):gldrawtext("autopilot0",10,290,1)
@@ -16004,6 +16008,8 @@ EndIf 'planet
         If plane>0 And car=0 And volant=2 Then
         	   glcolor3f(1,0,0.6):gldrawtext("QZSD = head",10,290,1)
         EndIf
+        gldrawtext("ways="+Str(mynways)+" nodes="+Str(mynnodes),10,330,1)
+      EndIf 
         'auxvar=myhttplock+0.1:auxtest=0.2
         If (itime Mod 10)=0 Then
         	   myhttplock=httplock:mytextload=textload
@@ -16011,7 +16017,7 @@ EndIf 'planet
         	   'mydtweb=dtweb:mytinittown=tinittown
         	   mynnodes=nnode2:mynways=nway2
         EndIf
-        gldrawtext("ways="+Str(mynways)+" nodes="+Str(mynnodes),10,330,1)
+      
         If myhttplock=0 Then'mapdisplay=0 Then
          tlockchanged=0 
          If auxtest>0.5 Then 
@@ -16041,6 +16047,7 @@ EndIf 'planet
         EndIf   
         'drawboussole
         drawradar
+        
 	     If tgps<=1 Then drawgps
         cursorx0=0:cursory0=0:cursorz0=0
         'drawhand
@@ -21252,7 +21259,7 @@ msg+="shift+G => google maps webtext (enable/basic/disable)"+cr
 'msg+="ctrl+I => internet openstreetmap buildings"+cr
 msg+="ctrl+S => shadow (on/off)   /  shift+D => detail40 buildings"+cr'smooth terrain"+cr
 msg+="shift+T => retroviseur "+cr
-msg+="shift+O => change server"+cr
+msg+="shift+O => change OSM server"+cr
 msg+="ctrl+shift => walk (foot mode)  /   H => horse"+cr
 msg+="key 9 => heightmap / Q,D 1,2 or space arrow => turn left/right"+cr
 msg+="joystick and gamepad supported" 
@@ -22270,6 +22277,8 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    	tkzoom=1
    	testweb2=11
    	'tquitweb=1
+   	waitbusy()
+   	tquitweb=0
    	Sleep 300 
    EndIf
    If mapdisplay=1 And guitestkey(vk_a) Then
@@ -22288,6 +22297,8 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    	tkzoom=1
    	testweb2=11
    	'tquitweb=1
+   	waitbusy()
+   	tquitweb=0
    	Sleep 300 
    EndIf
     'Var mxx=mx+dmx0+cos1*dxx1*kzoom*0.38
@@ -22386,11 +22397,30 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    	If quit=1 Then testweb=0
    	If tloadwebtext2=200 Then tloadwebtext2=0
    EndIf
-   If test=0 And testweb=0 And httpon<>1 And tloadwebtext2=0 And skyauto<=1 And time2>timeinit+20 Then
+   If test=0 And testweb=0 And testweb2=0 And httpon<>1 And tloadwebtext2=0 And skyauto<=1 And time2>timeinit+20 Then
    	testgetweather()
    	If tsubciel=1 Then tsubciel=0:subciel():setfog()
    EndIf
-   If testweb=1 And tinittown=0 And httpon<>1 And tloadwebtext2=0 And _   
+'ElseIf tinittown=0 And tinittown0=0 And testweb2=11 And httpon<>1 And tloadwebtext2=0 Then
+   If tinittown=0 And tinittown0=0 And testweb2=11 And tloadwebtext2=0 Then 
+   	   tloadwebtext2=2
+   	   testweb2=0
+   	   t11=2:t111=Timer
+   	   If tkzoom>0.1 Then 
+   	    tkzoom=0
+   	    tquitweb=0
+   	   EndIf  
+   	   'xwebzoom1=mx+dmx0+cos1*dxx*0.7*kzoom:ywebzoom1=my+dmy0+sin1*dyy*0.7*kzoom
+   	   xwebzoom1=mx:ywebzoom1=my
+   	   xweb11=xweb
+   	   'xwebzoom1=xweb:ywebzoom1=yweb
+   	   dxwebzoom1=dxweb*kzoom:dywebzoom1=dyweb*kzoom
+   	   if mapdisplay<>1 then
+   	   	threaddetach(ThreadCreate(@loadwebtextzoom))
+   	   else
+   	   	loadwebtextzoom(0)
+   	   EndIf
+   ElseIf testweb=1 And tinittown=0 And httpon<>1 And tloadwebtext2=0 And _   
       ((mz-mzsol0)<100 Or Abs(sin3)<0.60) Then '<0.67
       timeinit=max(timeinit,time2-20)
    	tloadmapdisplay=0
@@ -22431,25 +22461,7 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
 ElseIf nboeing2>0 And Timer>max(timeboeing10,timeinit+10) And tloadwebtext2=0 And tcopyboeing=0 Then
   	   tloadwebtext2=2
   	   threaddetach(ThreadCreate(@subloadairtraffic))
-ElseIf tinittown=0 And tinittown0=0 And testweb2=11 And httpon<>1 And tloadwebtext2=0 Then
-   	   tloadwebtext2=2
-   	   testweb2=0
-   	   t11=2:t111=Timer
-   	   If tkzoom>0.1 Then 
-   	    tkzoom=0
-   	    tquitweb=0
-   	   EndIf  
-   	   'xwebzoom1=mx+dmx0+cos1*dxx*0.7*kzoom:ywebzoom1=my+dmy0+sin1*dyy*0.7*kzoom
-   	   xwebzoom1=mx:ywebzoom1=my
-   	   xweb11=xweb
-   	   'xwebzoom1=xweb:ywebzoom1=yweb
-   	   dxwebzoom1=dxweb*kzoom:dywebzoom1=dyweb*kzoom
-   	   if mapdisplay<>1 then
-   	   	threaddetach(ThreadCreate(@loadwebtextzoom))
-   	   else
-   	   	loadwebtextzoom(0)
-   	   endif 
-   ElseIf tloadwebtext2=4 Then
+ElseIf tloadwebtext2=4 Then
       If quit=1 Then
       	tloadwebtext2=0
       Else 
