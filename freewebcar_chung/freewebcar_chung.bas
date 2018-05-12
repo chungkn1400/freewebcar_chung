@@ -14831,12 +14831,13 @@ Sub displayback(tdraw As integer=1)
 End Sub
 Declare Sub resetmxy0()
 Declare Sub testresetmz0()
-Dim shared as double tmxmove,tupdate,dtweb=0,ddtweb
+Dim shared as double tmxmove,tupdate,dtweb=60,ddtweb,dtwebnode=60
 dim shared as single avgv,avgmx,avgmy,mxmove,mymove,o1move,avgdo1,avgo10,tkzoom=0,mzbridge=-999999
 Dim Shared As Single o333,cos333,sin333,do333,o100,latmx,lngmx
 dim shared as double timehelp,timelayer0
-Dim Shared As Integer tfootmove
-Dim Shared As String textload
+Dim Shared As Integer tfootmove,mytinittown,nnode2,nway2,mynnodes,mynways
+Dim Shared As String textload,mytextload,myhttphost
+Dim Shared As Double mydtweb
 declare sub drawhelp()
 Declare Sub loadairtraffic()
 Declare Sub drawnboeings()
@@ -16004,8 +16005,14 @@ EndIf 'planet
         	   glcolor3f(1,0,0.6):gldrawtext("QZSD = head",10,290,1)
         EndIf
         'auxvar=myhttplock+0.1:auxtest=0.2
-        If (itime Mod 10)=0 Then myhttplock=httplock
-        If tlockchanged=1 And myhttplock=0 Then'mapdisplay=0 Then
+        If (itime Mod 10)=0 Then
+        	   myhttplock=httplock:mytextload=textload
+        	   myhttphost=httphost
+        	   'mydtweb=dtweb:mytinittown=tinittown
+        	   mynnodes=nnode2:mynways=nway2
+        EndIf
+        gldrawtext("ways="+Str(mynways)+" nodes="+Str(mynnodes),10,330,1)
+        If myhttplock=0 Then'mapdisplay=0 Then
          tlockchanged=0 
          If auxtest>0.5 Then 
           If tloadwebtext2>0 Or testweb>0 Then gldrawtext("loading "+Str(tloadwebtext2)+" "+Str(testweb)+" "+Str(tinittown),10,310,1)
@@ -16014,16 +16021,22 @@ EndIf 'planet
         	 glcolor3f(0,1,1)
           If InStr(httphost,"google")>0 Then
           	gldrawtext("load...",10,310,1)
-          ElseIf InStr(httphost,"virtualearth")>0 Then
+          ElseIf InStr(myhttphost,"virtualearth")>0 Then
           	gldrawtext("load..",10,310,1)
-          ElseIf InStr(httphost,"adsbexchange")>0 Then
+          ElseIf InStr(myhttphost,"adsbexchange")>0 Then
           	gldrawtext("load.traffic",10,310,1)
-          Else 
-          	gldrawtext("load.."+Str(Int(dtweb))+" "+Str(tinittown),10,310,1)
+          ElseIf mytextload<>"" Then
+          	gldrawtext(mytextload,10,310,1)
+          Else 	
+          	gldrawtext("load.."+Str(Int(mydtweb))+". "+Str(mytinittown),10,310,1)
           EndIf
          ElseIf httpon=-1 Then 
         	 glcolor3f(0,1,1)
           gldrawtext("wait...",10,310,1)
+         Else
+         	If mytextload<>"" Then
+         		gldrawtext(mytextload,10,310,1)
+         	EndIf
          EndIf 
         EndIf   
         'drawboussole
@@ -22350,7 +22363,7 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    	EndIf 	
    	googleerror=0
    ElseIf tinittown0>0 Then 
-   	googleerror=0:dtweb=20
+   	googleerror=0:dtweb=60
    Else 
    	googleerror=1
    EndIf
@@ -22368,12 +22381,12 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    If time2>timeinit+200 And timeinit>time2-1000 Then timeinit=time2-30:testweb=1
    If time2>timeinit+20 And testinit=0 Then testinit=1:testweb=1:subsettupdate()
    If timeinit>time2-6 Then testinit=0
-   'auxvar5=tloadwebtext2+0.1'Timer-tloadwebtext
+   'auxtest=0.2:auxvar5=tloadwebtext2+0.1'Timer-tloadwebtext
    If tquitweb=1 Then
    	If quit=1 Then testweb=0
    	If tloadwebtext2=200 Then tloadwebtext2=0
    EndIf
-   If test=0 And testweb=0 And httpon<>1 And tloadwebtext2=0 And skyauto<=1 Then
+   If test=0 And testweb=0 And httpon<>1 And tloadwebtext2=0 And skyauto<=1 And time2>timeinit+20 Then
    	testgetweather()
    	If tsubciel=1 Then tsubciel=0:subciel():setfog()
    EndIf
@@ -22513,8 +22526,8 @@ ElseIf tinittown=0 And tinittown0=0 And testweb2=11 And httpon<>1 And tloadwebte
       'initterrainlines
    ElseIf testweb=0 And tloadwebtext2=0 And tinittown=0 And tinittown0<=0 And topentown=1 And Timer>tloadwebtext+t10+2.3+(1-toverpass)*40 And _  
    	    abs(sin3)<0.60 And quit2=0 And tinternet>=2 And mapdisplay=0 And  _   
-   	    guitestkey(vk_left)=0 And guitestkey(vk_right)=0 And guitestkey(vk_down)=0 Then '<0.67
-     If mapdisplay=0 And testweb2=0 And time2>timeinit+20 Then 
+   	    guitestkey(vk_left)=0 And guitestkey(vk_right)=0 And guitestkey(vk_down)=0 And time2>timeinit+12 Then '<0.67
+     If mapdisplay=0 And testweb2=0 Then 
    	tloadwebtext2=2:tinittown=1
    	Var dlatmax=1*360/40000
    	Var lat0=lat,lng0=lng

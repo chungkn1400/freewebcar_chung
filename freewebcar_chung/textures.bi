@@ -698,6 +698,7 @@ Return Fl_JPEG_ImageMem("myjpgdummy", @recvdata(0))
 End Function '/
 Sub loadwebtext(ByVal userdata As Any Ptr)
 	'If tloadwebtext2=2 Then Exit Sub
+	textload="loadmap"
 	tquitweb=0
 	tcancel=0
 	If worldname="world" Then
@@ -984,11 +985,13 @@ freelockterrainbmp()
 If testworld=1 Then
 	Sleep t300'1000
 	getlockterrain2()
+	textload="loadterrain"
 	loadwebterrain(zoom1)
 	freelockterrain()
 EndIf
 Sleep t300'1000
-tloadwebtext2=1  
+tloadwebtext2=1 
+textload="" 
 'If tquitweb=1 Then tloadwebtext2=0:tloadwebtext=0
 End Sub
 Dim Shared As Byte testroad(1200,1200)
@@ -1424,6 +1427,7 @@ Dim Shared As Single dxwebzoom1=10000,dywebzoom1=10000
 dim shared as single kzoom=0.5
 Sub loadwebtextzoom(ByVal userdata As Any Ptr)
 	'If tloadwebtext2=2 Then Exit Sub
+	textload="loadmapzoom"
 	If worldname="world" Then
 		testworld=1
 		worldx=myworldx:worldy=myworldy 
@@ -2824,10 +2828,9 @@ For i=0 To mynnode
 Next
 End Sub
 Const As Integer nnode=99999,nway=29000,naeroway=120 
-dim shared as integer nnode2=0
 Dim Shared As int64 nodeid(nnode)
 Dim Shared As Single latnode(nnode),lonnode(nnode)
-Dim Shared As Integer nway2=0,waytheight(nway),nway20,nwaymax,nnodemax,testnwaymax,testnnodemax
+Dim Shared As Integer waytheight(nway),nway20,nwaymax,nnodemax,testnwaymax,testnnodemax
 Dim Shared As int64 waynode(nway)
 Dim Shared As Single waylat(nway),waylon(nway),wayheight(nway),waywidth(nway),waydo1(nway),waylength(nway)
 Dim Shared As Single waynodez(nway),wayheightmin(nway),wayred,waygreen,wayblue,wayr(nway),wayg(nway),wayb(nway)
@@ -3143,6 +3146,7 @@ Sub getnodes(text0 As String) 'getnodes
 	'guinotice "nnodes="+str(nnode2)
 	testnnodemax=0
 	If nnode2>=nnodemax Then testnnodemax=1
+	If nnode2<1 Then dtwebnode=60
 	For i=1 To nsplit
 		If quit2=1 Or quit=1 Then Exit For 
 		wtext1=wsplit(i)
@@ -3348,7 +3352,7 @@ Sub getways2(text0 As String)'getways
 		erroverpass=0
 	EndIf
 	wtext0=nextdata(wline,"[","]")
-	'printmsg "wtext0="+wtext0
+	'guinotice Left("wtext0="+wtext0,400)
 	split(wtext0,",")
 	'printmsgsplit()
    'If nsplit<2 Then setioverpass():If auxtest>0.81 Then guinotice Left(text0,800)
@@ -3357,6 +3361,7 @@ Sub getways2(text0 As String)'getways
 	'guinotice "nways="+Str(nway2)
 	testnwaymax=0
 	If nway2>nwaymax Then testnwaymax=1
+	If nway2<1 Then dtweb=60
 	myiasknode=0
 	myiaskway=0
 	nbroad=0
@@ -4852,7 +4857,7 @@ For i=1 To n
 Next
 If n>=ntownnode And p=0 Then
  n=ntownnode	
- If waytheight(k)>=4 Or addwaynodebuild(k)>=12 Then
+ If waytheight(k)>=4 Or addwaynodebuild(k)>=11 Then'12 11=terminal
 	For i=1 To n
 		If townwaynodebuild(ij,i)<10 Then
 			p=i:Exit For
@@ -4861,7 +4866,9 @@ If n>=ntownnode And p=0 Then
  EndIf
  If p=0 Then Exit Sub  
 EndIf
- 
+
+
+If time2<timeinit+100 Then  
 Var ij2=ij-1
 If ij2>0 Then
 	For i=1 To townnwaynode(ij2)
@@ -4950,6 +4957,7 @@ If ij2<ntown2 Then
 		EndIf
 	Next
 EndIf
+EndIf 'timeinit
 
 i=n+1
 if p>0 then i=p
@@ -5058,7 +5066,10 @@ townwayname(ij,i)=wayname(k)
    			Else 
       			townwaynodebuild(ij,i)=1+(id Mod 3)'Int(Rnd*3)
       		EndIf 	
-townwaynodez(ij,i)=-999999
+'townwaynodez(ij,i)=-999999
+townwaynodez(ij,i)=getterrainheight(townwaynodex(ij,j,1),townwaynodey(ij,j,1))
+ttsetterrain(ij,i)=0
+
 'latweb=lat:lngweb=lng
 'latlngtomxy(latweb,lngweb,mxweb,myweb)
 For j=1 To Abs(iwaynode(k))
@@ -11196,7 +11207,7 @@ overpass(1)="api.openstreetmap.fr":overpass2(1)="api/"
 overpass(2)="api.openstreetmap.fr":overpass2(2)="api/"
 Sub setioverpass()
 	If toverpasserror=0 Then
-		ioverpass+=1:If ioverpass>2 Then ioverpass=0
+		ioverpass+=1:If ioverpass>=2 Then ioverpass=0
 	EndIf
 	If erroverpass<=6 Then
 	 erroverpass+=1
@@ -11227,7 +11238,8 @@ Sub setioverpass()
 End Sub
 Dim Shared As String myoverpass
 Sub suboverpass()
-	confirm("change overpass server ? last="+myoverpass,"confirm",resp)
+	myoverpass=overpass(ioverpass)
+	confirm("change overpass server ? last=("+Str(ioverpass)+")"+myoverpass,"confirm",resp)
    If resp="yes" Then setioverpass()
    Sleep 500	
 End Sub
@@ -11567,9 +11579,9 @@ Put #file,,zwebtext
 Close #file
 guinotice "data saved as "+fic 
 End Sub
-dim shared as Double tidle,tidle2
-Dim Shared As Integer tbuildheight=15
-Dim Shared As Single knway=1
+dim shared as Double tidle,tidle2,dtweb0=60,dtwebnode0=60,dtweb00=60,dtwebnode00=60
+Dim Shared As Integer tbuildheight=15,iloadtown
+Dim Shared As Single knway=0.5,kiload=1,kiload0=1,kdxweb0=0.3,kdxweb00=0.3,knway0=0.5,knway00=0.5
 Sub loadopentown()
 tidle2=tidle
 'Var lat=48.891977155490395,lng=2.237673523003608'paris defense
@@ -11578,16 +11590,30 @@ tidle2=tidle
 'Var lat0=lat,lng0=lng
 'mxytolatlng(mx+dmx0,my+dmy0)
 Dim As Integer i,idata
+iloadtown+=1:If iloadtown>6 Then iloadtown=0
 toverpasserror=0
 nerr=0
 Var kdx=1.0
 'If (mz-mzsol0)<500 Then kdx=0.5
 If (mz-mzsol0)<100 Then kdx=0.7'0.25
-If tinittown0>0 Then kdxweb=0.3
-If dtweb>40 Then kdxweb=max(0.27,kdxweb*0.7)
-If dtweb>30 Then kdxweb=max(0.27,kdxweb*0.7)
-If dtweb>20 Then kdxweb=max(0.27,kdxweb*0.7)
-If dtweb<12 Then kdxweb=min(1.0,kdxweb*1.15)
+kiload=1.0:kiload0=0.5
+If iloadtown=0 Then
+	kiload=0.2:kiload0=1
+	dtweb0=dtweb:dtwebnode0=dtwebnode:kdxweb0=kdxweb:knway0=knway
+	dtweb=dtweb00:dtwebnode=dtwebnode00:kdxweb=kdxweb00:knway=knway00
+ElseIf iloadtown>=1 And iloadtown<6 Then
+   kiload=0.2:kiload0=1
+Else 
+	kiload=1.0:kiload0=0.4
+	dtweb00=dtweb:dtwebnode00=dtwebnode:kdxweb00=kdxweb:knway00=knway
+	dtweb=dtweb0:dtwebnode=dtwebnode0:kdxweb=kdxweb0:knway=knway0
+EndIf
+If tinittown0>0 Then kdxweb=0.3:knway=0.3
+Var dtweb1=max(dtweb,dtwebnode)
+'If dtweb1>40 Then kdxweb=max(0.27,kdxweb*0.7)
+'If dtweb1>30 Then kdxweb=max(0.27,kdxweb*0.7)
+If dtweb1>20 Then kdxweb=max(0.2,kdxweb*0.7)
+If dtweb1<12 Then kdxweb=min(1.0,kdxweb*1.15)
 'auxvar=inearroad0:auxtest=0.3
 If (plane=0 Or car>0) And inearroad0>130 Then kdx*=0.7
 Var dx0=kdx*1.3*360/40000',klon=1.4
@@ -11601,15 +11627,16 @@ if plane=0 or car>0 then kdx*=kdxweb
 Var dx=dx0*kdxweb
 dmxweb(imxweb)=dx0*0.7
 'lattown=lat+dx*1.5*sin1:lngtown=lng+dx*1.5*cos1*klon
+dx=dx*kiload0
 var lat1=lattown-dx,lon1=lngtown-dx*klon
 var lat2=lattown+dx,lon2=lngtown+dx*klon
-dx=kdxweb*10*360/40000
+dx=kiload0*kdxweb*10*360/40000
 Var lat11=lattown-dx,lon11=lngtown-dx*klon
 var lat21=lattown+dx,lon21=lngtown+dx*klon
-dx=kdxweb*2.5*360/40000
+dx=kiload0*kdxweb*2.5*360/40000
 var lat12=lattown-dx,lon12=lngtown-dx*klon
 var lat22=lattown+dx,lon22=lngtown+dx*klon
-dx=kdx*10*360/40000
+dx=kiload*kdx*10*360/40000
 var lat13=lattown-dx,lon13=lngtown-dx*klon
 var lat23=lattown+dx,lon23=lngtown+dx*klon
 'dx=7*360/40000
@@ -11631,19 +11658,21 @@ myoverpass2=overpass2(ioverpass)
 Var keyway="way[aeroway~'aerodrome|runway|taxiway']"+latlon3+";way[aeroway~'terminal']"+latlon2
 'keyway+=";node[aeroway~'aerodrome|runway']"+latlon1
 keyway+=";node[aeroway~'aerodrome']"+latlon3
-keyway+=";node['man_made'~'water_tower|storage_tank|silo']"+latlon3
-keyway+=";node['man_made'~'communications_tower|tower']"+latlon3
-keyway+=";node[amenity~'fuel|hospital|cinema']"+latlon2+";node[railway~'station']"+latlon2
-keyway+=";node[highway~'bus_stop']"+latlon'2
-If nshop>180 Or nshop0>180 Then
+If mz<mzsol00+400 Or vkm<80 Or dtweb<40.0 Then 
+ keyway+=";node['man_made'~'water_tower|storage_tank|silo']"+latlon3
+ keyway+=";node['man_made'~'communications_tower|tower']"+latlon3
+ keyway+=";node[amenity~'fuel|hospital|cinema']"+latlon2+";node[railway~'station']"+latlon2
+ keyway+=";node[highway~'bus_stop']"+latlon'2
+ If nshop>180 Or nshop0>180 Then
 	keyway+=";node[shop~'mall|supermarket|books']"+latlon2
-Else 	
+ Else 	
 	keyway+=";node[shop]"+latlon2+";node[amenity~'cafe|restaurant|bar|pub']"+latlon
-EndIf
+ EndIf
+EndIf  
 'keyway+=";way[highway~'motorway|trunk|primary|secondary|tertiary']"+latlon
 'keyway+=";way[highway~'motorway|trunk|primary|secondary|tertiary|unclassified|residential|service|pedestrian|path|parking']"+latlon
 If (dtweb<19.5 Or time2>tidle2+4) And fpsmoy>14 Then 
- keyway+=";way['highway'~'motorway|trunk']"+latlon3
+ keyway+=";way['highway'~'motorway|trunk']"+latlon2
  'keyway+=";way['highway'~'motorway|trunk|primary']"+latlon3
  'If myroadwayid<>"" Then
  '   keyway+=";(way("+myroadwayid+");way(around:0)[highway~'motorway|trunk|primary|secondary'])->.myway"
@@ -11658,7 +11687,7 @@ Else
  keyway+=";way['highway']"+latlon'latlon
 EndIf 
 'setmyroadlatlon()
-If myroadlat>-90 And dtweb<18 And fpsmoy>17 Then
+If myroadlat>-90 And dtweb<18 And fpsmoy>17 And mz<mzsol00+200 Then
  Var dx=0.4*360/40000
  Var lat14=myroadlat-dx,lon14=myroadlon-dx*klon
  Var lat24=myroadlat+dx,lon24=myroadlon+dx*klon
@@ -11679,7 +11708,7 @@ If plane=0 or car>0 or avion="ballon" Or avion="copter" Then
   keyway+=";way['building:part'~'yes']"+latlon
   keyway+=";way['railway'~'rail']"+latlon
   keyway+=";way[amenity~'school|university|hospital']"+latlon
-Else  
+ElseIf dtweb<30.0 Then   
   Var d10=10
   If (dtweb<15.5)Then' Or time2>tidle2+14) Then
   	  tbuildheight=min2(50,max2(d10,Int(tbuildheight*0.8)))
@@ -11715,18 +11744,19 @@ If myiaskway>0 Then
 			Exit For 
 		EndIf
 	Next
+	'guinotice "myiaskway="+Str(myiaskway)+"  /"+Str(Len(keyway))
 	myiaskway=0
 	'resetmxweb()
 EndIf
 'If testworld=1 Then 
 	keyway=keyway+";way['bridge']"+latlon1+";way['man_made'~'bridge']"+latlon1
 'EndIf
-wayurl=myoverpass2+"interpreter?data=[out:json][timeout:45];%28"+keyway
+wayurl=myoverpass2+"interpreter?data=[out:json][timeout:55];%28"+keyway
 'If myroadwayid<>"" Then wayurl+=";.myway"
 nwaymax=39990
 wayurl+=";.myrel;.myrelway;%29%3Bout%20qt%2039999%3B"
 'wayurl+="%29%3Bout%20qt%209999%3B"
-nodeurl=myoverpass2+"interpreter?data=[out:json][timeout:45];%28node"+latlon
+nodeurl=myoverpass2+"interpreter?data=[out:json][timeout:55];%28node"+latlon
 'nodeurl+="node"+latlon
 nodeurl+=";way[aeroway~'aerodrome|runway|taxiway']"+latlon3+";node(w)"
 nodeurl+=";way[aeroway~'terminal']"+latlon2+";node(w)"
@@ -11754,8 +11784,10 @@ If Timer>tinittown00 Then
 			getcity():tloadcity=0
 		EndIf
 	EndIf '/
+	textload="getcity"
 	If tloadcity=3 Then getcity():tloadcity=0
-
+   
+   textload="getlocation"
    Var dxreverse=1.0*360/40000 '1km
    Var lat0=lat,lng0=lng
    mxytolatlng(mx+dmx0,my+dmy0)
@@ -11826,10 +11858,15 @@ If toverpass=1 Then
 'overpass(2)="api.openstreetmap.fr":overpass2(2)="api/"
 
    'guinotice myoverpass+"/"+path
+   nnode2=0
+   textload="loadnodes "+Str(Int(dtwebnode))+". "+Str(iloadtown)+" "+Left(Str(kdxweb),4)
+   Var ddt=Timer 
    idata=httppost(myoverpass,path)
+   dtwebnode=Timer-ddt
    If idata=0 Then
    	setioverpass()
    	'guinotice "err loadnodes"
+   	dtwebnode=60
    	Exit Sub
    EndIf
    For i=0 To idata-1
@@ -11848,17 +11885,19 @@ Sub loadopentown2()
 Dim As Integer i,idata
 If toverpass=1 Then     
    If quit2=1 Or tquitweb=1 Then Exit Sub 
+   nway2=0
 	ddtweb=Timer 
 	'Var myoverpass22="overpass-api.de" '/api/ (api.openstreetmap.fr"
 	'Var myoverpass22="api.openstreetmap.fr"
 	'guinotice myoverpass+"/"+path
 	idata=httppost(myoverpass,wayurl)
+	dtweb=Timer-ddtweb
    If idata=0 Then
    	setioverpass()
    	'guinotice "err2"
+   	dtweb=60
    	Exit Sub
    EndIf
-	dtweb=Timer-ddtweb
    For i=0 To idata-1
    	zwebtext[i]=recvdata(i)
    Next
@@ -11871,7 +11910,8 @@ If toverpass=1 Then
    EndIf
    'If InStr(zwebtext,"man_made")>0 Then guinotice Mid(zwebtext,InStr(zwebtext,"man_made"),800)
    If quit2=1 Or tquitweb=1 Then Exit Sub
-   Sleep t300:tloadwebtext2=200 
+   Sleep t300:tloadwebtext2=200
+   textload="getways2 "+Str(Int(dtweb))+"."
    getways2(zwebtext)
    'guinotice(msgprint)
    msgprint=""
@@ -11914,6 +11954,7 @@ If myiasknode>0 Then
  		If Len(nodeurl)>4900 Then myiasknode3=i:Exit for
  	  Next
      nodeurl+="%29%3Bout%20skel%20299%3B"
+     textload="loadtown32"
      Sleep t300
 	  idata=httppost(myoverpass,nodeurl)
      If idata=0 Then setioverpass():Exit Sub
@@ -11934,6 +11975,7 @@ If myiasknode>0 Then
  		If Len(nodeurl)>4900 Then Exit for
  	  Next
      nodeurl+="%29%3Bout%20skel%20299%3B"
+     textload="loadtown33"
      Sleep t300
 	  idata=httppost(myoverpass,nodeurl)
      If idata=0 Then setioverpass():Exit Sub
@@ -11947,6 +11989,7 @@ If myiasknode>0 Then
    EndIf
    If nboeing2>0 And Timer>timeboeing10 And tcopyboeing=0 Then loadairtraffic()
    If quit2=1 Or tquitweb=1 Then Exit Sub 
+   textload="getways23" 
    If tgetway=0 Then
    	getways2bridge(zwebtext0)
    Else 
@@ -11966,7 +12009,7 @@ End Sub
 Sub inittown22(ByVal userdata As Any Ptr)
 	tcancel=1
 	t11=2
-	textload="loadopentown"
+	textload="loadtown"
 	loadopentown()
    If nboeing2>0 And Timer>timeboeing10 And tcopyboeing=0 Then loadairtraffic()
 	tinittown=22
@@ -11984,7 +12027,7 @@ End Sub
 Sub inittown222(ByVal userdata As Any Ptr)
 	tcancel=1
 	t11=2'0
-	textload="loadopentown2"
+	textload="loadtown2 "+Str(Int(dtweb))+"."
 	loadopentown2()
    If nboeing2>0 And Timer>timeboeing10 And tcopyboeing=0 Then loadairtraffic()
 	tcancel=0
@@ -12001,25 +12044,26 @@ End Sub
 Sub inittown223(ByVal userdata As Any Ptr)
 	tcancel=0
 	t11=0
-	textload="loadopentown3"
+	textload="loadtown3"
 	loadopentown3()
    If nboeing2>0 And Timer>timeboeing10 And tcopyboeing=0 Then loadairtraffic()
 	tcancel=0
 	'guinotice "inittown223 exit"
+	textload=""
 	tinittown=0:tloadwebtext=0:tquitweb=0
 	tloadwebtext2=0
 	myroadlat=-99
 	t11=0
 	Sleep t300'1000
-	textload=""
 	tloadwebtext=Timer-t10-99
 	'If t11>1 then tloadwebtext=max(tloadwebtext,Timer-t10)
 End Sub 
 Dim Shared As Double weathertime,weatherlat,weatherlng
 Sub getweather(ByVal userdata As Any Ptr)
+textload="getweather"	
 Var weatherhost="api.openweathermap.org"'/data/2.5/weather?lat="+Str(lat)+"&lon="+Str(lng)+"&APPID=4cd1de75fbc57d92794e74ec918593ca"	
 Var weatherurl="data/2.5/weather?lat="+Str(lat)+"&lon="+Str(lng)+"&APPID=4cd1de75fbc57d92794e74ec918593ca"	
-var idata=httppost(weatherhost,weatherurl)
+Var idata=httppost(weatherhost,weatherurl)
 If idata>0 Then  
   Dim As Integer i,j,k
   For i=0 To idata-1
@@ -12027,6 +12071,7 @@ If idata>0 Then
   Next
   zwebtext[idata]=0
   'guinotice Left(zwebtext,600)
+  textload=""
   wtext1=zwebtext
   wtext2=nextwords(wtext1,"""clouds"":")
   If wtext2<>"" Then
@@ -12069,17 +12114,22 @@ tsnow=0
 If wtempmin<3 And whumidity>=80 Then tsnow=1
 'guinotice Left(zwebtext,400)
 Sleep 500
-Var myoverpass=overpass(ioverpass)'"overpass-api.de"
-Var myoverpass2=overpass2(ioverpass)
-Var dx=30.0*360/40000
+If Timer>(timeinit+60) Then
+	tloadwebtext2=0:Exit Sub 
+EndIf 	
+myoverpass=overpass(ioverpass)'"overpass-api.de"
+myoverpass2=overpass2(ioverpass)
+Var dx=10.0*360/40000'30.0*
 Var lat1=lat-dx,lon1=lng-dx*klon
 var lat2=lat+dx,lon2=lng+dx*klon
 Var latlon="%28"+Str(lat1)+"%2C"+Str(lon1)+"%2C"+Str(lat2)+"%2C"+Str(lon2)+"%29"
 Var keyway="way['leaf_type']"+latlon
-Var wayurl=myoverpass2+"interpreter?data=[out:json];%28"+keyway
-wayurl+="%29%3Bout%20qt%202%3B" 
+Var wayurl=myoverpass2+"interpreter?data=[out:json][timeout:20];%28"+keyway
+wayurl+="%29%3Bout%20qt%201%3B" 
 If quit2=1 Or tquitweb=1 Then tloadwebtext2=0:Exit Sub 
+textload="gettree"
 idata=httppost(myoverpass,wayurl)
+textload=""
 If idata=0 Then setioverpass():tloadwebtext2=0:Exit Sub
 Dim As Integer i 
 For i=0 To idata-1
@@ -12096,7 +12146,7 @@ If wtext3="broadleaved" Then treetype="broad"
 If wtext3="needleleaved" Then treetype="needle"
 'treetype="mixed"
 setarbretype(treetype)
-Sleep 100
+Sleep 100 
 tloadwebtext2=0
 End Sub
 Sub testgetweather()

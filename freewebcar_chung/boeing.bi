@@ -148,6 +148,7 @@ Dim Shared As Double timecopyboeing
 Sub loadairtraffic()
 If tcopyboeing<>0 Then Exit Sub
 tcopyboeing=-1
+textload="loadtraffic"
 'auxvar+=1:auxtest=0.2
 'https://public-api.adsbexchange.com/VirtualRadar/AircraftList.json?lat=33.433638&lng=-112.008113&fDstL=0&fDstU=7	
 Var airhost="https://public-api.adsbexchange.com"
@@ -179,6 +180,7 @@ Else
   timeboeing10=timeboeing
   tcopyboeing=0
 EndIf
+textload=""
 End Sub
 'loadairtraffic()
 Sub subloadairtraffic(ByVal userdata As Any Ptr)
