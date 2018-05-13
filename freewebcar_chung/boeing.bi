@@ -729,8 +729,8 @@ For irecent=0 To 1
      EndIf 
  Next i	
 Next irecent  
-auxvar2=k:'auxtest=0.2
-auxvar2=nboeing00
+'auxvar2=k:'auxtest=0.2
+'auxvar2=nboeing00
 'auxtext=textload
 End Sub
 Sub drawnboeingshadow()

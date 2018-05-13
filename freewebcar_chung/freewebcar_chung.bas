@@ -22422,10 +22422,11 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    	   EndIf
    ElseIf testweb=1 And tinittown=0 And httpon<>1 And tloadwebtext2=0 And _   
       ((mz-mzsol0)<100 Or Abs(sin3)<0.60) Then '<0.67
-      timeinit=max(timeinit,time2-20)
+      timeinit=max(timeinit,time2-120)
    	tloadmapdisplay=0
    	testweb=0 
       tloadwebtext2=2
+      tupdateterrain=0
    	'If (mz-mzsol0)<500 Then t11=1.4
    	t11=4:t111=Timer
    	'xweb1=mx+dmx0+0.5*cos1*dxx:yweb1=my+dmy0+0.5*sin1*dyy

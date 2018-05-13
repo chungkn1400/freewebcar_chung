@@ -5066,9 +5066,9 @@ townwayname(ij,i)=wayname(k)
    			Else 
       			townwaynodebuild(ij,i)=1+(id Mod 3)'Int(Rnd*3)
       		EndIf 	
-'townwaynodez(ij,i)=-999999
-townwaynodez(ij,i)=getterrainheight(townwaynodex(ij,j,1),townwaynodey(ij,j,1))
-ttsetterrain(ij,i)=0
+townwaynodez(ij,i)=-999999
+'townwaynodez(ij,i)=getterrainheight(townwaynodex(ij,j,1),townwaynodey(ij,j,1))
+'ttsetterrain(ij,i)=0
 
 'latweb=lat:lngweb=lng
 'latlngtomxy(latweb,lngweb,mxweb,myweb)
@@ -5942,7 +5942,8 @@ If sizei>3900*(100+h)/140 And tterminal=0 Then h0=45:h=42
 x=200:y=200
 Var t800=min(800.0,sizei*0.5)'0.35)
 If hmin>10 Then t800=-hmin'*0.84
-z=h+townwaynodez(ij,i):z1=z+20:z0=-t800+z-h
+z=h+townwaynodez(ij,i)
+z1=z+20:z0=-t800+z-h
 tx=drawbuildtx*x/150:ty=drawbuildty*(h0+t800)/120'(z-z0)/(120)
 If h>240 Then ty/=scalexy
 If drawbuildtext=housetext Then 
@@ -6501,7 +6502,8 @@ If sizei>3900*(100+h)/140 And tterminal=0 Then h0=45:h=42
 x=200:y=200
 Var t800=min(800.0,sizei*0.5)'0.35)
 If hmin>10 Then t800=-hmin'*0.84
-z=h+townwaynodez(ij,i):z1=z+20:z0=-t800+z-h
+z=h+townwaynodez(ij,i)
+z1=z+20:z0=-t800+z-h
 tx=drawbuildtx*x/150:ty=drawbuildty*(h0+t800)/120'(z-z0)/(120)
 If h>240 Then ty/=scalexy
 If drawbuildtext=housetext Then 
@@ -6872,7 +6874,8 @@ If sizei>3900*(100+h)/140 And tterminal=0 Then h0=45:h=42
 x=200:y=200
 Var t800=min(800.0,sizei*0.5)'0.35)
 If hmin>10 Then t800=-hmin'*0.84
-z=h+townwaynodez(ij,i):z1=z+20:z0=-t800+z-h
+z=h+townwaynodez(ij,i)
+z1=z+20:z0=-t800+z-h
 tx=drawbuildtx*x/150:ty=drawbuildty*(h0+t800)/120'(z-z0)/(120)
 If h>240 Then ty/=scalexy
 If drawbuildtext=housetext Then 
@@ -12029,7 +12032,7 @@ End Sub
 Sub inittown222(ByVal userdata As Any Ptr)
 	tcancel=1
 	t11=2'0
-	textload="loadtown2 "+Str(Int(dtweb))+"."
+	textload="loadtown2 "+Str(Int(dtweb))+". "+Str(iloadtown)
 	loadopentown2()
    If nboeing2>0 And Timer>timeboeing10 And tcopyboeing=0 Then loadairtraffic()
 	tcancel=0
@@ -12061,6 +12064,7 @@ Sub inittown223(ByVal userdata As Any Ptr)
 	'If t11>1 then tloadwebtext=max(tloadwebtext,Timer-t10)
 End Sub 
 Dim Shared As Double weathertime,weatherlat,weatherlng
+Dim Shared As Single xgettree,ygettree=-999999
 Sub getweather(ByVal userdata As Any Ptr)
 textload="getweather"	
 Var weatherhost="api.openweathermap.org"'/data/2.5/weather?lat="+Str(lat)+"&lon="+Str(lng)+"&APPID=4cd1de75fbc57d92794e74ec918593ca"	
@@ -12116,9 +12120,10 @@ tsnow=0
 If wtempmin<3 And whumidity>=80 Then tsnow=1
 'guinotice Left(zwebtext,400)
 Sleep 500
-If Timer>(timeinit+25) Then
+If Timer>timeinit+60 And max(Abs(xgettree-mx),Abs(ygettree-my))<50000 Then
 	tloadwebtext2=0:Exit Sub 
-EndIf 	
+EndIf
+xgettree=mx:ygettree=my
 myoverpass=overpass(ioverpass)'"overpass-api.de"
 myoverpass2=overpass2(ioverpass)
 Var dx=10.0*360/40000'30.0*
@@ -12126,7 +12131,7 @@ Var lat1=lat-dx,lon1=lng-dx*klon
 var lat2=lat+dx,lon2=lng+dx*klon
 Var latlon="%28"+Str(lat1)+"%2C"+Str(lon1)+"%2C"+Str(lat2)+"%2C"+Str(lon2)+"%29"
 Var keyway="way['leaf_type']"+latlon
-Var wayurl=myoverpass2+"interpreter?data=[out:json][timeout:20];%28"+keyway
+Var wayurl=myoverpass2+"interpreter?data=[out:json][timeout:30];%28"+keyway
 wayurl+="%29%3Bout%20qt%201%3B" 
 If quit2=1 Or tquitweb=1 Then tloadwebtext2=0:Exit Sub 
 textload="gettree"
