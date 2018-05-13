@@ -9011,7 +9011,10 @@ If tautopilot>=1 And time2>timeautopilot+3 And plane>0 And car>0 Then'And scalev
     mx=ncarx(0)-dmx0:my=ncary(0)-dmy0:ncarx0=mx+dmx0:ncary0=my+dmy0
     mz1=max(mz1,ncarz(0)+mzh):mz11=min(mz11,mz1)
     ncarz0=mz1-mzh
-    o1autopilot+=ncaro1(0)-o1
+    Var do1=ncaro1(0)-o1
+    While do1>180:do1-=360:Wend 
+    while do1<-180:do1+=360:wend
+    o1autopilot+=do1
     o1=ncaro1(0):ncaro10=o1
     If ncariroad(0)=0 Then
     	Var k25=25.0
@@ -15135,7 +15138,10 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     	kcos1=max(kcos1,-100.0)
     	mx-=kcos1*cos1:my-=kcos1*sin1
     	distback=min(40.0,distback+10)
-    Else 	
+    Else
+    	If kcos1<v*kfps*0.5 And v>1 Then
+    	   mx+=0.5*kfps*cos1:my+=0.5*kfps*sin1
+    	EndIf 	
       distback=max(0.0,distback-kfps)	
     EndIf
     If plane=0 Or car=0 Then
