@@ -3377,11 +3377,23 @@ Sub getways2(text0 As String)'getways
 	For i=1 To 100
 		irelationway(i)=0
 	Next
-	If nsplit<1 Then Sleep 4000:Exit Sub 
+	If nsplit<1 Then Sleep 4000:Exit Sub
+	Var treetype0=treetype 
 	For i=1 To nsplit
 	 If quit2=1 Then Exit For 
 	 wtext1=wsplit(i)'nextdata(wtext0,"{","}")
 	 'If InStr(wtext1,"3793528")>0 then guinotice left(wtext1,400)
+	 If InStr(wtext1,"""leaf_type""")>0 Then
+       wtext3=nextwords(wtext1,"""leaf_type"":")
+       wtext3=nextdata0(wtext3,"""","""")
+       'guinotice wtext3'broadleaved ' needleleaved ' mixed
+       treetype="mixed"  
+       If wtext3="broadleaved" Then treetype="broad"
+       If wtext3="needleleaved" Then treetype="needle"
+       'treetype="mixed"
+       'setarbretype(treetype)
+	 	 Continue For 
+	 EndIf
 	 If InStr(wtext1,"""relation""")>0 Then
 	 	If irelation>=100 then Exit For
 	 	irelation+=1
@@ -4210,7 +4222,10 @@ Sub getways2(text0 As String)'getways
 	  EndIf  '/    
 	  EndIf
 	 EndIf  
-	Next i 
+	Next i
+	If treetype<>treetype0 Then
+		setarbretype(treetype)
+	EndIf
 	'auxvar4=myiasknode
 End Sub
 Sub getways2bridge(text0 As String)'getways
@@ -11740,6 +11755,7 @@ ElseIf dtweb<30.0 Then
   keyway+=";way['railway'~'rail']"+latlon2
   keyway+=";way[amenity~'school|university|hospital|place_of_worship']"+latlon2
 EndIf 
+keyway+=";way['leaf_type']"+latlon3
 'keyway+=";way['roof:material']"+latlon
 'keyway+=";relation['building']"+latlon'+";way(r);)"
 keyway+=";relation['building']"+latlon+"->.myrel;way(r.myrel:outer)->.myrelway"';way(r.myrel:part)->.myrelway2"
@@ -12126,6 +12142,8 @@ tsnow=0
 If wtempmin<3 And whumidity>=80 Then tsnow=1
 'guinotice Left(zwebtext,400)
 Sleep 500
+tloadwebtext2=0:Exit Sub 
+
 If Timer>timeinit+60 And max(Abs(xgettree-mx),Abs(ygettree-my))<50000 Then
 	tloadwebtext2=0:Exit Sub 
 EndIf

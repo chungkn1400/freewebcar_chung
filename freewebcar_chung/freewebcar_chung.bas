@@ -15145,7 +15145,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     	kcos1=max(kcos1,-100.0)
     	mx-=kcos1*cos1:my-=kcos1*sin1
     	distback=min(40.0,distback+10)
-    Else
+    ElseIf plane>0 And car>0 Then 
     	If kcos1<v*kfps*0.5 And v>1 Then
     	   mx+=0.5*kfps*cos1:my+=0.5*kfps*sin1
     	EndIf 	
