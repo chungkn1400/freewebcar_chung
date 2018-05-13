@@ -5081,7 +5081,12 @@ For j=1 To Abs(iwaynode(k))
 	townwaynodex(ij,i,j)=mxweb+(waynodex(k,j)-lngweb)*kmxlat/klon
 	townwaynodey(ij,i,j)=myweb+(waynodey(k,j)-latweb)*kmxlat
 Next
-townwaynodesize40(ij,i)=0
+townwaynodesize40(ij,i)=0   
+i40=0
+If kmxlat>10 Then i40=towni40(ij,i)
+If i40>0 Then
+   resettownxy40i(i40) 	
+EndIf 
 townnwaynode(ij)=max2(i,n)
 'If Str(id)="79152373" Then auxvar+=1:auxtest=0.8
 'If waytheight(k)=100 Or (tmassload=1 And iwaynode(k)<nwaynode) Then'road
@@ -11595,7 +11600,7 @@ tidle2=tidle
 'Var lat0=lat,lng0=lng
 'mxytolatlng(mx+dmx0,my+dmy0)
 Dim As Integer i,idata
-iloadtown+=1:If iloadtown>6 Then iloadtown=0
+iloadtown+=1:If iloadtown>4 Then iloadtown=0
 toverpasserror=0
 nerr=0
 Var kdx=1.0
@@ -11606,11 +11611,11 @@ If iloadtown=0 Then
 	kiload=0.2:kiload0=1
 	dtweb0=dtweb:dtwebnode0=dtwebnode:kdxweb0=kdxweb:knway0=knway
 	dtweb=dtweb00:dtwebnode=dtwebnode00:kdxweb=kdxweb00:knway=knway00
-ElseIf iloadtown>=1 And iloadtown<6 Then
+ElseIf iloadtown>=1 And iloadtown<4 Then
    kiload=0.2:kiload0=1
    'kiload=1:kiload0=8
 Else 
-	kiload=1.0:kiload0=0.4
+	kiload=0.8:kiload0=0.4
 	dtweb00=dtweb:dtwebnode00=dtwebnode:kdxweb00=kdxweb:knway00=knway
 	dtweb=dtweb0:dtwebnode=dtwebnode0:kdxweb=kdxweb0:knway=knway0
 EndIf

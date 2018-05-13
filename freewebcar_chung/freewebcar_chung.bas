@@ -4779,6 +4779,13 @@ Dim As Integer j
 		townnodey40(i,j)=0
 	Next
 End Sub
+Sub resettownxy40i(i As integer)
+Dim As Integer j 
+	For j=0 To n40
+		townnodex40(i,j)=0
+		townnodey40(i,j)=0
+	Next
+End Sub
 Declare Sub latlngtomxy(ByVal latxx As single,ByVal lngxx As Single ,ByRef mxx As Single,ByRef myy As Single)
 Dim Shared As Single kmxlat=1
 Function gettownnodex40(ij As Integer,i As Integer)As Single
