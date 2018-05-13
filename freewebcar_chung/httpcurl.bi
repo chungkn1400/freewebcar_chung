@@ -136,6 +136,7 @@ Var url=host
     'For i=0 To myidata
     '	recvdata(i)=myztext[i]
     'Next
+    If myidata>=12400000 Then myidata=0
     
     If myidata>=0 Then 
      For i=0 To 10
@@ -143,9 +144,10 @@ Var url=host
      Next
     EndIf  
     
+   myhttpon=0
+
 If tquitweb=1 Or quit=1 Then Return 0
 'guinotice url+"="+Str(myidata)
-   myhttpon=0
    /'If InStr(LCase(httphost),"nominatim")>0 Then 'And InStr(UCase(Left(recvbuffer,30)),"HTTP")>0 Then
       guinotice url+"="+Str(myidata)
    	For i=0 To 500

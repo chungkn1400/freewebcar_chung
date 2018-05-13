@@ -2396,7 +2396,9 @@ Sub subscaletown()
 	tloadwebtext2=0
 	tmapchanged=1
 End Sub
-Dim Shared As String wtext(20),wline,wword
+Dim Shared As ZString*12600004 zwebtext,zwebtext0,wline,wtext0
+Dim Shared As ZString*400016 zwebtextboeing
+Dim Shared As String wtext(20),wword
 Dim Shared As Integer windex,nwtext,nerr
 Dim Shared As String msgprint
 Sub Printmsg(text As String="")
@@ -2463,7 +2465,7 @@ Function formatwebtext(text0 As String)As String
 	Next
 	Return text
 End Function
-Dim Shared As ZString*12600000 ztext,ztext2
+Dim Shared As ZString*12600004 ztext,ztext2
 Dim Shared As ZString*40 zcc
 Dim Shared As Integer tendofdata=0
 Function nextdata0(wwline As String,cc As String,ccc As string) As String
@@ -2507,7 +2509,7 @@ If lline>=12600000-4 Then Return ""
 ztext2="":i2=0
 icc=Asc(cc):iccc=Asc(ccc)
 	j=1
-	k=InStr(wwline,cc)
+	k=InStr(ztext,cc)
 	If k<=0 Then Return ""
 	For i=k+1-1 To lline-1
 		c=ztext[i]
@@ -2689,7 +2691,7 @@ Sub printmsgsplit2()
 printmsg "split2="+wsplit2(1)+"/nplit="+Str(nsplit2)+"/"+(wsplit2(nsplit2))
 guinotice("nsplit2="+Str(nsplit2)+" /"+wsplit2(1))
 End Sub
-Dim Shared As String text,wtext0,wtext1,wtext2,wtext3,wtext4,wtext5
+Dim Shared As String text,wtext1,wtext2,wtext3,wtext4,wtext5
 Function formatwebtext2(text0 As String)As String 'getways
 	Dim As Integer i,j,k
 	Dim As String c
@@ -5068,7 +5070,7 @@ townwayname(ij,i)=wayname(k)
       		EndIf 	
 townwaynodez(ij,i)=-999999
 'townwaynodez(ij,i)=getterrainheight(townwaynodex(ij,j,1),townwaynodey(ij,j,1))
-'ttsetterrain(ij,i)=0
+ttsetterrain(ij,i)=0
 
 'latweb=lat:lngweb=lng
 'latlngtomxy(latweb,lngweb,mxweb,myweb)
@@ -11182,8 +11184,6 @@ For i=1 To nfuel
  	EndIf 	  
 Next  	
 End Sub 
-Dim Shared As ZString*12600000 zwebtext,zwebtext0
-Dim Shared As ZString*400016 zwebtextboeing
 Sub subtest2(ByVal userdata As Any Ptr)
 'guinotice("ok")
 'tloadwebtext2=0
@@ -11608,6 +11608,7 @@ If iloadtown=0 Then
 	dtweb=dtweb00:dtwebnode=dtwebnode00:kdxweb=kdxweb00:knway=knway00
 ElseIf iloadtown>=1 And iloadtown<6 Then
    kiload=0.2:kiload0=1
+   'kiload=1:kiload0=8
 Else 
 	kiload=1.0:kiload0=0.4
 	dtweb00=dtweb:dtwebnode00=dtwebnode:kdxweb00=kdxweb:knway00=knway
@@ -11758,8 +11759,8 @@ EndIf
 'EndIf
 wayurl=myoverpass2+"interpreter?data=[out:json][timeout:55];%28"+keyway
 'If myroadwayid<>"" Then wayurl+=";.myway"
-nwaymax=39990
-wayurl+=";.myrel;.myrelway;%29%3Bout%20qt%2039999%3B"
+nwaymax=19990
+wayurl+=";.myrel;.myrelway;%29%3Bout%20qt%2019999%3B"
 'wayurl+="%29%3Bout%20qt%209999%3B"
 nodeurl=myoverpass2+"interpreter?data=[out:json][timeout:55];%28node"+latlon
 'nodeurl+="node"+latlon
