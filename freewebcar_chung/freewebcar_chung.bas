@@ -16362,11 +16362,16 @@ Declare Function waitbusy() As Integer
 Sub subreset(ByVal nomsg As Integer=0)
 Dim As Integer i	
 tquitweb=1
-If waitbusy()=0 Then tquitweb=0:Exit Sub
+If nomsg=0 Then
+	If waitbusy()=0 Then tquitweb=0:Exit Sub
+EndIf
 tquitweb=0
 tloadwebtext2=2  
 	If nomsg=0 Then
 		confirm("resetnodes ?","confirm",resp)
+	Else
+		resp="yes"
+	EndIf 	
 		If resp="yes" Then
 			resetaeroway()
 			resetmxweb()
@@ -16392,10 +16397,7 @@ tloadwebtext2=2
          tloadwebtext2=0
 			Exit Sub 
 		EndIf '/
-		confirm("reset all?","reset",resp)
-	Else
-		resp="yes"
-	EndIf
+	confirm("reset all?","reset",resp)
 	If resp="yes" Then
 	   If planet=0 Or orbit=1 Then
 	    If testworld=1 Then

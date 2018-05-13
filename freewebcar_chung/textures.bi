@@ -4814,7 +4814,7 @@ For i=1 To n
                 EndIf
             ElseIf waytype(k)="terminal" Then
    				townwaynodebuild(ij,i)=11
-               townwaynodeh(ij,i)=max(100.0,wayheight(k))
+               'townwaynodeh(ij,i)=max(100.0,wayheight(k))
             ElseIf waytheight(k)=1 Then
    				'townwaynodeh(ij,i)=wayheight(k)
    				If wayheight(k)>=4000 Then townwaynodebuild(ij,i)=5'+Int(Rnd*2) 
@@ -4870,7 +4870,7 @@ If n>=ntownnode And p=0 Then
 EndIf
 
 
-If time2<timeinit+100 Then  
+'If time2<timeinit+100 Then  
 Var ij2=ij-1
 If ij2>0 Then
 	For i=1 To townnwaynode(ij2)
@@ -4959,7 +4959,7 @@ If ij2<ntown2 Then
 		EndIf
 	Next
 EndIf
-EndIf 'timeinit
+'EndIf 'timeinit
 
 i=n+1
 if p>0 then i=p
@@ -5030,7 +5030,7 @@ townwayname(ij,i)=wayname(k)
                 EndIf
             ElseIf waytype(k)="terminal" Then
    				townwaynodebuild(ij,i)=11
-               townwaynodeh(ij,i)=max(100.0,wayheight(k))
+               'townwaynodeh(ij,i)=max(100.0,wayheight(k))
             ElseIf waytheight(k)=1 Then
    				townwaynodebuild(ij,i)=4+Int(Rnd*3)
    				If wayheight(k)>=4000 Then townwaynodebuild(ij,i)=5'+Int(Rnd*2) 
