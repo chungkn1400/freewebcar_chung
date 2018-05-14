@@ -19279,7 +19279,7 @@ EndIf
 'Return min(h*scalez,hmax)
 Return h*scalez
 End Function
-Dim Shared As Integer tsetterrainrunway
+Dim Shared As Integer testrunway
 Function setterrainheight(ByVal x As Single,ByVal y As Single,xco11 As Single,xsi11 As Single,trunway As Integer=0) As Single
 Dim As Single h,dx,dy,z00,z10,z01,z11 
 Dim As Integer i,j,i1,j1
@@ -19301,8 +19301,8 @@ If orbit=0 And planet=1 Then Return -99999
 	'While i1>=612:i1-=512+200:Wend
 	'While j1>=612:j1-=512+200:Wend 
 getlockterrain()
-var t4=3
-Var t1=0'1
+Var t4=3
+/'Var t1=0'1
 If tsetterrain(i,j)<=t1 Then
 	z00=terrain0(i,j)
 Else
@@ -19322,7 +19322,11 @@ If tsetterrain(i1,j1)<=t1 Then
 	z11=terrain0(i1,j1)
 Else
 	z11=terrain(i1,j1)
-EndIf 	
+EndIf '/ 	
+	z00=terrain(i,j)
+	z10=terrain(i1,j)
+	z01=terrain(i,j1)
+	z11=terrain(i1,j1)
 Var hwaterz=(waterz)/scalez
 'If z00<hwaterz Then z00=hwaterz
 'If z10<hwaterz Then z10=hwaterz
@@ -19334,6 +19338,7 @@ var dr0=0.32'(Abs(dx)+Abs(dy))*0.25'0.5
 'Var xsi0=0.436,xco0=0.9
 Var xsi1=xsi11,xco1=xco11
 If trunway=1 Then d100=0'dr0=0
+If testrunway=1 Then d100=0:t4=6
 If dx<=(1.0-dy) Then 
      h=max(hwaterz,( dx*(z10-z00) +dy*(z01-z00) +z00))
   'If tsetterrain(i,j)<=t4 Then tsetterrain(i,j)+=1:terrain(i,j)=z00+(h-z00)*(Abs(dx*xsi1-dy*xco1)/max(0.01,Abs(dx)+Abs(dy)))'*d100/max(d10,Abs(dx)+Abs(dy))

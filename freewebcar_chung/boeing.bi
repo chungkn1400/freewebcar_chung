@@ -9,7 +9,7 @@ Dim Shared As String nnboeingid(nboeing),nnboeingmodel(nboeing)
 Dim Shared As Single nnboeingalt(nboeing),nnboeinglat(nboeing),nnboeinglng(nboeing)
 Dim Shared As Single nnnboeingx(nboeing),nnnboeingy(nboeing),nnnboeingz(nboeing)
 Dim Shared As Single nnboeingx(nboeing),nnboeingy(nboeing),nnboeingz(nboeing)
-Dim Shared As Single nnboeingdx(nboeing),nnboeingdy(nboeing),nnboeingdz(nboeing)
+Dim Shared As Single nnboeingdx(nboeing),nnboeingdy(nboeing),nnboeingdz(nboeing),nnboeingv(nboeing)
 Dim Shared As Single nnboeingdo1(nboeing),nnboeingdo2(nboeing),nnboeingdo3(nboeing)
 Dim Shared As Single nnboeingo1(nboeing),nnboeingo2(nboeing),nnboeingo3(nboeing)
 Dim Shared As Single nnnboeingo1(nboeing),nnnboeingo2(nboeing),nnnboeingo3(nboeing),nnnboeingalt(nboeing)
@@ -198,6 +198,7 @@ If auxtest>0.1 Then guinotice "updatenboeing"
    	nnboeingz(i)+=mz-mz0
    Next
 End Sub
+Const As Single v8000=9700
 Sub copyboeing0()
 'getlockboeing2()
 Dim As Integer i,j,k,p
@@ -210,7 +211,7 @@ For i=0 To nboeing
 		irepeatboeing(i)+=1
 		If irepeatboeing(i)>i4 Then
 			nnboeingid(i)=""	
-			irepeatboeing(i)=99
+			irepeatboeing(i)=99'tryremove
 		EndIf
 	EndIf
    nboeingid0(i)=""
@@ -319,7 +320,8 @@ For i=0 To nboeing
 	         nnboeingy(i)=y-dy
 	         nnboeingdx(i)=dx
 	         nnboeingdy(i)=dy
-	         nnboeingalt(i)=max(2000.0,boeingalt(k))
+	         nnboeingv(i)=max(Abs(dx),Abs(dy))
+	         nnboeingalt(i)=max(0.0,boeingalt(k))
 	         nnboeingz(i)=getterrainheight(x-dx,y-dy)+nnboeingalt(i)
 	         nnboeingdz(i)=0
 	         
@@ -395,7 +397,7 @@ For i=0 To nboeing
 	nnboeingalt(i)=nboeingalt0(i)
 	Var dx=x-nnboeingx(i),dy=y-nnboeingy(i)
    Var dist=max(Abs(dx),Abs(dy))
-   If irepeatboeing(i)>90 Then
+   If irepeatboeing(i)>90 Then'tryremove
    	dist=max(1.0,dist)
    	dx*=15000/dist
    	dy*=15000/dist
@@ -425,32 +427,37 @@ For i=0 To nboeing
 	nnboeingdo1(i)=do1
 	nnnboeingo1(i)=nnboeingo1(i)
 	Var v=max(Abs(dx),Abs(dy))
-	If v>2000 Or irepeatboeing(i)>0 Then
+	If v>v8000 Or (irepeatboeing(i)>0 And max(Abs(x-mx),Abs(y-my))>90000) Then
 	 z=max(z,z-nboeingalt0(i)+2000)
 	 Var dz=z-nnboeingz(i)
 	 nnboeingdz(i)=dz	
 	 Var do2=max(-40.0,min(40.0,diro1(Sqr(dx*dx+dy*dy),dz)))-nnboeingo2(i)
 	 nnnboeingo2(i)=nnboeingo2(i)
-	 if boeingspd0(i)>v Then
+	 If boeingspd0(i)>v Then
 	 	 dx*=boeingspd0(i)/v
 	 	 dy*=boeingspd0(i)/v
 	 	 nnboeingdx(i)=dx
 	 	 nnboeingdy(i)=dy	 	 
 	 EndIf
 	Else
-	 If min(nnnboeingalt(i),nnboeingalt(i))>600 Then
+	 /'If min(nnnboeingalt(i),nnboeingalt(i))>600 Then
 	 	auxvar5=min(nnnboeingalt(i),nnboeingalt(i))+0.1
 	 	nboeingid0(i)=""
 	 	nnboeingid(i)=""
 	 	irepeatboeing(i)=0	
 		nnboeingx(i)=-9999999
-	 EndIf
+	 EndIf'/
+	 nnnboeingz(i)=z-nnboeingalt(i)
+	 nnboeingdz(i)=-5000
+	 nnboeingalt(i)=0
+	 nboeingalt0(i)=0
 	 nnboeingo2(i)=0
 	 nnboeingdo2(i)=0
 	 nnnboeingo2(i)=0
 	EndIf
 	nnboeingo3(i)=0
 	nnboeingdo3(i)=0
+	nnboeingv(i)=v
 Next
 auxtext="boeing="+Str(nboeing00-ncessna-nfokker)+" fokker="+Str(nfokker)+" cessna="+Str(ncessna)
 'auxtest=0.2
@@ -472,7 +479,7 @@ Sub drawnboeing()
 	'If nboeingy>my+dmax Then Exit Sub 
    Var dist=max(Abs(nboeingx-mx),Abs(nboeingy-my))
    If dist>dmax Then Exit Sub 
-   If nboeingv>2000 Then  
+   If nboeingv>5000 Then  
     Var dist1=max(Abs(nboeingz-mz),dist)
   	 If (itime Mod 3)=0 And nboeingmodel<>"cessna" Then
   		'auxvar=dist1:auxtest=0.2
@@ -582,21 +589,32 @@ EndIf
 If tcopyboeing=1 And time2>timecopyboeing+0.5 Then
    timecopyboeing=Timer 
 	copyboeing0()
+	For i=0 To nboeing
+	  If nboeingid0(i)<>"" Then 
+	   'nnboeingdx(i)=8000
+	   'nnboeingdy(i)=0
+	   nnboeingv(i)=max(Abs(nnboeingdx(i)),Abs(nnboeingdy(i)))
+	   If nnboeingv(i)<v8000+300 Then
+	  	   nnboeingdz(i)=-5000
+	   EndIf
+	  EndIf  
+   Next 
    timeboeing0=Timer-0.1 
    timeboeing=timeboeing0+t30
    timeboeing10=timeboeing
 	tcopyboeing=0
 EndIf
 Var dt=0.0,dt4=0.0
-If ttimeboeing<timer-200 Then ttimeboeing=timer
-If 1 Then'ttimeboeing<timeboeing+t30 And ttimeboeing>timeboeing0 Then
-	dt=min(1.0,(Timer-ttimeboeing)/max(1.0,timeboeing+t30-timeboeing0))
+If ttimeboeing<timer-200 Then ttimeboeing=Timer-0.1
+'If 1 Then'ttimeboeing<timeboeing+t30 And ttimeboeing>timeboeing0 Then
+	dt=max(0.0001,min(1.0,(Timer-ttimeboeing)/60.0))'max(1.0,timeboeing+t30-timeboeing0))
    If ttimeboeing>timeboeing Then dt*=max(0.25,(timeboeing+t30-ttimeboeing)/t30) 
    If ttimeboeing<timeboeing0+10 Then
 	   dt4=min(1.0,(Timer-ttimeboeing)/10)
    EndIf
-EndIf
+'EndIf
 ttimeboeing=Timer
+
 Var irecent=0,testrecent=0
 irecentboeing0=-1
 k=0
@@ -628,26 +646,31 @@ For irecent=0 To 1
 	EndIf   
 	k+=1:If k>nboeing2 Then Exit For
 	nboeingmodel=nboeingmodel0(i) 
+	nboeingv=nnboeingv(i)
 	If dt4<0.000001 Then 
 	 nboeingx=nnboeingx(i)+nnboeingdx(i)*dt
 	 nboeingy=nnboeingy(i)+nnboeingdy(i)*dt
-	 nboeingv=max(Abs(nnboeingdx(i)),Abs(nnboeingdy(i)))
-	 If nboeingv<2000 Then auxvar5=-min(nnboeingalt(i),nnnboeingalt(i))+0.1	
 	Else
-	 nboeingv=max(Abs(nnboeingdx(i)),Abs(nnboeingdy(i)))
-	 If nboeingv<2000 Then auxvar5=-min(nnboeingalt(i),nnnboeingalt(i))+0.1	
 	 nboeingx=nnboeingx(i)+Cos(nnboeingo1(i)*degtorad)*nboeingv*dt
 	 nboeingy=nnboeingy(i)+Sin(nnboeingo1(i)*degtorad)*nboeingv*dt
 	EndIf 
-	If nboeingv>2000 Or Abs(nboeingx-mx)>10000 Or Abs(nboeingy-my)>10000 Then
+	nnboeingx(i)=nboeingx
+	nnboeingy(i)=nboeingy
+	If nboeingv>v8000+300 Then'Or max(Abs(nboeingx-mx),Abs(nboeingy-my))>50000 Then
 		nboeingz=nnboeingz(i)+nnboeingdz(i)*dt
-	Else
 		Var nboeingzol=getterrainheight(nboeingx,nboeingy)
-		nboeingz=max(nboeingzsol,nboeingz-nboeingv*dt)
+		Var nboeingzz=max(nboeingzsol+2000,nnnboeingz(i)+nnboeingdz(i))
+		nnboeingdz(i)=nboeingzz-nboeingz
+	   nnboeingz(i)=nboeingz
+		'auxvar4=max(Abs(nnboeingdx(i)),Abs(nnboeingdy(i)))
+		'nnboeingv(i)=min(nboeingv,max(Abs(nnboeingdx(i)),Abs(nnboeingdy(i))))
+	ElseIf max(Abs(nboeingx-mx),abs(nboeingy-my))<35000 Then 
+		Var nboeingzol=getterrainheight(nboeingx,nboeingy)
+		nboeingz=max(nboeingzsol,nnboeingz(i)+min(-8*kfps,nnboeingdz(i)*dt))
 		nnboeingz(i)=nboeingz
-		'nnboeingdz(i)=0
-		auxvar5=nboeingz
-	EndIf
+		nnboeingdz(i)=-5000
+		If nboeingz<nboeingzsol+1 Then nnboeingdz(i)=0
+	EndIf 
 	If dt4>0.000001 Then 
 	   nboeingo1=nnboeingo1(i)+nnboeingdo1(i)*dt4
 	   nboeingo2=nnboeingo2(i)+nnboeingdo2(i)*dt4
@@ -655,14 +678,11 @@ For irecent=0 To 1
 		nboeingo1=nnnboeingo1(i)+nnboeingdo1(i)
 		nboeingo2=nnnboeingo2(i)+nnboeingdo2(i)
 	EndIf
-	distmin=min(distmin,max(Abs(nboeingx-mx),Abs(nboeingy-my)))
+	'distmin=min(distmin,max(Abs(nboeingx-mx),Abs(nboeingy-my)))
 	var dnboeingo3=0.0'nnboeingo3(i)+nnboeingdo3(i)*dt
-	If dt4>0.000001 Then dnboeingo3=max(-30.0,min(30.0,nnboeingdo1(i)*0.5))
+	If dt4>0.000001 And nboeingv>v8000 Then dnboeingo3=max(-30.0,min(30.0,nnboeingdo1(i)*0.5))
 	nboeingo3=nnboeingo3(i)+(dnboeingo3-nnboeingo3(i))*0.03*kfps
 	drawnboeing()
-	nnboeingx(i)=nboeingx
-	nnboeingy(i)=nboeingy
-	nnboeingz(i)=nboeingz
 	nnboeingo1(i)=nboeingo1
 	nnboeingo2(i)=nboeingo2
 	nnboeingo3(i)=nboeingo3
