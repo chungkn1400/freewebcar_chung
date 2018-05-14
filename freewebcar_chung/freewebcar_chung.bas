@@ -1,7 +1,7 @@
 'freewebcar_chung.bas by NGUYEN.Chung freeware (2011-2017)    
 '
 '#Define guinogfx 'dont use freebasic gfx 
-Dim Shared As double auxvar,auxvar2,auxvar3,auxvar4,auxvar5,auxvar6,auxtest=0,auxtest0=0.8
+Dim Shared As double auxvar,auxvar2,auxvar3,auxvar4,auxvar5,auxvar6,auxtest=0,auxtest0=1
 Dim Shared As Single kfps=1,xmax,ymax
 Dim Shared As String auxtext,auxtext2
 Dim Shared As Integer quit=0,guierror=0
@@ -16035,7 +16035,7 @@ EndIf 'planet
          tlockchanged=0 
          If auxtest>0.5 Then 
           If tloadwebtext2>0 Or testweb>0 Then gldrawtext("loading "+Str(tloadwebtext2)+" "+Str(testweb)+" "+Str(tinittown),10,310,1)
-          gldrawtext(httphost+" "+Str(httpon)+" "+Str(httpidata),10,330,1)
+          gldrawtext(httphost+" "+Str(httpon)+" "+Str(httpidata),10,350,1)
          ElseIf httpon=1 Then 
         	 glcolor3f(0,1,1)
           If InStr(httphost,"google")>0 Then
@@ -19342,7 +19342,7 @@ If dx<=(1.0-dy) Then
   If tsetterrain(i,j)<=t4 And h<z00 Then
    dr0=max(0.02,Abs(dx)+Abs(dy))
   	dr=(dx*xsi1-dy*xco1)
-  	If Abs(dr+dr)>dr0 Then
+  	If Abs(dr+dr)>dr0 Or trunway=1 Then
   	 tsetterrain(i,j)+=1
   	 'terrain(i,j)=h-(h-z00)*min(dr,dr0)*d100/max(d10,dr0)
   	 Var dh=d100*dr0:If dr<0 Then dh=-dh
@@ -19353,7 +19353,7 @@ If dx<=(1.0-dy) Then
   If tsetterrain(i1,j)<=t4 And h<z10 Then
    dr0=max(0.02,Abs(1-dx)+Abs(dy))
   	dr=((1-dx)*xsi1-dy*xco1)
-  	If Abs(dr+dr)>dr0 Then
+  	If Abs(dr+dr)>dr0 Or trunway=1 Then
   	 tsetterrain(i1,j)+=1
   	 'terrain(i1,j)=h-(h-z10)*min(dr,dr0)*d100/max(d10,dr0)
   	 Var dh=d100*dr0:If dr<0 Then dh=-dh
@@ -19364,7 +19364,7 @@ If dx<=(1.0-dy) Then
   If tsetterrain(i,j1)<=t4 And h<z01 Then
    dr0=max(0.02,Abs(dx)+Abs(1-dy))
   	dr=(dx*xsi1-(1-dy)*xco1)
-  	If Abs(dr+dr)>dr0 Then
+  	If Abs(dr+dr)>dr0 Or trunway=1 Then
   	 tsetterrain(i,j1)+=1
   	 'terrain(i,j1)=h-(h-z01)*min(dr,dr0)*d100/max(d10,dr0)
   	 Var dh=d100*dr0:If dr<0 Then dh=-dh
@@ -19385,7 +19385,7 @@ Else
   If tsetterrain(i1,j)<=t4 And h<z10 Then
    dr0=max(0.02,Abs(1-dx)+Abs(dy))
   	dr=((1-dx)*xsi1-dy*xco1)
-  	If Abs(dr+dr)>dr0 Then
+  	If Abs(dr+dr)>dr0 Or trunway=1 Then
   	 tsetterrain(i1,j)+=1
   	 'terrain(i1,j)=h-(h-z10)*min(dr,dr0)*d100/max(d10,dr0)
     Var dh=d100*dr0:If dr<0 Then dh=-dh
@@ -19396,7 +19396,7 @@ Else
   If tsetterrain(i,j1)<=t4 And h<z01 Then
    dr0=max(0.02,Abs(dx)+Abs(1-dy))
   	dr=(dx*xsi1-(1-dy)*xco1)
-  	If Abs(dr+dr)>dr0 Then
+  	If Abs(dr+dr)>dr0 Or trunway=1 Then
   	 tsetterrain(i,j1)+=1
   	 'terrain(i,j1)=h-(h-z01)*min(dr,dr0)*d100/max(d10,dr0)
   	 Var dh=d100*dr0:If dr<0 Then dh=-dh
@@ -19407,7 +19407,7 @@ Else
   If tsetterrain(i1,j1)<=t4 And h<z11 Then
    dr0=max(0.02,Abs(1-dx)+Abs(1-dy))
   	dr=((1-dx)*xsi1-(1-dy)*xco1)
-  	If Abs(dr+dr)>dr0 Then
+  	If Abs(dr+dr)>dr0 Or trunway=1 Then
   	 tsetterrain(i1,j1)+=1
   	 'terrain(i1,j1)=h-(h-z11)*min(dr,dr0)*d100/max(d10,dr0)
   	 Var dh=d100*dr0:If dr<0 Then dh=-dh

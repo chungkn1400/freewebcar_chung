@@ -3378,6 +3378,7 @@ Sub getways2(text0 As String)'getways
 		irelationway(i)=0
 	Next
 	If nsplit<1 Then Sleep 4000:Exit Sub
+	'If nsplit>29900 Then guinotice wsplit(29900)
 	Var treetype0=treetype 
 	For i=1 To nsplit
 	 If quit2=1 Then Exit For 
@@ -4787,7 +4788,7 @@ EndIf
 'If InStr(LCase(wayname(k)),"ge henri")>0 Then auxvar+=1000:auxtest=0.72
 id=waynodeid(k)
 If id=0 Then Exit Sub 
-If waytheight(k)=100 Or tmassload=1 Then'road
+If  tmassload=1 Or waytheight(k)=100 Then'road
 	If testrecentid(id) Then Exit Sub 
    'addrecentid(id)
 endif 
@@ -4809,7 +4810,11 @@ For i=1 To n
       'townwaynodez(ij,i)=-999999
      p=i
              'If Str(id)="79152373" Then auxvar+=1000:auxtest=0.8
-   			'If waytheight(k)=100 Then 
+   			 If waytheight(k)=100 Then 
+                if Not(waytype(k)<>"aerodrome" And waytype(k)<>"runway" And waytype(k)<>"taxiway") Then	
+                	ttsetterrain(ij,i)=0
+                EndIf
+             EndIf  
    			 Var i40=towni40(ij,i)
    			 towni40(ij,i)=max2(0,i40)
    			 'If i40>0 Then
@@ -5100,6 +5105,7 @@ townwaynodesize40(ij,i)=0
 i40=0
 If kmxlat>10 Then i40=towni40(ij,i)
 If i40>0 Then
+	townixy40(i40)=1
    resettownxy40i(i40) 	
 EndIf 
 townnwaynode(ij)=max2(i,n)
@@ -7931,6 +7937,9 @@ EndIf
  Var mx2=mx+cos1*v*4,my2=my+sin1*v*4
  Var mx3=mx+cos1*v*15,my3=my+sin1*v*15
  Dim As Single dddx0,dddy0,dddx,dddy,ddxx,ddyy,ddx,ddy
+ Var d20000=30000.0
+ If trunway=1 Then d20000=40000 
+ If tmainway=1 Then d20000=80000
  For j=2 To n
    glnormal3f(0,0,1)
  	If i40>0 And t40=0 Then
@@ -7941,7 +7950,7 @@ EndIf
  	      Var xxx=gettownnodex40(i40,jj)
  	      Var yyy=gettownnodey40(i40,jj)
  	      'mygltexquad xx,yy,z0, x,y,z0, x,y,z, xx,yy,z, tx,ty,tx0 ',1
-   If Abs(xxx)<0.1 Or Abs(yyy)<0.1 Or Abs(xxx-x)+Abs(yyy-y)>20000 Then
+   If Abs(xxx)<0.1 Or Abs(yyy)<0.1 Or Abs(xxx-x)+Abs(yyy-y)>d20000 Then
      knode40(i40,jj)=0
   	  ixy40=0:townixy40(i40)=1
   	  i40=0 
@@ -7977,6 +7986,9 @@ EndIf
  	EndIf
  	dx=x-xx:dy=y-yy
    dr=max(0.1,Sqr(dx*dx+dy*dy))
+   If dr>d20000 Then
+   	Exit For   
+   EndIf
    co1=r*dx/dr:si1=r*dy/dr
    Var xco1=dx/dr,xsi1=dy/dr
  	Var r60=r
@@ -10354,14 +10366,18 @@ Dim As Integer i,j,k,n,p
  		  Else 	
  		  	kxx*=2*kdistterrain
  		  EndIf
-        Var troad=0,trunway=0,tparking=0,toneway=0,trail=0,r=1.0
+        Var troad=0,trunway=0,tmainway=0,tparking=0,toneway=0,trail=0,r=1.0
         If waynodebuild=100 Then
         	  kxx+=2000:troad=1
         	  r=max(5.0,townwaynodeh(ij,i))
            If r>2000 Then r-=2000:tparking=1
            If r>1000 Then r-=1000:toneway=1
            If r<0.3*30 Then trail=1
-           If r>2.5*30 then trunway=1
+           If r>4*30 Then
+           	  trunway=1
+           ElseIf r>2.5*30 Then
+           	  tmainway=1
+           EndIf 	  
            Var hhh=0.0
            If mz>mzsol00+7000 then hhh=1.7*30
            if mz>mzsol00+8500 then hhh=2.4*30
@@ -10449,7 +10465,7 @@ Dim As Integer i,j,k,n,p
  		      	Var dx=(x-xx)/dk
  		     	  	Var dy=(y-yy)/dk
  		     	  	Var d4000=4000*kdistroad
- 		     	  	If trunway=1 Then
+ 		     	  	If trunway=1 Or tmainway=1 Then
  		     	  		If mz>mzsol0+200 Then
  		     	  			If r<4*30 Then
  		     	  				d4000*=4
@@ -11604,6 +11620,9 @@ Put #file,,zwebtext
 Close #file
 guinotice "data saved as "+fic 
 End Sub
+Function strf(ByVal x As Double)As String
+	Return Left(Str(x),10)
+End Function
 dim shared as Double tidle,tidle2,dtweb0=60,dtwebnode0=60,dtweb00=60,dtwebnode00=60
 Dim Shared As Integer tbuildheight=15,iloadtown
 Dim Shared As Single knway=0.5,kiload=1,kiload0=1,kdxweb0=0.3,kdxweb00=0.3,knway0=0.5,knway00=0.5
@@ -11669,10 +11688,10 @@ var lat23=lattown+dx,lon23=lngtown+dx*klon
 'var lat130=lattown-dx,lon130=lngtown-dx*klon
 'var lat230=lattown+dx,lon230=lngtown+dx*klon
 'lat=lat0:lng=lng0
-latlon="%28"+Str(lat1)+"%2C"+Str(lon1)+"%2C"+Str(lat2)+"%2C"+Str(lon2)+"%29"
-latlon1="%28"+Str(lat11)+"%2C"+Str(lon11)+"%2C"+Str(lat21)+"%2C"+Str(lon21)+"%29"
-latlon2="%28"+Str(lat12)+"%2C"+Str(lon12)+"%2C"+Str(lat22)+"%2C"+Str(lon22)+"%29"
-latlon3="%28"+Str(lat13)+"%2C"+Str(lon13)+"%2C"+Str(lat23)+"%2C"+Str(lon23)+"%29"
+latlon="%28"+strf(lat1)+"%2C"+strf(lon1)+"%2C"+strf(lat2)+"%2C"+Strf(lon2)+"%29"
+latlon1="%28"+strf(lat11)+"%2C"+strf(lon11)+"%2C"+strf(lat21)+"%2C"+strf(lon21)+"%29"
+latlon2="%28"+strf(lat12)+"%2C"+strf(lon12)+"%2C"+strf(lat22)+"%2C"+strf(lon22)+"%29"
+latlon3="%28"+Strf(lat13)+"%2C"+Strf(lon13)+"%2C"+Strf(lat23)+"%2C"+strf(lon23)+"%29"
 'latlon30="%28"+Str(lat130)+"%2C"+Str(lon130)+"%2C"+Str(lat230)+"%2C"+Str(lon230)+"%29"
 myoverpass=overpass(ioverpass)'"overpass-api.de"
 myoverpass2=overpass2(ioverpass)
@@ -11780,8 +11799,8 @@ EndIf
 'EndIf
 wayurl=myoverpass2+"interpreter?data=[out:json][timeout:55];%28"+keyway
 'If myroadwayid<>"" Then wayurl+=";.myway"
-nwaymax=19990
-wayurl+=";.myrel;.myrelway;%29%3Bout%20qt%2019999%3B"
+nwaymax=29990
+wayurl+=";.myrel;.myrelway;%29%3Bout%20qt%2029999%3B"
 'wayurl+="%29%3Bout%20qt%209999%3B"
 nodeurl=myoverpass2+"interpreter?data=[out:json][timeout:55];%28node"+latlon
 'nodeurl+="node"+latlon
