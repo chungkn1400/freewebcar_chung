@@ -196,9 +196,9 @@ if avion="avion5" then
    altmax=70000
 end if
 if avion="zero" Then'zero
-   kpitch=0.9:kroll=0.9:kqueue=1:kprop=1.2
+   kpitch=0.9:kroll=0.9:kqueue=1:kprop=1.5
    poids=0.9
-   vcruise=32'22
+   vcruise=30'22
    altmax=70000
 end if
 If avion="jet2" then

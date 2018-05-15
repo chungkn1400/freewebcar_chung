@@ -9764,6 +9764,7 @@ Sub drawzero0
 glenable(gl_lighting)
 glenable(gl_light3)
 glenable gl_texture_2d
+glcolor3f(0,0.95,0)
 'if icar=11 Then 
 	glbindtexture(gl_texture_2d,zerotext)
 'Else 
@@ -9777,6 +9778,7 @@ glenable gl_texture_2d
 		loadobjsize("objects/zero1_cockpit.obj",@"",@"",37.3)
       glendlist
 	EndIf	
+glcolor3f(1,1,1)	
 gldisable(gl_light3)
 gldisable(gl_lighting)
 End Sub
@@ -12810,6 +12812,7 @@ End Sub
 Sub drawzero
 glenable(gl_lighting)
 glenable(gl_light3)
+glcolor3f(0.1,1,0.1)
 'if icar=12 Then 
 '	glbindtexture(gl_texture_2d,zero2text)
 'Else 
@@ -12823,6 +12826,7 @@ glenable(gl_light3)
 		loadobjsize("objects/zero1.obj",@"",@"",100)
       glendlist
 	EndIf	
+glcolor3f(1,1,1)
 gldisable(gl_light3)	
 End Sub
 Sub drawc150
