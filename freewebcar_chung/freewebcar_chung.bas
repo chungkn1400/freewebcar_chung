@@ -22421,7 +22421,9 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    If t11<3 Then t111=Timer 
    If test=11 And (t11<3 Or Timer>t111+9)And (testweb2=0 or mapdisplay>0) Then testweb2=11
    If test=1 And (t11<3 Or Timer>t111+9) Then testweb=1
-   If time2>timeinit+200 And timeinit>time2-1000 Then timeinit=time2-30:testweb=1
+   If time2>timeinit+200 And timeinit>time2-1000 Then
+   	timeinit=time2-30:testweb=1
+   EndIf 	
    If time2>timeinit+20 And testinit=0 Then testinit=1:testweb=1:subsettupdate()
    If timeinit>time2-6 Then testinit=0
    'auxtest=0.2:auxvar5=tloadwebtext2+0.1'Timer-tloadwebtext

@@ -7680,6 +7680,7 @@ For i=-100 To 612
 		tsetterrain(i,j)=0
 	Next
 Next
+taglcompile2=0'!!
 End Sub
 Dim Shared As Single distrunway4000
 Sub drawroadnode(ij As Integer,i As Integer)
