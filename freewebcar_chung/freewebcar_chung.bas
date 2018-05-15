@@ -1102,6 +1102,7 @@ Dim Shared As int64  idlayer,idlayer0
 
 Dim Shared As String ficin
 Dim As String ficini="freewebcar_chung.ini"
+Dim As String ficiniback="backup/freewebcar_chung_backup.ini"
 Dim Shared As String ficload,ficok:ficok="okinit.txt"
 Dim Shared As Integer File,tok
 function getficok()As String  
@@ -1125,6 +1126,8 @@ If FileExists(ficini)=0 Then
 	Open ficini For Output As #file
 	Close #file
 EndIf
+Sub loadficini(ficini As String)
+Dim As Integer i,j,k 	
 file=FreeFile
 Open ficini For Input As #file
 icar=2
@@ -1304,6 +1307,8 @@ carb=max(1000.0,min(carb+1000.0,carb0))
 kscalex=500:kscalex00=500
 'scalex=2500:scalex0=2500
 k8=6:k88=6
+End Sub
+loadficini(ficini)
 Dim Shared As Single gldistmax
 Sub glsetrange(dxmin As Single=2.0,dxmax As Single=13000*10*25)
         /' init OpenGL '/        
@@ -21847,7 +21852,13 @@ mz11=-999999
         	  	 	If resp="yes" Then testok=1
         	  	 EndIf
         	    If testok=0 Then
-        	    	subreset()
+        	    	guiconfirm("load backup files ?","confirm",resp)
+        	    	If resp="yes" Then
+        	    		loadficini(ficiniback)
+        	         load("backup/startup_backup.save")
+        	    	Else
+         	    	subreset()
+         	   EndIf  	
         	    Else 
          	   setficok("notok")
         	      load("save/startup.save0")
@@ -22900,6 +22911,7 @@ Print #file,nboeing2
 Close #file
 ''If townchanged=1 Or Rnd<0.2 Then savetownvie()
 If (planet=0 And orbit=1) And topentown=1 And tinittown0<=0 Then
+  Var testmsg=0
   For i=1 To 30
   	tquitweb=1
    If tquitweb=1 Or quit=1 Then
@@ -22907,7 +22919,7 @@ If (planet=0 And orbit=1) And topentown=1 And tinittown0<=0 Then
   	   	tinittown=0
      	EndIf
    EndIf
-	Var dt=Timer+16
+	Var dt=Timer+20
 	While Timer<dt And ((tloadwebtext2<>0 And tloadwebtext2<>99)Or(tinittown<>0 And tinittown<>99))
 		Sleep 100
 		tinittown=99:tloadwebtext2=99:tquitweb=1
@@ -22915,8 +22927,8 @@ If (planet=0 And orbit=1) And topentown=1 And tinittown0<=0 Then
 	If ((tloadwebtext2<>0 And tloadwebtext2<>99)Or(tinittown<>0 And tinittown<>99)) Then
 		guiconfirm("i am busy, wait for saving towns buildings ?","confirm",resp)
 		If resp="yes" Then
-      	Sleep 6000
-      	guinotice("thanks for waiting")
+      	Sleep 10000
+      	testmsg=1
       	Exit For
 		Else 
 			Exit For 
@@ -22925,7 +22937,12 @@ If (planet=0 And orbit=1) And topentown=1 And tinittown0<=0 Then
 	   Exit For 
 	EndIf
   Next i 
-  savetownxy3()
+  If ((tloadwebtext2<>0 And tloadwebtext2<>99)Or(tinittown<>0 And tinittown<>99)) Then
+     guinotice "could not save towns"
+  Else    
+  	  savetownxy3()
+     If testmsg=1 Then guinotice("thanks for waiting")
+  EndIf
 EndIf
 
 setficok("ok")
