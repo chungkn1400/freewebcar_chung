@@ -659,7 +659,7 @@ For irecent=0 To 1
 	nnboeingy(i)=nboeingy
 	If nboeingv>v8000+300 Then'Or max(Abs(nboeingx-mx),Abs(nboeingy-my))>50000 Then
 		nboeingz=nnboeingz(i)+nnboeingdz(i)*dt
-		Var nboeingzol=getterrainheight(nboeingx,nboeingy)
+		nboeingzsol=getterrainheight(nboeingx,nboeingy)
 		Var nboeingzz=max(nboeingzsol+2000,nnnboeingz(i)+nnboeingdz(i))
 		nnboeingdz(i)=nboeingzz-nboeingz
 	   nnboeingz(i)=nboeingz
