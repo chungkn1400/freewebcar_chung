@@ -479,7 +479,7 @@ Sub drawnboeing()
 	'If nboeingy>my+dmax Then Exit Sub 
    Var dist=max(Abs(nboeingx-mx),Abs(nboeingy-my))
    If dist>dmax Then Exit Sub 
-   If nboeingv>5000 Then  
+   If nboeingv>500 Then  
     Var dist1=max(Abs(nboeingz-mz),dist)
   	 If (itime Mod 3)=0 And nboeingmodel<>"cessna" Then
   		'auxvar=dist1:auxtest=0.2

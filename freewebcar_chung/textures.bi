@@ -2101,7 +2101,9 @@ EndIf'/
    	    h=hrgb(r,g,b)'120*4000*(g+g-b-r)/(30+r*r+g*g+b*b)
    	  EndIf  
    	  Var h80=10.0
-		 If testnearairport(xx,yy,20000)=1 Then
+		 If tbing=1 Then
+		 	h=0
+		 ElseIf testnearairport(xx,yy,20000)=1 Then
 		  	h=0
 		 Else 
 		  If thrgb0=1 Then 
