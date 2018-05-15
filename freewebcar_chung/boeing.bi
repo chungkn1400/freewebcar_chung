@@ -503,6 +503,7 @@ Sub drawnboeing()
    glrotatef(nboeingo1,0,0,1)
    glrotatef(-nboeingo2,0,1,0)
    glrotatef(-nboeingo3,1,0,0)
+   gldisable gl_alpha_test
    
   If nboeingmodel="cessna" Then
   	gltranslatef(0,0,15)
@@ -665,11 +666,14 @@ For irecent=0 To 1
 		'auxvar4=max(Abs(nnboeingdx(i)),Abs(nnboeingdy(i)))
 		'nnboeingv(i)=min(nboeingv,max(Abs(nnboeingdx(i)),Abs(nnboeingdy(i))))
 	ElseIf max(Abs(nboeingx-mx),abs(nboeingy-my))<35000 Then 
-		Var nboeingzol=getterrainheight(nboeingx,nboeingy)
+		'Var nboeingzsol=getterrainheight(nboeingx,nboeingy)
+		nboeingzsol=getterrainheight(nboeingx,nboeingy)
 		nboeingz=max(nboeingzsol,nnboeingz(i)+min(-8*kfps,nnboeingdz(i)*dt))
 		nnboeingz(i)=nboeingz
 		nnboeingdz(i)=-5000
 		If nboeingz<nboeingzsol+1 Then nnboeingdz(i)=0
+	Else 	
+		nboeingz=nnboeingz(i)
 	EndIf 
 	If dt4>0.000001 Then 
 	   nboeingo1=nnboeingo1(i)+nnboeingdo1(i)*dt4

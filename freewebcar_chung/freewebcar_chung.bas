@@ -14039,7 +14039,8 @@ If plane>0 And car=0 Then
    	If Abs(v)<2.5 And vcruise<10 Then v=0:mx=mx0:my=my0:mz=mz0
    	If piste=0 Then
    	 mz=max(mz0,posz)
-   	 mz1=max(mz0,posz)
+   	 mz=max(mz,mzsol00)
+   	 mz1=mz
    	EndIf  
    	'mzsol00=max(mzsol00,posz-0.4)
    	'mzsol0=max(mzsol0,posz-0.4)
