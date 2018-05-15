@@ -2102,7 +2102,7 @@ EndIf'/
    	  EndIf  
    	  Var h80=10.0
 		 If testnearairport(xx,yy,20000)=1 Then
-		  	h=0:auxvar+=1:auxtest=0.2
+		  	h=0
 		 Else 
 		  If thrgb0=1 Then 
 		   If Abs(h-hrgb0)<h80 Then
