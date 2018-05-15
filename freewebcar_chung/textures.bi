@@ -2029,6 +2029,7 @@ Dim As Single h
   h=max(0.0,min(512.0,h))'256
 Return h	
 End Function
+Declare Function testnearairport(x As Single,y As Single,dist As Single=8000)As Integer
 Sub setwebwater2(i As Integer,j As Integer,xx As Single,yy As Single)
 If testworld=0 Then
 	'setwebwater(i,j,xx,yy):Exit Sub 
@@ -2100,6 +2101,9 @@ EndIf'/
    	    h=hrgb(r,g,b)'120*4000*(g+g-b-r)/(30+r*r+g*g+b*b)
    	  EndIf  
    	  Var h80=10.0
+		 If testnearairport(xx,yy,20000)=1 Then
+		  	h=0:auxvar+=1:auxtest=0.2
+		 Else 
 		  If thrgb0=1 Then 
 		   If Abs(h-hrgb0)<h80 Then
 		  	  'Var kh=(100-Abs(h-hrgb0))*0.01
@@ -2127,6 +2131,7 @@ EndIf'/
 		   'EndIf
 		   h=max(0.0,min(256.0,h))
 		  EndIf 
+     	 EndIf 
      	  'h=h+hsrtm-60+dhmareemax+0.1
      	  h=hsrtm+h'-60+dhmareemax+0.1
      	  'myzmin+=(max(-65.0,min(myzmin,h))-myzmin)*0.001
@@ -5910,6 +5915,7 @@ Dim As Integer j,n,k
 'If taglcompile>1 Then Exit Sub
 'If InStr(LCase(townwayname(ij,i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
 If tlayer<-0.1 Then Exit Sub 
+testrunway=0
 Var i40=0
 If kmxlat>10 And detail40=1 Then i40=towni40(ij,i)
 'If Str(townwaynodeid(ij,i))="79152373" And i40>0 Then auxtest=0.8:auxvar2=i40+0.1
@@ -6473,6 +6479,7 @@ Sub drawbuildingnode40(ij As Integer,i As Integer,dist As Single=1,r As Single=-
 Dim As Single x,y,z,z1,h,tx,ty,z0,xx,yy,xmin,ymin,xmax,ymax,xmid,ymid,tx0,x0,y0,hmin
 Dim As Integer j,n,k
 'If taglcompile>1 Then Exit Sub 
+testrunway=0
 h=max(20.0,townwaynodeh(ij,i))
 'If InStr(townwayname(ij,i),"Tour Total")>0 Then auxvar=h:auxtest=0.3
 If h>4000 Then
@@ -6866,6 +6873,7 @@ Dim As Single x,y,z,z1,h,tx,ty,z0,xx,yy,xmin,ymin,xmax,ymax,xmid,ymid,tx0,x0,y0,
 Dim As Integer j,n,jj
 Dim As Single jx,di
 If tlayer<-0.1 Then Exit Sub 
+testrunway=0
 'If taglcompile>1 Then Exit Sub
 h=max(20.0,townwaynodeh(ij,i))
 If h>4000 Then
@@ -7729,7 +7737,8 @@ r=max(5.0,townwaynodeh(ij,i))
 If r>2000 Then r-=2000:tparking=1
 If r>1000 Then r-=1000:toneway=1
 If r<0.3*30 Then trail=1
-If r>4*30 then trunway=1
+testrunway=0
+If r>4*30 then trunway=1:testrunway=1
 If r>2.5*30 And trunway=0 Then tmainway=1 
 If r<29 And layer>0 Then layer=0:zlayer=0:rcolor=0.5:gcolor=0.6:bcolor=1'tcolor=0
 If tdark=1 Then
@@ -11703,7 +11712,7 @@ myoverpass2=overpass2(ioverpass)
 Var keyway="way[aeroway~'aerodrome|runway|taxiway']"+latlon3+";way[aeroway~'terminal']"+latlon2
 'keyway+=";node[aeroway~'aerodrome|runway']"+latlon1
 keyway+=";node[aeroway~'aerodrome']"+latlon3
-If mz<mzsol00+400 Or vkm<80 Or dtweb<40.0 Then 
+If mz<mzsol00+400 Or vkm<80 Or dtweb<20.0 Then 
  keyway+=";node['man_made'~'water_tower|storage_tank|silo']"+latlon3
  keyway+=";node['man_made'~'communications_tower|tower']"+latlon3
  keyway+=";node[amenity~'fuel|hospital|cinema']"+latlon2+";node[railway~'station']"+latlon2
@@ -11799,8 +11808,8 @@ EndIf
 'EndIf
 wayurl=myoverpass2+"interpreter?data=[out:json][timeout:55];%28"+keyway
 'If myroadwayid<>"" Then wayurl+=";.myway"
-nwaymax=29990
-wayurl+=";.myrel;.myrelway;%29%3Bout%20qt%2029999%3B"
+nwaymax=25990
+wayurl+=";.myrel;.myrelway;%29%3Bout%20qt%2025999%3B"
 'wayurl+="%29%3Bout%20qt%209999%3B"
 nodeurl=myoverpass2+"interpreter?data=[out:json][timeout:55];%28node"+latlon
 'nodeurl+="node"+latlon
