@@ -168,6 +168,9 @@ Dim As Integer i,j,k
 agllist=glgenlists(1)	
 glnewlist agllist,GL_COMPILE
 glendlist
+agllist2=glgenlists(1)	
+glnewlist agllist2,GL_COMPILE
+glendlist
 	
 lamplist=glgenlists(1)
 glnewlist lamplist,GL_COMPILE
@@ -11979,7 +11982,7 @@ If toverpass=1 Then
    If quit2=1 Or tquitweb=1 Then Exit Sub
    taglcompile20=2 
    updateways()
-   taglcompile20=0
+   taglcompile20=2
    tcancel=0
    'auxvar=nway2   
    sleep t300

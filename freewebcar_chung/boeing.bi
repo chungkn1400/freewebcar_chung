@@ -459,6 +459,37 @@ For i=0 To nboeing
 	nnboeingdo3(i)=0
 	nnboeingv(i)=v
 Next
+For i=0 To nboeing-1
+  If nboeingid0(i)<>"" or nnboeingid(i)<>"" Then 
+   If irepeatboeing(i)<90 And nnboeingalt(i)<10 Then 
+	  Var testrecent=0,id=nboeingid0(i)
+	  If id="" Then id=nnboeingid(i)
+	  For j=0 To irecentboeing
+		If id=recentboeingid(j) Then
+			testrecent=1
+			Exit For 
+		EndIf
+	  Next
+	  If testrecent=0 Then Continue For 
+  	  Var x=nnboeingx(i)
+	  Var y=nnboeingy(i)
+	  k=irepeatboeing(i)
+	  For j=i+1 To nboeing
+     	 If nboeingid0(j)<>"" or nnboeingid(j)<>"" Then 
+        If irepeatboeing(j)>=k And nnboeingalt(j)<10 Then
+        	  If Abs(x-nnboeingx(j))<100 Then
+         	  If Abs(y-nnboeingy(j))<100 Then'remove collide
+         	  	  nboeingid0(j)=""
+                 nnboeingid(j)=""
+                 irepeatboeing(j)=99
+         	  EndIf       	  	 
+        	  EndIf
+        EndIf	
+       EndIf  
+	  Next j
+	EndIf
+  EndIf 	
+Next i	
 'auxtext="boeing="+Str(nboeing00-ncessna-nfokker)+" fokker="+Str(nfokker)+" cessna="+Str(ncessna)
 'auxtest=0.2
 'guinotice auxtext

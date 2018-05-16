@@ -5231,7 +5231,7 @@ Dim Shared As Single  shadowmx0,shadowmy0,shadowmz0
 Dim Shared As String namenathalie,namenathalie0 
 Dim Shared As Single distnathalie,nathaliex0,nathaliey0,nathaliex,nathaliey
 Dim Shared As Double train,timeaddshadowtree,timeishadow,train2,tdrawroad
-Dim Shared As uint agllist
+Dim Shared As uint agllist,agllist2
 Dim Shared As Single avgbuildh,navgbuildh,avgbuildh0
 Dim Shared As Integer taglcompile2,taglcompile20
 Declare Sub subcopyshadow()
@@ -5497,9 +5497,7 @@ var i1=max2(-i50,min2(i50,itownij)),j1=max2(-i50,min2(i50,jtownij))
 'auxvar=i1-i0:auxvar2=j1-j0
 
 'If taglcompile=1 Then auxvar=iagl+0.1:auxtest=0.3
-taglcompile2=taglcompile20
-taglcompile2+=1:If taglcompile2>(40+fpsmoy*2) Then taglcompile2=1
-taglcompile20=taglcompile2
+taglcompile2+=1:If taglcompile2>(40+fpsmoy*2) Then taglcompile2=0
 'If taglcompile2=1 Or taglcompile2=30 Then'Or taglcompile2=60 Then
 '	taglcompile=1
 'Else
@@ -5578,8 +5576,19 @@ Else
 	taddshadowroc=0
 EndIf
 
+Var tcompile=0
+If taglcompile20=1 Then
+	taglcompile20=2
+	taglcompile2=1
+EndIf
 If taglcompile2=1 Then
-   glnewlist agllist,gl_compile_and_execute
+	tcompile=1
+	If taglcompile20=0 Then 
+      glnewlist agllist,gl_compile'_and_execute
+	Else
+		taglcompile20=0
+      glnewlist agllist2,gl_compile
+   EndIf    
 EndIf
 
 If taglcompile=1 Or taglcompile2=1 Or scaleview<0.9 Then
@@ -5693,10 +5702,12 @@ EndIf 'test
 avgbuildh=avgbuildh/navgbuildh
 EndIf 'tagl
 
-If taglcompile2=1 Then
+If taglcompile2=1 Or tcompile>0 Then
 	glendlist()
 EndIf 
-If agllist<>0 And taglcompile2<>1 Then glcalllist(agllist)    
+If agllist<>0 Then'And taglcompile2<>1 Then
+	glcalllist(agllist)    
+EndIf
 
 /'If taglcompile=19999 then
 	aglpushmatrix
@@ -22585,7 +22596,7 @@ ElseIf tloadwebtext2=4 Then
       tloadwebtext2=2
       taglcompile20=2
       setmapautotextures2()
-      taglcompile20=2
+      taglcompile20=1
       tupdateterrain=0
       If (Abs(worldx-worldx000)+Abs(worldy-worldy000))>0.0001 Or (topentown=1 And tinittown0>=1) Then 
         initairport
