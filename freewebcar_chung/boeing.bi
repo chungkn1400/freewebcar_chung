@@ -14,7 +14,7 @@ Dim Shared As Single nnboeingdo1(nboeing),nnboeingdo2(nboeing),nnboeingdo3(nboei
 Dim Shared As Single nnboeingo1(nboeing),nnboeingo2(nboeing),nnboeingo3(nboeing)
 Dim Shared As Single nnnboeingo1(nboeing),nnnboeingo2(nboeing),nnnboeingo3(nboeing),nnnboeingalt(nboeing)
 Dim Shared As String recentboeingid(nboeing),recentboeingid0(nboeing)
-Dim Shared As Integer irecentboeing,irecentboeing0,irepeatboeing(nboeing),nboeing0,nboeing00
+Dim Shared As Integer irecentboeing,irecentboeing0,irepeatboeing(nboeing),nboeing0
 Declare Sub copyboeing0()
 Sub getairtraffic(text00 As String)
 'https://public-api.adsbexchange.com/VirtualRadar/AircraftList.json?lat=33.433638&lng=-112.008113&fDstL=0&fDstU=7	
@@ -340,7 +340,7 @@ For i=0 To nboeing
 	EndIf
 Next
 nboeing00=0
-Var ncessna=0,nfokker=0
+ncessna=0:nfokker=0
 For i=0 To nboeing
 	If irepeatboeing(i)<-90 Then
 		 irepeatboeing(i)=0
@@ -459,7 +459,7 @@ For i=0 To nboeing
 	nnboeingdo3(i)=0
 	nnboeingv(i)=v
 Next
-auxtext="boeing="+Str(nboeing00-ncessna-nfokker)+" fokker="+Str(nfokker)+" cessna="+Str(ncessna)
+'auxtext="boeing="+Str(nboeing00-ncessna-nfokker)+" fokker="+Str(nfokker)+" cessna="+Str(ncessna)
 'auxtest=0.2
 'guinotice auxtext
 'freelockboeing()

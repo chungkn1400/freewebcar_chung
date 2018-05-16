@@ -714,8 +714,8 @@ If avion="ballon" Then
 	o2=max(-27.0,min(18.0,o2))
 	vmz3=0
 	mz1+=max(0.0,(v+prop*0.0003)*sin2*1.3*kfps)
-	If o3>18 Then o1+=kfps*(o3-18)*0.0085
-	If o3<-18 Then o1+=kfps*(o3+18)*0.0085
+	If o3>15 Then o1+=kfps*(o3-15)*0.0085
+	If o3<-15 Then o1+=kfps*(o3+15)*0.0085
 EndIf
 If avion="copter" Then
 	vmz3=0
@@ -735,6 +735,8 @@ If avion="copter" Then
 	If o2<10 Or prop<1000 Or  prop>1500 Then mz1-=(1500-prop)*0.0015*kfps
 	If Abs(sin3)>0.6 Then o2=max(-85.0,o2-Abs(sin3*cos2)*0.25*kfps)
 	If o2<-80 Then o1+=o3:o3=0	
+	If o3>15 Then o1+=kfps*(o3-15)*0.0085
+	If o3<-15 Then o1+=kfps*(o3+15)*0.0085
 EndIf
 
 'movewind()

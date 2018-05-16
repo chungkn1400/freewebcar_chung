@@ -6789,6 +6789,7 @@ End Select
 End Function
 Dim Shared As Single stationx,stationy,stationz,stationvie,boeingportx,boeingporty,boeingx,boeingy,boeingz
 Dim Shared As Single mnearaerowayx,mnearaerowayy,mynearaerowayz,mdistnearaeroway=999999
+Dim Shared As Integer nboeing00,ncessna,nfokker
 Declare sub drawnboeingradar(dx as single,dy as Single)
 Sub drawradar
 Dim As Integer i
@@ -15996,7 +15997,13 @@ EndIf 'planet
         If auxtext<>"" Then gldrawtext(Str(auxtext),15,ymax-199,1.2)
        EndIf
        If auxtest<0.1 Then 
-        If timer<timehelp+120 Then drawhelp()	
+        If timer<timehelp+120 Then
+        	  drawhelp()
+        Else
+        	  gldrawtext("boeing="+Str(nboeing00-ncessna-nfokker),10,350,1)
+        	  gldrawtext("fokker="+Str(nfokker),10,370,1)
+        	  gldrawtext("cessna="+Str(ncessna),10,390,1)
+        EndIf
        EndIf
         Var vv=min(v*3,Sqr((xkm-mx)*(xkm-mx)+(ykm-my)*(ykm-my)+(zkm-mz)*(zkm-mz))*fps/15)'/25
         If (xkm-mx)*cos1+(ykm-my)*sin1>0 Then vv=-vv
@@ -21329,7 +21336,7 @@ msg+="shift+G => google maps webtext (enable/basic/disable)"+cr
 msg+="ctrl+S => shadow (on/off)   /  shift+D => detail40 buildings"+cr'smooth terrain"+cr
 msg+="shift+T => retroviseur "+cr
 msg+="shift+O => change OSM server"+cr
-msg+="ctrl+shift => walk (foot mode)  /   H => horse"+cr
+msg+="ctrl+shift => walk (foot mode)  / H => horse / Z => climb"+cr
 msg+="key 9 => heightmap / Q,D 1,2 or space arrow => turn left/right"+cr
 msg+="joystick and gamepad supported" 
 confirm(msg,"help",resp)
@@ -22574,7 +22581,9 @@ ElseIf tloadwebtext2=4 Then
      EndIf
    ElseIf tloadwebtext2=3 Then
       tloadwebtext2=2
+      taglcompile2=2
       setmapautotextures2()
+      taglcompile2=2
       tupdateterrain=0
       If (Abs(worldx-worldx000)+Abs(worldy-worldy000))>0.0001 Or (topentown=1 And tinittown0>=1) Then 
         initairport
