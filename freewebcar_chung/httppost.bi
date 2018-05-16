@@ -12,7 +12,7 @@
 '/
 #EndIf
 
-const RECVBUFFLEN = 100000'8192
+const RECVBUFFLEN = 200000'8192
 const NEWLINE = !"\r\n"
 Const DEFAULT_HOST = "www.freebasic.net"
 
