@@ -9765,6 +9765,7 @@ glenable(gl_lighting)
 glenable(gl_light3)
 glenable gl_texture_2d
 glcolor3f(0,0.95,0)
+gldisable gl_depth_test
 'if icar=11 Then 
 	glbindtexture(gl_texture_2d,zerotext)
 'Else 
@@ -9778,7 +9779,8 @@ glcolor3f(0,0.95,0)
 		loadobjsize("objects/zero1_cockpit.obj",@"",@"",37.3)
       glendlist
 	EndIf	
-glcolor3f(1,1,1)	
+glcolor3f(1,1,1)
+glenable gl_depth_test	
 gldisable(gl_light3)
 gldisable(gl_lighting)
 End Sub
@@ -12812,7 +12814,7 @@ End Sub
 Sub drawzero
 glenable(gl_lighting)
 glenable(gl_light3)
-glcolor3f(0.1,1,0.1)
+glcolor3f(0,1,0)
 'if icar=12 Then 
 '	glbindtexture(gl_texture_2d,zero2text)
 'Else 
@@ -13236,6 +13238,7 @@ glenable(gl_cull_face)
 glcullface(gl_front)  
 glenable gl_alpha_test
 glAlphaFunc(gl_less,100/254)
+gldisable gl_depth_test
 Var cc=0.94*max(0.94,min(1.0,1+Cos(helicerot0*3.1416/50)))
 If tdark=1 Then cc=cc/0.94
 glcolor4f(cc,cc,cc,1)
@@ -13264,6 +13267,7 @@ glcolor4f(cc,cc,cc,1)
 gldisable(gl_light3)	
 gldisable(gl_cull_face)
 gldisable gl_alpha_test
+glenable gl_depth_test
 glcolor4f(1,1,1,1)
 End Sub
 /'
@@ -13957,10 +13961,32 @@ Next
 If teststenciltop<xmax*0.02 Then teststenciltop=0
 auxvar6=teststenciltop+0.1:auxtest=0.8
 End Sub
-Dim Shared As Double timepiste,timercollide,timelayeroff
+Dim Shared As Double timepiste,timercollide,timelayeroff,timeroof
+Dim Shared As Single zroof
 Sub testcollideforward()
 'tpiste=piste
 If (tlayer0)<-0.4 Then exit Sub
+Var tclimb=0.0
+If guitestkey(vk_z) Then tclimb=1  
+If zroof>mzsol00+30 Then
+   If Timer<timeroof+12 Then
+   	 mz=max(mz,zroof)
+   	 mz=max(mz,mz0)
+   	 mz=max(mz,mzsol00)
+   	 mz=max(mz,mz1)
+   	 If plane=0 Then
+   	 	o2=max(-21.0,min(8.0,o2))
+   	 Else 	
+   	 	o2=max(-8.0,min(8.0,o2))
+   	 EndIf
+   	 o3=max(-18.0,min(18.0,o3))
+   	 mz1=mz
+   Else
+   	zroof=-999999
+   EndIf
+Else
+	zroof=-999999
+EndIf 
 If time2<timercollide+0.1 Then Exit Sub
 timercollide=time2
 Var kfps0=kfps,kfps=3.0
@@ -14032,24 +14058,31 @@ If dist<100 And dist>0 Then
       testcrash():Exit Sub 
 	EndIf
 EndIf
-If plane>0 And car=0 Then
+If (plane>0 And car=0)Or(zroof>mzsol00+30)Or(Timer<timeroof+5)Or(tclimb>0.1) Then
    winx = xmax*0.5
    winy = ymax*0.35
+   if (plane=0 or car>0 Or volant<>6)Then winy=ymax*0.1-sin2*0.5
    glReadPixels( winx,winy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, @winZ )
    gluUnProject(winX,winY,winz,@modelview(0),@projection(0),@viewport(0),@posX,@posY,@posZ) 
-   If max(Abs(posx-mx),Abs(posy-my))+Abs(posz-mz)<80 Then
+   If max(Abs(posx-mx),Abs(posy-my))+Abs(posz-mz)<180 Then
    	'auxvar=mz-posz-mzh:auxtest=0.2:auxvar2=vcruise
-   	posz+=mzh
+   	posz+=mzh+tclimb*50
    	If Abs(v)<2.5 And vcruise<10 Then v=0:mx=mx0:my=my0:mz=mz0
    	If piste=0 Then
-   	 mz=max(mz0,posz)
+   	 mz=max(mz,posz)
+   	 mz=max(mz,mz0)
    	 mz=max(mz,mzsol00)
+   	 mz=max(mz,mz1)
    	 mz1=mz
+   	 o2=max(-61.0,min(8.0,o2))
+   	 o3=max(-18.0,min(18.0,o3))
+   	 zroof=max(posz,zroof-0.1)
+   	 timeroof=Timer
    	EndIf  
    	'mzsol00=max(mzsol00,posz-0.4)
    	'mzsol0=max(mzsol0,posz-0.4)
    EndIf
-	Exit Sub 
+	If plane=0 Or car=0 Then Exit Sub 
 EndIf
 If plane>0 And (mytestroad2=0 And time2<timecollide2+1 And time2<timecollide22+1)And time2>timebridge+2 Then 
  	If (tkeyup) Then Exit Sub 
@@ -14127,6 +14160,7 @@ If plane>0 Or testztop=1 Then
  	EndIf
  EndIf 	
 EndIf 
+If zroof>mzsol00+30 Then Exit Sub 
 'If plane>0 And car>0 And time2>timeautopilot+4 And time2>timebridge+2 And tautopilot=1 Then Exit sub
 If tdist20=0 Then 
  winx = xmax/2
@@ -15104,9 +15138,14 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     tfootmove=0
     yh=17
     If plane=0 Or car>0 Then
+    	If plane=0 Then v=0
     	'Var ksc=1.38:glscalef(ksc,1,ksc)
     	'Var ksc=2.50:glscalef(ksc,ksc,ksc)
-    	mz=max(mzsol0,min(mzsol0+300,mz))
+    	If zroof<mzsol0 Then
+    		mz=max(mzsol0,min(mzsol0+300,mz))
+    	Else
+    		mz=max(zroof,min(zroof+300,mz))
+    	EndIf 	
     	yh=5.7'9
     	dyh=-9.4
     	If plane>0 And car>0 Then dyh+=dyh0
@@ -21931,7 +21970,7 @@ mz11=-999999
         'Dim Shared As ubyte mybmpretro(4*1000*1000)
         timeinit=Timer 
         testinit=0
-        mzinit=mz
+        'mzinit=mz
         'guinotice "ok"
         
         Var tquit=Timer,tframe=tquit-5,tactive=Timer
@@ -22212,12 +22251,13 @@ mz11=-999999
                'glclearcolor 0,0.7,0, 0.0
                'glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
             	'guirefreshopenGL()
-            	If timer<timeinit+8 And Abs(mzinit)>0.001 Then
+            EndIf 
+           	If timer<timeinit+12 And mzinit>-999990 Then
             		mz=mzinit:mz1=mz:piste=1:piste0=1
-            	Else
-            		mzinit=0
-            	EndIf 	
-            EndIf 	
+            		zroof=mzinit:timeroof=Timer
+           	Else
+            		mzinit=-999999
+           	EndIf 	
            	If mapdisplay<>0 Then mx=mx0:my=my0:mz=mz0:mz1=mz 
             If time2<tcrashz+1 Then mz=mzcrash:mz1=mz
            	

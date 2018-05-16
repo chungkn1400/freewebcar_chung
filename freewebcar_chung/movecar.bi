@@ -397,6 +397,7 @@ If tourelle=1 Then
 	to2=to2-joy*2
 Else
 	If car>=1 Then
+		If v>0 Then v=max(0.0,v-0.04*kfps):vautopilot=v
 		if v>=0 And v<0.25 then soundmoteur:mx-=dmx*1.2*kfps:my-=dmy*1.2*kfps
 		If v<0 And v>-2 then soundmoteur:mx-=dmx*1*kfps:my-=dmy*1*kfps
 	Else 
