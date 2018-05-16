@@ -653,12 +653,12 @@ End Sub
 Declare Sub loadwebtext2()
 Declare Sub updatetownwaynode()
 Sub subsetmapautotextures(ByVal userdata As Any Ptr)
-	   taglcompile2=2
+	   taglcompile20=2
       'loadwebtextzoom2()
       setmapautotextures1()
       updatetownwaynode()
       tloadwebtext2=3
-      taglcompile2=2
+      taglcompile20=2
 End Sub             
 'Sub subsetmapautotextureszoom(ByVal userdata As Any Ptr)
       'loadwebtextzoom2()
@@ -7669,7 +7669,7 @@ Dim Shared As Integer ttaddoneway(ntown,ntownnode)
 Declare Sub setcitykm1(latx As single,lngx As Single,co1 As Single,si1 As Single)
 Sub resetttsetterrain()
 Dim As Integer ij,i,j
-taglcompile2=2
+taglcompile20=2
 For ij=1 To ntown2
 	getlocktown(ij)
 	For i=1 To ntownnode
@@ -7683,7 +7683,7 @@ For i=-100 To 612
 		tsetterrain(i,j)=0
 	Next
 Next
-taglcompile2=2
+taglcompile20=2
 End Sub
 Dim Shared As Single distrunway4000
 Sub drawroadnode(ij As Integer,i As Integer)
@@ -11977,9 +11977,9 @@ If toverpass=1 Then
    'guinotice(msgprint)
    msgprint=""
    If quit2=1 Or tquitweb=1 Then Exit Sub
-   taglcompile2=2 
+   taglcompile20=2 
    updateways()
-   taglcompile2=0
+   taglcompile20=0
    tcancel=0
    'auxvar=nway2   
    sleep t300
