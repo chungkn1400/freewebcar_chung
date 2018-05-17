@@ -427,7 +427,15 @@ For i=0 To nboeing
 	nnboeingdo1(i)=do1
 	nnnboeingo1(i)=nnboeingo1(i)
 	Var v=max(Abs(dx),Abs(dy))
-	If v>v8000 Or (irepeatboeing(i)>0 And max(Abs(x-mx),Abs(y-my))>90000) Then
+	If v>v8000 Or (irepeatboeing(i)>0 And max(Abs(x-mx),Abs(y-my))>90000) Or (nboeingalt0(i)>2000 And v>500) Then
+	 If v<v8000 Then
+   	v=max(1.0,v)
+   	dx*=(v8000+10)/v
+   	dy*=(v8000+10)/v
+   	v=v8000+10
+	   nnboeingdx(i)=dx
+	   nnboeingdy(i)=dy
+	 EndIf
 	 z=max(z,z-nboeingalt0(i)+2000)
 	 Var dz=z-nnboeingz(i)
 	 nnboeingdz(i)=dz	
@@ -477,8 +485,8 @@ For i=0 To nboeing-1
 	  For j=i+1 To nboeing
      	 If nboeingid0(j)<>"" or nnboeingid(j)<>"" Then 
         If irepeatboeing(j)>=k And nnboeingalt(j)<10 Then
-        	  If Abs(x-nnboeingx(j))<100 Then
-         	  If Abs(y-nnboeingy(j))<100 Then'remove collide
+        	  If Abs(x-nnboeingx(j))<200 Then
+         	  If Abs(y-nnboeingy(j))<200 Then'remove collide
          	  	  nboeingid0(j)=""
                  nnboeingid(j)=""
                  irepeatboeing(j)=99

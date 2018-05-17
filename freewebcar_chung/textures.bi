@@ -10774,6 +10774,7 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           	EndIf
           EndIf
           'If InStr(townwayname(ij,i)," Henri")>0 Then auxvar+=1:auxtest=0.8
+ 		   If tcompiledummy=0 Or waynodebuild=100 Then 
  		    If waynodebuild=100 Then
  		    	drawroadnode(ij,i)
  		    ElseIf x2>2500-300+sizei And (plane=0 Or car>0) Then
@@ -10788,7 +10789,7 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
  		    	If Abs(x-mx)<1200 And Abs(y-my)<1200 Then ntownnear+=1
  		    	drawbuildingnode(ij,i,1,r,g,b)
  		    EndIf
- 		    'EndIf   
+ 		   EndIf   
  		    glpopmatrix 
 End Sub
 Sub updatewaysm()

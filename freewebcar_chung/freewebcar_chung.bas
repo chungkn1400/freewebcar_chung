@@ -989,6 +989,7 @@ soundboeing
 myTTSinit()
 
 Declare Function getterrainheight(ByVal x As Single,ByVal y As Single) As Single
+Declare Function getterrainheight2(ByVal x As Single,ByVal y As Single) As Single
 Declare Function getterrainheightfast(ByVal x As Single,ByVal y As Single) As Single
 Declare Sub initterrain2
 Declare Sub initterrain3
@@ -2145,7 +2146,6 @@ Dim As Integer i,j,k
 subsettupdate()
 End Sub
 Declare Sub mxytolatlng(x0 As Single,y0 As Single)
-Declare Function getterrainheight2 (ByVal x As Single,ByVal y As Single) As Single
 Declare Sub setterrainroadwater()
 Dim Shared As Single mylatweb,mylngweb,mydlatweb,mydlngweb,myxweb,myyweb,mydxweb,mydyweb,myzmin,myzmax
 Sub setmapautotextures1()
@@ -5233,7 +5233,7 @@ Dim Shared As Single distnathalie,nathaliex0,nathaliey0,nathaliex,nathaliey
 Dim Shared As Double train,timeaddshadowtree,timeishadow,train2,tdrawroad
 Dim Shared As uint agllist,agllist2
 Dim Shared As Single avgbuildh,navgbuildh,avgbuildh0
-Dim Shared As Integer taglcompile2,taglcompile20
+Dim Shared As Integer taglcompile2,taglcompile20,tcompiledummy
 Declare Sub subcopyshadow()
 Declare Sub drawcigale()
 Dim Shared As uint sauterelletext,sauterelletext2
@@ -5497,7 +5497,7 @@ var i1=max2(-i50,min2(i50,itownij)),j1=max2(-i50,min2(i50,jtownij))
 'auxvar=i1-i0:auxvar2=j1-j0
 
 'If taglcompile=1 Then auxvar=iagl+0.1:auxtest=0.3
-taglcompile2+=1:If taglcompile2>(40+fpsmoy*2) Then taglcompile2=0
+taglcompile2+=1:If taglcompile2>(40+fpsmoy*2) Then taglcompile2=1
 'If taglcompile2=1 Or taglcompile2=30 Then'Or taglcompile2=60 Then
 '	taglcompile=1
 'Else
@@ -5577,6 +5577,7 @@ Else
 EndIf
 
 Var tcompile=0
+tcompiledummy=0
 If taglcompile20=1 Then
 	taglcompile20=2
 	taglcompile2=1
@@ -5588,11 +5589,16 @@ If taglcompile2=1 Then
 	Else
 		taglcompile20=0
       glnewlist agllist2,gl_compile
+      tcompiledummy=1
    EndIf    
 EndIf
 
 If taglcompile=1 Or taglcompile2=1 Or scaleview<0.9 Then
 
+Var irepeat=1,nrepeat=1:If tcompiledummy=1 Then nrepeat=2
+
+For irepeat=1 To nrepeat
+	
 avgbuildh0=avgbuildh
 avgbuildh=0:navgbuildh=1
 
@@ -5700,6 +5706,9 @@ EndIf
 EndIf 'test 
 
 avgbuildh=avgbuildh/navgbuildh
+
+Next irepeat
+
 EndIf 'tagl
 
 If taglcompile2=1 Or tcompile>0 Then
@@ -16009,15 +16018,14 @@ EndIf 'planet
         If Abs(auxvar6)>0.00001 Then gldrawtext("aux6= "+Str(auxvar6),15,ymax-179,1.2)
         If auxtext<>"" Then gldrawtext(Str(auxtext),15,ymax-199,1.2)
        EndIf
-       If auxtest<0.1 Then 
-        If timer<timehelp+120 Then
+       
+        If auxtest<0.1 And Timer<timehelp+120 Then
         	  drawhelp()
-        Else
+        Else  
         	  gldrawtext("boeing="+Str(nboeing00-ncessna-nfokker),10,350,1)
         	  gldrawtext("fokker="+Str(nfokker),10,370,1)
         	  gldrawtext("cessna="+Str(ncessna),10,390,1)
         EndIf
-       EndIf
         Var vv=min(v*3,Sqr((xkm-mx)*(xkm-mx)+(ykm-my)*(ykm-my)+(zkm-mz)*(zkm-mz))*fps/15)'/25
         If (xkm-mx)*cos1+(ykm-my)*sin1>0 Then vv=-vv
         xkm=mx:ykm=my:zkm=mz
@@ -19407,7 +19415,7 @@ var dr0=0.32'(Abs(dx)+Abs(dy))*0.25'0.5
 'Var xsi0=0.436,xco0=0.9
 Var xsi1=xsi11,xco1=xco11
 If trunway=1 Then d100=0'dr0=0
-If testrunway=1 Then d100=0:t4=6
+If testrunway=1 Then d100=0:t4=9
 If dx<=(1.0-dy) Then 
      h=max(hwaterz,( dx*(z10-z00) +dy*(z01-z00) +z00))
   'If tsetterrain(i,j)<=t4 Then tsetterrain(i,j)+=1:terrain(i,j)=z00+(h-z00)*(Abs(dx*xsi1-dy*xco1)/max(0.01,Abs(dx)+Abs(dy)))'*d100/max(d10,Abs(dx)+Abs(dy))
@@ -22597,6 +22605,7 @@ ElseIf tloadwebtext2=4 Then
       taglcompile20=2
       setmapautotextures2()
       taglcompile20=1
+      drawtownnodes()
       tupdateterrain=0
       If (Abs(worldx-worldx000)+Abs(worldy-worldy000))>0.0001 Or (topentown=1 And tinittown0>=1) Then 
         initairport
