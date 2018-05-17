@@ -5595,7 +5595,7 @@ EndIf
 
 If taglcompile=1 Or taglcompile2=1 Or scaleview<0.9 Then
 
-Var irepeat=1,nrepeat=1:If tcompiledummy=1 Then nrepeat=2
+Var irepeat=1,nrepeat=1:If tcompiledummy=1 Then nrepeat=3
 
 For irepeat=1 To nrepeat
 	
@@ -19415,7 +19415,7 @@ var dr0=0.32'(Abs(dx)+Abs(dy))*0.25'0.5
 'Var xsi0=0.436,xco0=0.9
 Var xsi1=xsi11,xco1=xco11
 If trunway=1 Then d100=0'dr0=0
-If testrunway=1 Then d100=0:t4=9
+If testrunway=1 Then d100=0:t4=12
 If dx<=(1.0-dy) Then 
      h=max(hwaterz,( dx*(z10-z00) +dy*(z01-z00) +z00))
   'If tsetterrain(i,j)<=t4 Then tsetterrain(i,j)+=1:terrain(i,j)=z00+(h-z00)*(Abs(dx*xsi1-dy*xco1)/max(0.01,Abs(dx)+Abs(dy)))'*d100/max(d10,Abs(dx)+Abs(dy))
@@ -22492,7 +22492,7 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    EndIf 	
    If t11<3 Then t111=Timer 
    If test=11 And (t11<3 Or Timer>t111+9)And (testweb2=0 or mapdisplay>0) Then testweb2=11
-   If test=1 And (t11<3 Or Timer>t111+9) Then testweb=1
+   If test=1 And (t11<3 Or Timer>t111+9) And time2>timeinit+4 Then testweb=1
    If time2>timeinit+200 And timeinit>time2-1000 Then
    	timeinit=time2-30:testweb=1
    EndIf 	
