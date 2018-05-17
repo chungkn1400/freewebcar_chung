@@ -485,8 +485,8 @@ For i=0 To nboeing-1
 	  For j=i+1 To nboeing
      	 If nboeingid0(j)<>"" or nnboeingid(j)<>"" Then 
         If irepeatboeing(j)>=k And nnboeingalt(j)<10 Then
-        	  If Abs(x-nnboeingx(j))<200 Then
-         	  If Abs(y-nnboeingy(j))<200 Then'remove collide
+        	  If Abs(x-nnboeingx(j))<300 Then
+         	  If Abs(y-nnboeingy(j))<300 Then'remove collide
          	  	  nboeingid0(j)=""
                  nnboeingid(j)=""
                  irepeatboeing(j)=99
@@ -518,13 +518,19 @@ Sub drawnboeing()
 	'If nboeingy>my+dmax Then Exit Sub 
    Var dist=max(Abs(nboeingx-mx),Abs(nboeingy-my))
    If dist>dmax Then Exit Sub 
-   If nboeingv>500 Then  
+   If nboeingv>100 Then  
     Var dist1=max(Abs(nboeingz-mz),dist)
-  	 If (itime Mod 3)=0 And nboeingmodel<>"cessna" Then
+  	 If (itime Mod 4)=0 And nboeingmodel<>"cessna" Then
   		'auxvar=dist1:auxtest=0.2
-      Var kvol=990.0/max(990.0,dist1)
-      kvol=max(2.0,998*kvol*kvol)
-      nboeingkvol=max(nboeingkvol,kvol)
+      If nboeingmodel="fokker" Then
+         Var kvol=990.0/max(990.0,dist1)
+         kvol=max(2.0,998*kvol*kvol)
+      	nfokkerkvol=max(nfokkerkvol,kvol)
+      Else 
+         Var kvol=990.0/max(990.0,dist1)
+         kvol=max(2.0,998*kvol*kvol)
+      	nboeingkvol=max(nboeingkvol,kvol)
+      EndIf
   		'mcisendstring("setaudio boeing volume to "+str(Int(kvol)),0,0,0)
   	 EndIf
    EndIf 	

@@ -321,6 +321,8 @@ Sub initsounds
    mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias metal",0,0,0)
    soundfic="sounds/jet4.mp3"
    mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias boeing",0,0,0)
+   soundfic="sounds/avion4.mp3"
+   mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias fokker",0,0,0)
    soundfic="sounds/aube5jour.mp3"
    mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias aube",0,0,0)
 End Sub 
@@ -375,6 +377,7 @@ Sub closesounds
 	mcisendstring("close seagull",0,0,0)
 	mcisendstring("close metal",0,0,0)
 	mcisendstring("close boeing",0,0,0)
+	mcisendstring("close fokker",0,0,0)
 	mcisendstring("close aube",0,0,0)
 	mcisendstring("close all",0,0,0)
 End Sub 
@@ -443,6 +446,7 @@ Sub setsoundvol
 	mcisendstring("setaudio seagull volume to "+Str(Int(0.7*vol)),0,0,0)
 	mcisendstring("setaudio metal volume to "+Str(Int(0.33*vol)),0,0,0)
 	mcisendstring("setaudio boeing volume to "+str(2),0,0,0)
+	mcisendstring("setaudio fokker volume to "+str(2),0,0,0)
 End Sub 
 Dim Shared As Integer oceansound,arcadesound,yunasound
 Sub soundyuna	
@@ -743,6 +747,10 @@ End Sub
 Sub soundboeing
    mcisendstring("play boeing from 0 repeat",0,0,0)
 End Sub
+Sub soundfokker
+   mcisendstring("set fokker speed 1080",0,0,0)
+   mcisendstring("play fokker from 0 repeat",0,0,0)
+End Sub
 Dim Shared As Double tsoundvoyage1,tsoundvoyage2,tsounddebby,tsoundvoyage,tsoundanne,tsoundsomeone,tsounddebbylong
 Dim Shared As Double tsoundvoyage3,tsoundnearness,tsoundjunk,tsoundgrantorino,tsoundmagic,tsoundaube
 Dim Shared As Integer ivoyage
@@ -986,6 +994,7 @@ initsounds
 setsoundvol
 soundyuna'arcade
 soundboeing
+soundfokker
 myTTSinit()
 
 Declare Function getterrainheight(ByVal x As Single,ByVal y As Single) As Single
@@ -13074,7 +13083,7 @@ Dim Shared As Single boeingo1,boeingo2,boeingo3,boeingx0,boeingy0,boeingtx,boein
 Dim Shared As Single boeingco1,boeingsi1,boeingzsol,boeingdz3000=3000
 Dim Shared As Single nboeingo1,nboeingo2,nboeingo3,nboeingx0,nboeingy0,nboeingtx,nboeingty,nboeingx2
 Dim Shared As Single nboeingco1,nboeingsi1,nboeingzsol,nboeingdz3000=3000,nboeingx,nboeingy,nboeingz,nboeingalt
-Dim Shared As Single nboeingkvol,nboeingv
+Dim Shared As Single nboeingkvol,nboeingv,nfokkerkvol
 Dim Shared As Double timeboeing,timeboeing0,timeboeing10
 Dim Shared As Integer tcopyboeing
 Dim Shared As String nboeingmodel
@@ -13114,13 +13123,16 @@ Sub drawboeing()
    EndIf
    Var dist=max(Abs(boeingx-mx),Abs(boeingy-my))
    Var dist1=max(Abs(boeingz-mz),dist)
-  	If (itime Mod 3)=0 Then
+  	If (itime Mod 4)=0 Then
   		'auxvar=dist1:auxtest=0.2
       Var kvol=990.0/max(990.0,dist1)
       kvol=max(2.0,998*kvol*kvol)
       kvol=max(nboeingkvol,kvol)
       nboeingkvol=0
   		mcisendstring("setaudio boeing volume to "+str(Int(kvol)),0,0,0)
+      kvol=max(nfokkerkvol,2.2)
+      nfokkerkvol=0
+  		mcisendstring("setaudio fokker volume to "+str(Int(kvol)),0,0,0)
   	EndIf
    If Abs(boeingtx)+Abs(boeingty)>0.001 Then
    		Var dxx=(boeingtx-boeingx)*boeingco1+(boeingty-boeingy)*boeingsi1
