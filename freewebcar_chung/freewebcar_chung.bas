@@ -12550,7 +12550,7 @@ If md2node->md2model<>0 Then
    EndIf   
 EndIf 
 End Sub
-Dim Shared As uint ngrass=500,distgrass=500
+Dim Shared As uint ngrass=500,distgrass=500,grasslist
 Dim Shared As Single grassx(ngrass),grassy(ngrass),grassz(ngrass),grassrot(ngrass),grassrot0(ngrass)
 Dim Shared As Single grassscalex(ngrass),grassscalez(ngrass),grasstype(ngrass),grasstx(ngrass)
 Dim Shared As Single grasswind,grasswindo1,grassscalez2(ngrass)
@@ -12620,7 +12620,7 @@ x1=x*0.5:x0=0-x1
        glrotatef(-grasswind,0,1,0)
      EndIf
      glscalef(grassscalex(i),grassscalex(i),grassscalez2(i)) 
-	  tx=grasstx(i)
+	/'  tx=grasstx(i)
 	glbegin(gl_quads)
 	glTexCoord2f(tx,0)
 	glvertex3f(0,x0,0)
@@ -12630,7 +12630,8 @@ x1=x*0.5:x0=0-x1
 	glvertex3f(0,x1,y)
 	gltexcoord2f(tx,1)
 	glvertex3f(0,x0,y)
-	glend()
+	glend()'/
+	  glcalllist(grasslist)
      glpopmatrix
   EndIf
  EndIf  
@@ -19844,7 +19845,8 @@ Dim As Integer ix,iy
 Dim As Single aux
 	'distgrass=500
    If grasstext(1)=0 Then 	
-    For i=1 To 2
+    grasstext(1)=guiloadtexture("objects/grassobj.jpg",120)
+    For i=2 To 2
    	grasstext(i)=guiloadtexture("media/grass"+Str(i)+".gif",200)
     Next
    EndIf  
@@ -19855,7 +19857,7 @@ Dim As Single aux
      grassz(i)=getterrainheight(grassx(i),grassy(i))
      grassrot(i)=Rnd*180 
      grassscalex(i)=1+Rnd*0.15
-     grassscalez(i)=1+Rnd*0.3
+     grassscalez(i)=(1+Rnd*0.3)*1.15'1.25
      grasstx(i)=rnd
      grassrot0(i)=grassrot(i)		
      ix=Int(grassx(i)/scalex+10000)-10000

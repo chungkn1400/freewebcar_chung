@@ -248,6 +248,11 @@ glnewlist airporttowerlist,gl_compile
 load3dssize("objects/airport_tower.3ds",@"",@"",100)
 glendlist 
 
+grasslist=glgenlists(1)
+glnewlist grasslist,gl_compile 
+load3dssize("objects/grassobj.3ds",@"",@"",20)
+glendlist 
+
 webtext=guiloadtexture("media/road.jpg")
 roadtext=guiloadtexture("media/road.jpg",200,255)
 tunneltext=guiloadtexture("media/tunnel.jpg")
