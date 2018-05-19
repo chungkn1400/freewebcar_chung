@@ -9065,7 +9065,7 @@ If tautopilot>=1 And time2>timeautopilot+3 And plane>0 And car>0 Then'And scalev
     	'If (Int(Timer/40)Mod 2)>=0 Then k25=-55
     	'volantrots(0)=-25*(2+ncarco1(0)*ncarcos100+ncarsi1(0)*ncarsin100)
       volantrots(0)=-k25*(2+ncarco1(0)*(ncarcos100+0.25*ncarsin100)+ncarsi1(0)*(ncarsin100-0.25*ncarcos100))
-      If (Int((Timer-timerrot)/40)Mod 3)=0 Then volantrots(0)=-volantrots(0)
+      'If (Int((Timer-timerrot)/40)Mod 3)=0 Then volantrots(0)=-volantrots(0)
       If timer>timerrot+80 Then timerrot=timer+Int(Rnd*2)*40
     EndIf 
     volantrots0+=(volantrots(0)-volantrots0)*min(1.0,0.2*kfps)
@@ -12571,6 +12571,7 @@ x1=x*0.5:x0=0-x1
     Else
     	grasswind=(1-min(0.8,0.15*kfps))*grasswind+1e-10
     EndIf
+    glcolor4f(0.5,1,0.5,1)
     For i=1 To ngrass
      changegrass=tupdategrass	
      While grassx(i)<mx-distgrass :grassx(i)+=distgrass*2:changegrass=1:Wend 
@@ -12636,6 +12637,7 @@ x1=x*0.5:x0=0-x1
   EndIf
  EndIf  
     Next i 
+    glcolor4f(1,1,1,1)
 End Sub
 Sub drawhelice0
 	  glnormal3f(-1,0,0)
@@ -15230,11 +15232,15 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     	kcos1=max(kcos1,-100.0)
     	mx-=kcos1*cos1:my-=kcos1*sin1
     	distback=min(40.0,distback+10)
-    ElseIf plane>0 And car>0 Then 
-    	If kcos1<v*kfps*0.5 And v>1 Then
+    ElseIf plane>0 And car>0 And tautopilot>0 Then 
+    	If  ncariroad(0)>0 Then 
+    	 If kcos1<v*kfps*0.5 And v>1 Then
     	   mx+=0.5*kfps*cos1:my+=0.5*kfps*sin1
+    	 EndIf 	
+       distback=max(0.0,distback-0.2*kfps)
+    	Else
+       distback=min(200.0,distback+10)
     	EndIf 	
-      distback=max(0.0,distback-kfps)	
     EndIf
     If plane=0 Or car=0 Then
     	ncarx(0)=mx:ncary(0)=my
