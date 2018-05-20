@@ -2541,6 +2541,7 @@ icc=Asc(cc):iccc=Asc(ccc)
 		EndIf
 		If j<=0 Then Exit For 
 	Next
+	If j>0 Then Return ""
 	ztext2[i2]=0
 	'wword=ztext2
 Return ztext2'wword
@@ -7387,8 +7388,9 @@ For i=1 To inearroad
 	 EndIf
 	EndIf 
 	r=rnearroad(i)
-	Var r0=r
 	If r<9.1 Then Continue For 'rail
+	r+=15
+	Var r0=r
 	r+=ddr	
 	dr=drnearroad(i)+ddr
 	dx=x-xnearroad(i)
@@ -7691,7 +7693,7 @@ For i=-100 To 612
 		tsetterrain(i,j)=0
 	Next
 Next
-taglcompile20=2
+taglcompile20=1
 End Sub
 Dim Shared As Single distrunway4000
 Sub drawroadnode(ij As Integer,i As Integer)
