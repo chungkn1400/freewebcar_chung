@@ -7789,6 +7789,7 @@ EndIf
 Var id=townwaynodeid(ij,i)
 dx=x-xx:dy=y-yy
 dr=max(0.0001,Sqr(dx*dx+dy*dy))
+Var sizei=dr
 Var d7000=dr*0.5+7000
 Var distxy7000=max(Abs((xx+x)*0.5-dmx0-mx),Abs((yy+y)*0.5-dmy0-my))
 If distxy7000<d7000 Then 
@@ -8544,6 +8545,42 @@ EndIf
            EndIf 	
      EndIf  
    EndIf
+   If testmygltexquad>=0 And trail=0 And layer=0 Then 
+     If trunway=1 And sizei>200 And (r>7*30 Or Len(townwayname(ij,i))>=1) And((j=2 And jj=2)Or(j=n And jj=di-2)) Then
+       	Var do1=townwaynodeo1(ij,i,j)
+       	If do1>990 Then
+       		do1=diro1(co1,si1):townwaynodeo1(ij,i,j)=do1
+       	EndIf
+      	glpushmatrix
+   	   Var px=px0+si1*0.435
+   	   Var py=py0-co1*0.435
+         Var dist=Abs(z0-mz)+0.5*max(Abs(px-mx),Abs(py-my))
+   	   gltranslatef(px,py,max((z0+zz0),(z1+zz1))*0.5+(9000+dist*90)/(4000+dist))
+   	   glrotatef(do1+180,0,0,1)
+   	   glrotatef(-90,0,1,0)
+   	   glcolor4f(1,1,0,1)
+         drawbuildtext=nathalietext
+         'glColorMask(GL_true, GL_true, GL_FALSE, GL_true)
+         Var wayname=UCase(townwayname(ij,i))
+         If Len(wayname)>=2 Then
+   	      gldrawtext3D(Left(wayname,1),r*0.7)
+   	      gltranslatef(0,r*0.8,0)
+   	      gldrawtext3D(Mid(wayname,2,1),r*0.7)
+         ElseIf Len(wayname)>=1 Then
+   	      gldrawtext3D(Left(wayname,1),r*0.7)
+   	      gltranslatef(0,r*0.8,0)
+   	      gldrawtext3D(Mid(wayname,1,1),r*0.7)
+         Else 
+      	   gldrawtext3D("N",r*0.7)
+      	   gltranslatef(0,r*0.8,0)
+   	      gldrawtext3D("C",r*0.7)
+         EndIf
+   	   'gltexsphere(30) 
+         'glColorMask(GL_true, GL_true, GL_true, GL_true)
+   	   glcolor4f(1,1,1,1)
+   	   glpopmatrix 
+     EndIf
+   EndIf   
    If testmygltexquad=1 And trail=0 And layer=0 Then 
      If taddspot=1 And j>1 And j<max2(n,3) And (jj Mod 7)=2 Then
        	Var do1=townwaynodeo1(ij,i,j)

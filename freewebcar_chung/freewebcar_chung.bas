@@ -19434,7 +19434,7 @@ var dr0=0.32'(Abs(dx)+Abs(dy))*0.25'0.5
 'Var xsi0=0.436,xco0=0.9
 Var xsi1=xsi11,xco1=xco11
 If trunway=1 Then d100=0'dr0=0
-If testrunway=1 Then d100=0:t4=12
+If testrunway=1 Then d100=0:t4=12+9999
 If dx<=(1.0-dy) Then 
      h=max(hwaterz,( dx*(z10-z00) +dy*(z01-z00) +z00))
   'If tsetterrain(i,j)<=t4 Then tsetterrain(i,j)+=1:terrain(i,j)=z00+(h-z00)*(Abs(dx*xsi1-dy*xco1)/max(0.01,Abs(dx)+Abs(dy)))'*d100/max(d10,Abs(dx)+Abs(dy))
