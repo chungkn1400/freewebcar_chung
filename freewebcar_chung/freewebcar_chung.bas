@@ -1471,8 +1471,8 @@ ElseIf testwater=1 And (testsea2=1 Or testwater2=1) Then
 'ElseIf mapautotext=webtext And planet=0 Then
 '	glcolor3f(1,1,1):Exit sub
 ElseIf webtext>0 And planet=0 Then
-	glcolor4f(r1,r1,r1,0):Exit sub
-	'glcolor4f(0,0,0,0):Exit sub
+	'glcolor4f(r1,r1,r1,0):Exit sub
+	glcolor4f(0.95,1,0.95,0):Exit sub
 EndIf
 'If (mapautotext<>maptexture4 Or hsnowij<hsnow) Then
 '	glcolor3fv(color3fv)
@@ -22546,7 +22546,7 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    	   else
    	   	loadwebtextzoom(0)
    	   EndIf
-   ElseIf testweb=1 And tinittown=0 And httpon<>1 And tloadwebtext2=0 And _   
+   ElseIf testweb=1 And (tinittown=0 Or Timer>tloadwebtext+t10+0.2) And httpon<>1 And tloadwebtext2=0 And _   
       ((mz-mzsol0)<100 Or Abs(sin3)<0.60) Then '<0.67
       timeinit=max(timeinit,time2-120)
    	tloadmapdisplay=0

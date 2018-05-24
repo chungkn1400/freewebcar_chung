@@ -736,6 +736,7 @@ Sub loadwebtext(ByVal userdata As Any Ptr)
 	Dim As Integer zoom1=zoom
 	If x960>2000 Then zoom1=zoom-1
 	'If testscale=1 Then zoom1+=1
+	zoom1+=1
    worldmx0=pointx0*(2^zoom1)
    worldmy0=pointy0*(2^zoom1)
    mapautoix=535+worldx+(xweb1)*aux*535
@@ -12133,7 +12134,7 @@ Sub inittown22(ByVal userdata As Any Ptr)
 	t11=2
 	tloadwebtext2=0
 	tloadwebtext=0
-	If t11>1 Then tloadwebtext=max(tloadwebtext,Timer-t10)
+	If t11>1 Then tloadwebtext=max(tloadwebtext,Timer-t10-0.5)
 End Sub
 Sub inittown222(ByVal userdata As Any Ptr)
 	tcancel=1
@@ -12150,7 +12151,7 @@ Sub inittown222(ByVal userdata As Any Ptr)
 	If tloadwebtext2=200 Or tquitweb=1 Or toverpasserror>0 Then tloadwebtext2=0
 	tquitweb=0
 	t11=2'0
-	If t11>1 Then tloadwebtext=max(tloadwebtext,Timer-t10)
+	If t11>1 Then tloadwebtext=max(tloadwebtext,Timer-t10-0.5)
 End Sub 
 Sub inittown223(ByVal userdata As Any Ptr)
 	tcancel=0
