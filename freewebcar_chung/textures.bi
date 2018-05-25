@@ -737,7 +737,7 @@ Sub loadwebtext(ByVal userdata As Any Ptr)
 	Dim As Integer zoom1=zoom
 	If x960>2000 Then zoom1=zoom-1
 	'If testscale=1 Then zoom1+=1
-	zoom1+=1
+	'zoom1+=1
    worldmx0=pointx0*(2^zoom1)
    worldmy0=pointy0*(2^zoom1)
    mapautoix=535+worldx+(xweb1)*aux*535
@@ -1939,8 +1939,8 @@ For i=1 To bmpwebx
 		ij=(i-1)*bmpweby+j
 		bmpwebbits1024[jx]=bmpwebbits[ij]
 	Next
-Next
-If testnew=1 Or Timer<timeinit+14 Then 
+Next 
+If 1 Then'testnew=1 Or Timer<timeinit+14 Then 
 	'Var ret=gluBuild2DMipmaps(GL_TEXTURE_2D, 4, bmpwebx,bmpweby, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits )
 	Var ret=gluBuild2DMipmaps(GL_TEXTURE_2D, 4, 1024,1024, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits1024 )
    'drawtexture(webtext)
@@ -1953,10 +1953,10 @@ Else
 	glcolor4f(1,1,1,1)
    'glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_linear)
    'glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_linear)'NEAREST)'nomipmap
-   'glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
+   glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
 	gldrawpixels(1024,512, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits1024 )
    glcopyTexSubImage2D(GL_TEXTURE_2D, 0, 1,1, 1,1,1024,512)   
-   'glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
+   glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
 	gldrawpixels(1024,512, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits1024+(1024*512) )
    glcopyTexSubImage2D(GL_TEXTURE_2D, 0, 1,512, 1,1,1024,512)
 	'guirefreshopenGL()

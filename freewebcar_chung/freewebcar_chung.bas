@@ -21345,6 +21345,13 @@ ElseIf FileExists(ExePath+"/woman/girl2.jpg") Then
 	auxtest=auxtest0
 	'auxtest0=0
 EndIf
+If auxtest<0.11 Then 
+ If Timer<timehelp+120 Then
+	timehelp=0
+ Else
+	timehelp=timer
+ EndIf
+EndIf  
 Dim As String msg,resp,cr=Chr(13)+Chr(10)
 msg="F1 => help   /  escape => quit"+cr
 msg+="F9 => window/fullscreen / P => pause/autopilot(car)"+cr
@@ -21381,7 +21388,6 @@ msg+="ctrl+shift => walk (foot mode)  / H => horse / Z => climb"+cr
 msg+="key 9 => heightmap / Q,D 1,2 or space arrow => turn left/right"+cr
 msg+="joystick and gamepad supported" 
 confirm(msg,"help",resp)
-timehelp=Timer
 thelp=0 
 End Sub
 Sub drawhelp
