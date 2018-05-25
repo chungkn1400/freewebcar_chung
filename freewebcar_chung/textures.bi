@@ -1942,7 +1942,10 @@ For i=1 To bmpwebx
 Next 
 If 1 Then'testnew=1 Or Timer<timeinit+14 Then 
 	'Var ret=gluBuild2DMipmaps(GL_TEXTURE_2D, 4, bmpwebx,bmpweby, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits )
-	Var ret=gluBuild2DMipmaps(GL_TEXTURE_2D, 4, 1024,1024, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits1024 )
+	'Var ret=gluBuild2DMipmaps(GL_TEXTURE_2D, 4, 1024,1024, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits1024 )
+   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_linear)
+   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_linear)'NEAREST)'nomipmap
+   glTexImage2D(GL_texture_2d,0,4, 1024,1024, 0,gl_bgra,GL_UNSIGNED_BYTE, bmpwebbits1024)
    'drawtexture(webtext)
    'guirefreshopenGL()
    'guinotice "ok2"   
