@@ -520,10 +520,11 @@ path="/maps/api/staticmap?center="+Str(lat)+","+Str(lng)+"&zoom="+Str(zoom)+"&sc
 'Dim Shared As Integer tloadwebtext2=0
 Dim Shared As hbitmap hbmpweb,hbmpwebzoom
 Dim Shared As hdc bmpwebdc,bmpwebzoomdc
-Dim Shared As Any Ptr bmpwebbits,bmpwebzoombits
+Dim Shared As uint Ptr bmpwebbits,bmpwebzoombits,bmpwebbits1024
 Dim Shared As uint bmpwebx=1,bmpweby=1
 ReDim Shared As uint webpicbits(1 To bmpwebx*bmpweby)
 ReDim Shared As uint webpicbits0(1 To bmpwebx*bmpweby)
+Dim Shared As uint webpicbits1024(1 To 1024*1024)
 Dim Shared As uint bmpwebzoomx=1,bmpwebzoomy=1
 ReDim Shared As uint webzoompicbits(1 To bmpwebx*bmpweby)
 'Dim Shared As Single xweb1=-99999999,yweb1
@@ -1902,15 +1903,22 @@ tloadwebtext=Timer+1
 End Sub 
 Sub loadwebtext2()
 Dim As uint itexture
+Dim As Integer i,j,k,ij
+Dim As Single ix,jx
 'If webtext>0 Then
    'deletedc(bmpwebdc)
    'deleteobject(hbmpweb)
 '	Exit Sub
 'EndIf
+   'drawtexture(webtext)
+   'guirefreshopenGL()
+   'guinotice "ok2"   
 getlockterrainbmp()
+Var testnew=0
 If webtext=0 Then
 	glGenTextures(1, @itexture)
 	webtext=itexture
+	testnew=1
 EndIf
 'guinotice("texture="+Str(itexture),"ok")
 glEnable GL_TEXTURE_2D 
@@ -1922,8 +1930,52 @@ glbindtexture0(GL_TEXTURE_2D, webtext)'itexture)
 '   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_linear)
 '   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_linear)'NEAREST)'nomipmap
 '   glTexImage2D(GL_texture_2d,0,4, bmpwebx,bmpweby, 0,gl_bgra,GL_UNSIGNED_BYTE, bmpwebbits)
-'Else 
-Var ret=gluBuild2DMipmaps(GL_TEXTURE_2D, 4, bmpwebx,bmpweby, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits )
+'Else
+bmpwebbits1024=@bmpwebbits1024 
+For i=1 To bmpwebx
+	ix=Int(1024*(i-1)/bmpwebx)*1024
+	For j=1 To bmpweby
+		jx=Int(1024*(j-1)/bmpweby)+ix+1.1
+		ij=(i-1)*bmpweby+j
+		bmpwebbits1024[jx]=bmpwebbits[ij]
+	Next
+Next
+If testnew=1 Or Timer<timeinit+14 Then 
+	'Var ret=gluBuild2DMipmaps(GL_TEXTURE_2D, 4, bmpwebx,bmpweby, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits )
+	Var ret=gluBuild2DMipmaps(GL_TEXTURE_2D, 4, 1024,1024, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits1024 )
+   'drawtexture(webtext)
+   'guirefreshopenGL()
+   'guinotice "ok2"   
+Else 
+	gldisable gl_lighting
+	gldisable gl_blend
+	gldisable gl_depth_test
+	glcolor4f(1,1,1,1)
+   'glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_linear)
+   'glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_linear)'NEAREST)'nomipmap
+   'glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
+	gldrawpixels(1024,512, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits1024 )
+   glcopyTexSubImage2D(GL_TEXTURE_2D, 0, 0,0, 0,0,1024,512)   
+   'glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
+	gldrawpixels(1024,512, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits1024+(1024*512) )
+   glcopyTexSubImage2D(GL_TEXTURE_2D, 0, 0,512, 0,0,1024,512)
+	'guirefreshopenGL()
+	'guinotice "ok"
+   'drawtexture(webtext)
+   'guirefreshopenGL()
+   glenable gl_depth_test
+   'guinotice "ok2"   
+/'Else 
+	auxtest=0.2:auxvar+=1
+	'gldrawpixels(bmpwebx,bmpweby, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits )
+   'gltexparameteri(gl_texture_2d,GL_GENERATE_MIPMAP,gl_true)
+   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_linear)
+   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_linear)'NEAREST)'nomipmap
+   'glcopyTexImage2D(GL_TEXTURE_2D, 0, gl_rgba,0,0,bmpx,bmpy, 0)   
+   'glcopyTexSubImage2D(GL_TEXTURE_2D, 0, 0,0, 0,0,bmpwebx,bmpweby)   
+	Var ret=gluBuild2DMipmaps(GL_TEXTURE_2D, 4, bmpwebx,bmpweby, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits )
+   '/
+EndIf 
 'EndIf 
 'gluBuild2DMipmaps(GL_TEXTURE_2D, 4, bmpwebx,bmpweby, GL_BGRA ,GL_UNSIGNED_BYTE ,bmpwebbits )
 'gluBuild2DMipmaps(GL_TEXTURE_2D, 4, bmpx,bmpy, GL_BGRA ,GL_UNSIGNED_byte ,@(picbits(1)) ) 
