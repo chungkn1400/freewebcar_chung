@@ -22334,12 +22334,14 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    	tloadwebtext=0
    	If worldname="world" Then zoom=13
    EndIf
+   Var zoom0=zoom
    Var kdz=1.0
    If plane>0 And car=0 Then
    	kdz=0.75
    	If tgoogle=1 Then kdz=0.5
    EndIf
-   If tbing=1 Then kdz*=0.65
+   kdz*=2
+   'If tbing=1 Then kdz*=0.65
    If 0 Then'(mz-mzsol0)<100 and v<5 Then
    	dxx=1800:dyy=1800
    	If zoom<>16 And webtext>0 And Timer>tloadwebtext+t10 Then
@@ -22378,6 +22380,7 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    		zoom=11
    	EndIf
    EndIf
+   If Abs(zoom-zoom0)>0.1 Then testweb=1
    'zoom=11
    'dxweb=100000:dyweb=100000
    'webtext=towntext
