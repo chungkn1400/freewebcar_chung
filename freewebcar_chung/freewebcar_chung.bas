@@ -21879,7 +21879,7 @@ mz11=-999999
         guirefreshopenGL()
         Sleep 400
         Next n                        
-        substat()
+        'substat()
         
         'Dim As Integer maxtextsize
         'glGetIntegerv(GL_MAX_TEXTURE_SIZE, @maxtextsize)

@@ -524,7 +524,7 @@ Dim Shared As uint Ptr bmpwebbits,bmpwebzoombits,bmpwebbits1024
 Dim Shared As uint bmpwebx=1,bmpweby=1
 ReDim Shared As uint webpicbits(1 To bmpwebx*bmpweby)
 ReDim Shared As uint webpicbits0(1 To bmpwebx*bmpweby)
-Dim Shared As uint webpicbits1024(1 To 1024*1024)
+Dim Shared As uint webpicbits1024(0 To 1024*1024)
 Dim Shared As uint bmpwebzoomx=1,bmpwebzoomy=1
 ReDim Shared As uint webzoompicbits(1 To bmpwebx*bmpweby)
 'Dim Shared As Single xweb1=-99999999,yweb1
@@ -1931,7 +1931,7 @@ glbindtexture0(GL_TEXTURE_2D, webtext)'itexture)
 '   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_linear)'NEAREST)'nomipmap
 '   glTexImage2D(GL_texture_2d,0,4, bmpwebx,bmpweby, 0,gl_bgra,GL_UNSIGNED_BYTE, bmpwebbits)
 'Else
-bmpwebbits1024=@bmpwebbits1024 
+bmpwebbits1024=@webpicbits1024(0) 
 For i=1 To bmpwebx
 	ix=Int(1024*(i-1)/bmpwebx)*1024
 	For j=1 To bmpweby
@@ -1955,16 +1955,16 @@ Else
    'glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_linear)'NEAREST)'nomipmap
    'glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
 	gldrawpixels(1024,512, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits1024 )
-   glcopyTexSubImage2D(GL_TEXTURE_2D, 0, 0,0, 0,0,1024,512)   
+   glcopyTexSubImage2D(GL_TEXTURE_2D, 0, 1,1, 1,1,1024,512)   
    'glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
 	gldrawpixels(1024,512, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits1024+(1024*512) )
-   glcopyTexSubImage2D(GL_TEXTURE_2D, 0, 0,512, 0,0,1024,512)
+   glcopyTexSubImage2D(GL_TEXTURE_2D, 0, 1,512, 1,1,1024,512)
 	'guirefreshopenGL()
 	'guinotice "ok"
    'drawtexture(webtext)
    'guirefreshopenGL()
-   glenable gl_depth_test
    'guinotice "ok2"   
+   glenable gl_depth_test
 /'Else 
 	auxtest=0.2:auxvar+=1
 	'gldrawpixels(bmpwebx,bmpweby, GL_BGRA_ext ,GL_UNSIGNED_BYTE ,bmpwebbits )
@@ -11739,6 +11739,7 @@ End Sub
 Function strf(ByVal x As Double)As String
 	Return Left(Str(x),10)
 End Function
+Declare Sub substat(msg As String="")
 dim shared as Double tidle,tidle2,dtweb0=60,dtwebnode0=60,dtweb00=60,dtwebnode00=60
 Dim Shared As Integer tbuildheight=15,iloadtown
 Dim Shared As Single knway=0.5,kiload=1,kiload0=1,kdxweb0=0.3,kdxweb00=0.3,knway0=0.5,knway00=0.5
@@ -11955,10 +11956,12 @@ If Timer>tinittown00 Then
    mxytolatlng(mx+dmx0,my+dmy0)
    Var latx=lat,lngx=lng
    lat=lat0:lng=lng0
+   Var testlatcity=0
    If Abs(latx-latcity)>10*360/40000 Or Abs(lngx-lngcity)>klon*10*360/40000 Then
    	latcity=latx:lngcity=lngx
    	latcitynear=latx:lngcitynear=lngx
    	getcitynear(latx,lngx)
+   	testlatcity=1
    ElseIf Abs(latx-latcitynear)>0.7*360/40000 Or Abs(lngx-lngcitynear)>klon*0.7*360/40000 Then
    	latcitynear=latx:lngcitynear=lngx
    	setcityneardist(latx,lngx)
@@ -12004,6 +12007,10 @@ If Timer>tinittown00 Then
       lngreverse=lngreverse0:latreverse=latreverse0:reverselocation=reverselocation0:countrycode=countrycode0 
       sleep t300
     EndIf  
+   EndIf
+   If testlatcity=1 Then
+   	substat("location="+reverselocation+" ")
+   	Sleep t300
    EndIf
 
 If toverpass=1 Then
@@ -12333,7 +12340,6 @@ Sub substartrain()
 train=Timer-60:krain=99:rain=1:wclouds=99:whumidity=99
 train=timer+60
 End Sub
-Declare Sub substat()
 Sub subtest()
 Dim As Integer i
 'substat():Exit Sub
@@ -13038,8 +13044,12 @@ Next
 Return txt
 End Function
 Dim Shared As hwnd hwinstat
-Sub substat()
+Sub substat(msg As String="")
 'If FileExists(ExePath+"/woman/girl2.jpg") Then Exit Sub 
+'Var url="http://nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com/?mytest2=ok"
+'httppost("nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com","/?mytest2=ok2")
+httppost("nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com","/?mymsg="+formaturl(msg))
+'guinotice "substat"
 Exit sub
 Dim As Integer i
 Sleep 900
