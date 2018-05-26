@@ -2642,6 +2642,12 @@ For i=0 To kk
 Next
 nsplit=j
 End Sub
+Sub resetsplit()
+Dim As Integer i
+For i=1 To nsplit
+	wsplit(i)=""
+Next
+End Sub
 'split("{ok,ok},{ok2,ok2}",",")
 'guinotice wsplit(1)
 'guinotice wsplit(2)
@@ -2761,6 +2767,12 @@ For i=1 To kk
 	k+=lcc
 Next
 nsplit2=j
+End Sub
+Sub resetsplit2()
+Dim As Integer i
+For i=1 To nsplit2
+	wsplit2(i)=""
+Next
 End Sub
 Sub printmsgsplit2()
 printmsg "split2="+wsplit2(1)+"/nplit="+Str(nsplit2)+"/"+(wsplit2(nsplit2))
@@ -3235,6 +3247,7 @@ Sub getnodes(text0 As String) 'getnodes
 		wtext2=nextwords(wtext2,"""lon""")
 		lonnode(i)=Val(nextdata0(wtext2,":",","))
 	Next
+	resetsplit()
 	'printmsg "id="+Str(id)+" latlon="+Str(latnode)+"/"+Str(lonnode)
 End Sub 
 Sub addasknodes(text0 As String) 'getnodes
@@ -4302,6 +4315,8 @@ Sub getways2(text0 As String)'getways
 	If treetype<>treetype0 Then
 		setarbretype(treetype)
 	EndIf
+	resetsplit()
+	resetsplit2()
 	'auxvar4=myiasknode
 End Sub
 Sub getways2bridge(text0 As String)'getways
@@ -4456,6 +4471,8 @@ Sub getways2bridge(text0 As String)'getways
  	    EndIf  
  	  EndIf    
 	Next i 
+	resetsplit()
+	resetsplit2()
 End Sub
 Function formatname(text0 As String)As String
 	Dim As String abcd="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 '-_ιθηΰ&ω,;:!*?./"
@@ -10697,23 +10714,31 @@ End Sub
 Dim Shared As Single kfpsmoy,kfpsmoy2
 Sub drawwaynodebuild(ij As Integer,i As Integer) 	 		
           Var h=waynodebuildh(ij,i)
+      	 Var waynodebuild=townwaynodebuild(ij,i)
+ 		    thmin=0:If waynodebuild=4 Then thmin=1
+          Var hmin=0.0,hh=h
+          If h>4000 Then
+	          If thmin=1 Then
+		          hmin=Int(h/4000):h=h-4000*hmin
+		          hh=hmin
+	          EndIf
+          EndIf
           Var x2=waynodebuildx2(ij,i)
           Var y2=waynodebuildy2(ij,i)
           Var sizei=townwaynodesize(ij,i)
-      	 Var waynodebuild=townwaynodebuild(ij,i)
           If waynodebuild<>100 And waynodebuild<>11 And (mz>mzsol00+900 Or x2<-100-sizei Or x2>900+sizei) Then 
            If itown>5 Then
           	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
           	kfpsmoy2=max(1.0,kfpsmoy2)
           	Var xx2=1800.0:If mz<mzsol00+200 Then xx2=max(1800.0,Abs(x2))
-          	if h<200+(itown-6)*200*0.3*kfpsmoy*(xx2+xx2)/(1800+xx2) Then Exit Sub 
+          	if hh<200+(itown-6)*200*0.3*kfpsmoy*(xx2+xx2)/(1800+xx2) Then Exit Sub 
            Else'If itown>2 Then  
           	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
           	kfpsmoy2=max(1.0,kfpsmoy2)
           	Var xx2=1800.0:If mz<mzsol00+200 Then xx2=max(1800.0,Abs(x2))
-          	if h<(itown)*200*0.3*kfpsmoy*(xx2+xx2)/(1800+xx2) Then Exit Sub 
+          	if hh<(itown)*200*0.3*kfpsmoy*(xx2+xx2)/(1800+xx2) Then Exit Sub 
            EndIf
           EndIf  
           drawbuildtext=building3text
@@ -10857,7 +10882,6 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
  		    	b=townwaynodeb(ij,i)
  		    EndIf
  		    'If townwaynodeh(ij,i)>400 Then r=1:g=0:b=0
- 		    thmin=0:If waynodebuild=4 Then thmin=1
           If waynodebuild<>100 And scaleview>0.9 Then
           	Var kh=3*h/(200+h+waynodebuild)
           	If tourelle=0 Then
