@@ -8988,7 +8988,7 @@ For i=i1 To ncar
    ncaro1(i)+=do1*kx
    ncarz(i)=getterrainheight(ncarx(i),ncary(i))
   EndIf'scaleview      
-   If ncariroad(i)=0 And ncarz(i)<waterz-5 Then Continue For
+   If ncariroad(i)=0 And ncarz(i)<waterz-2.5 Then Continue For
    If i=0 Then Continue For
    
    rotavion(ncarx(i)-mx-dmx0,ncary(i)-my-dmy0,ncarz(i)-mz)
@@ -22345,7 +22345,7 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    Var kdz=1.0
    If plane>0 And car=0 Then
    	kdz=0.75
-   	If tgoogle=1 Then kdz=0.5
+   	'If tgoogle=1 Then kdz=0.5
    EndIf
    kdz*=2.5
    'If tbing=1 Then kdz*=0.65

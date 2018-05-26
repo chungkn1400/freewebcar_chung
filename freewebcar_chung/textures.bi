@@ -1206,6 +1206,7 @@ EndIf
   argb2=a+(r Shl 16)+(g Shl 8)+(b)
   r=128+32:g=128+16:b=0 
   argb3=a+(r Shl 16)+(g Shl 8)+(b)
+  If tbing=1 Or 1 Then argb3=argb
   If testroaddx<bmpwebx Or testroaddy<bmpweby Then 
     guinotice "testroaddx error ! "+Str(bmpwebx)+" "+Str(bmpweby)
     'Fl_ImageDelete(bmp)
