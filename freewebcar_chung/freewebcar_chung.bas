@@ -454,7 +454,7 @@ If yunasound=1 Then Exit Sub
    yunasound=1
    'mcisendstring("set yuna time format ms",0,0,0)
    'mcisendstring("set yuna speed 850",0,0,0)
-   mcisendstring("play yuna from 0 repeat",0,0,0)
+   If tradio<>1 Then mcisendstring("play yuna from 0 repeat",0,0,0)
 End Sub
 Sub stopsoundyuna
 	If yunasound=0 Then Exit Sub 
@@ -473,7 +473,7 @@ If Timer<timeinit+10 Then Exit Sub
      mcisendstring("set arcade time format ms",0,0,0)
      mcisendstring("set arcade speed 850",0,0,0)
    EndIf 
-   mcisendstring("play arcade from 0 repeat",0,0,0)
+   If tradio<>1 Then mcisendstring("play arcade from 0 repeat",0,0,0)
 End Sub
 Sub stopsoundarcade
 	If arcadesound=0 Then Exit Sub 
@@ -13735,10 +13735,18 @@ If Timer>(tbullet+0.07) Or Timer<(tbullet-99) Then
 	nbullet=max2(0,min2(nbulletmax,30*(vie0*0.48-vie)/vie0))
 EndIf
 End Sub
+Dim Shared As String treetype
 Dim Shared As Single treeheight=2
 Sub setarbreh(ByVal i As Integer)
-arbreh(i)=1.85+(Int((Abs(arbrex(i))+Abs(arbrey(i)))/5)And 3)*0.1
-If arbreh(i)>2.12 Then arbreh(i)*=2.4'sequoia
+Var itest=(Abs(arbrex(i))+Abs(arbrey(i)))
+arbreh(i)=1.85+(Int(itest/5) And 3)*0.1'1.85-2.15
+If treetype="broad" Then
+   If arbreh(i)>2.12 And (Int(itest) Mod 6)>=4 Then arbreh(i)*=2.4'sequoia
+ElseIf treetype="mixed" Then
+   If arbreh(i)>2.12 And (Int(itest) Mod 6)>=3 Then arbreh(i)*=2.4'sequoia
+Else
+   If arbreh(i)>2.12 Then arbreh(i)*=2.4'sequoia
+EndIf 
 Exit Sub 
 Dim As Integer ix,iy,jx,jy,ix0,iy0
      If arbrez(i)<=waterz Then Exit Sub 
@@ -14419,7 +14427,6 @@ shadowtreeo3(i)=diro1(30*dxyshadow,z2-z0)
 shadowtreez0(i)=z0
 shadowtreez1(i)=z1
 End Sub
-Dim Shared As String treetype
 Dim Shared As Integer tupdatearbres(narbre),tbusharbre(narbre)
 Sub drawarbres()
 Dim As Integer i,j,k
@@ -22306,7 +22313,7 @@ mz11=-999999
                'glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
             	'guirefreshopenGL()
             EndIf 
-           	If timer<timeinit+12 And mzinit>-999990 Then
+           	If timer<timeinit+14 And mzinit>-99999 Then
             		mz=mzinit:mz1=mz:piste=1:piste0=1
             		zroof=mzinit:timeroof=Timer
            	Else
