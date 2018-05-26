@@ -22347,9 +22347,9 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    	kdz=0.75
    	If tgoogle=1 Then kdz=0.5
    EndIf
-   kdz*=2
+   kdz*=2.5
    'If tbing=1 Then kdz*=0.65
-   If 0 Then'(mz-mzsol0)<100 And v<5 Then
+   If (mz-mzsol00)<200*kdz And v<4 Then
    	dxx=1800:dyy=1800
    	If zoom<>16 And webtext>0 And Timer>tloadwebtext+t10 Then
    		test=1
@@ -22388,6 +22388,7 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    	EndIf
    EndIf
    If Abs(zoom-zoom0)>0.1 Then testweb=1
+   'auxvar=zoom:auxtest=0.2
    'zoom=11
    'dxweb=100000:dyweb=100000
    'webtext=towntext

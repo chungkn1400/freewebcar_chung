@@ -3608,7 +3608,7 @@ Sub getways2(text0 As String)'getways
 	 		Else
 	 			testterminal=1
 	 		EndIf
-	 	Else
+	 	ElseIf waytype(i)<>"aerodrome" Then  
 	 		trunway=1
 	 	Endif
 	 	wtext4=nextwords(wtext1,"""name"":")
@@ -10573,7 +10573,7 @@ Dim As Integer i,j,k,n,p
  		  EndIf 	  
  		  If troad=1 Then 'road
  		     n=Abs(towniwaynode(ij,i))
- 		     Var xx=x,yy=y,dk=1
+		     Var xx=x,yy=y,dk=1
  		     For j=2 To n
  		      xx=x:yy=y
  		      x=townwaynodex(ij,i,j)-dmx0
