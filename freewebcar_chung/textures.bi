@@ -4090,9 +4090,12 @@ Sub getways2(text0 As String)'getways
             Continue For
 	      EndIf
 	   EndIf
+       'If Str(wayid)="265932618" Then auxtest=0.2:auxvar5=wayheightmin(i)+0.1
 	    'If InStr(LCase(wayname(i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
 	    If waytype(i)="terminal" Then wayheight(i)=max(100.0,wayheight(i))
-	    If test2=1 Then wayheightmin(i)=min(500.0,wayheightmin(i))
+	    If test2=1 Then wayheightmin(i)=max(50.0,min(wayheight(i)-50.0,wayheightmin(i)))
+	    wayheight(i)=pack(wayheight(i))
+	    wayheightmin(i)=pack(wayheightmin(i))
 	    If test=1  And wayheight(i)>50 Then
 	  	   waytheight(i)=1':If wayheight(i)<1 Then wayheight(i)=2000:nerr+=1000000:EndIf  
 	    ElseIf test2=1 Then
@@ -6025,6 +6028,7 @@ EndIf
 avgbuildh+=h:navgbuildh+=1
 Var h0=setbuildh(h)
 'If InStr(townwayname(ij,i)," Henri")>0 Then auxvar+=0:h0=3000:auxtest=0.8:auxtext=townwayname(ij,i)
+'If townwaynodeid(ij,i)=265932618 Then h0=4990
 h=h0'*scalexyh
 hmin=setbuildh(hmin)
 n=Abs(towniwaynode(ij,i))
@@ -6215,6 +6219,13 @@ EndIf
  EndIf
  Var dr=1.0
  'If Str(townwaynodeid(ij,i))="79152373" Then auxtest=0.8:auxvar5=i40
+'If Str(townwaynodeid(ij,i))="265932618" Then
+'	auxvar+=1:auxtest=0.2:auxvar2=h0
+'	glpushmatrix
+'	gltranslatef(x,y,townwaynodez(ij,i)+1900)
+'	gltexsphere(420)
+'	glpopmatrix
+'EndIf
  For j=2 To n
 
 
@@ -6453,8 +6464,8 @@ EndIf
  Var dxy=max(xmax-xmin,ymax-ymin)
  If dxy<300 Then
  	'If h>dxy*1.75 Then townwaynodeh(ij,i)=dxy*1.75+4000*Int(hmin+0.5)
- 	If h>dxy*7 Then townwaynodeh(ij,i)=dxy*7+4000*Int(hmin+0.5)
- EndIf
+ 	If (h-hmin)>dxy*18 Then townwaynodeh(ij,i)=pack(dxy*18+hmin)+4000*pack(Int(hmin+0.5))
+ EndIf 
 If testmygltexquad=1 And h0>46 Then  
  Var dz=max(0.0,z),troof=1,h200=200.0
  If itown>5 Then h200=350
@@ -6862,7 +6873,7 @@ EndIf
  Var dxy=max(xmax-xmin,ymax-ymin)
  If dxy<300 Then
  	'If h>dxy*1.75 Then townwaynodeh(ij,i)=dxy*1.75+4000*Int(hmin+0.5)
- 	If h>dxy*7 Then townwaynodeh(ij,i)=dxy*7+4000*Int(hmin+0.5)
+ 	If (h-hmin)>dxy*18 Then townwaynodeh(ij,i)=pack(dxy*18+hmin)+4000*pack(Int(hmin+0.5))
  EndIf
 If testmygltexquad=1 And h0>46 Then  
  Var dz=max(0.0,z),troof=1,h200=200.0
@@ -7205,7 +7216,7 @@ EndIf
  Var dxy=max(xmax-xmin,ymax-ymin)
  If dxy<300 Then
  	'If h>dxy*1.75 Then townwaynodeh(ij,i)=dxy*1.75+4000*Int(hmin+0.5)
- 	If h>dxy*7 Then townwaynodeh(ij,i)=dxy*7+4000*Int(hmin+0.5)
+ 	If (h-hmin)>dxy*18 Then townwaynodeh(ij,i)=pack(dxy*18+hmin)+4000*pack(Int(hmin+0.5))
  EndIf
 If testmygltexquad=1 And h0>46 Then  
  Var dz=max(0.0,z),troof=1
@@ -10456,8 +10467,8 @@ Dim As Integer i,j,k,n,p
         '	  EndIf
         'EndIf
         Var hh=townwaynodeh(ij,i)
-        If hh>4000 And waynodebuild=4 Then
-        	  Var hmin=Int(hh/4000):hh-=4000*hmin
+        If hh>4000 And waynodebuild<>100 Then'and waynodebuild=4
+        	  Var hmin=Int(hh/4000):hh=unpack(hh-4000*hmin)':hmin=unpack(hmin)
         EndIf
         If waynodebuild<>100 Then 
          Var hhh=0.0
@@ -10543,7 +10554,7 @@ Dim As Integer i,j,k,n,p
  		  	  sizei=(xxmax-xmin+yymax-ymin)*0.7
 	  	     Var sizei40=getsizei40(ij,i)
  		  	  If sizei40>(sizei+sizei+sizei)Then sizei40=599999
- 		  	  sizei=max(sizei,sizei40)  
+ 		  	  sizei=max(sizei,sizei40)+hh  
  		  	  townwaynodesize(ij,i)=sizei
  		  	  townwaynodesize40(ij,i)=1
            'If InStr(townwayname(ij,i),"ge Henri")>0 Then auxvar2=sizei+0.1:auxtest=0.8
@@ -10586,7 +10597,7 @@ Dim As Integer i,j,k,n,p
         'If InStr(townwayname(ij,i)," Henri")>0 And troad=0 Then auxvar+=1:auxtest=0.8
  		  'If x2>(0.9*Abs(y2)-(kxx+sizei+sizei)) And troad=0 Then
  		  Var sizeii=sizei*cos2*0.7+kxx*0.1'kxx*0.1'+sizei':If mz>mzsol00+100 Then sizeii+=hh
- 		  If x2>(0.9*(Abs(y2)+Abs(z2))-(sizeii)) And troad=0 Then
+ 		  If x2>(0.9*(Abs(y2)+Abs(z2))-(sizeii)-hh) And troad=0 Then
  		  	  test=1
  		  EndIf 	  
  		  If troad=1 Then 'road
@@ -10717,12 +10728,12 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
       	 Var waynodebuild=townwaynodebuild(ij,i)
  		    thmin=0:If waynodebuild=4 Then thmin=1
           Var hmin=0.0,hh=h
-          If h>4000 Then
-	          If thmin=1 Then
-		          hmin=Int(h/4000):h=h-4000*hmin
-		          hh=hmin
-	          EndIf
-          EndIf
+          'If h>4000 Then
+	       '   If thmin=1 Then
+		    '      hmin=Int(h/4000):h=h-4000*hmin
+		    '      hh=setbuildh(h)
+	       '   EndIf
+          'EndIf
           Var x2=waynodebuildx2(ij,i)
           Var y2=waynodebuildy2(ij,i)
           Var sizei=townwaynodesize(ij,i)
@@ -10898,6 +10909,7 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           		EndIf
           	EndIf
           EndIf
+          'If Str(townwaynodeid(ij,i))="265932618" Then auxvar+=1000:auxtest=0.2:auxvar5=hh
           'If InStr(townwayname(ij,i)," Henri")>0 Then auxvar+=1:auxtest=0.8
  		   If tcompiledummy=0 Or waynodebuild=100 Then 
  		    If waynodebuild=100 Then

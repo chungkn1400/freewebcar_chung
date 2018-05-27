@@ -4157,7 +4157,18 @@ If tnight1=1 Then
 EndIf
 End Sub
 Dim Shared As uint drawbuildtext,churchtext
-Function setbuildh(h0 As Single) As Single
+Function pack(h0 As Single)As Integer  
+	If h0<3900 Then Return Int(h0)
+	Return Int(min(3990.0,3900+h0*100/(3900+h0)))
+End Function
+Function unpack(h As Single)As Integer
+	If h<3900 Then Return Int(h)
+	If h>3990 Then Return Int(h)
+	Return Int((h-3900)*3900/(100-(h-3900)))
+End Function
+'guinotice Str(unpack(pack(3901)))
+'guinotice Str(pack(3901))
+Function setbuildh0(h0 As Single) As Single
 	Var iitown=itown,h=h0
 	If h<1.0 Then Return h
    If drawbuildtext=churchtext Then h=max(220.0,h)
@@ -4183,6 +4194,9 @@ Function setbuildh(h0 As Single) As Single
 	hhh=min(hh,hhh)
 	Var kh=(h-h80)/(hh-h80)
 	Return hhh*(1-kh)+kh*h 
+End Function
+Function setbuildh(h0 As Single) As Single
+	Return setbuildh0(unpack(h0))
 End Function
 Sub drawbuilding1(ByVal h As Single,x As Single=200,y As Single=200,vie As Single=1,dist As Single=1,r As Single=-1,g As Single=0,b As Single=0)
 Dim As Single z,z1,tx,ty,z0
@@ -14008,7 +14022,7 @@ If teststenciltop<xmax*0.02 Then teststenciltop=0
 auxvar6=teststenciltop+0.1:auxtest=0.8
 End Sub
 Dim Shared As Double timepiste,timercollide,timelayeroff,timeroof
-Dim Shared As Single zroof
+Dim Shared As Single zroof=-999999
 Sub testcollideforward()
 'tpiste=piste
 If (tlayer0)<-0.4 Then exit Sub
@@ -22314,7 +22328,7 @@ mz11=-999999
             	'guirefreshopenGL()
             EndIf 
            	If timer<timeinit+14 And mzinit>-99999 Then
-            		mz=mzinit:mz1=mz:piste=1:piste0=1
+            		mz=mzinit:mz1=mz:piste=1:piste0=1:mz0=mz
             		zroof=mzinit:timeroof=Timer
            	Else
             		mzinit=-999999
