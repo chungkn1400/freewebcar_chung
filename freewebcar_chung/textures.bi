@@ -6030,7 +6030,8 @@ Var h0=setbuildh(h)
 'If InStr(townwayname(ij,i)," Henri")>0 Then auxvar+=0:h0=3000:auxtest=0.8:auxtext=townwayname(ij,i)
 'If townwaynodeid(ij,i)=265932618 Then h0=4990
 h=h0'*scalexyh
-hmin=setbuildh(hmin)
+Var hmin0=setbuildh(hmin)
+hmin=min(500.0,hmin0)
 n=Abs(towniwaynode(ij,i))
 If n<2 Then Exit Sub
 If (Int(i+time2) Mod 10)=1 Then
@@ -6464,7 +6465,7 @@ EndIf
  Var dxy=max(xmax-xmin,ymax-ymin)
  If dxy<300 Then
  	'If h>dxy*1.75 Then townwaynodeh(ij,i)=dxy*1.75+4000*Int(hmin+0.5)
- 	If (h-hmin)>dxy*18 Then townwaynodeh(ij,i)=pack(dxy*18+hmin)+4000*pack(Int(hmin+0.5))
+ 	If (h-hmin0)>dxy*18 Then townwaynodeh(ij,i)=pack(dxy*18+hmin0)+4000*pack(Int(hmin0+0.5))
  EndIf 
 If testmygltexquad=1 And h0>46 Then  
  Var dz=max(0.0,z),troof=1,h200=200.0
@@ -6591,7 +6592,8 @@ EndIf
 avgbuildh+=h:navgbuildh+=1
 Var h0=setbuildh(h)
 h=h0'*scalexyh
-hmin=setbuildh(hmin)
+Var hmin0=setbuildh(hmin)
+hmin=min(500.0,hmin0)
 'n=Abs(towniwaynode(ij,i))
 Var i40=0
 If kmxlat>10 Then i40=towni40(ij,i)
@@ -6873,7 +6875,7 @@ EndIf
  Var dxy=max(xmax-xmin,ymax-ymin)
  If dxy<300 Then
  	'If h>dxy*1.75 Then townwaynodeh(ij,i)=dxy*1.75+4000*Int(hmin+0.5)
- 	If (h-hmin)>dxy*18 Then townwaynodeh(ij,i)=pack(dxy*18+hmin)+4000*pack(Int(hmin+0.5))
+ 	If (h-hmin0)>dxy*18 Then townwaynodeh(ij,i)=pack(dxy*18+hmin0)+4000*pack(Int(hmin0+0.5))
  EndIf
 If testmygltexquad=1 And h0>46 Then  
  Var dz=max(0.0,z),troof=1,h200=200.0
@@ -6984,7 +6986,8 @@ If h>4000 Then
 EndIf
 Var h0=setbuildh(h)
 h=h0'*scalexyh
-hmin=setbuildh(hmin)
+Var hmin0=setbuildh(hmin)
+hmin=min(500.0,hmin0)
 n=Abs(towniwaynode(ij,i))
 If n<=4 Then
 	di=1.001
@@ -7216,7 +7219,7 @@ EndIf
  Var dxy=max(xmax-xmin,ymax-ymin)
  If dxy<300 Then
  	'If h>dxy*1.75 Then townwaynodeh(ij,i)=dxy*1.75+4000*Int(hmin+0.5)
- 	If (h-hmin)>dxy*18 Then townwaynodeh(ij,i)=pack(dxy*18+hmin)+4000*pack(Int(hmin+0.5))
+ 	If (h-hmin0)>dxy*18 Then townwaynodeh(ij,i)=pack(dxy*18+hmin0)+4000*pack(Int(hmin0+0.5))
  EndIf
 If testmygltexquad=1 And h0>46 Then  
  Var dz=max(0.0,z),troof=1
@@ -10727,7 +10730,7 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           Var h=waynodebuildh(ij,i)
       	 Var waynodebuild=townwaynodebuild(ij,i)
  		    thmin=0:If waynodebuild=4 Then thmin=1
-          Var hmin=0.0,hh=h
+          Var hmin=0.0,hh=h*0.7*(h*0.25+280)/(h+280)
           'If h>4000 Then
 	       '   If thmin=1 Then
 		    '      hmin=Int(h/4000):h=h-4000*hmin
