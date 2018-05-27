@@ -4093,7 +4093,7 @@ Sub getways2(text0 As String)'getways
        'If Str(wayid)="265932618" Then auxtest=0.2:auxvar5=wayheightmin(i)+0.1
 	    'If InStr(LCase(wayname(i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
 	    If waytype(i)="terminal" Then wayheight(i)=max(100.0,wayheight(i))
-	    If test2=1 Then wayheightmin(i)=max(50.0,min(wayheight(i)-50.0,wayheightmin(i)))
+	    If test2=1 Then wayheightmin(i)=max(50.0,min(wayheight(i)-1,wayheightmin(i)))
 	    wayheight(i)=pack(wayheight(i))
 	    wayheightmin(i)=pack(wayheightmin(i))
 	    If test=1  And wayheight(i)>50 Then
@@ -6465,7 +6465,11 @@ EndIf
  Var dxy=max(xmax-xmin,ymax-ymin)
  If dxy<300 Then
  	'If h>dxy*1.75 Then townwaynodeh(ij,i)=dxy*1.75+4000*Int(hmin+0.5)
- 	If (h-hmin0)>dxy*18 Then townwaynodeh(ij,i)=pack(dxy*18+hmin0)+4000*pack(Int(hmin0+0.5))
+ 	If hmin0>h*0.5 Then
+ 		If (h-hmin0)>dxy*18 Then townwaynodeh(ij,i)=pack(dxy*18+hmin0-1)+4000*pack(Int(hmin0+0.5))
+ 	Else 
+ 		If (h-hmin0)>dxy*5 Then townwaynodeh(ij,i)=pack(dxy*5+hmin0-1)+4000*pack(Int(hmin0+0.5))
+ 	EndIf
  EndIf 
 If testmygltexquad=1 And h0>46 Then  
  Var dz=max(0.0,z),troof=1,h200=200.0
@@ -6875,7 +6879,11 @@ EndIf
  Var dxy=max(xmax-xmin,ymax-ymin)
  If dxy<300 Then
  	'If h>dxy*1.75 Then townwaynodeh(ij,i)=dxy*1.75+4000*Int(hmin+0.5)
- 	If (h-hmin0)>dxy*18 Then townwaynodeh(ij,i)=pack(dxy*18+hmin0)+4000*pack(Int(hmin0+0.5))
+ 	If hmin0>h*0.5 Then
+ 		If (h-hmin0)>dxy*18 Then townwaynodeh(ij,i)=pack(dxy*18+hmin0-1)+4000*pack(Int(hmin0+0.5))
+ 	Else 
+ 		If (h-hmin0)>dxy*5 Then townwaynodeh(ij,i)=pack(dxy*5+hmin0-1)+4000*pack(Int(hmin0+0.5))
+ 	EndIf
  EndIf
 If testmygltexquad=1 And h0>46 Then  
  Var dz=max(0.0,z),troof=1,h200=200.0
@@ -7219,7 +7227,11 @@ EndIf
  Var dxy=max(xmax-xmin,ymax-ymin)
  If dxy<300 Then
  	'If h>dxy*1.75 Then townwaynodeh(ij,i)=dxy*1.75+4000*Int(hmin+0.5)
- 	If (h-hmin0)>dxy*18 Then townwaynodeh(ij,i)=pack(dxy*18+hmin0)+4000*pack(Int(hmin0+0.5))
+ 	If hmin0>h*0.5 Then
+ 		If (h-hmin0)>dxy*18 Then townwaynodeh(ij,i)=pack(dxy*18+hmin0-1)+4000*pack(Int(hmin0+0.5))
+ 	Else 
+ 		If (h-hmin0)>dxy*5 Then townwaynodeh(ij,i)=pack(dxy*5+hmin0-1)+4000*pack(Int(hmin0+0.5))
+ 	EndIf
  EndIf
 If testmygltexquad=1 And h0>46 Then  
  Var dz=max(0.0,z),troof=1

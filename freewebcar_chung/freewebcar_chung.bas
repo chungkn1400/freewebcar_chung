@@ -1472,7 +1472,7 @@ ElseIf testwater=1 And (testsea2=1 Or testwater2=1) Then
 '	glcolor3f(1,1,1):Exit sub
 ElseIf webtext>0 And planet=0 Then
 	'glcolor4f(r1,r1,r1,0):Exit sub
-	glcolor4f(0.95,1,0.95,0):Exit sub
+	glcolor4f(0.97,1,0.97,0):Exit sub
 EndIf
 'If (mapautotext<>maptexture4 Or hsnowij<hsnow) Then
 '	glcolor3fv(color3fv)
@@ -5607,8 +5607,9 @@ If taglcompile20=1 Then
 EndIf
 If taglcompile2=1 Then
 	tcompile=1
-	If taglcompile20=0 Then 
-      glnewlist agllist,gl_compile'_and_execute
+	If taglcompile20=0 Then
+		tcompile=2
+      glnewlist agllist,gl_compile_and_execute
 	Else
 		taglcompile20=0
       glnewlist agllist2,gl_compile
@@ -5737,7 +5738,7 @@ EndIf 'tagl
 If taglcompile2=1 Or tcompile>0 Then
 	glendlist()
 EndIf 
-If agllist<>0 Then'And taglcompile2<>1 Then
+If agllist<>0 And tcompile<>2 Then'taglcompile2<>1 Then
 	glcalllist(agllist)    
 EndIf
 
