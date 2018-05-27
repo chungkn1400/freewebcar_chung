@@ -22363,7 +22363,7 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    EndIf
    kdz*=2.5
    'If tbing=1 Then kdz*=0.65
-   If (mz-mzsol00)<200*kdz And v<4 Then
+   If 0 Then'(mz-mzsol00)<200*kdz And plane=0 Then'v<4 Then
    	dxx=1800:dyy=1800
    	If zoom<>16 And webtext>0 And Timer>tloadwebtext+t10 Then
    		test=1
