@@ -1506,8 +1506,8 @@ If topview<=2 Then
  If mapautotext=snowtext Then 	
 	gltexcoord2f(tx*4,ty*4)
  ElseIf (mapautotext=webtext And planet=0) Or testsea=0 Then
-	x=(tx*texscale-256)*scalex+dmx0
-	y=(ty*texscale-256)*scalex+dmy0
+	x=(tx*texscale-256.0)*scalex'+dmx0
+	y=(ty*texscale-256.0)*scalex'+dmy0
 	If Abs(x-mx)>15000 Then
 		testwater2=1
 	ElseIf Abs(y-my)>15000 Then
@@ -1520,7 +1520,7 @@ If topview<=2 Then
 	'y=(ty*texscale-256-0.665)*scalex+dmy0
 	Var k06=kxweb,k66=1-k06-k06
 	'Var tyy=k06+k66*(y-yweb+dyweb-512)*0.5/dyweb
-	Var tyy=0.5+k66*(y-yweb-256)*0.5/dyweb
+	Var tyy=0.5+k66*(y-yweb-256.0)*0.5/dyweb
 	'Var tyy0=0.5+k66*(-dyweb-256)*0.5/dyweb
 	'Var dtyy=tyy-Int(tyy)
 	Var dtyy=k66*(y-yweb+dyweb)*0.5/dyweb
@@ -1534,7 +1534,7 @@ If topview<=2 Then
 		   tyy=1-k06-(dtyy-1+k06)*0.2
 	EndIf
 	'Var txx=max(-1,min(2.0,k06+k66*(x-xweb+dxweb-256)*0.5/dxweb))
-	Var txx=0.5+k66*(x-xweb-256)*0.5/dxweb
+	Var txx=0.5+k66*(x-xweb-256.0)*0.5/dxweb
 	'Var dtxx=txx-Int(txx)
 	Var dtxx=k66*(x-xweb+dxweb)*0.5/dxweb
 	If dtxx<k06 Then
@@ -1546,7 +1546,7 @@ If topview<=2 Then
 		'txx=max(0,1-k06-(dtxx-1+k06))
 		txx=1-k06-(dtxx-1+k06)*0.2
 	EndIf
-	gltexcoord2f(txx,tyy)
+	gltexcoord2f(txx+0.005,tyy+0.005)
 	'Var tyy=0.06+0.94*(y-yweb+dyweb)*0.48/dyweb
 	'If (tyy-Int(tyy))<0.06 Then tyy+=0.94
 	'gltexcoord2f((x-xweb+dxweb)*0.48/dxweb,tyy)
