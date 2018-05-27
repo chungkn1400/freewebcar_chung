@@ -10468,7 +10468,7 @@ Dim As Integer i,j,k,n,p
         '	  If testnearairport(x,y,18000)=1 Then
         '	  	  'kdistterrain=kdistterrainsave*5
         '	  EndIf
-        'EndIf
+        'EndIf 
         Var hh=townwaynodeh(ij,i)
         If hh>4000 And waynodebuild<>100 Then'and waynodebuild=4
         	  Var hmin=Int(hh/4000):hh=unpack(hh-4000*hmin)':hmin=unpack(hmin)
@@ -10730,7 +10730,11 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           Var h=waynodebuildh(ij,i)
       	 Var waynodebuild=townwaynodebuild(ij,i)
  		    thmin=0:If waynodebuild=4 Then thmin=1
-          Var hmin=0.0,hh=h*0.7*(h*0.25+280)/(h+280)
+          Var hmin=0.0,hh=h'hh=h*0.7*(h*0.25+280)/(h+280)
+          If thmin=1 Then
+          	If mz<mzsol00+500.0 Then hh=min(500.0,hh)
+          EndIf
+          hh=hh*0.7*(hh*0.25+280)/(hh+280)
           'If h>4000 Then
 	       '   If thmin=1 Then
 		    '      hmin=Int(h/4000):h=h-4000*hmin
