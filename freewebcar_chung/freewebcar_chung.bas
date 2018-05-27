@@ -14442,6 +14442,7 @@ shadowtreeo3(i)=diro1(30*dxyshadow,z2-z0)
 shadowtreez0(i)=z0
 shadowtreez1(i)=z1
 End Sub
+Declare Function testmaproadwater(x As Single,y As Single)As Integer
 Dim Shared As Integer tupdatearbres(narbre),tbusharbre(narbre)
 Sub drawarbres()
 Dim As Integer i,j,k
@@ -14485,6 +14486,8 @@ Dim As Integer i,j,k
      	  	  	  arbrez(i)=-99999
      	  	  EndIf
      	  ElseIf changearbre=2 And arbrez(i)<-900000 Then
+     	  	  arbrez(i)=-999999
+     	  ElseIf testmaproadwater(arbrex(i),arbrey(i))>0 Then   
      	  	  arbrez(i)=-999999
      	  Else
      	  	Var testroadtree=gettestroadtree(arbrex(i)+dmx0,arbrey(i)+dmy0)
@@ -14612,6 +14615,8 @@ Dim As Integer i,j,k
         'If testairport(buissonx(i),buissony(i),1000,110)=0 Then
      	  If gettestroadtree(buissonx(i)+dmx0,buissony(i)+dmy0)>=1 Then
      	  	  buissonz(i)=-99999
+     	  ElseIf testmaproadwater(buissonx(i),buissony(i))>0 Then   
+     	  	  buissonz(i)=-999999
      	  ElseIf gettestnearroad(buissonx(i)+dmx0,buissony(i)+dmy0)=0 Then
      	     buissonz(i)=getterrainheight(buissonx(i),buissony(i))
      	  Else

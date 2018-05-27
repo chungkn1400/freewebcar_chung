@@ -1239,14 +1239,14 @@ EndIf
     testroadb(iroad,jroad)=b
     If r>240 And g>240 And b>240 Then
     	webpicbits(i)=argb Or (webpicbits(i) And argb2)
-    	testroad(iroad,jroad)=1
+    	testroad(iroad,jroad)=1'road
     ElseIf r>225 And Abs(g-234)<30 And Abs(b-165)<30 Then
     	webpicbits(i)=argb3 Or (webpicbits(i) And argb2)
-    	testroad(iroad,jroad)=2
-    ElseIf b>r*1.2 And b>1.1*g Then'water 
-    	testroad(iroad,jroad)=3
+    	testroad(iroad,jroad)=2'mainroad
+    ElseIf b>r*1.2 And b>1.1*g Then
+    	testroad(iroad,jroad)=3'water 
     Else
-    	testroad(iroad,jroad)=0
+    	testroad(iroad,jroad)=0'land
     EndIf
   Next
   testroadxweb=xweb1
@@ -1376,7 +1376,7 @@ guierror=0
 	
 End Sub
 Function gettestroad(x As Single,y As Single)As Integer
-Dim As Integer i,j,k
+Dim As Integer i,j,k  '0 land, 1 road, 2 mainroad, 3 water 
 If ttestroad=0 Then Return 0 
 	Var k06=kxweb,k66=1-k06-k06
 	'Var tyy=k06+k66*(y-yweb+dyweb-512)*0.5/dyweb
@@ -1434,6 +1434,12 @@ If ttestroad=0 Then Return 0
 i=testtreedx*max(0.00001,min(0.9999,txx))
 j=testtreedy*max(0.00001,min(0.9999,1-tyy))
 Return testtree(i Shr 1,j Shr 1)
+End Function
+Function testmaproadwater(x As Single,y As Single)As Integer
+	Var i=gettestroad(x,y)
+	If i=1 Or i=2 Then Return 1'road
+	If i=3 Then Return 2'water
+	Return 0
 End Function
 Declare Sub loadwebtextzoom2()
 Dim Shared As Single dxwebzoom1=10000,dywebzoom1=10000
