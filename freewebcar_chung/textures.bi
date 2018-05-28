@@ -812,14 +812,16 @@ Var iretry=9
 retry1:
 If tbing=1 Then
  'http://dev.virtualearth.net/REST/v1/Imagery/Map/aerial/47.619048,-122.35384/15?mapSize=500,500&key=%20Aq0npnXsrnwL9eY3rCUQsJZJJedr8Za9hIH-XsWnppaizf92DYjKS1syE9K3HqVr	
+ 'http://dev.virtualearth.net/REST/v1/Imagery/Map/road/47.619048,-122.35384/15?st=me|lv:0&mapSize=500,500&key=%20Aq0npnXsrnwL9eY3rCUQsJZJJedr8Za9hIH-XsWnppaizf92DYjKS1syE9K3HqVr	
+ 'labelVisible=0=> &st=me|lv:0&
  Var hostname="dev.virtualearth.net"
  'Var apikeybing="&key=%20Aq0npnXsrnwL9eY3rCUQsJZJJedr8Za9hIH-XsWnppaizf92DYjKS1syE9K3HqVr"
  Var msize=Int(scale*size)
  'path="/REST/v1/Imagery/Map/aerial/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=png"
  If 1 Then'plane=0 Or car>0 Then
- 	path="/REST/v1/Imagery/Map/Aerial/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1+1)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg"
+ 	path="/REST/v1/Imagery/Map/Aerial/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1+1)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg&st=me|lv:0"
  Else 
-   path="/REST/v1/Imagery/Map/Aerial/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1+2)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg"
+   path="/REST/v1/Imagery/Map/Aerial/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1+2)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg&st=me|lv:0"
  EndIf 
  If googleerror=0 Then 
 	webidata=httppost(hostname,path+apikeybing)
@@ -1080,9 +1082,9 @@ If tbing=1 Then
  Var msize=Int(scale*size)
  'path="/REST/v1/Imagery/Map/aerial/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=png"
  If 1 Then'plane=0 Or car>0 Then
- 	path="/REST/v1/Imagery/Map/Road/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1+1)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg"
+ 	path="/REST/v1/Imagery/Map/Road/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1+1)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg&st=me|lv:0"
  Else 
-   path="/REST/v1/Imagery/Map/Road/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1+2)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg"
+   path="/REST/v1/Imagery/Map/Road/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1+2)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg&st=me|lv:0"
  EndIf 
  If googleerror=0 Then 
 	webidata=httppost(hostname,path+apikeybing)
@@ -1735,9 +1737,9 @@ If tbing=1 Then
  Var msize=Int(scale*size)
  'path="/REST/v1/Imagery/Map/aerial/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=png"
  If 1 Then'plane=0 Or car>0 Then
- 	path="/REST/v1/Imagery/Map/Road/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1-3)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg"
+ 	path="/REST/v1/Imagery/Map/Road/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1-3)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg&st=me|lv:0"
  Else 
-   path="/REST/v1/Imagery/Map/Road/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1-2)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg"
+   path="/REST/v1/Imagery/Map/Road/"+Str(lat)+","+Str(lng)+"/"+Str(zoom1-2)+"?mapSize="+Str(msize)+","+Str(msize)+"&format=jpeg&st=me|lv:0"
  EndIf 
  If googleerror=0 Then 
 	webidata=httppost(hostname,path+apikeybing)
