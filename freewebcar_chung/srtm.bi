@@ -269,10 +269,14 @@ Dim As Integer i,j,k,ii,jj
 	Next ii  
 	if(jj<0) Then return -0.5
 	testhsrtm=1    
-	var nny=0.00001+599.999*(lngx-srtmlngi(jj)+2.5)/5 
-	var nnx=0.00001+599.999*(laty-srtmlati(jj)+2.5)/5 
-	nnx=599.5-nnx 
+	'var nny=0.00001+599.999*(lngx-srtmlngi(jj)+2.5)/5 
+	'var nnx=0.00001+599.999*(laty-srtmlati(jj)+2.5)/5 
+	var nny=0.00001+599.9999*(lngx-srtmlngi(jj)+2.5)/5 
+	var nnx=0.00001+599.9999*(laty-srtmlati(jj)+2.5)/5 
+	nnx=599.5-nnx
 	nny-=0.5 
+	'nnx=599.99991-nnx-0.5 
+	'nny-=0.5 
 	'if(nnx>=600) then nnx=600-1   
 	'if(nny>=600) then nny=600-1   
 	if(nnx<0.00001) then nnx=0.00001   
