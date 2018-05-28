@@ -711,11 +711,14 @@ Dim Shared As Single do22,do33
 Sub move
 If avion="ballon" Then
 	o3=max(-30.0,min(30.0,o3))
-	o2=max(-27.0,min(18.0,o2))
+	o2=max(-47.0,min(28.0,o2))
 	vmz3=0
 	mz1+=max(0.0,(v+prop*0.0003)*sin2*1.3*kfps)
 	If o3>15 Then o1+=kfps*(o3-15)*0.0085
 	If o3<-15 Then o1+=kfps*(o3+15)*0.0085
+	If guitestkey(vk_left) Or guitestkey(vk_right) Then
+		If o2>0 Then o2=max(0.0,o2-kfps)
+	EndIf
 EndIf
 If avion="copter" Then
 	vmz3=0

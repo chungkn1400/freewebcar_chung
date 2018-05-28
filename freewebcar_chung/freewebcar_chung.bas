@@ -7287,7 +7287,7 @@ EndIf
 'glenable GL_DEPTH_TEST
 glColorMask(GL_truE, GL_truE, GL_truE, GL_truE)
 End Sub
-Dim Shared As Single volantrots0,handrot
+Dim Shared As Single volantrots0,handrot,volantdo1,volantrotdo1,volantrotall,volantmx,volantmy
 Dim Shared As Integer thand
 Sub drawvolant
  gldisable gl_depth_test	
@@ -7305,7 +7305,15 @@ Sub drawvolant
  If handrot>-990 and thand=1 Then volantrot=handrot:volantrots0=0
  If volantrot>120 Then volantrot=120
  If volantrot<-120 Then volantrot=-120
- glrotatef(volantrot+volantrots0,0,0,1)
+ Var do1=4*((o1-volantdo1)+(mx-volantmx)*sin1-(my-volantmy)*cos1)/(0.01+kfps)
+ If do1<-180 Then do1+=360
+ If do1>180 Then do1-=360
+ volantrotdo1=max(-80.0,min(80.0,volantrotdo1+(do1-volantrotdo1)*min(0.9,0.15*kfps)))
+ volantdo1=o1
+ volantmx=mx:volantmy=my
+ do1=(volantrot+volantrots0+volantrotdo1-volantrotall)*min(0.9,0.15*kfps)
+ volantrotall=max(-120.0,min(120.0,volantrotall+do1))
+ glrotatef(volantrotall,0,0,1)
  If tautopilot>0 Or typeautopilot=1 Or Abs(volantrot)<19*kfps Then
  	volantrot=0.75*volantrot+1e-10
  Else
@@ -8891,7 +8899,7 @@ For i=i1 To ncar
     Var dxx=ncarco1(i)*co1+ncarsi1(i)*si1
     'auxvar=inear0road:auxtest=0.2
     If i=0 And inear0road>20 Then timenear0road=time2
-    If i=0 And time2>timenear0road+20 Then
+    If i=0 And time2>timenear0road+20 And mzsol00>300*scalez Then
     	 Var cco1=Cos(avgo1*degtorad),ssi1=Sin(avgo1*degtorad) 
     	 Var dxxx=cco1*cos1+ssi1*sin1
     	 Var avgo10=avgo1,kavgo10=kavgo1 
@@ -9319,7 +9327,16 @@ Sub drawvolant2(x As Single=0.47,y As Single=0.768,z As Single=-30)
  If handrot>-990 And thand=1 Then volantrot=handrot
  If volantrot>120 Then volantrot=120
  If volantrot<-120 Then volantrot=-120
- glrotatef(volantrot+volantrots0-2.5,0,0,1)
+ 'glrotatef(volantrot+volantrots0-2.5,0,0,1)
+ Var do1=4*((o1-volantdo1)-2*((mx-volantmx)*sin1-(my-volantmy)*cos1))/(0.01+kfps)
+ If do1<-180 Then do1+=360
+ If do1>180 Then do1-=360
+ volantrotdo1=max(-80.0,min(80.0,volantrotdo1+(do1-volantrotdo1)*min(0.9,0.15*kfps)))
+ volantdo1=o1
+ volantmx=mx:volantmy=my
+ do1=(volantrot+volantrots0+volantrotdo1-volantrotall)*min(0.9,0.15*kfps)
+ volantrotall=max(-120.0,min(120.0,volantrotall+do1))
+ glrotatef(volantrotall,0,0,1)
  If tautopilot>0 Or typeautopilot=1 Or Abs(volantrot)<19*kfps Then
  	volantrot=0.75*volantrot+1e-10
  	/'If Abs(volantrot)>30 Then 
@@ -12654,16 +12671,16 @@ x1=x*0.5:x0=0-x1
     Next i 
     glcolor4f(1,1,1,1)
 End Sub
-Sub drawhelice0
+Sub drawhelice0(r As Single=50,rot As Integer=1)
 	  glnormal3f(-1,0,0)
      glbindtexture(gl_texture_2d,helicetext)	
      glEnable GL_BLEND
      'glBlendFunc GL_SRC_color,GL_ONE_MINUS_SRC_color
      glBlendFunc GL_SRC_alpha,GL_ONE_MINUS_SRC_alpha
-     helicerot0=helicerot0+(9+v)*1.35*kfps
+     If rot=1 Then helicerot0=helicerot0+(9+v)*1.35*kfps
      If helicerot0>10000 Then helicerot0-=10000
      glrotatef(helicerot0,1,0,0) 
-     gltexcarre3(50,50)
+     gltexcarre3(r,r)
      gldisable gl_blend
 End Sub 
 Sub drawhelice(ByVal i As Integer)
@@ -13260,7 +13277,15 @@ glenable(gl_light3)
 		glnewlist ballonlist,gl_compile
 		load3dssize("objects/ballon.3ds",@"",@"",94.5)
       glendlist
-	EndIf	
+	EndIf
+	glpushmatrix
+	gltranslatef(-5,6.5,2.5)
+	drawhelice0(8.5)
+	glpopmatrix
+	glpushmatrix
+	gltranslatef(-5,-5,2.5)
+	drawhelice0(8.5,0)
+	glpopmatrix
 gldisable(gl_light3)	
 End Sub
 Dim Shared As uint coptertext,copterlist

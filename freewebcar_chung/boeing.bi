@@ -576,7 +576,7 @@ Sub drawnboeing()
    glpushmatrix
    gltranslatef(28,-28,10)
    glscalef(0.65,0.65,0.65)
-   drawhelice0()
+   drawhelice0(50,0)
    glpopmatrix
    If (Int(time2)Mod 2)=1 Then 
     gldisable gl_texture_2D
