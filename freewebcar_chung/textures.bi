@@ -1443,6 +1443,25 @@ Function testmaproadwater(x As Single,y As Single)As Integer
 	If i=3 Then Return 2'water
 	Return 0
 End Function
+Sub settestroad(x As Single,y As Single,di As Integer=0)
+Dim As Integer i,j,k,ii,jj  '0 land, 1 road, 2 mainroad, 3 water 
+	Var k06=kxweb,k66=1-k06-k06
+	'Var tyy=k06+k66*(y-yweb+dyweb-512)*0.5/dyweb
+	Var tyy=0.5+k66*(y-testroadyweb)*0.5/dyweb
+	'Var txx=max(-1,min(2.0,k06+k66*(x-xweb+dxweb-256)*0.5/dxweb))
+	Var txx=0.5+k66*(x-testroadxweb)*0.5/dxweb
+	'gltexcoord2f(txx,tyy)
+i=testroaddx*max(0.00001,min(0.9999,txx))
+j=testroaddy*max(0.00001,min(0.9999,1-tyy))
+'testroadr(i,j)=255
+'testroadg(i,j)=255
+'testroadb(i,j)=255
+For ii=max2(1,i-di) To min2(testroaddx-1,i+di)
+	For jj=max2(1,j-di) To min2(testroaddy-1,j+di)
+		testroad(ii,jj)=2
+	Next
+Next
+End Sub 
 Declare Sub loadwebtextzoom2()
 Dim Shared As Single dxwebzoom1=10000,dywebzoom1=10000
 dim shared as single kzoom=0.5
@@ -8439,7 +8458,7 @@ EndIf
      	    gltexquad pxx1,pyy1,zz1, px1,py1,z1, px1+t4*xsi1,py1-t4*xco1,z1-t8, pxx1+t4*xsi1,pyy1-t4*xco1,zz1-t8, tx,0.092,tx0,0.5
    	    glcolor3f(1,1,1)
           glbindtexture(gl_texture_2d,drawbuildtext)
-         EndIf  
+   	   EndIf
       EndIf
    	testmygltexquad=1
    	testmygltexquad0=1
@@ -8498,6 +8517,7 @@ EndIf
      Else  
       z0=setterrainheight(pxx,pyy,xco1,xsi1,trunway)+h
       z1=z0
+      If trunway=1 And (jj And 1)=0 Then settestroad(pxx,pyy,4)
      EndIf
      If layer<>0 Then
      	  Var dzlayer=zlayer
