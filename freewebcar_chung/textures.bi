@@ -4138,7 +4138,8 @@ Sub getways2(text0 As String)'getways
  	     	 Dim As Single kx,dkx=1,k40=0.0,k0=0
  	     	 Dim As Integer i40=0,j40=0
 	       'If InStr(LCase(wayname(i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
- 	       If nsplit2>(nwaynode) And testrail=0 Then
+ 	       'If nsplit2>(nwaynode) And testrail=0 Then
+ 	       If nsplit2>=(nwaynode) And testrail=0 Then
  	       	dkx=(nsplit2-1)/(nwaynode-1)
  	     	 	'If Str(wayid)="79152373" Then auxvar+=1:auxtest=0.8:auxvar2=wayheight(i)-h40
  	       	If wayheight(i)>h40 And testhighway<>1 Then
