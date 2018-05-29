@@ -8316,7 +8316,7 @@ Dim Shared As Single ncarv(ncar),ncarco1(ncar),ncarsi1(ncar),nncarv(ncar),loganw
 Dim Shared As Single ncarvv(ncar),ncarxx0(ncar),ncaryy0(ncar),nvmx2,nvmy2
 Dim Shared As Double ncartimeroad(ncar)
 Dim Shared As uint ncartext,logantext,wheellist,ncarlist,ncarpolicelist,ncarpolicetext,ncargreentext,ncarbluetext
-Dim Shared As uint ncarredtext
+Dim Shared As uint ncarredtext,ncarbuslist,ncarbustext
 Sub setmyroadlatlon()
 	'myroadlat=-99
 	Var nn=ncariroad(0)
@@ -8376,8 +8376,55 @@ glcalllist ncarpolicelist
 		glcalllist wheellist
 		glpopmatrix			
 End Sub
+Sub drawncarbus(i As Integer)
+'ncarx(i)=mx+i*60-80:ncary(i)=my:ncarz(i)=mz:ncaro1(i)=o1*2
+'nncarx(i)=mx+i*60-80:nncary(i)=my:nncarz(i)=mz:nncaro1(i)=o1*2
+gldisable gl_texture_2d
+glenable gl_lighting
+glenable gl_light0
+glenable gl_light3
+'glbindtexture(gl_texture_2d,ncarbustext)
+glcolor3f(0.7,0.5,0)
+'gltexsphere(500)
+glcalllist ncarbuslist
+glenable gl_light0
+gldisable gl_light3
+      'glscalef(1.2,1.2,1.2)
+		'myglcalllist roverlist
+		glcolor3f(1,1,1)
+		glenable gl_texture_2d
+		glbindtexture(gl_texture_2d,logantext)
+		loganwheelrot(i)+=kfps*(3+0.3*Rnd)*ncarv(i)
+      If loganwheelrot(i)>10000 Then loganwheelrot(i)=0
+		glpushmatrix
+		gltranslatef(95,32,13)
+		glrotatef(90+volantrots(i),0,0,1)
+		glrotatef(loganwheelrot(i),1,0,0)
+		glcalllist wheellist
+		glpopmatrix
+		glpushmatrix
+		gltranslatef(95,-32,13)
+		glrotatef(-90+volantrots(i),0,0,1)
+		glrotatef(loganwheelrot(i),-1,0,0)
+		glcalllist wheellist
+		glpopmatrix
+		glpushmatrix
+		gltranslatef(-58,34,13)
+		glrotatef(90,0,0,1)
+		glrotatef(loganwheelrot(i),1,0,0)
+		glcalllist wheellist
+		glpopmatrix
+		glpushmatrix
+		gltranslatef(-58,-34,13)
+		glrotatef(-90,0,0,1)
+		glrotatef(loganwheelrot(i),-1,0,0)
+		glcalllist wheellist
+		glpopmatrix	
+		If tdark=0 Then gldisable gl_lighting		
+End Sub
 Dim Shared As uint carshadowtext,carshadowbacktext,carpoliceshadowtext,carpoliceshadowbacktext
-Dim Shared As Integer tcarpolice,icarshadow,nicarshadow(200)
+Dim Shared As uint carbusshadowtext,carbusshadowbacktext
+Dim Shared As Integer tcarpolice,icarshadow,nicarshadow(200),tcarbus
 sub gltexcarreshadow(byval x As Single,co1 As Single,si1 As single,dr As Single,ByVal tx As Single=1)
 Dim As Single x1,x0,dx,dy
 x1=x*0.5:x0=-x1
@@ -8639,7 +8686,8 @@ Next
 End Sub
 Sub drawncar(i As Integer)
 glscalef(0.7,0.7,0.9)
-If tcarpolice=1 Then drawncarpolice(i):Exit sub
+If tcarpolice=1 Then drawncarpolice(i):Exit Sub
+If tcarbus=1 Then drawncarbus(i):Exit Sub 
 glenable gl_texture_2d
 If ncarcolor(i)=0 Then
 	glbindtexture(gl_texture_2d,ncartext)
@@ -8682,6 +8730,10 @@ glcalllist ncarlist
 		glcalllist wheellist
 		glpopmatrix			
 End Sub
+Function testbus(i As Integer)As Integer
+	If (i=2 Or i=8 Or i=13 Or i=25) Then Return 1
+	Return 0 
+End Function
 Sub initncar()
 Dim As integer i 	
  	ncartext=guiloadtexture("objects/car2.jpg",240,245)
@@ -8690,6 +8742,7 @@ Dim As integer i
  	ncarredtext=guiloadtexture("objects/car4.jpg",240,245)
  	logantext=guiloadtexture("objects/logan.jpg")
  	ncarpolicetext=guiloadtexture("objects/policecar_lowpoly.jpg")
+ 	ncarbustext=guiloadtexture("objects/bus_low2.jpg")
 	For i=1 To ncar
 		ncarx(i)=mx+dmx0+Rnd*200
 		ncary(i)=my+dmy0+Rnd*200
@@ -8773,6 +8826,8 @@ For i=i1 To ncar
     ncarxx0(i)=ncarx(i):ncaryy0(i)=ncary(i)
   EndIf
   If i=1 Or i=5 Or i=12 Or i=24 Or i=40 Then tcarpolice=1 Else tcarpolice=0
+  If testbus(i) Then tcarbus=1 Else tcarbus=0
+  ncarx(2)=mx+200:ncary(2)=my:ncarz(2)=mz:ncaro1(2)=O1*2
   If scaleview>0.9 Then 
 	If ncarz(i)>99990 Then 
 	  ncarx(i)=mx+dmx0-i*500+(Rnd-0.5)*dmax*1.8
@@ -8844,6 +8899,12 @@ For i=i1 To ncar
 				ncarv(i)=max(v+1.95,ncarv(i))
 			EndIf
 		EndIf
+	   If testbus(i) Then
+		   ncarv(i)=min(max(3.0,v-1),ncarv(i))
+		   ncarv(i)=min(ncarv(i),8.0)
+		   nncarv(i)=min(max(3.0,v-1),nncarv(i))
+		   nncarv(i)=min(nncarv(i),8.0)
+	   EndIf
 		ncarvv(i)+=(ncarv(i)-ncarvv(i))*kfps*0.03
 	   x+=ncarvv(i)*kfps*co1*kv1
 	   y+=ncarvv(i)*kfps*si1*kv1		
@@ -9125,9 +9186,10 @@ For i=i0 To ncar
 		If i=j Then Continue For
 	   If ncariroad(j)=0 And ncarz(j)<waterz-5 And j>0 Then Continue For 
 	   Var xx=ncarx(j),yy=ncary(j),zz=ncarz(j)
-	   If Abs(zz-z)>15 Then Continue For 
-	   If Abs(xx-x0)<r Then
-	   	If Abs(yy-y0)<r Then
+	   If Abs(zz-z)>15 Then Continue For
+	   Var rj=r:If testbus(j) Then rj=30.0 
+	   If Abs(xx-x0)<rj Then
+	   	If Abs(yy-y0)<rj Then
 	   		test0=1
 	   		'test0+=2-2*(co1*ncarco1(j)+si1*ncarsi1(j))
 	   		j0=j
@@ -9138,8 +9200,8 @@ For i=i0 To ncar
 	   		EndIf
 	   	EndIf
 	   EndIf
-	   If Abs(xx-x1)<r Then
-	   	If Abs(yy-y1)<r Then
+	   If Abs(xx-x1)<rj Then
+	   	If Abs(yy-y1)<rj Then
 	   		test1=1
 	   		'test1+=2-2*(co1*ncarco1(j)+si1*ncarsi1(j))
 	   		j1=j
@@ -15885,7 +15947,7 @@ EndIf 'planet
     If volumecar>50 Then setspeedcar()
     volumecar=0
     
-   If auxtest>0.86 Then 
+   If auxtest>1.86 Then 
     glpushmatrix
     Var lat0=lat,lng0=lng,xx=mx,yy=my,xxx=mx,yyy=my
     latlngtomxy(myroadlat,myroadlon,xx,yy)

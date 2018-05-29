@@ -233,6 +233,11 @@ glnewlist ncarpolicelist,gl_compile
 load3dssize("objects/policecar_lowpoly.3ds",@"",@"",81)
 glendlist
 
+ncarbuslist=glgenlists(1)
+glnewlist ncarbuslist,gl_compile 
+load3dssize("objects/bus_low2.3ds",@"",@"",130)
+glendlist
+
 roclist=glgenlists(1)
 glnewlist roclist,gl_compile 
 load3dssize("objects/roc.3ds",@"",@"",150)
@@ -4160,7 +4165,8 @@ Sub getways2(text0 As String)'getways
  	     	 Dim As Integer i40=0,j40=0
 	       'If InStr(LCase(wayname(i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
  	       'If nsplit2>(nwaynode) And testrail=0 Then
- 	       If nsplit2>=(nwaynode) And testrail=0 Then
+ 	       If nsplit2=nwaynode Then nsplit2-=1
+ 	       If nsplit2>(nwaynode) And testrail=0 Then
  	       	dkx=(nsplit2-1)/(nwaynode-1)
  	     	 	'If Str(wayid)="79152373" Then auxvar+=1:auxtest=0.8:auxvar2=wayheight(i)-h40
  	       	If wayheight(i)>h40 And testhighway<>1 Then
@@ -6089,6 +6095,8 @@ If n>=nwaynode And detail40=1 Then
 EndIf
 If i40>0 Then
 	If auxtest>0.69 Then rr=1:gg=0.5:bb=0'h=2000:h0=h
+ElseIf n=nwaynode Then
+	n-=1
 EndIf
 Var tterminal=0:If townwaynodebuild(ij,i)=11 Then tterminal=1
 Var sizei=townwaynodesize(ij,i)
@@ -7474,14 +7482,18 @@ Next
 Return 0
 End Function
 'Dim Shared As Integer irandomnearroad(20),nrandomnearroad
+Dim Shared As Double mytimenrand0(ncar)
+Dim Shared As Integer mynrand0(ncar)
 Function getrandomnearroad(x As Single,y As Single,n0 As Integer,nco1 As Single,nsi1 As Single,ddr0 As Single=0,tback As Integer=0)As Integer
 Dim As Integer i,j,n,idxxx
 Dim As Single dx,dy,r,dr,co1,si1,dxx,dxxx
 'If plane>0 And car=0 Then Return 0
 Var ddr=0.0
 n=0:zroad=-999999:dxxx=0:idxxx=0
-If n0<0 Then
-	ddr=500
+If n0>0 Then mynrand0(myncari)=n0
+If n0<=0 Then mytimenrand0(myncari)=time2
+If n0<=0 Or (time2<mytimenrand0(myncari)+2) Then
+	ddr=300'500'+200*(mytimenrand0(myncari)+2-time2)
 ElseIf myncari=0 Then 
  If plane>0 And car=0 Then
  	ddr=320
@@ -7501,11 +7513,12 @@ ElseIf myncari=0 Then
  EndIf  
 EndIf
 If ddr0>0.001 And ddr<ddr0 Then ddr=ddr0
-ddr+=distback
+If myncari=0 Then ddr+=distback
 If tback=1 Then ddr=ddr0
 Var tlayern=0.0
 If myncari=0 Then tlayern=tlayer
 For i=1 To inearroad
+	If n0<0 And i=mynrand0(myncari) Then Continue for
 	Var ttunnel=0
 	If myncari=0 Then 
 	 If Abs(layernearroad(i)-tlayern)>0.7 Then
