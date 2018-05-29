@@ -20402,6 +20402,8 @@ End Sub
 Sub subleftmouse
 Dim As Single x,y,ix,i
 sublefthand()
+mousex=guimousex
+mousey=guimousey
 x=guimousex:y=guimousey
 If Sqr((x-radardx)*(x-radardx)+(y-radardy)*(y-radardy))<radarrx Then
 	mx=distmax*(x-radardx)/radarrx
@@ -20560,6 +20562,7 @@ Dim As Integer i
     EndIf    	
 End Sub
 Declare Sub subrightmouse()
+Declare Sub testmovemouse()
 Sub subjoystick 
 Dim As Integer i  	
 Dim As Single vv=7
@@ -20681,8 +20684,10 @@ Else
 	 	If guitestkey(vk_down) Then my0-=100*kfps
 	 	If guitestkey(vk_left) Then mx0-=100*kfps
 	 	If guitestkey(vk_right) Then mx0+=100*kfps
-	 EndIf
-	 keyplane 
+	 Else 
+	   keyplane
+	   testmovemouse()
+	 EndIf    
 	 'testtirs
     If mapdisplay=0 and tinittown0=0 Then movecar
     setspeed
@@ -21579,6 +21584,31 @@ mousex0=mousex:mousey0=mousey
 mouseo1=0:mouseo2=0
 tmouse=(tmouse+1)Mod 2
 thand=0
+End Sub
+Dim Shared As Double tmousecenter
+Sub testmovemouse()
+If mousex=0 Then mousex=xmax/2:mousey=ymax/2
+Var xx=mousex/xmax-0.5,yy=mousey/ymax-0.5
+If xx<-0.15 Then keyLeft
+If xx>0.15 Then keyRight
+If yy<-0.15 Then keydown
+If yy>0.15 Then keyup
+If Abs(xx)>0.15 Or Abs(yy)>0.15 Then
+	tmousecenter=time2
+EndIf 	
+If guitestkey(vk_left) Or guitestkey(vk_right) Or guitestkey(vk_up) Or guitestkey(vk_down) Then
+	tmousecenter=0
+	mousex=xmax/2:mousey=ymax/2
+EndIf
+If time2<tmousecenter+7 Then 
+	tmousecenter=time2
+	If Abs(o2)>17 And Abs(yy)<0.15 Then
+		o2-=o2*0.01*kfps
+	EndIf
+	If Abs(o3)>17 And Abs(xx)<0.15 Then
+		o3-=o3*0.01*kfps
+	EndIf
+EndIf
 End Sub
 Sub submovemouse
 mousex0=mousex

@@ -7882,7 +7882,8 @@ If r>2000 Then r-=2000:tparking=1
 If r>1000 Then r-=1000:toneway=1
 If r<0.3*30 Then trail=1
 testrunway=0
-If r>4*30 then trunway=1:testrunway=1
+If r>4*30 then trunway=1:testrunway=1:
+toneway=1
 If r>2.5*30 And trunway=0 Then tmainway=1 
 If r<29 And layer>0 Then layer=0:zlayer=0:rcolor=0.5:gcolor=0.6:bcolor=1'tcolor=0
 If tdark=1 Then

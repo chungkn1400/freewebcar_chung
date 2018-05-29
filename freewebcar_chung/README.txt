@@ -28,7 +28,7 @@ uses freeimage for decoding jpeg data from memory
 tips: rain depends on sky and increases under a cloud
 
 main keys
-arrows => gaz, direction 
+arrows , mouseclick => gaz, direction 
 shift,ctrl,B,N => gaz
 F => foot/car/plane
 G => change type of car/plane
