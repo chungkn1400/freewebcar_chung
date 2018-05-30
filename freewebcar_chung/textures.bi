@@ -11814,7 +11814,7 @@ EndIf
 	i=10
 	'guinotice Str(citylon(i))+" "+cityname(i)+" "+Str(citypopulation(i))+" "+citycountry(i)+" "+citycountrycode(i)
 End Sub 
-Dim Shared As String latlon,latlon1,latlon2,latlon3,latlon30,nodeurl,wayurl,myoverpass2
+Dim Shared As String latlon,latlon0,latlon1,latlon2,latlon3,latlon4,latlon30,nodeurl,wayurl,myoverpass2
 'Dim Shared As Double kdxweb=0.3',t300=2000
 Dim Shared As Integer tloadcity=3
 Sub loadcity()
@@ -11902,6 +11902,9 @@ dmxweb(imxweb)=dx0*0.7
 dx=dx*kiload0
 var lat1=lattown-dx,lon1=lngtown-dx*klon
 var lat2=lattown+dx,lon2=lngtown+dx*klon
+dx=dx*0.7
+Var lat10=lattown-dx,lon10=lngtown-dx*klon
+var lat20=lattown+dx,lon20=lngtown+dx*klon
 dx=kiload0*kdxweb*10*360/40000
 Var lat11=lattown-dx,lon11=lngtown-dx*klon
 var lat21=lattown+dx,lon21=lngtown+dx*klon
@@ -11916,6 +11919,7 @@ var lat23=lattown+dx,lon23=lngtown+dx*klon
 'var lat230=lattown+dx,lon230=lngtown+dx*klon
 'lat=lat0:lng=lng0
 latlon="%28"+strf(lat1)+"%2C"+strf(lon1)+"%2C"+strf(lat2)+"%2C"+Strf(lon2)+"%29"
+latlon0="%28"+strf(lat10)+"%2C"+strf(lon10)+"%2C"+strf(lat20)+"%2C"+Strf(lon20)+"%29"
 latlon1="%28"+strf(lat11)+"%2C"+strf(lon11)+"%2C"+strf(lat21)+"%2C"+strf(lon21)+"%29"
 latlon2="%28"+strf(lat12)+"%2C"+strf(lon12)+"%2C"+strf(lat22)+"%2C"+strf(lon22)+"%29"
 latlon3="%28"+Strf(lat13)+"%2C"+Strf(lon13)+"%2C"+Strf(lat23)+"%2C"+strf(lon23)+"%29"
@@ -11963,7 +11967,7 @@ If myroadlat>-90 And dtweb<18 And fpsmoy>17 And mz<mzsol00+200 Then
  Var dx=0.4*360/40000
  Var lat14=myroadlat-dx,lon14=myroadlon-dx*klon
  Var lat24=myroadlat+dx,lon24=myroadlon+dx*klon
- Var latlon4="%28"+Str(lat14)+"%2C"+Str(lon14)+"%2C"+Str(lat24)+"%2C"+Str(lon24)+"%29"
+ latlon4="%28"+Str(lat14)+"%2C"+Str(lon14)+"%2C"+Str(lat24)+"%2C"+Str(lon24)+"%29"
  keyway+=";way['highway'~'motorway|trunk']"+latlon2
  keyway+=";way['highway'~'primary|secondary']"+latlon4
  /'dx=0.4*360/40000
@@ -12034,6 +12038,7 @@ nodeurl=myoverpass2+"interpreter?data=[out:json][timeout:55];%28node"+latlon
 nodeurl+=";way[aeroway~'aerodrome|runway|taxiway']"+latlon3+";node(w)"
 nodeurl+=";way[aeroway~'terminal']"+latlon2+";node(w)"
 nodeurl+=";way['highway'~'motorway|trunk']"+latlon2+";node(w)"
+nodeurl+=";way['highway'~'primary|secondary']"+latlon0+";node(w)"
 'nodeurl+=";way['bridge']"+latlon1+";node(w);way['man_made'~'bridge']"+latlon1+";node(w)"
 nnodemax=59990
 nodeurl+=";%29%3Bout%20skel%2059999%3B"

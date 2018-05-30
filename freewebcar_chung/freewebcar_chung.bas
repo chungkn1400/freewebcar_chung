@@ -7305,7 +7305,7 @@ Sub drawvolant
  If handrot>-990 and thand=1 Then volantrot=handrot:volantrots0=0
  If volantrot>120 Then volantrot=120
  If volantrot<-120 Then volantrot=-120
- Var do1=4*((o1-volantdo1)+(mx-volantmx)*sin1-(my-volantmy)*cos1)/(0.01+kfps)
+ Var do1=4*((o1-volantdo1)+2*((mx-volantmx)*sin1-(my-volantmy)*cos1))/(0.01+kfps)
  If do1<-180 Then do1+=360
  If do1>180 Then do1-=360
  volantrotdo1=max(-80.0,min(80.0,volantrotdo1+(do1-volantrotdo1)*min(0.9,0.15*kfps)))
@@ -8753,7 +8753,7 @@ End Sub
 Dim Shared As Integer ncari1,thighway,tinverse,myibridge
 Dim Shared As Double timeautopilot2,timeinverse(ncar)
 Dim Shared As Single ncarv0,vautopilot0=5.5,ncarx0,ncary0,ncaro10,ncarcos100=1,ncarsin100,o1autopilot
-Dim Shared As Single ncarz0,zroad,avgco1=1,avgsi1,distback,kavgo1
+Dim Shared As Single ncarz0,zroad,avgco1=1,avgsi1,distback,kavgo1,k25o1
 Dim Shared As String myroadwayid
 Dim Shared As Double tmyroadwayname,timerrot,timenear0road
 Sub drawncars()
@@ -9144,13 +9144,16 @@ If tautopilot>=1 And time2>timeautopilot+3 And plane>0 And car>0 Then'And scalev
     while do1<-180:do1+=360:wend
     o1autopilot+=do1
     o1=ncaro1(0):ncaro10=o1
-    If ncariroad(0)=0 Then
-    	Var k25=25.0
+    If ncariroad(0)>0 Then
+    	Var i=ncariroad(0)
+    	k25o1=sin1*(xnearroad(i)-mx)-cos1*(ynearroad(i)-my)
+    Else 	
+    	Var k25=45.0*Sgn(k25o1+0.1)
     	'If (Int(Timer/40)Mod 2)>=0 Then k25=-55
     	'volantrots(0)=-25*(2+ncarco1(0)*ncarcos100+ncarsi1(0)*ncarsin100)
       volantrots(0)=-k25*(2+ncarco1(0)*(ncarcos100+0.25*ncarsin100)+ncarsi1(0)*(ncarsin100-0.25*ncarcos100))
       'If (Int((Timer-timerrot)/40)Mod 3)=0 Then volantrots(0)=-volantrots(0)
-      If timer>timerrot+80 Then timerrot=timer+Int(Rnd*2)*40
+      'If timer>timerrot+80 Then timerrot=timer+Int(Rnd*2)*40
     EndIf 
     volantrots0+=(volantrots(0)-volantrots0)*min(1.0,0.2*kfps)
     volantrot+=(volantrots(0)-volantrot)*min(1.0,0.2*kfps)
@@ -15178,8 +15181,8 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
               elseif v<9*kv and time2>timecollide2+12 And volume<1450 Then
               	   volume+=kfps*15
               EndIf '/
-    		  	  If v<2.9 Then
-    		  	  	  v=2.901
+    		  	  If v<4.9 Then'2.9
+    		  	  	  v=4.901
     		  	  	  vmx2=v*cos1:vmy2=v*sin1:vmz2=v*sin2
     		  	  	  mz11=mzsol00:mz1=mz11:mz=mz11-0.1
     		  	  EndIf 
