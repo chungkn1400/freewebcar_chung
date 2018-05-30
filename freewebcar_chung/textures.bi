@@ -6091,6 +6091,12 @@ If n>=nwaynode And detail40=1 Then
 			town40iji(i40)=i
 		EndIf
 	EndIf
+   If i40>0 Then
+   	If townixy40(i40)<=nwaynode Then
+         resettown40i(i40) 	
+   		i40=0 
+   	EndIf
+   EndIf
    'If Str(townwaynodeid(ij,i))="79152373" Then auxtest=0.8:auxvar4=i40
 EndIf
 If i40>0 Then
@@ -7493,7 +7499,7 @@ n=0:zroad=-999999:dxxx=0:idxxx=0
 If n0>0 Then mynrand0(myncari)=n0
 If n0<=0 Then mytimenrand0(myncari)=time2
 If n0<=0 Or (time2<mytimenrand0(myncari)+2) Then
-	ddr=300'500'+200*(mytimenrand0(myncari)+2-time2)
+	ddr=400'500'+200*(mytimenrand0(myncari)+2-time2)
 ElseIf myncari=0 Then 
  If plane>0 And car=0 Then
  	ddr=320
@@ -7513,12 +7519,13 @@ ElseIf myncari=0 Then
  EndIf  
 EndIf
 If ddr0>0.001 And ddr<ddr0 Then ddr=ddr0
-If myncari=0 Then ddr+=distback
-If tback=1 Then ddr=ddr0
+If myncari=0 Then
+	if time2<mytimenrand0(myncari)+2 Then ddr+=distback
+   If tback=1 Then ddr=ddr0
+EndIf
 Var tlayern=0.0
 If myncari=0 Then tlayern=tlayer
 For i=1 To inearroad
-	If n0<0 And i=mynrand0(myncari) Then Continue for
 	Var ttunnel=0
 	If myncari=0 Then 
 	 If Abs(layernearroad(i)-tlayern)>0.7 Then
@@ -7530,7 +7537,7 @@ For i=1 To inearroad
 	EndIf 
 	r=rnearroad(i)
 	If r<9.1 Then Continue For 'rail
-	r+=15
+	If myncari=0 Then r+=15
 	Var r0=r
 	r+=ddr	
 	dr=drnearroad(i)+ddr
@@ -7542,7 +7549,8 @@ For i=1 To inearroad
 			si1=si1nearroad(i)/r
 			If Abs(dx*si1-dy*co1)<(r+0.30) Then
 				dxx=dx*co1+dy*si1
-				If dxx>-(r) And dxx<(dr) Then
+				'If dxx>-(r) And dxx<(dr) Then
+				If dxx>(0) And dxx<(dr) Then
 				  Var dcos1=nco1*co1+nsi1*si1
 				  If dcos1>0 Then dcos1+=0.1 Else dcos1-=0.1
 				  If myncari=0 Then dcos1+=(avgco1*co1+avgsi1*si1-dcos1)*0.3	
