@@ -6044,6 +6044,7 @@ Var i40=0
 If kmxlat>10 And detail40=1 Then i40=towni40(ij,i)
 'If Str(townwaynodeid(ij,i))="79152373" And i40>0 Then auxtest=0.8:auxvar2=i40+0.1
 If i40>0 Then
+  'auxvar=max(auxvar,townixy40(i40)+0.11):auxtest=max(0.2,auxtest)	
   If townixy40(i40)>nwaynode then	
 	 drawbuildingnode40(ij,i,dist,r,g,b)
 	 Exit Sub
@@ -6091,18 +6092,16 @@ If n>=nwaynode And detail40=1 Then
 			town40iji(i40)=i
 		EndIf
 	EndIf
-   If i40>0 Then
-   	If townixy40(i40)<=nwaynode Then
-         resettown40i(i40) 	
-   		i40=0 
-   	EndIf
-   EndIf
+   'If i40>0 Then
+   '	If townixy40(i40)<=nwaynode Then
+   '      resettown40i(i40) 	
+   '		i40=0 
+   '	EndIf
+   'EndIf
    'If Str(townwaynodeid(ij,i))="79152373" Then auxtest=0.8:auxvar4=i40
 EndIf
 If i40>0 Then
 	If auxtest>0.69 Then rr=1:gg=0.5:bb=0'h=2000:h0=h
-ElseIf n=nwaynode Then
-	n-=1
 EndIf
 Var tterminal=0:If townwaynodebuild(ij,i)=11 Then tterminal=1
 Var sizei=townwaynodesize(ij,i)
@@ -7498,8 +7497,8 @@ Var ddr=0.0
 n=0:zroad=-999999:dxxx=0:idxxx=0
 If n0>0 Then mynrand0(myncari)=n0
 If n0<=0 Then mytimenrand0(myncari)=time2
-If n0<=0 Or (time2<mytimenrand0(myncari)+2) Then
-	ddr=400'500'+200*(mytimenrand0(myncari)+2-time2)
+If n0<=0 Or (time2<mytimenrand0(myncari)+0.5) Then
+	ddr=500'+200*(mytimenrand0(myncari)+1-time2)
 ElseIf myncari=0 Then 
  If plane>0 And car=0 Then
  	ddr=320
@@ -7520,7 +7519,7 @@ ElseIf myncari=0 Then
 EndIf
 If ddr0>0.001 And ddr<ddr0 Then ddr=ddr0
 If myncari=0 Then
-	if time2<mytimenrand0(myncari)+2 Then ddr+=distback
+	if time2<mytimenrand0(myncari)+0.5 Then ddr+=distback
    If tback=1 Then ddr=ddr0
 EndIf
 Var tlayern=0.0
@@ -11392,9 +11391,12 @@ xtownij=townmapx0+x*townmapdx0
 ytownij=townmapy0+y*townmapdx0
 Return 1	
 End Function 
+Dim Shared As Integer nbusstop=100,ibusstop
+Dim Shared As Single xbusstop(nbusstop),ybusstop(nbusstop)
 Sub drawfuel()
 Dim As Integer i,j,k
 iradar2=iradar20
+ibusstop=0
 For i=1 To nfuel
  	If fuelid(i)<>0 Then
  		  Var x=fuelx(i)-dmx0
@@ -11438,6 +11440,11 @@ For i=1 To nfuel
  		  ElseIf do1<720*4+360 Then
  		  	'drawcommtower(x+dmx0,y+dmy0,z)
  		  	drawbusstop(x+dmx0,y+dmy0,z,do1,35)
+ 		  	If ibusstop<nbusstop Then
+ 		  		ibusstop+=1
+ 		  		xbusstop(ibusstop)=x
+ 		  		ybusstop(ibusstop)=y
+ 		  	EndIf
  		  Else 	
  		  	glcolor3f(1,0.35,0.35)
  		  	drawwatertower(x+dmx0,y+dmy0,z)
@@ -11446,6 +11453,18 @@ For i=1 To nfuel
  	EndIf 	  
 Next  	
 End Sub 
+function distbusstop(x As Single,y As single)As Single 
+Dim As Integer i
+Var dist=300.0
+For i=1 To ibusstop
+  If Abs(xbusstop(i)-x)<dist Then
+	If Abs(ybusstop(i)-y)<dist Then
+ 		dist=max(Abs(xbusstop(i)-x),Abs(ybusstop(i)-y))
+	EndIf
+  EndIf
+Next i
+Return dist 
+End Function 
 Sub subtest2(ByVal userdata As Any Ptr)
 'guinotice("ok")
 'tloadwebtext2=0

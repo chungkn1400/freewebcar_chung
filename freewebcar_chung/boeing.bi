@@ -191,7 +191,7 @@ Sub subloadairtraffic(ByVal userdata As Any Ptr)
 End Sub
 Sub updatenboeing()
 Dim As Integer i	
-If auxtest>0.1 Then guinotice "updatenboeing"
+'If auxtest>0.1 Then guinotice "updatenboeing"
    For i=0 To nboeing
    	nnboeingx(i)+=mx-mx0
    	nnboeingy(i)+=my-my0
@@ -254,7 +254,6 @@ For i=0 To nboeing
 	
 Next
 j=0
-auxvar=max(auxvar,0.1)
 For i=0 To nboeing
 	If nboeingid0(i)="" And nnboeingid(i)<>"" Then
       For k=0 To nboeing0
@@ -275,7 +274,6 @@ For i=0 To nboeing
 	         
 	         nnboeingid(i)=boeingid(k)
 	         irepeatboeing(i)=0
-	         auxvar+=1
 	         
           	Var id=boeingid(k)
 	         For p=0 To nboeing0
@@ -618,7 +616,7 @@ Dim Shared As Double ttimeboeing
 Sub drawnboeings()
 Dim As Integer i,j,k	
 Var t30=30.0
-auxvar6=Int(timeboeing+t30-timer)+0.1
+'auxvar6=Int(timeboeing+t30-timer)+0.1
 If time2<timeinit+15 And time2>timecopyboeing+0.5 And tcopyboeing=0 Then
    tcopyboeing=-1
    timeboeing0=Timer-15.1

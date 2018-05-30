@@ -8756,6 +8756,7 @@ Dim Shared As Single ncarv0,vautopilot0=5.5,ncarx0,ncary0,ncaro10,ncarcos100=1,n
 Dim Shared As Single ncarz0,zroad,avgco1=1,avgsi1,distback,kavgo1,k25o1
 Dim Shared As String myroadwayid
 Dim Shared As Double tmyroadwayname,timerrot,timenear0road
+Declare Function distbusstop(x As Single,y As single)As Single 
 Sub drawncars()
 Dim As Integer i,j
 If tinittown0>0 Then
@@ -8900,10 +8901,12 @@ For i=i1 To ncar
 			EndIf
 		EndIf
 	   If testbus(i) Then
+	   	Var dist=distbusstop(x,y)*0.007
+	   	Var v8=max(0.5,min(8.0,dist*dist*8))
 		   ncarv(i)=min(max(3.0,v-1),ncarv(i))
-		   ncarv(i)=min(ncarv(i),8.0)
+		   ncarv(i)=min(ncarv(i),v8)
 		   nncarv(i)=min(max(3.0,v-1),nncarv(i))
-		   nncarv(i)=min(nncarv(i),8.0)
+		   nncarv(i)=min(nncarv(i),v8)
 	   EndIf
 		ncarvv(i)+=(ncarv(i)-ncarvv(i))*kfps*0.03
 	   x+=ncarvv(i)*kfps*co1*kv1
