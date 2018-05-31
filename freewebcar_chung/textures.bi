@@ -4176,7 +4176,9 @@ Sub getways2(text0 As String)'getways
   	 				'auxvar=itown40:auxvar2=i40:auxtest=0.75
  	     	 		'If Str(wayid)="79152373" Then auxvar+=1000:auxtest=0.8:auxvar2=i40
  	       	ElseIf testhighway=1 Then
- 	       		i40=setitown40(wayid) 	       		
+ 	       		i40=setitown40(wayid) 	
+ 	       		'If nsplit2>44 Then auxvar+=1:auxtest=0.2
+ 	       		'If nsplit2>80 Then auxvar2+=1       		
  	       	EndIf
  	       EndIf
  	       'auxvar=itown40:auxtest=0.3
@@ -7375,7 +7377,7 @@ Sub testroadautopilot(xx As Single,yy As Single,zz As Single,x As Single,y As Si
             	Var dco1=(cos1*co1+sin1*si1)
             	If Abs(dco1)>r*0.7 Then
                   soundvoyage(1)
-                  If Abs(dco1)>r*0.9 Then
+                  If Abs(dco1)>r*0.9 And (piste=0 Or mz>mzsol00+15) Then
                   	mytestbridge=1
                      'v=min(19.0,max(v,dr/400))
             		   Var dmx=mx-xx,dmy=my-yy
@@ -7551,7 +7553,8 @@ For i=1 To inearroad
 				'If dxx>-(r) And dxx<(dr) Then
 				If dxx>(0) And dxx<(dr) Then
 				  Var dcos1=nco1*co1+nsi1*si1
-				  If dcos1>0 Then dcos1+=0.1 Else dcos1-=0.1
+				  If dcos1>0 Then dcos1+=0.1 Else dcos1-=0.5
+			     If (nco1*dx+nsi1*dy)<0 Then dcos1+=0.2 
 				  If myncari=0 Then dcos1+=(avgco1*co1+avgsi1*si1-dcos1)*0.3	
 				  If n=0 Or (onewaynearroad(i)=0 Or typeautopilot=0) Or (dcos1)>0.1 Then  	
 					irandomnearroad(n)=i
@@ -11921,7 +11924,7 @@ dmxweb(imxweb)=dx0*0.7
 dx=dx*kiload0
 var lat1=lattown-dx,lon1=lngtown-dx*klon
 var lat2=lattown+dx,lon2=lngtown+dx*klon
-dx=dx*0.7
+dx=dx*0.8
 Var lat10=lattown-dx,lon10=lngtown-dx*klon
 var lat20=lattown+dx,lon20=lngtown+dx*klon
 dx=kiload0*kdxweb*10*360/40000
@@ -12057,7 +12060,7 @@ nodeurl=myoverpass2+"interpreter?data=[out:json][timeout:55];%28node"+latlon
 nodeurl+=";way[aeroway~'aerodrome|runway|taxiway']"+latlon3+";node(w)"
 nodeurl+=";way[aeroway~'terminal']"+latlon2+";node(w)"
 nodeurl+=";way['highway'~'motorway|trunk']"+latlon2+";node(w)"
-nodeurl+=";way['highway'~'primary|secondary']"+latlon0+";node(w)"
+nodeurl+=";way['highway'~'primary|secondary|tertiary']"+latlon+";node(w)"
 'nodeurl+=";way['bridge']"+latlon1+";node(w);way['man_made'~'bridge']"+latlon1+";node(w)"
 nnodemax=59990
 nodeurl+=";%29%3Bout%20skel%2059999%3B"
@@ -12594,7 +12597,7 @@ Dim As Single sizex=400,size2=max(3000,Sqr(size)*100)
 Dim As Integer i,j
          'Var do1=radtodeg*(size2/max(0.001,size))/40
          'glrotatef(do1,0,0,1)
-         Var scaley=min(1.0,1.2*scaleh)
+         Var scaley=min(1.0,1.2*scaleh)*1.17
          glscalef(scaley,1,scaleh)
 			gltranslatef(0,0,size2*0.058-4)
 			glcolor4f(1,1,1,0)

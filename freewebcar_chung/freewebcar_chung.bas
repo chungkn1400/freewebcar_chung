@@ -4737,7 +4737,7 @@ Declare Function gettownij(px As single,py As Single)As Integer
 Dim Shared As Single dxcopy,dycopy 
 Dim Shared As Integer copydoubles,nbuilds,ntown20
 Const As Integer ntown40=3000,n40=nwaynode*2+1'20
-Dim Shared As Single h40=100'400
+Dim Shared As Single h40=50'100'400
 Dim Shared As int64 townid40(ntown40)
 Dim Shared As Integer towninode40(ntown40),itown40,knode40(ntown40,n40),townixy40(ntown40)
 Dim Shared As Integer town40ij(ntown40),town40iji(ntown40)
@@ -8763,7 +8763,7 @@ If tinittown0>0 Then
 	timeautopilot=Timer
 	Exit sub
 EndIf
-Var dmax=2000
+Var dmax=2500
 Var i1=1
 If tautopilot>=1 And plane>0 And car>0 Then'And scaleview>0.9 Then
 	i1=0
@@ -8831,7 +8831,7 @@ For i=i1 To ncar
   ncarx(2)=mx+200:ncary(2)=my:ncarz(2)=mz:ncaro1(2)=O1*2
   If scaleview>0.9 Then 
 	If ncarz(i)>99990 Then 
-	  ncarx(i)=mx+dmx0-i*500+(Rnd-0.5)*dmax*1.8
+	  ncarx(i)=mx+dmx0-i*100+(Rnd-0.5)*dmax*1.8
 	  ncary(i)=my+dmy0-600+(Rnd-0.5)*dmax*1.8
 	  ncarz(i)=getterrainheight(ncarx(i),ncary(i))
 	  nncarx(i)=ncarx(i):nncary(i)=ncary(i)
@@ -8900,13 +8900,15 @@ For i=i1 To ncar
 				ncarv(i)=max(v+1.95,ncarv(i))
 			EndIf
 		EndIf
-	   If testbus(i) Then
-	   	Var dist=distbusstop(x,y)*0.007
-	   	Var v8=max(0.5,min(8.0,dist*dist*8))
-		   ncarv(i)=min(max(3.0,v-1),ncarv(i))
+	   If testbus(i)=1 Then
+	   	Var dist=distbusstop(x,y)
+	   	Var v8=6.0:If dist<200 Then v8=0.3
+		   ncarv(i)=min(max(2.0,v-1),ncarv(i))
 		   ncarv(i)=min(ncarv(i),v8)
-		   nncarv(i)=min(max(3.0,v-1),nncarv(i))
+		   nncarv(i)=min(max(2.0,v-1),nncarv(i))
 		   nncarv(i)=min(nncarv(i),v8)
+		   ncarvv(i)=min(max(2.0,v-1),ncarvv(i))
+		   ncarvv(i)=min(ncarvv(i),v8)
 	   EndIf
 		ncarvv(i)+=(ncarv(i)-ncarvv(i))*kfps*0.03
 	   x+=ncarvv(i)*kfps*co1*kv1
@@ -9177,8 +9179,8 @@ ncarz(0)=mz1-mzh
 Var tcrash=0
 Var i0=0:If plane=0 Or car=0 Then i0=1
 For i=i0 To ncar
-	If ncariroad(i)=0 and ncarz(i)<waterz-5 And i>0 Then Continue For 
-	Var x=ncarx(i),y=ncary(i),z=ncarz(i)
+	If ncarz(i)<waterz-0.5 And i>0 Then Continue For 
+	Var x=ncarx(i),y=ncary(i),z=ncarz(i) 
 	Var co1=ncarco1(i),si1=ncarsi1(i)
 	Var kcos=(Abs(co1)+Abs(si1))
 	co1*=kcos:si1*=kcos
@@ -9190,10 +9192,13 @@ For i=i0 To ncar
 	Var nncarvi0=nncarv(i)
 	For j=i0 To ncar
 		If i=j Then Continue For
-	   If ncariroad(j)=0 And ncarz(j)<waterz-5 And j>0 Then Continue For 
-	   Var xx=ncarx(j),yy=ncary(j),zz=ncarz(j)
+	   If ncarz(j)<waterz-0.5 And j>0 Then Continue For 
+	   Var xx=ncarx(j),yy=ncary(j),zz=ncarz(j) 
 	   If Abs(zz-z)>15 Then Continue For
-	   Var rj=r:If testbus(j) Then rj=30.0 
+	   If testbus(i)=1 And j>0 Then Exit For 
+	   If testbus(j)=1 And i=0 Then Continue For
+      Var rj=r
+      If testbus(j)=1 Then rj=30.0 
 	   If Abs(xx-x0)<rj Then
 	   	If Abs(yy-y0)<rj Then
 	   		test0=1
@@ -9258,7 +9263,7 @@ For i=i0 To ncar
 		If (nncarv(i)>-1) And (ncarv(i)>-1) Then
 			nncarv(i)-=2:ncarv(i)-=2
 			If Abs(ncarv(i))<0.5 Then ncarv(i)=-0.51  
-			If j1>0 Then
+			If j1>0 And testbus(j1)=0 Then
 	   	   Var dxx=co1*ncarco1(j1)+si1*ncarsi1(j1)
 				If dxx>0.5 And (nncarv(j1)<20) And (ncarv(j1)<20) Then nncarv(j1)+=2:ncarv(j1)+=2
 			EndIf
@@ -9291,7 +9296,7 @@ For i=i0 To ncar
 		EndIf    
 		If ncarv(i)>test3+1 Then ncarv(i)-=test3
 		If nncarv(i)>test3+1 Then nncarv(i)-=test3
-		If j3>0 And i>0 Then
+		If j3>0 And i>0 And testbus(j3)=0 Then
 	   	Var dxx=co1*ncarco1(j3)+si1*ncarsi1(j3)
 			If dxx>0.25 And (nncarv(j3)<ncarv(i)+5) Then nncarv(j3)+=4:ncarv(j3)+=4
 		EndIf
@@ -9305,7 +9310,7 @@ For i=i0 To ncar
 		EndIf 
 		If ncarv(i)>test2+1 Then ncarv(i)-=test2
 		If nncarv(i)>test2+1 Then nncarv(i)-=test2
-		If j2>0 And i>0 Then
+		If j2>0 And i>0 And testbus(j2)=0 Then
 	   	Var dxx=co1*ncarco1(j2)+si1*ncarsi1(j2)
 			If dxx>0.25 And (nncarv(j2)<ncarv(i)+5) Then nncarv(j2)+=4:ncarv(j2)+=4
 		EndIf
@@ -9396,7 +9401,7 @@ Sub drawvolant2(x As Single=0.47,y As Single=0.768,z As Single=-30)
  If volantrot>120 Then volantrot=120
  If volantrot<-120 Then volantrot=-120
  'glrotatef(volantrot+volantrots0-2.5,0,0,1)
- Var do1=4*((o1-volantdo1)-2*((mx-volantmx)*sin1-(my-volantmy)*cos1))/(0.01+kfps)
+ Var do1=4*((o1-volantdo1)-4*((mx-volantmx)*sin1-(my-volantmy)*cos1))/(0.01+kfps)
  If do1<-180 Then do1+=360
  If do1>180 Then do1-=360
  volantrotdo1=max(-80.0,min(80.0,volantrotdo1+(do1-volantrotdo1)*min(0.9,0.15*kfps)))
@@ -20763,7 +20768,7 @@ Else
 	 	if plane=0 Or car>0 Then o3=0
 	 EndIf
     If plane>0 Then setvol Else stopvol()
-    dirv=(mx-mx0)*cos1+(my-my0)*sin1
+    dirv=(mx-mx0)*cos1+(my-my0)*sin1+0.001
     If guitestkey(vk_r)<>0 Then
     	Sleep 200
 	   If (piste=2 Or tstation=2 Or trepair=1) And Abs(v)<0.1 And boatwar(myboat)=0 Then
