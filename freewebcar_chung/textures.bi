@@ -578,7 +578,7 @@ Sub latlngtomxy(ByVal latxx As single,ByVal lngxx As Single ,ByRef mxx As Single
 	If kmxlat<10 Then mxx=0:myy=0:Exit Sub 
 	If Abs(xweb0-xweb)<0.01 And Abs(yweb0-yweb)<0.01 Then		
    	myy=yweb0+(latxx-latweb0)*kmxlat'latmx
-	   mxx=xweb0+(lngxx-lngweb0)*kmxlat/klon'lngmx
+	   mxx=xweb0+(lngxx-lngweb0)*kmxlat/klonlat(latweb0)'klon'lngmx
 	   'mxx=max(-9999999.0,min(9999999.0,mxx))
 	   'myy=max(-9999999.0,min(9999999.0,myy))
 	   Exit Sub
@@ -586,7 +586,7 @@ Sub latlngtomxy(ByVal latxx As single,ByVal lngxx As Single ,ByRef mxx As Single
 	Var lat0=lat,lng0=lng
 	mxytolatlng(xweb,yweb)
 	myy=yweb+(latxx-lat)*kmxlat'latmx
-	mxx=xweb+(lngxx-lng)*kmxlat/klon'lngmx
+	mxx=xweb+(lngxx-lng)*kmxlat/klonlat(lat)'klon'lngmx
    'mxx=max(-9999999.0,min(9999999.0,mxx))
    'myy=max(-9999999.0,min(9999999.0,myy))
 	xweb0=xweb:yweb0=yweb
@@ -611,7 +611,7 @@ Sub latlngtomxy2(ByVal latxx As single,ByVal lngxx As Single ,ByRef mxx As Singl
 	Var lat0=lat,lng0=lng
 	mxytolatlng(xweb,yweb)'mxmap,mymap)
 	myy=yweb+(latxx-lat)*kmxlat'-440*kscalex/500'latmx
-	mxx=xweb+(lngxx-lng)*kmxlat/klon'+920*kscalex/500'lngmx
+	mxx=xweb+(lngxx-lng)*kmxlat/klonlat(lat)'klon'+920*kscalex/500'lngmx
 	'myy=(myyy-535+my)/2
 	'mxx=(mxxx+mx)/2
 	lat=lat0:lng=lng0 
@@ -785,6 +785,9 @@ Sub loadwebtext(ByVal userdata As Any Ptr)
    'dyweb1=size*(2^(20-zoom1))
    'guinotice Str(dyweb1)+" / "+Str(dxweb1)'18000000 37500
 	klon1=dlon/max(0.000001,dlat)
+	'Var klonlatx=1/max(0.0001,Cos(lat*degtorad))
+	'auxvar=klonlat(lat)/klon1:auxtest=0.2
+	klon1=klonlat(lat)
 	lat0=lat:lng0=lng
   	mxytolatlng(mx+dmx0,my+dmy0)
   	Var latmx0=lat,lngmy0=lng

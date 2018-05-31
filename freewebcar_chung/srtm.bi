@@ -328,3 +328,13 @@ Dim As Integer i,j,k,ii,jj
 End Function
 'MercatorLatLngtosrtmlatlng(49,0.2)
 'guinotice Str(getsrtmheight(srtmlat,srtmlng))
+Dim Shared As Single klonlati(-90000 To 90000)
+For i=-89901 To 89901
+	Var lati=i/1000.0
+	Var degtorad=ASin(1)/90
+	klonlati(i)=1/Cos(lati*degtorad)
+Next
+Function klonlat(latx As Single)As Single
+	Var lati=Int(max(-89900.0,min(89900.0,latx*1000.0)))
+	Return klonlati(lati)
+End Function

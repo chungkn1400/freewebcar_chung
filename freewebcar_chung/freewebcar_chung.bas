@@ -1546,7 +1546,8 @@ If topview<=2 Then
 		'txx=max(0,1-k06-(dtxx-1+k06))
 		txx=1-k06-(dtxx-1+k06)*0.2
 	EndIf
-	gltexcoord2f(txx+0.005,tyy+0.005)
+	'gltexcoord2f(txx+0.005,tyy+0.005)
+	gltexcoord2f(txx,tyy)
 	'Var tyy=0.06+0.94*(y-yweb+dyweb)*0.48/dyweb
 	'If (tyy-Int(tyy))<0.06 Then tyy+=0.94
 	'gltexcoord2f((x-xweb+dxweb)*0.48/dxweb,tyy)
