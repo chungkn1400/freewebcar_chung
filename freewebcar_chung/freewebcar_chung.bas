@@ -9180,7 +9180,9 @@ ncarz(0)=mz1-mzh
 Var tcrash=0
 Var i0=0:If plane=0 Or car=0 Then i0=1
 For i=i0 To ncar
-	If ncarz(i)<waterz-0.5 And i>0 Then Continue For 
+	If ncarz(i)<waterz-2.5 And i>0 Then
+		If ncariroad(i)=0 Then Continue For 
+	EndIf
 	Var x=ncarx(i),y=ncary(i),z=ncarz(i) 
 	Var co1=ncarco1(i),si1=ncarsi1(i)
 	Var kcos=(Abs(co1)+Abs(si1))
@@ -9193,11 +9195,13 @@ For i=i0 To ncar
 	Var nncarvi0=nncarv(i)
 	For j=i0 To ncar
 		If i=j Then Continue For
-	   If ncarz(j)<waterz-0.5 And j>0 Then Continue For 
+	   If ncarz(j)<waterz-2.5 And j>0 Then
+	   	If ncariroad(j)=0 Then Continue For 
+	   EndIf
 	   Var xx=ncarx(j),yy=ncary(j),zz=ncarz(j) 
 	   If Abs(zz-z)>15 Then Continue For
 	   If testbus(i)=1 And j>0 Then Exit For 
-	   If testbus(j)=1 And i=0 Then Continue For
+	   'If testbus(j)=1 And i=0 Then Continue For
       Var rj=r
       If testbus(j)=1 Then rj=30.0 
 	   If Abs(xx-x0)<rj Then
@@ -14123,11 +14127,15 @@ auxvar6=teststenciltop+0.1:auxtest=0.8
 End Sub
 Dim Shared As Double timepiste,timercollide,timelayeroff,timeroof
 Dim Shared As Single zroof=-999999
+dim shared as Double timeclimb
 Sub testcollideforward()
 'tpiste=piste
 If (tlayer0)<-0.4 Then exit Sub
 Var tclimb=0.0
-If guitestkey(vk_z) Then tclimb=1  
+If guitestkey(vk_z) and guitestkey(vk_shift)=0 Then
+	tclimb=1
+   timeclimb=time2+1
+EndIf
 If zroof>mzsol00+30 Then
    If Timer<timeroof+12 Then
    	 mz=max(mz,zroof)
@@ -15080,8 +15088,8 @@ EndIf
     If pause=0 And mapdisplay=0 Then moveavion
     'avionx=0:aviony=0:avionz=10:aviono1=30:aviono2=-20:aviono3=40
     If plane>0 And car>0 And guitestactivekey=1 And mapdisplay=0 Then
-       If guitestkey(vk_z) Or guitestkey(vk_w) Then dyh0=min2(10,dyh0+1):guinotice "car height="+Str(dyh0)
-       If guitestkey(vk_s) Then dyh0=max2(0,dyh0-1):guinotice "car height="+Str(dyh0)
+       If (guitestkey(vk_z)and guitestkey(vk_shift)) Or guitestkey(vk_w) Then dyh0=min2(10,dyh0+1):guinotice "car height="+Str(dyh0)
+       If (guitestkey(vk_s)and guitestkey(vk_shift)) Then dyh0=max2(0,dyh0-1):guinotice "car height="+Str(dyh0)
     EndIf	
     
     testcorrectterrain()
@@ -17241,6 +17249,7 @@ If Abs(timeh)<0.0001 Then timeh=Val(Left(Time,2))+Val(Mid(Time(),4,2))/60
 If Abs(heure)>0.0001 Then timeh=heure
 If Abs(dayjj)<0.0001 Then dayjj=Val(Mid(Date,4,2))+Val(left(Date,2))*365/12+Val(Right(date,4))*365
 dhmareemax=-3.3'0'3.7
+dhmareemax=-6
 dhmaree=dhmareemax'*0.5*(1.001+cos((timeh-dayjj*24/28-15)*degtorad*360/24))
 /'If planet=1 Then
 	if addon(imap)="Moon" Then
@@ -23183,10 +23192,10 @@ If (planet=0 And orbit=1) And topentown=1 And tinittown0<=0 Then
   	   	tinittown=0
      	EndIf
    EndIf
-	Var dt=Timer+20
+	Var dt=Timer+14
 	While Timer<dt And ((tloadwebtext2<>0 And tloadwebtext2<>99)Or(tinittown<>0 And tinittown<>99))
 		Sleep 100
-		tinittown=99:tloadwebtext2=99:tquitweb=1
+		'tinittown=99:tloadwebtext2=99:tquitweb=1
 	Wend
 	If ((tloadwebtext2<>0 And tloadwebtext2<>99)Or(tinittown<>0 And tinittown<>99)) Then
 		guiconfirm("i am busy, wait for saving towns buildings ?","confirm",resp)
