@@ -4002,7 +4002,7 @@ Sub getways2(text0 As String)'getways
 	   Else
 	    If InStr(wtext2,"""building""")>0 Then
 	    	testbuilding=1	
-	    Else
+	    ElseIf testbuilding=0 Then 
 	    	testbound=1
 	    EndIf
 	    wtext2=nextdata(wtext2,"{","}")
@@ -4118,7 +4118,7 @@ Sub getways2(text0 As String)'getways
 	   		'If InStr(wayname(i),"Tour Total")>0 Then guinotice Str(i)
 	   		'If wayid=229142768 Then guinotice "wayheight= "+Str(wayheight(i)) 
 	   		wayheight(i)=max(70.0,wayheight(i))
-	   		If wayheight(i)>45.0 Then test=1
+	   		If wayheight(i)>50 Then test=1
 	   		If wayheightmin(i)>0.1 Then test2=1
 	   		If waycolor(i)<>"" Then testcolor=1
 	   		If wayname(i)<>"" Then testname=1
@@ -4137,7 +4137,7 @@ Sub getways2(text0 As String)'getways
        'If Str(wayid)="265932618" Then auxtest=0.2:auxvar5=wayheightmin(i)+0.1
 	    'If InStr(LCase(wayname(i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
 	    If waytype(i)="terminal" Then wayheight(i)=max(100.0,wayheight(i))
-	    If test2=1 Then wayheightmin(i)=max(45.0,min(wayheight(i)-1,wayheightmin(i)))
+	    If test2=1 Then wayheightmin(i)=max(50.0,min(wayheight(i)-1,wayheightmin(i)))
 	    wayheight(i)=pack(wayheight(i))
 	    wayheightmin(i)=pack(wayheightmin(i))
 	    If test=1  And wayheight(i)>45.0 Then
