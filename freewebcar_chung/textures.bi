@@ -3862,6 +3862,7 @@ Sub getways2(text0 As String)'getways
      Var testschool=0
      Var testparking=0
      Var testrail=0,testbuilding=0
+     Var testbound=0	
 	  wtext2=nextwords(wtext1,"""tags"":")
 	  If wtext2<>"" And InStr(wtext2,"""bridge""")>1 Then
 	  	  wayheight(i)=0
@@ -3999,9 +4000,11 @@ Sub getways2(text0 As String)'getways
 	   	If testoneway=1 Then wayheight(i)+=1000
 	   	If testparking=1 Then wayheight(i)+=2000
 	   Else
-	    'If InStr(wtext2,"""building""")>0 Then
+	    If InStr(wtext2,"""building""")>0 Then
 	    	testbuilding=1	
-	    'EndIf
+	    Else
+	    	testbound=1
+	    EndIf
 	    wtext2=nextdata(wtext2,"{","}")
 	    test=0
 	    wtext3=nextwords(wtext2,"""building:levels""")
@@ -4115,7 +4118,7 @@ Sub getways2(text0 As String)'getways
 	   		'If InStr(wayname(i),"Tour Total")>0 Then guinotice Str(i)
 	   		'If wayid=229142768 Then guinotice "wayheight= "+Str(wayheight(i)) 
 	   		wayheight(i)=max(70.0,wayheight(i))
-	   		If wayheight(i)>50 Then test=1
+	   		If wayheight(i)>45.0 Then test=1
 	   		If wayheightmin(i)>0.1 Then test2=1
 	   		If waycolor(i)<>"" Then testcolor=1
 	   		If wayname(i)<>"" Then testname=1
@@ -4125,13 +4128,19 @@ Sub getways2(text0 As String)'getways
             Continue For
 	      EndIf
 	   EndIf
+	   If testbound=1 Then
+	   	wayheight(i)=45.1'46-1
+	   	test=1
+	   	wayheightmin(i)=0
+	   	test2=0
+	   EndIf
        'If Str(wayid)="265932618" Then auxtest=0.2:auxvar5=wayheightmin(i)+0.1
 	    'If InStr(LCase(wayname(i)),"ge henri")>0 Then auxvar+=1:auxtest=0.8
 	    If waytype(i)="terminal" Then wayheight(i)=max(100.0,wayheight(i))
-	    If test2=1 Then wayheightmin(i)=max(50.0,min(wayheight(i)-1,wayheightmin(i)))
+	    If test2=1 Then wayheightmin(i)=max(45.0,min(wayheight(i)-1,wayheightmin(i)))
 	    wayheight(i)=pack(wayheight(i))
 	    wayheightmin(i)=pack(wayheightmin(i))
-	    If test=1  And wayheight(i)>50 Then
+	    If test=1  And wayheight(i)>45.0 Then
 	  	   waytheight(i)=1':If wayheight(i)<1 Then wayheight(i)=2000:nerr+=1000000:EndIf  
 	    ElseIf test2=1 Then
 	   	if wayheightmin(i)>1 And wayheight(i)<4000 Then
@@ -7380,7 +7389,7 @@ Sub testroadautopilot(xx As Single,yy As Single,zz As Single,x As Single,y As Si
             	Var dco1=(cos1*co1+sin1*si1)
             	If Abs(dco1)>r*0.7 Then
                   soundvoyage(1)
-                  If Abs(dco1)>r*0.9 And (piste=0 Or mz>mzsol00+15) Then
+                  If ((Abs(dco1)>r*0.9 Or time2<timeclimb) And (piste=0 Or mz>mzsol00+15)) Then
                   	mytestbridge=1
                      'v=min(19.0,max(v,dr/400))
             		   Var dmx=mx-xx,dmy=my-yy
