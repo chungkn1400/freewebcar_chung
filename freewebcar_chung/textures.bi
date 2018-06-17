@@ -6062,7 +6062,7 @@ If i40>0 Then
   If townixy40(i40)>nwaynode then	
 	 drawbuildingnode40(ij,i,dist,r,g,b)
 	 Exit Sub
-  EndIf  	 
+  EndIf 
 EndIf
 h=max(20.0,townwaynodeh(ij,i))
 'If InStr(townwayname(ij,i),"Tour Total")>0 Then auxvar=h:auxtest=0.3
@@ -6106,6 +6106,9 @@ If n>=nwaynode And detail40=1 Then
 			town40iji(i40)=i
 		EndIf
 	EndIf
+   If i40<=0 And n>=nwaynode Then
+	   n-=1
+   EndIf
    'If i40>0 Then
    '	If townixy40(i40)<=nwaynode Then
    '      resettown40i(i40) 	
@@ -6282,7 +6285,7 @@ EndIf
 '	gltexsphere(420)
 '	glpopmatrix
 'EndIf
- For j=2 To n
+ For j=2 To min2(n,nwaynode-1)
 
 
  	If i40>0 Then
@@ -10641,7 +10644,7 @@ Dim As Integer i,j,k,n,p
  		  ElseIf troad=1 Then 
  		  	  sizei=0	  
  		  EndIf
- 		  If sizei>2000 Then
+ 		  If sizei>4000 Then'2000 Then
    	  	  dr30000=min(15000.0,sizei*0.7)'*0.5)
  		  Else
   	   	  dr30000=15000
@@ -11541,7 +11544,11 @@ Dim Shared As String myoverpass
 Sub suboverpass()
 	myoverpass=overpass(ioverpass)
 	confirm("change overpass server ? last=("+Str(ioverpass)+")"+myoverpass,"confirm",resp)
-   If resp="yes" Then setioverpass()
+   If resp="yes" Then
+      erroverpass=3
+   	setioverpass()
+   	erroverpass=0
+   EndIf
    Sleep 500	
 End Sub
 Sub resetreverse()
