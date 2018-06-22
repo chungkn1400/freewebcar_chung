@@ -21423,13 +21423,15 @@ Sub subgoogle
 	EndIf
 End Sub
 Sub subbing
-	If tbing=1 Then
+	/'If tbing=1 Then
 		confirm("use Google imagery instead of bing ?","confirm",resp)
 		If resp="yes" Then tbing=0:testweb=1
 	Else 
 		confirm("use Bing imagery instead of google ?","confirm",resp)
 		If resp="yes" Then tbing=1:testweb=1
-	EndIf
+	EndIf'/
+	notice "you use bing imagery"
+	tbing=1
 	If tbing=1 Then
 	 	  printgui("win.bing","bing    ")
 	Else
@@ -21881,6 +21883,7 @@ mz11=-999999
         hidegui("win.gps")
 	     typeautopilot-=1
 	     subtypeautopilot()
+	     tbing=1
 	     If tbing=1 Then
 	     	  printgui("win.bing","bing    ")
 	     Else
