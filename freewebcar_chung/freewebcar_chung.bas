@@ -9757,7 +9757,7 @@ Dim Shared As uint alphajet0list,vg330list,spitfirelist,spitfire0list,bf109list,
 Dim Shared As uint p51dlist,p51d0list,f14list,f140list,zero0list,c150list,c1500list,boeing737list,boeing737lowlist
 Dim Shared As uint eurofighterlist,eurofighter0list,fighterlist,fighter0list,boeing737lowlist2
 Dim Shared As uint spaceshiplist,spaceship0list,fokkerlist,fokkerlowlist
-/'
+
 Sub drawcorsair0
 glenable gl_texture_2d
 glbindtexture(gl_texture_2d,corsairtext)
@@ -9772,6 +9772,7 @@ glscalef(1.05,1.05,1.05)
       glendlist
 	EndIf	
 End Sub
+/'
 Sub drawalphajet0
 glenable gl_texture_2d
 glbindtexture(gl_texture_2d,alphajettext)
@@ -10058,7 +10059,7 @@ glrotatef(-90,1,0,0)
 glrotatef(90,0,0,1)
 glrotatef(-0.115*caro3,1,0,0)
 glrotatef(-0.105*caro2,0,1,0)
-'If typeavion=2 Then drawcorsair0
+If typeavion=2 Then drawcorsair0
 'If typeavion=7 Then drawalphajet0
 'If typeavion=1 Then drawvg330
 'If typeavion=3 Then drawspitfire0
@@ -12796,7 +12797,7 @@ If plane=0 Or car>0 Then Exit Sub
       glendlist
 	EndIf	
 End Sub '/
-/'
+
 Sub drawcorsair
 If plane=0 Or car>0 Then Exit Sub
 gldisable(gl_lighting)
@@ -12810,6 +12811,7 @@ glbindtexture(gl_texture_2d,corsairtext)
       glendlist
 	EndIf	
 End Sub
+/'
 Sub drawvg33
 gldisable(gl_lighting)
 glbindtexture(gl_texture_2d,vg33text)
@@ -13460,7 +13462,7 @@ Sub drawcockpit3
    glrotatef(-o2,0,1,0)
    glrotatef(-o3,1,0,0)
    If typeavion<>15 Then glscalef(1,1,1.2)'1.325)
-   'If typeavion=2 Then drawcorsair:gltranslatef(47,0,0)
+   If typeavion=2 Then drawcorsair:gltranslatef(47,0,0)
   	'If typeavion=1 Then drawvg33:gltranslatef(50,0,0)
    'If typeavion=7 Then drawalphajet
    'If typeavion=3 Then drawspitfire:gltranslatef(50,0,0)
@@ -13678,9 +13680,9 @@ For i=1 To nship2
          drawp51d:gltranslatef(62,0,0):drawhelice(i)
       EndIf
      'EndIf 
-     /'If typeship(i)=0 Then drawvg33:gltranslatef(50,0,0):drawhelice(i)
+     'If typeship(i)=0 Then drawvg33:gltranslatef(50,0,0):drawhelice(i)
      If typeship(i)=1 Then drawcorsair:gltranslatef(47,0,0):drawhelice(i)
-     If typeship(i)=2 Then
+     /'If typeship(i)=2 Then
      	  If typeavion=6 Then 
      	  	  drawvg33:gltranslatef(50,0,0):drawhelice(i)
      	  ElseIf typeavion=10 Then
@@ -16924,6 +16926,7 @@ Dim As Integer typeship0,airshipmove0,airshipvie00,i
 	If icar=9 Then plane=1:car=0:myiplane=icar:typeavion=13:textspeak=youdrive+"ballon"
 	If icar=10 Then plane=1:car=0:myiplane=icar:typeavion=14:textspeak=youdrive+"737"
 	If icar=11 Then plane=1:car=0:myiplane=icar:typeavion=15:textspeak=youdrive+"copter"
+	If icar=12 Then plane=1:car=0:myiplane=icar:typeavion=2:textspeak=youdrive+"corsair"
 	'If icar=12 Then plane=1:car=0:typeavion=6
 	'If icar=13 Then plane=1:car=0:typeavion=7
 	'If icar=14 Then plane=1:car=0:typeavion=8
@@ -17021,7 +17024,7 @@ If car<>0 Then
 	volant=1
 	myicar=icar
 Else
-	icar+=1:If icar>11 Then icar=7
+	icar+=1:If icar>12 Then icar=7
 	volant=6
 	If icar=9 Then volant=3:v=min(7.0,v)
 	myiplane=icar
@@ -21907,6 +21910,7 @@ mz11=-999999
         addcombo("win.combo1","ballon")
         addcombo("win.combo1","737")
         addcombo("win.combo1","copter")
+        addcombo("win.combo1","corsair")
         'addcombo("win.combo1","jet")
         'addcombo("win.combo1","f14")
         'addcombo("win.combo1","eurofighter")
