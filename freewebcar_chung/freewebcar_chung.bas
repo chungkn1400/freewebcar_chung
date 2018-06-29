@@ -13642,7 +13642,7 @@ glenable(gl_texture_2d)
 Var nship22=nship2
 If plane=0 Or car>0 Then nship22=min2(6,nship2)
 vcruisesave=vcruise
-vcruise=max(30.0,vcruise*0.9732)
+vcruise=max(20.0,vcruise*0.9732)
 For i=1 To nship2
   'If airshipx(i)<-distmax Then airshipx(i)=-distmax:airshipo1(i)+=90:setairship(i)=1
   'If airshipx(i)>distmax Then airshipx(i)=distmax:airshipo1(i)+=90:setairship(i)=1
@@ -13675,14 +13675,18 @@ For i=1 To nship2
      'If typeship(i)=0 Then
      	  'gltexsphere(40)
       If avion<>"737" Then
-      	drawc150red:gltranslatef(41,0,0):drawhelice(i)
+      	If avion<>"corsair" Then
+      		drawc150red:gltranslatef(41,0,0):drawhelice(i)
+      	Else 
+            drawcorsair:gltranslatef(47,0,0):drawhelice(i)
+      	EndIf
       Else 
          drawp51d:gltranslatef(62,0,0):drawhelice(i)
       EndIf
      'EndIf 
-     'If typeship(i)=0 Then drawvg33:gltranslatef(50,0,0):drawhelice(i)
+     /'If typeship(i)=0 Then drawvg33:gltranslatef(50,0,0):drawhelice(i)
      If typeship(i)=1 Then drawcorsair:gltranslatef(47,0,0):drawhelice(i)
-     /'If typeship(i)=2 Then
+     If typeship(i)=2 Then
      	  If typeavion=6 Then 
      	  	  drawvg33:gltranslatef(50,0,0):drawhelice(i)
      	  ElseIf typeavion=10 Then

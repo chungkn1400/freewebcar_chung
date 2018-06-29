@@ -66,7 +66,7 @@ If typeavion<1 Then typeavion=8
 If typeavion>15 Then typeavion=1
 avionname(0)="car"
 avionname(1)="avion1"
-avionname(2)="avion2"
+avionname(2)="corsair"
 avionname(3)="avion3"
 avionname(4)="avion4"
 avionname(5)="avion5"
@@ -169,7 +169,7 @@ If avion="avion1" Then
    vcruise=19.5
    altmax=70000
 end if
-if avion="avion2" then
+if avion="corsair" then
    kpitch=0.95:kroll=1:kqueue=1:kprop=1.25
    poids=0.9
    vcruise=22
@@ -240,6 +240,7 @@ if avion="space2" then
 end If
 altmax=altmax/2.2'2.5
 soundfic="sounds/"+avion+".mp3"
+If avion="corsair" Then soundfic="sounds/avion2.mp3"
 If avion="737" Then soundfic="sounds/jet3.mp3"
 If avion="c150" Then soundfic="sounds/avion1.mp3"
 If avion="ballon" Then soundfic="sounds/avion5.mp3"
