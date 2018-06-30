@@ -11001,11 +11001,13 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
  		   If tcompiledummy=0 Or waynodebuild=100 Then 
  		    If waynodebuild=100 Then
  		    	drawroadnode(ij,i)
- 		    ElseIf x2>2500-300+sizei And (plane=0 Or car>0) Then
+ 		    ElseIf (x2>2500-300+sizei And (plane=0 Or car>0)) Then
  		    	If Abs(x-mx)<1200 And Abs(y-my)<1200 Then ntownnear+=1
  		    	drawbuildingnodefast(ij,i,1,r,g,b)
- 		    ElseIf x2>5000+sizei*5 And (plane=1 And car=0) Then 	
+ 		    'ElseIf x2>5000+sizei*5 And (plane=1 And car=0) Then 	
+ 		    ElseIf x2>5000-300+sizei*2 And (plane=1 And car=0) Then 	
  		    	If Abs(x-mx)<1200 And Abs(y-my)<1200 Then ntownnear+=1
+ 		    	'r=1:g=0:b=0
  		    	drawbuildingnodefast(ij,i,1,r,g,b)
  		    Else
  		    	'If x2>-200 And x2<700 And Abs(y2)<700 Then ntownnear+=1
