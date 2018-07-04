@@ -1114,7 +1114,7 @@ Dim Shared As String ficin
 Dim As String ficini="freewebcar_chung.ini"
 Dim As String ficiniback="backup/freewebcar_chung_backup.ini"
 Dim Shared As String ficload,ficok:ficok="okinit.txt"
-Dim Shared As Integer File,tok
+Dim Shared As Integer File,tok,tinternet=3
 function getficok()As String  
 file=FreeFile
 Open ficok For Input As #file
@@ -1312,6 +1312,8 @@ detail40=1
 If Not Eof(file) Then Line Input #file,ficin:detail40=Val(ficin)
 nboeing2=10
 If Not Eof(file) Then Line Input #file,ficin:nboeing2=Val(ficin)
+tinternet=3
+If Not Eof(file) Then Line Input #file,ficin:tinternet=Val(ficin)
 Close #file
 carb=max(1000.0,min(carb+1000.0,carb0))
 kscalex=500:kscalex00=500
@@ -21404,15 +21406,14 @@ Function waitbusy() As Integer
 		tquitweb=0:tinittown=0:tloadwebtext2=0
 	   Return 1
 End Function
-Dim Shared As Integer tinternet=3
 Sub subinternet
 Dim As Integer i	
 	resp=Str(tinternet)
 	msg="internet : enter a number (0 .. 3) last="+Str(tinternet)
-	msg+=Chr(10)+"0=off  1=terrain  2=terrain+openstreetmap  3=2+srtm"
+	msg+=Chr(10)+"0=off  1=terrain  2=terrain+openstreetmap  3=2+srtm  4=3+(osm towers only)"
 	prompt(msg,resp)
 	i=Val(resp)
-	i=max2(0,min2(3,i))
+	i=max2(0,min2(4,i))
 	If i<>tinternet Then
 		tinternet=i
 	EndIf
@@ -21511,13 +21512,13 @@ msg+="pageup ,num+, N => accelere / lookup"+cr
 msg+="pagedown ,num-, B => decelere  / lookdown"+cr
 msg+="L  => compas2     C => compas    G => change car/plane"+cr
 msg+="space => shoot / carhorn    control => brakes"+cr
-msg+="R  => repair,radio  / shift+,M  => google map,zoom map"+cr
+msg+="R  => repair,radio  / shift+,M  => map,zoom map"+cr
 'msg+="1,2,3,4 => give wingmen orders /  W  => declare war"+cr
 msg+="ctrl+T => number of trees   /   shift+T => set retro view"+cr
 msg+="ctrl+D => distmax  /  shift,ctrl,mousewheel => gaz (hand mode)"+cr
 msg+="ctrl+N => number of cars/planes/boeings"+cr
 msg+="ctrl+F => max/min fps"+cr
-msg+="ctrl+I => internet on/off"+cr
+msg+="ctrl+I => internet on/towers only/off"+cr
 msg+="ctrl+C => number of clouds"+cr
 'msg+="ctrl+W => water wave height"+cr
 msg+="ctrl+B => number of rocs   /  shift+B => Bing/Google imagery"+cr
@@ -23192,6 +23193,7 @@ Print #file,tradio
 Print #file,typeautopilot0
 Print #file,detail40
 Print #file,nboeing2
+Print #file,tinternet
 Close #file
 ''If townchanged=1 Or Rnd<0.2 Then savetownvie()
 If (planet=0 And orbit=1) And topentown=1 And tinittown0<=0 Then

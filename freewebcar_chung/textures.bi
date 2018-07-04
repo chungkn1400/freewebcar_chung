@@ -10553,14 +10553,18 @@ Dim As Integer i,j,k,n,p
         If hh>4000 And waynodebuild<>100 Then'and waynodebuild=4
         	  Var hmin=Int(hh/4000):hh=unpack(hh-4000*hmin)':hmin=unpack(hmin)
         EndIf
+ 		  Var sizei=townwaynodesize(ij,i)
         If waynodebuild<>100 Then 
+         If tinternet=4 Then
+         	Var d10=50,d50=250
+         	If hh<d10*14 And sizei>0.5 And sizei<1000 Then Continue For 
+         EndIf
          Var hhh=0.0
          If mz>mzsol00+7000 then hhh=200
          If mz>mzsol00+9500 Then hhh=300
          If hh<hhh Then Continue For  
  		  EndIf 
  		  Var d50000=50000.0:If plane=0 Or car>0 Then d50000=35000
- 		  Var sizei=townwaynodesize(ij,i)
  		  If sizei>320 Then
  		  	If hh>99 And sizei<3900*(100+hh)/140 And waynodebuild<>100 Then d50000+=35*sizei
  		  ElseIf sizei<0.01 Then 
@@ -10999,13 +11003,15 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           'If Str(townwaynodeid(ij,i))="265932618" Then auxvar+=1000:auxtest=0.2:auxvar5=hh
           'If InStr(townwayname(ij,i)," Henri")>0 Then auxvar+=1:auxtest=0.8
  		   If tcompiledummy=0 Or waynodebuild=100 Then 
+ 		    Var d2500=2500.0,d5000=5000.0
+ 		    If tinternet=4 Then d2500=1250:d5000*=2500
  		    If waynodebuild=100 Then
  		    	drawroadnode(ij,i)
- 		    ElseIf (x2>2500-300+sizei And (plane=0 Or car>0)) Then
+ 		    ElseIf (x2>d2500-300+sizei And (plane=0 Or car>0)) Then
  		    	If Abs(x-mx)<1200 And Abs(y-my)<1200 Then ntownnear+=1
  		    	drawbuildingnodefast(ij,i,1,r,g,b)
  		    'ElseIf x2>5000+sizei*5 And (plane=1 And car=0) Then 	
- 		    ElseIf x2>5000-300+sizei*2 And (plane=1 And car=0) Then 	
+ 		    ElseIf x2>d5000-300+sizei*2 And (plane=1 And car=0) Then 	
  		    	If Abs(x-mx)<1200 And Abs(y-my)<1200 Then ntownnear+=1
  		    	'r=1:g=0:b=0
  		    	drawbuildingnodefast(ij,i,1,r,g,b)
@@ -12022,17 +12028,18 @@ If myroadlat>-90 And dtweb<18 And fpsmoy>17 And mz<mzsol00+200 Then
 EndIf 
 'node[natural=peak](if:t["ele"]>50)({{bbox}})'levels'
 'testheight="(if:(t['height']>50)||(t['height']>50))"
-If plane=0 or car>0 or avion="ballon" Or avion="copter" Then 
+If (plane=0 or car>0 or avion="ballon" Or avion="copter")And tinternet<>4 Then 
   keyway+=";way['building']"+latlon
   keyway+=";way['building:part'~'yes']"+latlon
   keyway+=";way['railway'~'rail']"+latlon
   keyway+=";way[amenity~'school|university|hospital']"+latlon
 ElseIf dtweb<30.0 Then   
-  Var d10=10
+  Var d10=10,d50=50
+  If tinternet=4 Then d10=50:d50=250
   If (dtweb<15.5)Then' Or time2>tidle2+14) Then
-  	  tbuildheight=min2(50,max2(d10,Int(tbuildheight*0.8)))
+  	  tbuildheight=min2(d50,max2(d10,Int(tbuildheight*0.8)))
   Else 
-  	  tbuildheight=min2(50,max2(d10,Int(tbuildheight*1.25)))
+  	  tbuildheight=min2(d50,max2(d10,Int(tbuildheight*1.25)))
   EndIf
   'auxvar=tbuildheight:auxtest=0.2:auxvar2=dtweb
   Var h30=Str(tbuildheight),h10=Str(Int(tbuildheight/3))
