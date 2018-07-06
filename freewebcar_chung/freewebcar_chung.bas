@@ -16037,7 +16037,7 @@ EndIf 'planet
     
     gldisable gl_depth_test
     If plane=1 And car=0 And tdark=0 Then
-    	If avion="c150" Or avion="zero" Then
+    	If avion="c150" Or avion="zero" Or avion="corsair" Then
     		'drawc150shadow()
     		Var scale=1.0:If mz>mzsol00+100 Then scale=1.3
     		drawc150shadow(mx,my,mz,mzsol00,scale,cos1,sin1,cos2,cos3)   

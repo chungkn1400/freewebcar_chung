@@ -12028,7 +12028,7 @@ If myroadlat>-90 And dtweb<18 And fpsmoy>17 And mz<mzsol00+200 Then
 EndIf 
 'node[natural=peak](if:t["ele"]>50)({{bbox}})'levels'
 'testheight="(if:(t['height']>50)||(t['height']>50))"
-If (plane=0 or car>0 or avion="ballon" Or avion="copter")And tinternet<>4 Then 
+If ((plane=0 or car>0 or avion="ballon" Or avion="copter")And tinternet<>4) Then 
   keyway+=";way['building']"+latlon
   keyway+=";way['building:part'~'yes']"+latlon
   keyway+=";way['railway'~'rail']"+latlon
@@ -12053,6 +12053,11 @@ ElseIf dtweb<30.0 Then
     keyway+=";way['building:part'~'yes']"+latlon2
   EndIf 	
   keyway+=";way['railway'~'rail']"+latlon2
+  keyway+=";way[amenity~'school|university|hospital|place_of_worship']"+latlon2
+Else 
+  keyway+=";way['building']"+latlon2
+  keyway+=";way['building:part'~'yes']"+latlon2 	
+  'keyway+=";way['railway'~'rail']"+latlon2
   keyway+=";way[amenity~'school|university|hospital|place_of_worship']"+latlon2
 EndIf 
 keyway+=";way['leaf_type']"+latlon3
