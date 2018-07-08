@@ -2875,7 +2875,7 @@ Function formatwebtext3(text0 As String)As String 'getnodes
 	Var text2=nextdata(wtext2,":",",")
 	Return text2
 End Function
-Const As Integer mynnode=4000,nrecentid=2000,naskwayid=90
+Const As Integer mynnode=4000,nrecentid=2000,naskwayid=90+10
 Dim Shared As Integer myinode=0,mynasknode=180+220,myiasknode=0,myiasknode2=0,myiasknode3=0,irecentid=0,myiaskway=0
 Dim Shared As int64 mynodeid(mynnode),myasknodeid(mynasknode),recentid(nrecentid),myaskwayid(naskwayid)
 Dim Shared As Single mylat(mynnode),mylon(mynnode)
@@ -4207,8 +4207,13 @@ Sub getways2(text0 As String)'getways
  	     	 	Var tmynode=0
  	     	 	If j>0 Then
  	     	 		If i40>0 Or testschool=1 Or trunway=1 Or testrail=1 Then addmynode(id,latnode(j),lonnode(j))
-            Else 
+ 	     	 	Else
+ 	     	 		Var test=0
  	     	 		If i40=0 And testschool=0 And trunway=0 And testhighway=0 And testrail=0 And waytype(i)<>"terminal" Then
+ 	     	 			Var h30=30:If tinternet=4 And myiaskway>naskwayid-30 Then h30=60
+ 	     	 			If wayheight(i)<h30 Or testhighway=1 Or myiaskway>naskwayid-5 Then test=1 
+ 	     	 		EndIf
+ 	     	 		If test=1 Then 
  	     	 			iwaynode(i)=0:waynodeid(i)=0
  	     	 			Continue For,For
  	     	 		Else
@@ -12076,7 +12081,7 @@ If myiaskway>0 Then
 		EndIf
 	Next
 	'guinotice "myiaskway="+Str(myiaskway)+"  /"+Str(Len(keyway))
-	myiaskway=0
+	'myiaskway=0
 	'resetmxweb()
 EndIf
 'If testworld=1 Then 
@@ -12094,6 +12099,18 @@ nodeurl+=";way[aeroway~'terminal']"+latlon2+";node(w)"
 nodeurl+=";way['highway'~'motorway|trunk']"+latlon2+";node(w)"
 nodeurl+=";way['highway'~'primary|secondary|tertiary']"+latlon+";node(w)"
 'nodeurl+=";way['bridge']"+latlon1+";node(w);way['man_made'~'bridge']"+latlon1+";node(w)"
+If myiaskway>0 Then
+	For i=1 To myiaskway
+		nodeurl+=";way%28"+Str(myaskwayid(i))+"%29;node(w)"
+		If Len(nodeurl)>k3900 Then
+			If auxtest>0.1 Then guinotice "nodeurl len="+Str(Len(nodeurl))+"/"+Str(i)
+			Exit For 
+		EndIf
+	Next
+	'guinotice "myiaskway="+Str(myiaskway)+"  /"+Str(Len(keyway))
+	myiaskway=0
+	'resetmxweb()
+EndIf
 nnodemax=59990
 nodeurl+=";%29%3Bout%20skel%2059999%3B"
 Var hostname=myoverpass

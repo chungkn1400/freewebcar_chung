@@ -22691,6 +22691,7 @@ If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 A
    EndIf
    'auxvar=lockterrain+0.1:auxvar2=lockterrainbmp+0.1:auxtest=0.2
    'auxvar=Int(Fre()/1000):auxtest=0.3
+   'auxvar=myiaskway+0.1:auxtest=0.2
    If tloadwebtext2<>0 Then tidle=time2
    If t11<3 Then setmyroadlatlon()
    If (tloadwebtext2<>2)Or httpon=1 Then t222=Timer
@@ -22924,7 +22925,7 @@ ElseIf tloadwebtext2=4 Then
    	   'EndIf
    	 EndIf
    	EndIf  
-   	If test2=1 Or asktownlat>-90 Then'Or asktownlat2>-90 Then
+   	If test2=1 Or asktownlat>-90 Or myiaskway>10 Then'Or asktownlat2>-90 Then
    		t11=0
    		tloadwebtext2=2
   	   	If asktownlat>-90 Then
