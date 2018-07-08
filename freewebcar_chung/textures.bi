@@ -4211,7 +4211,7 @@ Sub getways2(text0 As String)'getways
  	     	 		Var test=0
  	     	 		If i40=0 And testschool=0 And trunway=0 And testhighway=0 And testrail=0 And waytype(i)<>"terminal" Then
  	     	 			Var h30=30:If tinternet=4 And myiaskway>naskwayid-30 Then h30=60
- 	     	 			If wayheight(i)<h30 Or testhighway=1 Or myiaskway>naskwayid-5 Then test=1 
+ 	     	 			If wayheight(i)<h30 Or myiaskway>naskwayid-5 Then test=1 
  	     	 		EndIf
  	     	 		If test=1 Then 
  	     	 			iwaynode(i)=0:waynodeid(i)=0
@@ -4222,7 +4222,7 @@ Sub getways2(text0 As String)'getways
  	     	 			If j<=0 Then 
  	     	 			 tasknode=1
  	     	 			 If testrecent Then Continue For,For 
-     	  	     	    If myiasknode<mynasknode Then
+     	  	     	    If myiasknode<mynasknode And (trunway<>0 Or testhighway<>0) Then
     	  	     		   myiasknode+=1
     	  	     		   myasknodeid(myiasknode)=id
      	  	     	    EndIf 
