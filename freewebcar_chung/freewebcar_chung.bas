@@ -22925,7 +22925,7 @@ ElseIf tloadwebtext2=4 Then
    	   'EndIf
    	 EndIf
    	EndIf  
-   	If test2=1 Or asktownlat>-90 Or myiaskway>10 Then'Or asktownlat2>-90 Then
+   	If test2=1 Or asktownlat>-90 Then'Or myiaskway>10 Then'Or asktownlat2>-90 Then
    		t11=0
    		tloadwebtext2=2
   	   	If asktownlat>-90 Then

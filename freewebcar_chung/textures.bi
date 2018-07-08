@@ -3812,8 +3812,8 @@ Sub getways2(text0 As String)'getways
      	Else
      	 If InStr(wtext1,"""highway""")>1 Or trunway=1 Then
   	  	     	If myiasknode<mynasknode Then
-  	  	     		'myiasknode+=1
-  	  	     		'myasknodeid(myiasknode)=id
+  	  	     		myiasknode+=1
+  	  	     		myasknodeid(myiasknode)=id
   	  	     		testaskhighway=1
   	  	     	EndIf     	 	
      	 EndIf
@@ -4211,7 +4211,7 @@ Sub getways2(text0 As String)'getways
  	     	 		Var test=0
  	     	 		If i40=0 And testschool=0 And trunway=0 And testhighway=0 And testrail=0 And waytype(i)<>"terminal" Then
  	     	 			Var h30=30:If tinternet=4 And myiaskway>naskwayid-30 Then h30=60
- 	     	 			If wayheight(i)<h30 Or myiaskway>naskwayid-5 Then test=1 
+ 	     	 			If wayheight(i)<h30 Or myiaskway>naskwayid-5 Or plane=0 Or car>0 Then test=1 
  	     	 		EndIf
  	     	 		If test=1 Then 
  	     	 			iwaynode(i)=0:waynodeid(i)=0
@@ -4222,7 +4222,7 @@ Sub getways2(text0 As String)'getways
  	     	 			If j<=0 Then 
  	     	 			 tasknode=1
  	     	 			 If testrecent Then Continue For,For 
-     	  	     	    If myiasknode<mynasknode And (trunway<>0) Then
+     	  	     	    If myiasknode<mynasknode Then'And (trunway<>0) Then
     	  	     		   myiasknode+=1
     	  	     		   myasknodeid(myiasknode)=id
      	  	     	    EndIf 
@@ -12260,6 +12260,11 @@ If toverpass=1 Then
    	zwebtext[i]=recvdata(i)
    Next
    zwebtext[idata]=0
+   If nboeing2>0 And Timer>timeboeing-10 And tcopyboeing=0 Then
+   	'guinotice "loadboeing"
+   	Sleep t300
+   	loadairtraffic()
+   EndIf
    'guinotice Left(zwebtext,400)
    'If InStr(zwebtext,"man_made")>0 Then guinotice Mid(zwebtext,InStr(zwebtext,"man_made"),800)
    If quit2=1 Or tquitweb=1 Then Exit Sub
@@ -12268,11 +12273,6 @@ If toverpass=1 Then
    getways2(zwebtext)
    'guinotice(msgprint)
    msgprint=""
-   If nboeing2>0 And Timer>timeboeing-10 And tcopyboeing=0 Then
-   	'guinotice "loadboeing"
-   	Sleep t300
-   	loadairtraffic()
-   EndIf
    If quit2=1 Or tquitweb=1 Then Exit Sub
    taglcompile20=2 
    updateways()
@@ -12327,7 +12327,7 @@ If myiasknode>0 Then
      If quit2=1 Or tquitweb=1 Then Exit Sub 
      addasknodes(zwebtext)
    EndIf
-   /'If nboeing2>0 And Timer>timeboeing10 And tcopyboeing=0 Then loadairtraffic()
+   If nboeing2>0 And Timer>timeboeing10 And tcopyboeing=0 Then loadairtraffic()
    If myiasknode3>1 Then 
      nodeurl=myoverpass2+"interpreter?data=[out:json];%28"
 	  For i=myiasknode3+1 To myiasknode
