@@ -4222,7 +4222,7 @@ Sub getways2(text0 As String)'getways
  	     	 			If j<=0 Then 
  	     	 			 tasknode=1
  	     	 			 If testrecent Then Continue For,For 
-     	  	     	    If myiasknode<mynasknode And (trunway<>0 Or testhighway<>0) Then
+     	  	     	    If myiasknode<mynasknode And (trunway<>0) Then
     	  	     		   myiasknode+=1
     	  	     		   myasknodeid(myiasknode)=id
      	  	     	    EndIf 
