@@ -10556,7 +10556,7 @@ Dim As Integer i,j,k,n,p
  		  Var sizei=townwaynodesize(ij,i)
         If waynodebuild<>100 Then 
          If tinternet=4 Then
-         	Var d10=50,d50=250
+         	Var d10=20,d50=100
          	If hh<d10*14 And sizei>0.5 And sizei<1000 Then Continue For 
          EndIf
          Var hhh=0.0
@@ -11004,7 +11004,7 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           'If InStr(townwayname(ij,i)," Henri")>0 Then auxvar+=1:auxtest=0.8
  		   If tcompiledummy=0 Or waynodebuild=100 Then 
  		    Var d2500=2500.0,d5000=5000.0
- 		    If tinternet=4 Then d2500=1250:d5000*=2500
+ 		    If tinternet=4 Then d2500=1250:d5000=2500
  		    If waynodebuild=100 Then
  		    	drawroadnode(ij,i)
  		    ElseIf (x2>d2500-300+sizei And (plane=0 Or car>0)) Then
@@ -12033,16 +12033,15 @@ If ((plane=0 or car>0 or avion="ballon" Or avion="copter")And tinternet<>4) Then
   keyway+=";way['building:part'~'yes']"+latlon
   keyway+=";way['railway'~'rail']"+latlon
   keyway+=";way[amenity~'school|university|hospital']"+latlon
-ElseIf dtweb<30.0 Then   
+ElseIf dtweb<30.0 Then'Or (dtweb<40.0 And tinternet=4) Then   
   Var d10=10,d50=50
-  If tinternet=4 Then d10=50:d50=250
   If (dtweb<15.5)Then' Or time2>tidle2+14) Then
   	  tbuildheight=min2(d50,max2(d10,Int(tbuildheight*0.8)))
   Else 
   	  tbuildheight=min2(d50,max2(d10,Int(tbuildheight*1.25)))
   EndIf
-  'auxvar=tbuildheight:auxtest=0.2:auxvar2=dtweb
   Var h30=Str(tbuildheight),h10=Str(Int(tbuildheight/3))
+  If tinternet=4 then h30=Str(tbuildheight*2):h10=Str(Int(tbuildheight*0.66))
   Var testheight="(if:(number(t['building:height'])>"+h30+")||(number(t['height'])>"+h30+ _
                  ")||(number(t['building:levels'])>"+h10+")||(number(t['levels'])>"+h10+"))"
   If tbuildheight>10.1 Then
