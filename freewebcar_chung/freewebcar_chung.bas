@@ -424,7 +424,7 @@ Sub setsoundvol
 	mcisendstring("setaudio debby volume to "+Str(Int(2.2*vol)),0,0,0)
 	mcisendstring("setaudio debbylong volume to "+Str(Int(2.35*vol)),0,0,0)
 	mcisendstring("setaudio aube volume to "+Str(Int(2.35*vol)),0,0,0)
-	mcisendstring("setaudio anne volume to "+Str(Int(2.18*vol)),0,0,0)'2.12
+	mcisendstring("setaudio anne volume to "+Str(Int(2.58*vol)),0,0,0)'2.18
 	mcisendstring("setaudio someone volume to "+Str(Int(2.4*vol)),0,0,0)
 	mcisendstring("setaudio nearness volume to "+Str(Int(2.45*vol)),0,0,0)
 	mcisendstring("setaudio junk volume to "+Str(Int(2.6*vol)),0,0,0)
@@ -8932,11 +8932,12 @@ For i=i1 To ncar
 	   'y+=ncarvv(i)*kfps*ncarsi1(i)*0.63'0.8		
 	EndIf
 	Var n=ncariroad(i)
-	Var n0=n,ddr0=0.0',ttlayer=0:If n>0 Then ttlayer=layernearroad(n)
+	Var n0=n,n1=0,ddr0=0.0',ttlayer=0:If n>0 Then ttlayer=layernearroad(n)
 	'If (i=0 And Abs(tlayer0)>0.3 And n=0)Then ddr0=70
 	If (i=0 And n=0)Then ddr0=70
-	If time2>ncartimeroad(i)+4 Then n=0
-	n=getrandomnearroad(x,y,n,ncarco1(i),ncarsi1(i),ddr0)
+	If time2>ncartimeroad(i)+4 Then n1=1:n=0
+	If time2>ncartimeroad(i) Then n=getrandomnearroad(x,y,n,ncarco1(i),ncarsi1(i),ddr0)
+	If n1=0 And n0=0 And n>0 Then ncartimeroad(i)=time2+5
 	If n=0 And n0<>0 And i=0 Then
 		'If asktownlat<-90 Then
 			Var lat0=lat,lng0=lng
