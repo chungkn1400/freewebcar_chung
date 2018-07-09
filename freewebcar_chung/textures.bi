@@ -2952,10 +2952,10 @@ For i=0 To mynnode
 Next
 End Sub
 Const As Integer nnode=99999,nway=29000,naeroway=120 
-Dim Shared As int64 nodeid(nnode),nodeid0(nnode)
+Dim Shared As int64 nodeid(nnode),nodeid0(nnode),nodeid00(nnode)
 Dim Shared As Single latnode(nnode),lonnode(nnode)
-Dim Shared As Single latnode0(nnode),lonnode0(nnode)
-Dim Shared As Integer iaddnode,nnode20
+Dim Shared As Single latnode0(nnode),lonnode0(nnode),latnode00(nnode),lonnode00(nnode)
+Dim Shared As Integer iaddnode,nnode20,nnode200
 Dim Shared As Integer waytheight(nway),nway20,nwaymax,nnodemax,testnwaymax,testnnodemax
 Dim Shared As int64 waynode(nway)
 Dim Shared As Single waylat(nway),waylon(nway),wayheight(nway),waywidth(nway),waydo1(nway),waylength(nway)
@@ -3279,23 +3279,97 @@ Next
 'err+=1000
 Return 0
 End Function
+Function getinode2(id As int64) As Integer
+Dim As Integer i,j,k,n 
+i=1:j=nnode200
+If id=nodeid00(i) Then Return i
+If id=nodeid00(j) Then Return j
+If (j-i)<2 Then
+	'nerr+=1000
+	Return 0
+EndIf
+k=(j+i)Shr 1'/2
+If id=nodeid00(k) Then Return k
+For n=1 To 100
+   If id<nodeid00(k) Then
+   	j=k
+   ElseIf id=nodeid00(k) Then
+   	Return k
+   Else 	
+   	i=k
+   EndIf
+	If (j-i)<2 Then
+		'err+=1000
+		Return 0
+	EndIf
+	k=(j+i)Shr 1'*0.5
+Next
+'err+=1000
+Return 0
+End Function
 Function getinode(id As int64) As Integer
 Dim As Integer j
 	igetinode=1
 	j=getinode1(id)
+	If j>0 Then Return j
+	igetinode=2
+	j=getinode2(id)
 	If j>0 Then Return j
 	igetinode=0
 	Return getinode0(id)
 End Function
 Function glatnode(i As Integer)As Single
 	If igetinode=1 Then Return latnode(i)
+	If igetinode=2 Then Return latnode00(i)
 	Return latnode0(i)
 End Function
 Function glonnode(i As Integer)As Single
 	If igetinode=1 Then Return lonnode(i)
+	If igetinode=2 Then Return lonnode00(i)
 	Return lonnode0(i)
 End Function
 Dim Shared As Integer erroverpass
+Sub getnodes00(text0 As String) 'getnodes
+	Dim As Integer i,j,k
+	Dim As String c
+	wline=nextwords(text0,"""elements"":")
+	If wline="" Then
+		setioverpass():Sleep 1000
+	   If auxtest>1.01 Then guinotice(Left(text0,800))
+	Else 
+		erroverpass=0
+	EndIf
+	wtext0=nextdata(wline,"[","]")
+	'printmsg "wtext0="+Left(wtext0,400)
+	'printmsg
+	split(wtext0,",")
+	'printmsgsplit()
+	'printmsg
+	'guinotice wsplit(1)
+	nnode200=nsplit
+	'guinotice "nnodes="+str(nnode2)
+	testnnodemax=0
+	If nnode200>=nnodemax Then testnnodemax=1
+	If nnode200<1 Then dtwebnode=60
+	j=0
+	For i=1 To nsplit
+		If quit2=1 Or quit=1 Then Exit For 
+		wtext1=wsplit(i)
+      If InStr(wtext1,"""node""")<=0 Then Continue For 
+		j+=1
+		wtext2=nextwords(wtext1,"""id""")
+		nodeid00(j)=Val(nextdata0(wtext2,":",","))
+		wtext2=nextwords(wtext2,"""lat""")
+		latnode00(j)=Val(nextdata0(wtext2,":",","))
+		wtext2=nextwords(wtext2,"""lon""")
+		lonnode00(j)=Val(nextdata0(wtext2,":",","))
+		If j>=nnodemax Then Exit For 
+	Next
+	nnode200=j
+	nnode2000=j
+	resetsplit()
+	'printmsg "id="+Str(id)+" latlon="+Str(latnode)+"/"+Str(lonnode)
+End Sub 
 Sub getnodes0(text0 As String) 'getnodes
 	Dim As Integer i,j,k
 	Dim As String c
@@ -3333,11 +3407,13 @@ Sub getnodes0(text0 As String) 'getnodes
 		If j>=nnodemax Then Exit For 
 	Next
 	nnode20=j
+	nnode2000=j
 	resetsplit()
 	'printmsg "id="+Str(id)+" latlon="+Str(latnode)+"/"+Str(lonnode)
 End Sub 
 Sub getnodes(text0 As String) 'getnodes
-iaddnode+=1:If iaddnode>1 Then iaddnode=0
+iaddnode+=1:If iaddnode>2 Then iaddnode=0
+If iaddnode=2 Then getnodes00(text0):Exit Sub 
 If iaddnode=0 Then getnodes0(text0):Exit Sub 
 	Dim As Integer i,j,k
 	Dim As String c
@@ -3375,6 +3451,7 @@ If iaddnode=0 Then getnodes0(text0):Exit Sub
 		If j>=nnodemax Then Exit For 
 	Next
 	nnode2=j
+	nnode2000=j
 	resetsplit()
 	'printmsg "id="+Str(id)+" latlon="+Str(latnode)+"/"+Str(lonnode)
 End Sub 
@@ -12321,7 +12398,7 @@ If toverpass=1 Then
 'overpass(2)="api.openstreetmap.fr":overpass2(2)="api/"
 
    'guinotice myoverpass+"/"+path
-   nnode2=0
+   nnode2=0:nnode2000=0
    textload="loadnodes "+Str(Int(dtwebnode))+". "+Str(iloadtown)+" "+Left(Str(kdxweb),4)
    Var ddt=Timer 
    idata=httppost(myoverpass,path)

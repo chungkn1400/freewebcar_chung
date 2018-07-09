@@ -15073,7 +15073,7 @@ Dim shared as double tmxmove,tupdate,dtweb=60,ddtweb,dtwebnode=60
 dim shared as single avgv,avgmx,avgmy,mxmove,mymove,o1move,avgdo1,avgo10,tkzoom=0,mzbridge=-999999
 Dim Shared As Single o333,cos333,sin333,do333,o100,latmx,lngmx
 dim shared as double timehelp,timelayer0
-Dim Shared As Integer tfootmove,mytinittown,nnode2,nway2,mynnodes,mynways
+Dim Shared As Integer tfootmove,mytinittown,nnode2,nway2,mynnodes,mynways,nnode2000
 Dim Shared As String textload,mytextload,myhttphost
 Dim Shared As Double mydtweb
 declare sub drawhelp()
@@ -16271,7 +16271,7 @@ EndIf 'planet
         	   myhttplock=httplock:mytextload=textload
         	   myhttphost=httphost
         	   'mydtweb=dtweb:mytinittown=tinittown
-        	   mynnodes=nnode2:mynways=nway2
+        	   mynnodes=nnode2000:mynways=nway2
         EndIf
       
         If myhttplock=0 Then'mapdisplay=0 Then
