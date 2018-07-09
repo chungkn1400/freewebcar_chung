@@ -184,8 +184,10 @@ textload=""
 End Sub
 'loadairtraffic()
 Sub subloadairtraffic(ByVal userdata As Any Ptr)
-	loadairtraffic()
-	Sleep t300
+	If nboeing2>0 Then
+		loadairtraffic()
+		Sleep t300
+	EndIf
 	'guinotice "subloadairtraffic ok"
 	tloadwebtext2=0	
 End Sub

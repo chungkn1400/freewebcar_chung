@@ -2952,8 +2952,10 @@ For i=0 To mynnode
 Next
 End Sub
 Const As Integer nnode=99999,nway=29000,naeroway=120 
-Dim Shared As int64 nodeid(nnode)
+Dim Shared As int64 nodeid(nnode),nodeid0(nnode)
 Dim Shared As Single latnode(nnode),lonnode(nnode)
+Dim Shared As Single latnode0(nnode),lonnode0(nnode)
+Dim Shared As Integer iaddnode,nnode20
 Dim Shared As Integer waytheight(nway),nway20,nwaymax,nnodemax,testnwaymax,testnnodemax
 Dim Shared As int64 waynode(nway)
 Dim Shared As Single waylat(nway),waylon(nway),wayheight(nway),waywidth(nway),waydo1(nway),waylength(nway)
@@ -3226,18 +3228,19 @@ Dim As Single r=1.0
    endif 	 
 Return r*30
 End Function
-Function getinode(id As int64) As Integer
+Dim Shared As Integer igetinode
+Function getinode0(id As int64) As Integer
 Dim As Integer i,j,k,n 
-i=1:j=nnode2
-If id=nodeid(i) Then Return i
-If id=nodeid(j) Then Return j
+i=1:j=nnode20
+If id=nodeid0(i) Then Return i
+If id=nodeid0(j) Then Return j
 If (j-i)<2 Then nerr+=1000:Return 0
 k=(j+i)Shr 1'/2
-If id=nodeid(k) Then Return k
+If id=nodeid0(k) Then Return k
 For n=1 To 100
-   If id<nodeid(k) Then
+   If id<nodeid0(k) Then
    	j=k
-   ElseIf id=nodeid(k) Then
+   ElseIf id=nodeid0(k) Then
    	Return k
    Else 	
    	i=k
@@ -3248,8 +3251,94 @@ Next
 nerr+=1000
 Return 0
 End Function
+Function getinode1(id As int64) As Integer
+Dim As Integer i,j,k,n 
+i=1:j=nnode2
+If id=nodeid(i) Then Return i
+If id=nodeid(j) Then Return j
+If (j-i)<2 Then
+	'nerr+=1000
+	Return 0
+EndIf
+k=(j+i)Shr 1'/2
+If id=nodeid(k) Then Return k
+For n=1 To 100
+   If id<nodeid(k) Then
+   	j=k
+   ElseIf id=nodeid(k) Then
+   	Return k
+   Else 	
+   	i=k
+   EndIf
+	If (j-i)<2 Then
+		'err+=1000
+		Return 0
+	EndIf
+	k=(j+i)Shr 1'*0.5
+Next
+'err+=1000
+Return 0
+End Function
+Function getinode(id As int64) As Integer
+Dim As Integer j
+	igetinode=1
+	j=getinode1(id)
+	If j>0 Then Return j
+	igetinode=0
+	Return getinode0(id)
+End Function
+Function glatnode(i As Integer)As Single
+	If igetinode=1 Then Return latnode(i)
+	Return latnode0(i)
+End Function
+Function glonnode(i As Integer)As Single
+	If igetinode=1 Then Return lonnode(i)
+	Return lonnode0(i)
+End Function
 Dim Shared As Integer erroverpass
+Sub getnodes0(text0 As String) 'getnodes
+	Dim As Integer i,j,k
+	Dim As String c
+	wline=nextwords(text0,"""elements"":")
+	If wline="" Then
+		setioverpass():Sleep 1000
+	   If auxtest>1.01 Then guinotice(Left(text0,800))
+	Else 
+		erroverpass=0
+	EndIf
+	wtext0=nextdata(wline,"[","]")
+	'printmsg "wtext0="+Left(wtext0,400)
+	'printmsg
+	split(wtext0,",")
+	'printmsgsplit()
+	'printmsg
+	'guinotice wsplit(1)
+	nnode20=nsplit
+	'guinotice "nnodes="+str(nnode2)
+	testnnodemax=0
+	If nnode20>=nnodemax Then testnnodemax=1
+	If nnode20<1 Then dtwebnode=60
+	j=0
+	For i=1 To nsplit
+		If quit2=1 Or quit=1 Then Exit For 
+		wtext1=wsplit(i)
+      If InStr(wtext1,"""node""")<=0 Then Continue For 
+		j+=1
+		wtext2=nextwords(wtext1,"""id""")
+		nodeid0(j)=Val(nextdata0(wtext2,":",","))
+		wtext2=nextwords(wtext2,"""lat""")
+		latnode0(j)=Val(nextdata0(wtext2,":",","))
+		wtext2=nextwords(wtext2,"""lon""")
+		lonnode0(j)=Val(nextdata0(wtext2,":",","))
+		If j>=nnodemax Then Exit For 
+	Next
+	nnode20=j
+	resetsplit()
+	'printmsg "id="+Str(id)+" latlon="+Str(latnode)+"/"+Str(lonnode)
+End Sub 
 Sub getnodes(text0 As String) 'getnodes
+iaddnode+=1:If iaddnode>1 Then iaddnode=0
+If iaddnode=0 Then getnodes0(text0):Exit Sub 
 	Dim As Integer i,j,k
 	Dim As String c
 	wline=nextwords(text0,"""elements"":")
@@ -3271,17 +3360,21 @@ Sub getnodes(text0 As String) 'getnodes
 	testnnodemax=0
 	If nnode2>=nnodemax Then testnnodemax=1
 	If nnode2<1 Then dtwebnode=60
+	j=0
 	For i=1 To nsplit
 		If quit2=1 Or quit=1 Then Exit For 
 		wtext1=wsplit(i)
       If InStr(wtext1,"""node""")<=0 Then Continue For 
+		j+=1
 		wtext2=nextwords(wtext1,"""id""")
-		nodeid(i)=Val(nextdata0(wtext2,":",","))
+		nodeid(j)=Val(nextdata0(wtext2,":",","))
 		wtext2=nextwords(wtext2,"""lat""")
-		latnode(i)=Val(nextdata0(wtext2,":",","))
+		latnode(j)=Val(nextdata0(wtext2,":",","))
 		wtext2=nextwords(wtext2,"""lon""")
-		lonnode(i)=Val(nextdata0(wtext2,":",","))
+		lonnode(j)=Val(nextdata0(wtext2,":",","))
+		If j>=nnodemax Then Exit For 
 	Next
+	nnode2=j
 	resetsplit()
 	'printmsg "id="+Str(id)+" latlon="+Str(latnode)+"/"+Str(lonnode)
 End Sub 
@@ -3329,8 +3422,8 @@ End Sub
 	  waylat(i)=-91
 	  waylon(i)=-181	
 	 Else
-	  waylat(i)=latnode(j)
-	  waylon(i)=lonnode(j)
+	  waylat(i)=glatnode(j)
+	  waylon(i)=glonnode(j)
 	  Var h1=50+Rnd*700'800
 	  If Rnd<0.3 Then h1=70+Rnd*230
 	  If h1>450 Then h1*=1.45
@@ -3705,9 +3798,9 @@ Sub getways2(text0 As String)'getways
     	  	   EndIf
     	  	 EndIf   
 	      Else
-	         addmynode(id,latnode(j),lonnode(j))
-	         Var aerowaylati=latnode(j)
-	         Var aerowayloni=lonnode(j)
+	         addmynode(id,glatnode(j),glonnode(j))
+	         Var aerowaylati=glatnode(j)
+	         Var aerowayloni=glonnode(j)
 		      getlocktown(0)
 		      If waytype(i)="terminal" Then
 		      	addaeroway(aeronamei,aerowaylati,aerowayloni,1.0,0)
@@ -3822,10 +3915,10 @@ Sub getways2(text0 As String)'getways
      	EndIf 
     Else  	
  	   if InStr(wtext2,"""bridge""")>1 Or trunway=1 Then
- 	   	addmynode(id,latnode(j),lonnode(j))
+ 	   	addmynode(id,glatnode(j),glonnode(j))
  	   EndIf
-	   waylat(i)=latnode(j)
-	   waylon(i)=lonnode(j)
+	   waylat(i)=glatnode(j)
+	   waylon(i)=glonnode(j)
 	 EndIf 
 	 If waylat(i)>-90 Or testaskhighway=1 Then 
 	  waydo1(i)=0
@@ -3834,7 +3927,7 @@ Sub getways2(text0 As String)'getways
 	  	  j=getinode(nodeid1)
 	  	  If j>0 Then
  	  	    	Var dy=(waylat(i)-latnode(j))*kmxlat
- 	  	  	   Var dx=(waylon(i)-lonnode(j))*kmxlat/(klon)
+ 	  	  	   Var dx=(waylon(i)-glonnode(j))*kmxlat/(klon)
   	  	  	   waydo1(i)=diro1(dx,dy)
 	  	  EndIf
 	  EndIf '/
@@ -3876,10 +3969,10 @@ Sub getways2(text0 As String)'getways
  	  	     id=Val(wsplit2(dj))
  	  	     j=getinode(id)
  	  	     If j>0 Then
- 	  	     	addmynode(id,latnode(j),lonnode(j))
+ 	  	     	addmynode(id,glatnode(j),glonnode(j))
  	  	    	If k>=0 Then
- 	  	    	 Var dy=(waylat(i)-latnode(j))*kmxlat
- 	  	  	    Var dx=(waylon(i)-lonnode(j))*kmxlat/(klon)
+ 	  	    	 Var dy=(waylat(i)-glatnode(j))*kmxlat
+ 	  	  	    Var dx=(waylon(i)-glonnode(j))*kmxlat/(klon)
  	  	  	    dxy=Sqr(dx*dx+dy*dy)
  	  	    	 If dxy>dxy0 Then
  	  	    		dxy0=dxy
@@ -3931,7 +4024,7 @@ Sub getways2(text0 As String)'getways
 	  	    	  k-=100000
 	  	    	  addbridges(waylat(i),waylon(i),mylat(k),mylon(k),wayname(i))
 	  	      ElseIf k>0 Then
-	  	    	  addbridges(waylat(i),waylon(i),latnode(k),lonnode(k),wayname(i))
+	  	    	  addbridges(waylat(i),waylon(i),glatnode(k),glonnode(k),wayname(i))
 	  	      EndIf
 	  	      freelocktown(0)
 	  	    EndIf 'k>0 
@@ -4206,7 +4299,7 @@ Sub getways2(text0 As String)'getways
  	     	 	j=getinode(id)
  	     	 	Var tmynode=0
  	     	 	If j>0 Then
- 	     	 		If i40>0 Or testschool=1 Or trunway=1 Or testrail=1 Then addmynode(id,latnode(j),lonnode(j))
+ 	     	 		If i40>0 Or testschool=1 Or trunway=1 Or testrail=1 Then addmynode(id,glatnode(j),glonnode(j))
  	     	 	Else
  	     	 		Var test=0
  	     	 		If i40=0 And testschool=0 And trunway=0 And testhighway=0 And testrail=0 And waytype(i)<>"terminal" Then
@@ -4238,8 +4331,8 @@ Sub getways2(text0 As String)'getways
  	     	 	iwaynodei=min2(nwaynode,iwaynode(i)+1)
  	     	 	iwaynode(i)=iwaynodei
  	     	 	If tmynode=0 Then 
- 	     	 	   loni=lonnode(j)
- 	     	 	   lati=latnode(j)
+ 	     	 	   loni=glonnode(j)
+ 	     	 	   lati=glatnode(j)
  	     	 	Else
  	     	 	   loni=mylon(j)
  	     	 	   lati=mylat(j)
@@ -4264,17 +4357,17 @@ Sub getways2(text0 As String)'getways
       	     	 	Dim As int64 id40=Val(wsplit2(Int(k40)))
  	          	 	Var jj=getinode(id40)
  	     	 			If jj>0 Then
- 	     	 				'Var dxy=Abs(latnode(jj)-townnodelat40(i40,j40))
- 	     	 				'If dxy<0.00000011 Then dxy=Abs(lonnode(jj)-townnodelon40(i40,j40))/klon
+ 	     	 				'Var dxy=Abs(glatnode(jj)-townnodelat40(i40,j40))
+ 	     	 				'If dxy<0.00000011 Then dxy=Abs(glonnode(jj)-townnodelon40(i40,j40))/klon
  	     	 				'If dxy>0.0000001 Then  	     	 				
- 	     	 				'If dxy<0.000000011 Then dxy=Abs(lonnode(jj)-townnodelon40(i40,j40))/klon
+ 	     	 				'If dxy<0.000000011 Then dxy=Abs(glonnode(jj)-townnodelon40(i40,j40))/klon
  	     	 				'If dxy>0.00000001 Then  	     	 				
- 	     	 				  townnodelon40(i40,j40)=lonnode(jj)
- 	     	 				  townnodelat40(i40,j40)=latnode(jj)
+ 	     	 				  townnodelon40(i40,j40)=glonnode(jj)
+ 	     	 				  townnodelat40(i40,j40)=glatnode(jj)
  	     	 				  townnodex40(i40,j40)=0
  	     	 				  townnodey40(i40,j40)=0
  	     	 				  townixy40(i40)=1
- 	     	 				  'latlngtomxy(latnode(jj),lonnode(jj),townnodex40(i40,j40),townnodey40(i40,j40)) 
+ 	     	 				  'latlngtomxy(glatnode(jj),glonnode(jj),townnodex40(i40,j40),townnodey40(i40,j40)) 
  	     	 			     knode40(i40,j40)=j40
  	     	 				'Else
  	     	 				  'auxvar+=1:auxtest=0.8
@@ -4331,8 +4424,8 @@ Sub getways2(text0 As String)'getways
  	  	    id=Val(wsplit2(nsplit2/4+0.1))
  	  	    j=getinode(id)
  	  	    If j>0 Then
- 	  	    	Var dy=waylat(i)-latnode(j)
- 	  	    	Var dx=waylon(i)-lonnode(j)
+ 	  	    	Var dy=waylat(i)-glatnode(j)
+ 	  	    	Var dx=waylon(i)-glonnode(j)
  	  	    	waylength(i)=max(waylength(i),Abs(dy)*kmxlat)
  	  	  	   waylength(i)=max(waylength(i),Abs(dx)*kmxlat/(klon))
  	  	  	   If Abs(dx)+Abs(dy)>0.0000001 Then
@@ -4347,8 +4440,8 @@ Sub getways2(text0 As String)'getways
  	  	    id=Val(wsplit2(nsplit2*2/4+0.1))
  	  	    j=getinode(id)
  	  	    If j>0 And j0>0 Then
- 	  	    	Var dy=latnode(j0)-latnode(j)
- 	  	    	Var dx=lonnode(j0)-lonnode(j)
+ 	  	    	Var dy=glatnode(j0)-glatnode(j)
+ 	  	    	Var dx=glonnode(j0)-glonnode(j)
  	  	  	   waywidth(i)=max(waywidth(i),Abs(dy)*kmxlat)
  	  	  	   waywidth(i)=max(waywidth(i),Abs(dx)*kmxlat/(klon))
  	  	  	   'waylat(i)-=dy*0.5
@@ -4360,8 +4453,8 @@ Sub getways2(text0 As String)'getways
  	  	    id=Val(wsplit2(nsplit2*3/4))
  	  	    j=getinode(id)
  	  	    If j>0 Then
- 	  	     	waywidth(i)=max(waywidth(i),Abs(waylat(i)-latnode(j))*kmxlat)
- 	  	  	   waywidth(i)=max(waywidth(i),Abs(waylon(i)-lonnode(j))*kmxlat/(klon))
+ 	  	     	waywidth(i)=max(waywidth(i),Abs(waylat(i)-glatnode(j))*kmxlat)
+ 	  	  	   waywidth(i)=max(waywidth(i),Abs(waylon(i)-glonnode(j))*kmxlat/(klon))
  	  	    EndIf
   	     EndIf 
 	  EndIf  '/    
@@ -4423,9 +4516,9 @@ Sub getways2bridge(text0 As String)'getways
    	  	   EndIf
     	  	 EndIf   
 	      Else
-	         addmynode(id,latnode(j),lonnode(j))
-	         Var aerowaylati=latnode(j)
-	         Var aerowayloni=lonnode(j)
+	         addmynode(id,glatnode(j),glonnode(j))
+	         Var aerowaylati=glatnode(j)
+	         Var aerowayloni=glonnode(j)
 	         getlocktown(0)
 		      If waytype(i)="terminal" Then
 		      	addaeroway(aeronamei,aerowaylati,aerowayloni,1.0,0)
@@ -4450,8 +4543,8 @@ Sub getways2bridge(text0 As String)'getways
 	  waylat(i)=-91
 	  waylon(i)=-181	
 	 Else
-	  waylat(i)=latnode(j)
-	  waylon(i)=lonnode(j)
+	  waylat(i)=glatnode(j)
+	  waylon(i)=glonnode(j)
 	  wtext2=nextwords(wtext1,"""tags"":")
 	  If wtext2<>"" And InStr(wtext2,"""bridge""")>1 Then
 	  	  wayheight(i)=0
@@ -4464,10 +4557,10 @@ Sub getways2bridge(text0 As String)'getways
  	  	     id=Val(wsplit2(dj))
  	  	     j=getinode(id)
  	  	     If j>0 Then
- 	  	     	'addmynode(id,latnode(j),lonnode(j))
+ 	  	     	'addmynode(id,glatnode(j),glonnode(j))
  	  	    	If k>=0 Then
- 	  	    	 Var dy=(waylat(i)-latnode(j))*kmxlat
- 	  	  	    Var dx=(waylon(i)-lonnode(j))*kmxlat/(klon)
+ 	  	    	 Var dy=(waylat(i)-glatnode(j))*kmxlat
+ 	  	  	    Var dx=(waylon(i)-glonnode(j))*kmxlat/(klon)
  	  	  	    dxy=Sqr(dx*dx+dy*dy)
  	  	    	 If dxy>dxy0 Then
  	  	    		dxy0=dxy
@@ -4519,7 +4612,7 @@ Sub getways2bridge(text0 As String)'getways
 	  	    	   k-=100000
 	  	    	   addbridges(waylat(i),waylon(i),mylat(k),mylon(k),wayname(i))
 	  	      ElseIf k>0 Then
-	  	    	   addbridges(waylat(i),waylon(i),latnode(k),lonnode(k),wayname(i))
+	  	    	   addbridges(waylat(i),waylon(i),glatnode(k),glonnode(k),wayname(i))
 	  	      EndIf
 	  	      freelocktown(0)
 	  	    EndIf 'k>0
@@ -5025,6 +5118,7 @@ For i=1 To n
 		Exit Sub
 	EndIf
 Next
+If waytheight(k)<>100 Then naddbuild+=100000
 If n>=ntownnode And p=0 Then
  n=ntownnode	
  If waytheight(k)>=4 Or addwaynodebuild(k)>=11 Then'12 11=terminal
@@ -11035,6 +11129,7 @@ End Sub
 Sub updatewaysm()
 Dim As Integer i,j,k,n,p,di,dj
 Dim As Single x,y,z,h,dx,dy
+naddbuild=0
 If nway2<1 Then Exit Sub   
 If quit2=1 Or tquitweb=1 Then Exit Sub 
 Var lat0=lat,lng0=lng
@@ -11072,6 +11167,7 @@ For k=1 To nway2
    	  If Abs(iwaynode(k))>1 Then
    			If ij<>0 Then getlocktown(0)	
     			getlocktown(ij)
+    			If waytheight(k)<>100 Then naddbuild+=1
     			addtownwaynode(ij,k)
    			freelocktown(ij)
    			If ij<>0 Then freelocktown(0)	
@@ -11146,6 +11242,7 @@ End Sub
 Sub updatewaysn()
 Dim As Integer i,j,k,n,p,di,dj
 Dim As Single x,y,z,h,dx,dy
+naddbuild=0
 If nway2<1 Then Exit Sub   
 If quit2=1 Or tquitweb=1 Then Exit Sub  
 Var lat0=lat,lng0=lng
@@ -11182,6 +11279,7 @@ For k=1 To nway2
    	If iwaynode(k)>1 Then
    			If ij<>0 Then getlocktown(0)	
    			getlocktown(ij)
+   			If waytheight(k)<>100 Then naddbuild+=1
    			addtownwaynode(ij,k)
    			freelocktown(ij)
    			If ij<>0 Then freelocktown(0)	

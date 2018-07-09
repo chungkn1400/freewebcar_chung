@@ -1628,6 +1628,7 @@ Declare Sub resetmxweb()
 Declare Sub resettownwaynode()
 Declare Sub resettownwaynode2()
 Declare Sub resetfuel()
+Dim Shared As Integer naddbuild
 Sub subresettown()
 Dim As String resp
 guiconfirm("reset town ?","confirm",resp)
@@ -16182,10 +16183,10 @@ EndIf 'planet
        
         If auxtest<0.1 And Timer<timehelp+120 Then
         	  drawhelp()
-        Else  
-        	  gldrawtext("boeing="+Str(nboeing00-ncessna-nfokker),10,350,1)
-        	  gldrawtext("fokker="+Str(nfokker),10,370,1)
-        	  gldrawtext("cessna="+Str(ncessna),10,390,1)
+        ElseIf nboeing2>0 Then   
+        	  gldrawtext("boeing="+Str(nboeing00-ncessna-nfokker),10,370,1)
+        	  gldrawtext("fokker="+Str(nfokker),10,390,1)
+        	  gldrawtext("cessna="+Str(ncessna),10,410,1)
         EndIf
         Var vv=min(v*3,Sqr((xkm-mx)*(xkm-mx)+(ykm-my)*(ykm-my)+(zkm-mz)*(zkm-mz))*fps/15)'/25
         If (xkm-mx)*cos1+(ykm-my)*sin1>0 Then vv=-vv
@@ -16260,6 +16261,7 @@ EndIf 'planet
         	   glcolor3f(1,0,0.6):gldrawtext("QZSD = head",10,290,1)
         EndIf
         gldrawtext("ways="+Str(mynways)+" nodes="+Str(mynnodes),10,330,1)
+        gldrawtext("build="+Str(naddbuild),10,350,1)
       EndIf 
         'auxvar=myhttplock+0.1:auxtest=0.2
         If (itime Mod 10)=0 Then
