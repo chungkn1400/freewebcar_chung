@@ -14334,6 +14334,8 @@ If plane>0 Or testztop=1 Then
  	tdist20=1
  	If tautopilot=0 And plane>0 Then
  		If Abs(tlayer)<0.4 And mytestbridge=0 Then testcrash()
+ 	Else 	
+ 		If Abs(tlayer)<0.4 And mytestbridge=0 Then timecollide=time2+4
  	EndIf
  EndIf 	
 EndIf 

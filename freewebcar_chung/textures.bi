@@ -7952,7 +7952,7 @@ For ij=1 To ntown2
 	getlocktown(ij)
 	For i=1 To ntownnode
 		ttsetterrain(ij,i)=0
- 		townwaynodez(ij,i)=-999999
+ 		'townwaynodez(ij,i)=-999999
 	Next
 	freelocktown(ij)
 Next
@@ -8658,7 +8658,13 @@ EndIf
      Else  
       z0=setterrainheight(pxx,pyy,xco1,xsi1,trunway)+h
       z1=z0
-      If trunway=1 And (jj And 1)=0 Then settestroad(pxx,pyy,4)
+      If trunway=1 And (jj And 1)=0 Then
+      	settestroad(pxx,pyy,9)'4)
+      ElseIf r>1.7*30 Then  	
+      	settestroad(pxx,pyy,1)
+      Else 	
+      	settestroad(pxx,pyy,0)
+      EndIf
      EndIf
      If layer<>0 Then
      	  Var dzlayer=zlayer
@@ -10691,8 +10697,9 @@ Dim As Integer i,j,k,n,p
  		  Var y=townwaynodey(ij,i,1)
  		  If Abs(y-my)>d50000 And waynodebuild<>100  Then Continue For
  		  Var z=townwaynodez(ij,i)
- 		  If (z<-99990 And tupdateterrain=0) Or tupdatetown=1 Then
+ 		  If ((z<-99990 Or ttsetterrain(ij,i)=0) And tupdateterrain=0) Or tupdatetown=1 Then
  		  	z=getterrainheight(x,y):townwaynodez(ij,i)=z
+ 		  	ttsetterrain(ij,i)=1
  		  EndIf
  		  If z<-99990 And waynodebuild<>100 Then Continue For 
  		  townzsol=z
