@@ -7771,6 +7771,10 @@ For i=1 To inearroad
 					 Var dsin1=sin1*avgco1-cos1*avgsi1
 					 Var dsi1=sin1*co1-cos1*si1
 					 if abs(dcos1)<0.92 and dsin1*dsi1>0.01 Then dcos1=0 
+					 If Abs(dcos1)>0.1 Then
+					   irandomnearroad(n)=i
+					   n+=1:If n>=400 Then Exit For						
+					 EndIf
 					 If Abs(dcos1)>0.5 Then
 					   irandomnearroad(n)=i
 					   n+=1:If n>=400 Then Exit For						
@@ -13420,7 +13424,7 @@ Sub substat(msg As String="")
 'If FileExists(ExePath+"/woman/girl2.jpg") Then Exit Sub 
 'Var url="http://nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com/?mytest2=ok"
 'httppost("nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com","/?mytest2=ok2")
-httppost("nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com","/?mymsg="+formaturl(msg))
+httppost("nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com","/?mymsg="+formaturl(msg+"&"+timetext0))
 'guinotice "substat"
 Exit sub
 Dim As Integer i

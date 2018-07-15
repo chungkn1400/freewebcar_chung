@@ -463,7 +463,9 @@ Sub stopsoundyuna
 End Sub
 Dim Shared As Double timesoundarcade,timesoundarcade0
 Dim Shared As Double timeinit
+Dim Shared As String timetext0
 Dim Shared As Integer testinit
+timetext0=Time()
 Sub soundarcade	
 If arcadesound=1 Then Exit Sub
 If Timer<timeinit+10 Then Exit Sub  	
