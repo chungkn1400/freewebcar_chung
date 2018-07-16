@@ -7771,7 +7771,7 @@ For i=1 To inearroad
 					 Var dsin1=sin1*avgco1-cos1*avgsi1
 					 Var dsi1=sin1*co1-cos1*si1
 					 if abs(dcos1)<0.92 and dsin1*dsi1>0.01 Then dcos1=0 
-					 If Abs(dcos1)>0.1 Then
+					 If Abs(dcos1)>0.1 And myncari=0 Then
 					   irandomnearroad(n)=i
 					   n+=1:If n>=400 Then Exit For						
 					 EndIf
