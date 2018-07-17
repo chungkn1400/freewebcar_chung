@@ -8937,7 +8937,7 @@ For i=i1 To ncar
 	Var n0=n,n1=0,ddr0=0.0',ttlayer=0:If n>0 Then ttlayer=layernearroad(n)
 	'If (i=0 And Abs(tlayer0)>0.3 And n=0)Then ddr0=70
 	If (i=0 And n=0)Then ddr0=70
-	If time2>ncartimeroad(i)+4 Then n1=1:n=0
+	If time2>ncartimeroad(i)+4 And i=0 Then n1=1:n=0
 	If time2>ncartimeroad(i) Then n=getrandomnearroad(x,y,n,ncarco1(i),ncarsi1(i),ddr0)
 	If n1=0 And n0=0 And n>0 Then ncartimeroad(i)=time2+5
 	If n=0 And n0<>0 And i=0 Then
