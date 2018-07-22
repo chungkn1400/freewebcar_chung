@@ -58,3 +58,10 @@ you can also press the R(radio) key to listen to one random song.
 
 autopilot0 => dont care of oneways
 autoplilot => care about oneways
+
+
+
+realtime air traffic (jet,turbo,piston) added from https://www.adsbexchange.com/virtualradar/
+
+ctrl+F5 => save to .obj file (near buildings) in /export/ folder
+

@@ -18177,6 +18177,153 @@ Dim Shared As Single latreverse,lngreverse,latreversei(nreverse),lngreversei(nre
 Dim Shared As string namereversei(nreverse)
 'Dim Shared As ZString*31 myztext30
 Dim Shared As ZString*41 myztext40
+Sub saveobj(ByRef fic As String)
+Dim As Integer file,i,j,k,a,b,c,ii,jj,ivertice,ivertice0,itexture,itexture0,iface,iface0
+Dim As Single x,y,z,xx,yy,zz,u,v,uu,vv,maxx,maxy,minx,miny
+file=FreeFile
+Open fic For Output As #file
+Print #file,"#freewebcar_chung"
+ivertice=0
+itexture=0
+ivertice0=-2
+itexture0=-2	
+iface=0
+Var maxiface=50000,distmax=4400.0
+For i=0 To ntown2
+	If townnwaynode(i)<1 Then Continue For  
+	For ii=1 To min2(ntownnode,townnwaynode(i))
+		 If iface>=maxiface Then Exit For 
+	    If townwaynodeid(i,ii)=0 Then Continue For 
+		 Var typeway=townwaynodebuild(i,ii)
+		 If typeway=100 Then Continue For'road
+		 Var ni=min2(nwaynode,towniwaynode(i,ii))
+		 If ni<2 Then Continue For 
+		 Var test=0
+		 maxx=-999999:maxy=-999999:minx=999999:miny=999999
+		 For j=1 To ni
+		   x=townwaynodex(i,ii,j)-mx
+		   y=townwaynodey(i,ii,j)-my
+		 	maxx=max(maxx,x)
+		 	maxy=max(maxy,y)
+		 	minx=min(minx,x)
+		 	miny=min(miny,y)		 	
+ 		 	If max(Abs(x),Abs(y))<distmax Then
+		 		test=1
+		 	EndIf
+		 Next
+		 If test=0 Then Continue For 
+		 If max(maxx-minx,maxy-miny)>5000 Then Continue For 
+       Var h=max(20.0,townwaynodeh(i,ii)),hmin=0.0
+       If h>4000 Then
+		         hmin=Int(h/4000):h=h-4000*hmin
+       EndIf
+		 'h=200.0'townwaynodeh(i,ii)
+       h=setbuildh(h)
+		 z=0'townwaynodez(i,ii)
+		 ivertice0=ivertice
+		 itexture0=itexture
+		 u=0:v=h*0.02
+		 jj=1
+		 x=townwaynodex(i,ii,jj)-mx
+		 y=townwaynodey(i,ii,jj)-my
+       Print #file,"o build"+Str(townwaynodeid(i,ii))
+		 For jj=1 To min2(nwaynode,towniwaynode(i,ii))
+		 	If iface>=maxiface Then Exit For 
+		 	xx=x:yy=y
+		 	x=townwaynodex(i,ii,jj)-mx
+		 	y=townwaynodey(i,ii,jj)-my
+         u+=Sqr((xx-x)*(xx-x)+(yy-y)*(yy-y))*0.02
+         Print #file,"v "+Str(x)+" "+Str(y)+" "+Str(z)
+         ivertice+=1
+         Print #file,"vt "+Str(u)+" "+Str(0)
+         itexture+=1
+         Print #file,"v "+Str(x)+" "+Str(y)+" "+Str(z+h)
+         ivertice+=1
+         Print #file,"vt "+Str(u)+" "+Str(v)
+         u+=Sqr((xx-x)*(xx-x)+(yy-y)*(yy-y))*0.02
+         itexture+=1
+		 	If ivertice>ivertice0+2 Then
+            a=ivertice-3:c=ivertice-2:b=ivertice-1
+            Print #file,"f "+Str(a)+"/"+Str(a)+" "+Str(b)+"/"+Str(b)+" "+Str(c)+"/"+Str(c)			      		
+				iface+=1
+            a=ivertice-2:c=ivertice:b=ivertice-1
+            Print #file,"f "+Str(a)+"/"+Str(a)+" "+Str(b)+"/"+Str(b)+" "+Str(c)+"/"+Str(c)			      		
+				iface+=1
+		 	EndIf		 	
+		 Next
+		 Var midx=(maxx+minx)*0.5
+		 Var midy=(maxy+miny)*0.5
+		 Var dh=min(30.0,(maxx-minx+maxy-miny)*0.5*0.18)
+       Print #file,"v "+Str(midx)+" "+Str(midy)+" "+Str(z+h+dh)
+       ivertice+=1
+       Print #file,"vt "+Str(0.0)+" "+Str(1.0)
+       itexture+=1
+       Var ivertice1=ivertice
+       Var itexture1=itexture
+		 ivertice=ivertice0
+		 itexture=itexture0
+		 u=0:v=1'h*0.03
+		 jj=1
+		 x=townwaynodex(i,ii,jj)-mx
+		 y=townwaynodey(i,ii,jj)-my
+		 For jj=1 To min2(nwaynode,towniwaynode(i,ii))
+		 	If iface>=maxiface Then Exit For 
+		 	xx=x:yy=y
+		 	x=townwaynodex(i,ii,jj)-mx
+		 	y=townwaynodey(i,ii,jj)-my
+         'u+=Sqr((xx-x)*(xx-x)+(yy-y)*(yy-y))*0.03
+         'Print #file,"v "+Str(x)+" "+Str(y)+" "+Str(z)
+         ivertice+=1
+         'Print #file,"vt "+Str(u)+" "+Str(0)
+         itexture+=1
+         'Print #file,"v "+Str(x)+" "+Str(y)+" "+Str(z+h)
+         ivertice+=1
+         'Print #file,"vt "+Str(u)+" "+Str(v)
+         'u+=Sqr((xx-x)*(xx-x)+(yy-y)*(yy-y))*0.03
+         itexture+=1
+		 	If ivertice>ivertice0+2 Then
+            'a=ivertice-3:b=ivertice-2:c=ivertice-1
+            'Print #file,"f "+Str(a)+"/"+Str(a)+" "+Str(b)+"/"+Str(b)+" "+Str(c)+"/"+Str(c)			      		
+				'iface+=1
+            a=ivertice-2:b=ivertice:c=ivertice1
+            Var c1=itexture1
+            Print #file,"f "+Str(a)+"/"+Str(c1)+" "+Str(b)+"/"+Str(c1)+" "+Str(c)+"/"+Str(c)			      		
+				iface+=1
+		 	EndIf		 	
+		 Next '/
+		 ivertice=ivertice1
+		 itexture=itexture1
+	Next
+Next 		  
+Close #file
+'guinotice Str(maxx-minx)
+Var msg="nvertice="+Str(ivertice)+"  ntexture="+Str(itexture)+"  nface="+Str(iface)
+guinotice msg 	
+End Sub
+Sub subsaveobj
+Dim As String fic,dir0,resp
+Dim As Integer ret
+tquitweb=1
+If waitbusy()=0 Then tquitweb=0:Exit Sub
+tquitweb=0
+tloadwebtext2=2  
+dir0=CurDir  
+ChDir(ExePath+"\export\")  
+fic=filedialog("save as .obj","*.obj")
+fic=Trim(fic)
+ChDir(dir0)
+If InStr(fic,".")=0 And fic<>"" Then fic=fic+".obj"
+If LCase(Right(fic,4))=".obj" Then 
+	guiconfirm("save in "+fic+" ?","confirm",resp)
+	If resp="yes" Then
+		saveobj(fic)
+		guinotice "obj saved !"
+	EndIf
+EndIf
+ret=ChDir(dir0)	
+tloadwebtext2=0
+Sleep 300  
+End Sub
 Sub savetowpxy3(fic0 As String="")
 Dim As Integer i,j,File,ii,jj
 Dim As String fic
@@ -21512,7 +21659,7 @@ EndIf
 Dim As String msg,resp,cr=Chr(13)+Chr(10)
 msg="F1 => help   /  escape => quit"+cr
 msg+="F9 => window/fullscreen / P => pause/autopilot(car)"+cr
-msg+="F3 => change time of day  / F4 => change stars"+cr
+msg+="F3 => change time of day  /  ctrl+F5 => save as .obj"+cr'F4 => change stars"+cr
 msg+="J,K  => prev/next wheel/cockpit (show/hide)"+cr
 msg+="T  => tourelle view (on/off) /  F => foot/car/plane"+cr
 msg+="pageup ,num+, N => accelere / lookup"+cr
@@ -22278,6 +22425,7 @@ mz11=-999999
         	   EndIf
         	   'If guitestkey(vk_f12)<>0 Then submapworld()
         	   'If guitestkey(vk_f4)<>0 Then substars()
+        	   If guitestkey(vk_f5) And guitestkey(vk_control) Then subsaveobj()
         	   If guitestkey(vk_m)<>0 And guitestkey(vk_shift)=0 And guitestkey(vk_control)=0 And imap>=4 Then
         	   	testweb=1
         	   	If testworld=0 Then

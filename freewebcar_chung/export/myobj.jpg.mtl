@@ -1,0 +1,24 @@
+﻿# myobj.jpg.mtl
+# Material Count: 1
+newmtl myobj.jpg
+Ns 99.156863
+Ka 0.000000 0.000000 0.000000
+Kd 0.990000 0.990000 0.990000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd myobj.jpg
+
+#Le "#" spécifie une ligne de commentaires
+#"newmtl" indique le début d'un nouveau matériel
+#"Ka" nous donne la couleur ambiante (la couleur de l'objet sans lumière directe), RVB entre 0 (Min) et 1 (Max)
+#"Kd" est utilisé pour la couleur diffuse (la couleur de l'objet sous lumière blanche)
+#"Ks" pour la couleur spéculaire (specular)
+#"Ke" pour la couleur émissive (emissive)
+#"Ni" pour la densité optique
+#"Ns" pour le specular exponent entre 0 et 100
+#"d" pour la transparence entre 0 et 1 (aucune transparence)
+#"illum" pour les paramètres de lumières
+#"map_kd" (ks, ka) pour la texture utilisé diffuse (specular, ambiante)
+
