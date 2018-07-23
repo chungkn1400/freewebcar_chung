@@ -18212,7 +18212,7 @@ For i=0 To ntown2
 		 	EndIf
 		 Next
 		 If test=0 Then Continue For 
-		 If max(maxx-minx,maxy-miny)>5000 Then auxtest=0.2:Continue For 
+		 If max(maxx-minx,maxy-miny)>5000 Then Continue For 
        Var h=max(20.0,townwaynodeh(i,ii)),hmin=0.0
        If h>4000 Then
 		         hmin=Int(h/4000):h=h-4000*hmin
