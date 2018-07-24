@@ -18179,7 +18179,7 @@ Dim Shared As string namereversei(nreverse)
 Dim Shared As ZString*41 myztext40
 Dim Shared As Integer tsaveobj
 Sub saveobj(ByRef fic As String)
-Dim As Integer file,i,j,k,a,b,c,ii,jj,ivertice,ivertice0,itexture,itexture0,iface,iface0
+Dim As Integer file,i,j,k,a,b,c,ii,jj,n,ivertice,ivertice0,itexture,itexture0,iface,iface0
 Dim As Single x,y,z,xx,yy,zz,u,v,uu,vv,maxx,maxy,minx,miny
 Var maxiface=50000,distmax=4400.0
 resp=Str(maxiface)
@@ -18234,6 +18234,142 @@ For i=0 To ntown2
 		 'h=200.0'townwaynodeh(i,ii)
        h=setbuildh(h)
 		 z=0'townwaynodez(i,ii)
+Var i40=0
+If kmxlat>10 And detail40=1 Then i40=towni40(i,ii)
+If i40>0 Then
+  If townixy40(i40)>nwaynode then	
+	 'drawbuildingnode40(ij,i,dist,r,g,b)
+    Var ixy=townixy40(i40)
+    If ixy<2 Then Continue For  
+    n=min2(ixy,n40)
+		 ivertice0=ivertice+1
+		 itexture0=itexture+1
+		 u=0:v=h*0.02
+		 jj=1
+		 x=townx40(i40,jj)-mx
+		 y=towny40(i40,jj)-my
+		 Var x0=x,y0=y
+       Print #file,"o build"+Str(townwaynodeid(i,ii))
+		 For jj=1 To n
+		 	If iface>=maxiface Then Exit For 
+		 	xx=x:yy=y
+		 	x=townx40(i40,jj)-mx
+		 	y=towny40(i40,jj)-my
+         u+=Sqr((xx-x)*(xx-x)+(yy-y)*(yy-y))*0.02
+         Print #file,"v "+Str(x)+" "+Str(y)+" "+Str(z)
+         ivertice+=1
+         Print #file,"vt "+Str(u)+" "+Str(0)
+         itexture+=1
+         Print #file,"v "+Str(x)+" "+Str(y)+" "+Str(z+h)
+         ivertice+=1
+         Print #file,"vt "+Str(u)+" "+Str(v)
+         u+=Sqr((xx-x)*(xx-x)+(yy-y)*(yy-y))*0.02
+         itexture+=1
+		 	If ivertice>ivertice0+1 Then
+            a=ivertice-3:c=ivertice-2:b=ivertice-1
+            Print #file,"f "+Str(a)+"/"+Str(a)+" "+Str(b)+"/"+Str(b)+" "+Str(c)+"/"+Str(c)			      		
+				iface+=1
+            a=ivertice-2:c=ivertice:b=ivertice-1
+            Print #file,"f "+Str(a)+"/"+Str(a)+" "+Str(b)+"/"+Str(b)+" "+Str(c)+"/"+Str(c)			      		
+				iface+=1
+		 	EndIf		 	
+		 Next
+		 Var testlast=0
+		 If max(Abs(x-x0),Abs(y-y0))>0.1 Then 
+		 	testlast=1
+		 	xx=x:yy=y
+		 	x=x0
+		 	y=y0
+         u+=Sqr((xx-x)*(xx-x)+(yy-y)*(yy-y))*0.02
+         Print #file,"v "+Str(x)+" "+Str(y)+" "+Str(z)
+         ivertice+=1
+         Print #file,"vt "+Str(u)+" "+Str(0)
+         itexture+=1
+         Print #file,"v "+Str(x)+" "+Str(y)+" "+Str(z+h)
+         ivertice+=1
+         Print #file,"vt "+Str(u)+" "+Str(v)
+         u+=Sqr((xx-x)*(xx-x)+(yy-y)*(yy-y))*0.02
+         itexture+=1
+		 	If ivertice>ivertice0+1 Then
+            a=ivertice-3:c=ivertice-2:b=ivertice-1
+            Print #file,"f "+Str(a)+"/"+Str(a)+" "+Str(b)+"/"+Str(b)+" "+Str(c)+"/"+Str(c)			      		
+				iface+=1
+            a=ivertice-2:c=ivertice:b=ivertice-1
+            Print #file,"f "+Str(a)+"/"+Str(a)+" "+Str(b)+"/"+Str(b)+" "+Str(c)+"/"+Str(c)			      		
+				iface+=1
+		 	EndIf		 	
+		 EndIf 
+		 Var midx=(maxx+minx)*0.5
+		 Var midy=(maxy+miny)*0.5
+		 Var sizei=(maxx-minx+maxy-miny)*0.5
+		 Var dh=min(30.0,sizei*0.18)
+       If (h>800) Then dh=0
+       Print #file,"v "+Str(midx)+" "+Str(midy)+" "+Str(z+h+dh)
+       ivertice+=1
+       Print #file,"vt "+Str(0.0)+" "+Str(1.0)
+       itexture+=1
+       Var ivertice1=ivertice
+       Var itexture1=itexture
+		 ivertice=ivertice0-1
+		 itexture=itexture0-1
+		 u=0:v=1'h*0.03
+		 jj=1
+		 'x=townwaynodex(i,ii,jj)-mx
+		 'y=townwaynodey(i,ii,jj)-my
+		 For jj=1 To n
+		 	If iface>=maxiface Then Exit For 
+		 	'xx=x:yy=y
+		 	'x=townwaynodex(i,ii,jj)-mx
+		 	'y=townwaynodey(i,ii,jj)-my
+         'u+=Sqr((xx-x)*(xx-x)+(yy-y)*(yy-y))*0.03
+         'Print #file,"v "+Str(x)+" "+Str(y)+" "+Str(z)
+         ivertice+=1
+         'Print #file,"vt "+Str(u)+" "+Str(0)
+         itexture+=1
+         'Print #file,"v "+Str(x)+" "+Str(y)+" "+Str(z+h)
+         ivertice+=1
+         'Print #file,"vt "+Str(u)+" "+Str(v)
+         'u+=Sqr((xx-x)*(xx-x)+(yy-y)*(yy-y))*0.03
+         itexture+=1
+		 	If ivertice>ivertice0+1 Then
+            'a=ivertice-3:b=ivertice-2:c=ivertice-1
+            'Print #file,"f "+Str(a)+"/"+Str(a)+" "+Str(b)+"/"+Str(b)+" "+Str(c)+"/"+Str(c)			      		
+				'iface+=1
+            a=ivertice-2:b=ivertice:c=ivertice1
+            Var c1=itexture1
+            Print #file,"f "+Str(a)+"/"+Str(c1)+" "+Str(b)+"/"+Str(c1)+" "+Str(c)+"/"+Str(c)			      		
+				iface+=1
+		 	EndIf		 	
+		 Next '/
+		 If testlast=1 Then 
+		 	'xx=x:yy=y
+		 	'x=x0
+		 	'y=y0
+         'u+=Sqr((xx-x)*(xx-x)+(yy-y)*(yy-y))*0.02
+         'Print #file,"v "+Str(x)+" "+Str(y)+" "+Str(z)
+         ivertice+=1
+         'Print #file,"vt "+Str(u)+" "+Str(0)
+         itexture+=1
+         'Print #file,"v "+Str(x)+" "+Str(y)+" "+Str(z+h)
+         ivertice+=1
+         'Print #file,"vt "+Str(u)+" "+Str(v)
+         'u+=Sqr((xx-x)*(xx-x)+(yy-y)*(yy-y))*0.02
+         itexture+=1
+		 	If ivertice>ivertice0+1 Then
+            'a=ivertice-3:c=ivertice-2:b=ivertice-1
+            'Print #file,"f "+Str(a)+"/"+Str(a)+" "+Str(b)+"/"+Str(b)+" "+Str(c)+"/"+Str(c)			      		
+				'iface+=1
+            a=ivertice-2:b=ivertice:c=ivertice1
+            Var c1=itexture1
+            Print #file,"f "+Str(a)+"/"+Str(c1)+" "+Str(b)+"/"+Str(c1)+" "+Str(c)+"/"+Str(c)			      		
+				iface+=1
+		 	EndIf		 	
+		 EndIf 
+		 ivertice=ivertice1
+		 itexture=itexture1
+	 Continue For 
+  EndIf 
+EndIf
 		 ivertice0=ivertice+1
 		 itexture0=itexture+1
 		 u=0:v=h*0.02
@@ -18293,7 +18429,9 @@ For i=0 To ntown2
 		 EndIf 
 		 Var midx=(maxx+minx)*0.5
 		 Var midy=(maxy+miny)*0.5
-		 Var dh=min(30.0,(maxx-minx+maxy-miny)*0.5*0.18)
+		 Var sizei=(maxx-minx+maxy-miny)*0.5
+		 Var dh=min(30.0,sizei*0.18)
+       If (h>800) Then dh=0
        Print #file,"v "+Str(midx)+" "+Str(midy)+" "+Str(z+h+dh)
        ivertice+=1
        Print #file,"vt "+Str(0.0)+" "+Str(1.0)
