@@ -18367,6 +18367,14 @@ If LCase(Right(fic,4))=".obj" Then
 	guiconfirm("save in "+fic+" ?","confirm",resp)
 	If resp="yes" Then
 		saveobj(fic)
+		If FileExists(ExePath+"/export/myobj.jpg") Then
+			Var ficjpg=Left(fic,Len(fic)-4)+".jpg"
+			If FileExists(ficjpg)=0 Then
+				FileCopy ExePath+"/export/myobj.jpg",ficjpg
+			EndIf
+		Else
+			guinotice "cant find /export/myobj.jpg !"
+		EndIf
 		guinotice "obj saved !"
 	EndIf
 EndIf
