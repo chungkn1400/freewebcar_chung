@@ -18177,9 +18177,24 @@ Dim Shared As Single latreverse,lngreverse,latreversei(nreverse),lngreversei(nre
 Dim Shared As string namereversei(nreverse)
 'Dim Shared As ZString*31 myztext30
 Dim Shared As ZString*41 myztext40
+Dim Shared As Integer tsaveobj
 Sub saveobj(ByRef fic As String)
 Dim As Integer file,i,j,k,a,b,c,ii,jj,ivertice,ivertice0,itexture,itexture0,iface,iface0
 Dim As Single x,y,z,xx,yy,zz,u,v,uu,vv,maxx,maxy,minx,miny
+Var maxiface=50000,distmax=4400.0
+resp=Str(maxiface)
+msg="max number of faces : enter a number (10000.."+Str(199000)+")  last="+Str(maxiface)
+prompt(msg,resp)
+i=Val(resp)
+maxiface=max2(10000,min2(199000,i))
+resp=Str(distmax)
+msg="distmax range : enter a number (1000.."+Str(40000)+")  last="+Str(distmax)
+prompt(msg,resp)
+x=Val(resp)
+distmax=max(1000.0,min(40000.0,x))
+guiconfirm("maxfaces="+Str(maxiface)+"  distmax="+Str(distmax),"confirm",resp)
+If resp<>"yes" Then Exit Sub 
+tsaveobj=1
 file=FreeFile
 Open fic For Output As #file
 Print #file,"#freewebcar_chung"
@@ -18188,7 +18203,6 @@ itexture=0
 ivertice0=-2
 itexture0=-2	
 iface=0
-Var maxiface=50000,distmax=4400.0
 For i=0 To ntown2
 	If townnwaynode(i)<1 Then Continue For  
 	For ii=1 To min2(ntownnode,townnwaynode(i))
@@ -18366,16 +18380,19 @@ If InStr(fic,".")=0 And fic<>"" Then fic=fic+".obj"
 If LCase(Right(fic,4))=".obj" Then 
 	guiconfirm("save in "+fic+" ?","confirm",resp)
 	If resp="yes" Then
+		tsaveobj=0
 		saveobj(fic)
-		If FileExists(ExePath+"/export/myobj.jpg") Then
+		If tsaveobj=1 Then 
+		 If FileExists(ExePath+"/export/myobj.jpg") Then
 			Var ficjpg=Left(fic,Len(fic)-4)+".jpg"
 			If FileExists(ficjpg)=0 Then
 				FileCopy ExePath+"/export/myobj.jpg",ficjpg
 			EndIf
-		Else
+		 Else
 			guinotice "cant find /export/myobj.jpg !"
-		EndIf
-		guinotice "obj saved !"
+		 EndIf
+		 guinotice "obj saved !"
+		EndIf  
 	EndIf
 EndIf
 ret=ChDir(dir0)	
