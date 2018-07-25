@@ -15111,10 +15111,11 @@ EndIf
     If prop>999 Then v=max(prop/1000.0,v)
     
 If car>=1 And plane>0 And suspension>0.01 Then 'suspensions 
+ Var ksuspension=0.7
  vm20=vm2
  vm2=vmx2*cos1+vmy2*sin1
  'o2+=(vm2-vm20)*8*suspension/(0.02+kfps/2)'*5*
- o2+=(vm2-vm20)*8*suspension/(0.02+kfps/2)'*5*
+ o2+=(vm2-vm20)*8*suspension*ksuspension/(0.02+kfps/2)'*5*
  do222+=(o2-o222)*0.08*kfps-0.035*do222*kfps*ko222 '0.04*kfps-0.062*
  o222+=do222*0.3*kfps
  do333+=(o3-o333)*0.08*kfps-0.04*do333*kfps*ko222 '0.04*kfps-0.062*
