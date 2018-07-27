@@ -317,6 +317,11 @@ For i=0 To 4
 	seagulltext(i)=guiloadtexture(ExePath+"/media/seagull/seagull"+Str(i+1)+".jpg",250)
 Next
 initseagull()
+For i=-screen20 To screen20
+	For j=-screen10 To screen10
+	  screentext(i,j)=guiloadtexture(ExePath+"/media/spot.jpg")		
+	Next
+Next
 End Sub 
 Sub loadtextures(itext As uint Ptr)
 If itext=@webtext Then *(itext)=guiloadtexture("media/road.jpg") 
@@ -10738,6 +10743,7 @@ Dim As Integer i,j,k,n,p
         '	  	  'kdistterrain=kdistterrainsave*5
         '	  EndIf
         'EndIf 
+        'If waynodebuild=100 And mz>mzsol00+600 And fpsmoy<15 Then Continue For 
         Var hh=townwaynodeh(ij,i)
         If hh>4000 And waynodebuild<>100 Then'and waynodebuild=4
         	  Var hmin=Int(hh/4000):hh=unpack(hh-4000*hmin)':hmin=unpack(hmin)
@@ -10801,6 +10807,8 @@ Dim As Integer i,j,k,n,p
            	  trunway=1
            ElseIf r>2.5*30 Then
            	  tmainway=1
+           ElseIf mz>mzsol00+600 And fpsmoy<15 Then
+           	  Continue For 
            EndIf 	  
            Var hhh=0.0
            If mz>mzsol00+7000 then hhh=1.7*30

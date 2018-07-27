@@ -5405,6 +5405,8 @@ Sub drawgrillon
 	EndIf
 End Sub
 Dim Shared As uint drawbuildtext0
+dim shared as integer tscreentext
+Declare Sub drawscreentext()
 Sub drawtownnodes()
 Dim As Integer i,ii,jj,ix,jx
 Dim As Single h,x,y,z,r
@@ -5616,6 +5618,7 @@ If taglcompile2=1 Then
 	If taglcompile20=0 Then
 		tcompile=2
       glnewlist agllist,gl_compile_and_execute
+      'tscreentext=0
 	Else
 		taglcompile20=0
       glnewlist agllist2,gl_compile
@@ -5745,7 +5748,11 @@ If taglcompile2=1 Or tcompile>0 Then
 	glendlist()
 EndIf 
 If agllist<>0 And tcompile<>2 Then'taglcompile2<>1 Then
-	glcalllist(agllist)    
+	'If tscreentext=2 Then
+	'	drawscreentext()
+	'Else 	
+		glcalllist(agllist)    
+	'EndIf
 EndIf
 
 /'If taglcompile=19999 then
@@ -14140,6 +14147,134 @@ Next
 If teststenciltop<xmax*0.02 Then teststenciltop=0
 auxvar6=teststenciltop+0.1:auxtest=0.8
 End Sub
+'Const As Integer screen20=16,screen10=8
+Const As Integer screen20=1,screen10=1
+Dim Shared As Double timescreentext
+Dim Shared As uint screentext(-screen20 To screen20,-screen10 To screen10)
+Dim Shared As Single screenz(-screen20 To screen20,-screen10 To screen10)
+Dim Shared As Single screenx(-screen20 To screen20,-screen10 To screen10)
+Dim Shared As Single screeny(-screen20 To screen20,-screen10 To screen10)
+Dim Shared As Single screendz(-screen20 To screen20,-screen10 To screen10)
+Dim Shared As Single screendx(-screen20 To screen20,-screen10 To screen10)
+Dim Shared As Single screendy(-screen20 To screen20,-screen10 To screen10)
+Dim Shared As Single screendz1(-screen20 To screen20,-screen10 To screen10)
+Dim Shared As Single screendx1(-screen20 To screen20,-screen10 To screen10)
+Dim Shared As Single screendy1(-screen20 To screen20,-screen10 To screen10)
+Sub drawscreentext()
+Dim As Integer i,j,k,s64=128\2
+Dim As Single x0,y0,z0,dx1,dy1,dz1,dx0,dy0,dz0,tx=1
+If tscreentext<>2 Then Exit Sub
+'gldisable gl_depth_test
+gldisable gl_lighting
+gldisable gl_fog
+gldisable gl_blend
+glpushmatrix 
+'Var sc=0.999
+'glscalef(sc,sc,sc)
+For i=-screen20 To screen20-1
+	For j=-screen10 To screen10-1
+      'Var winx = xmax*(0.5-0.5*i/screen20)
+      'Var winy = ymax*(0.5+0.5*j/screen10)
+      'x0=winx'-s64
+      'y0=winy'-s64
+      glbindtexture(gl_texture_2d,screentext(i,j))
+      'glplacecursor(x0,y0*0.99,-40)
+      'gltexcarre4(dx0,dy0)
+      x0=screenx(i,j)
+      y0=screeny(i,j)
+      z0=screenz(i,j)
+      dx0=screendx(i,j)
+      dy0=screendy(i,j)
+      dz0=screendz(i,j)
+      dx1=screendx1(i,j)
+      dy1=screendy1(i,j)
+      dz1=screendz1(i,j)
+	   glbegin(gl_quads)
+	   glTexCoord2f(0,0)
+	   glvertex3f(x0,y0,z0)
+	   gltexcoord2f(tx,0)
+	   glvertex3f(x0+dx0,y0+dy0,z0+dz0)
+	   glTexCoord2f(tx,tx)
+	   glvertex3f(x0+dx0+dx1,y0+dy0+dy1,z0+dz0+dz1)
+	   gltexcoord2f(0,tx)
+	   glvertex3f(x0+dx1,y0+dy1,z0+dz1)
+	   glend()     
+	Next
+Next
+glpopmatrix
+glenable gl_depth_test
+If tdark=1 Then glenable gl_lighting
+If ifog>0 And tdark=0 Then glEnable(GL_FOG)
+End Sub
+Sub getscreentext()
+Dim As Integer i,j,k,s64=128\2
+Dim As Integer x0,y0,dx0,dy0
+If tscreentext<>1 Then Exit Sub
+tscreentext=2
+For i=-screen20 To screen20-1
+	For j=-screen10 To screen10-1
+      Var winx = xmax*(0.5+0.5*i/screen20)
+      Var winy = ymax*(0.5+0.5*j/screen10)
+      x0=winx'-s64
+      y0=winy'-s64
+      dx0=128
+      dy0=128
+      glbindtexture(gl_texture_2d,screentext(i,j))
+      'gltexparameteri(gl_texture_2d,GL_GENERATE_MIPMAP,gl_true)
+      'glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_linear)
+      'glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_linear)'NEAREST)'nomipmap
+      'glcopyTexImage2D(GL_TEXTURE_2D, 0, gl_rgba,0,0,bmpx,bmpx, 0)   
+      glcopyTexSubImage2D(GL_TEXTURE_2D, 0, 0,0, x0,y0,dx0,dy0)
+	Next
+Next 	
+End Sub
+Sub getscreentextz()
+Dim As Integer i,j,k,s128=128
+Dim As integer viewport(4)
+Dim As GLdouble modelview(16) 
+Dim As GLdouble projection(16)
+Dim As glfloat winX, winY, winZ,winz3,winz4
+Dim as GLdouble posX, posY, posZ, posx2,posy2,posz2, posx3,posy3,posz3, posx4,posy4,posz4
+Dim As GLdouble posx20,posy20,posz20,posx21,posy21,posz21
+glGetDoublev( GL_MODELVIEW_MATRIX, @modelview(0) )
+glGetDoublev( GL_PROJECTION_MATRIX, @projection(0) )
+glGetIntegerv( GL_VIEWPORT, @viewport(0) )
+tscreentext=1
+timescreentext=time2
+Var si2=sin2,co1=cos1,si1=sin1
+If tourelle=1 Then
+	si2=tsin2:co1=tcos1:si1=tsin1
+EndIf
+For i=-screen20 To screen20-1
+	For j=-screen10 To screen10-1
+     winx = xmax*(0.5+0.5*i/screen20)
+     winy = ymax*(0.5+0.5*j/screen10)
+     glReadPixels( winx,winy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, @winZ )
+     gluUnProject(winX,winY,winz,@modelview(0),@projection(0),@viewport(0),@posX,@posY,@posZ) 
+     screenz(i,j)=posz  
+     screenx(i,j)=posx  
+     screeny(i,j)=posy 
+     winx+=128
+     gluUnProject(winX,winY,winz,@modelview(0),@projection(0),@viewport(0),@posX2,@posY2,@posZ2) 
+     screendz(i,j)=posz2-posz'+si2  
+     screendx(i,j)=posx2-posx'+co1  
+     screendy(i,j)=posy2-posy'+si1
+     winx-=128
+     winy+=128 
+     gluUnProject(winX,winY,winz,@modelview(0),@projection(0),@viewport(0),@posX2,@posY2,@posZ2) 
+     screendz1(i,j)=posz2-posz'+si2  
+     screendx1(i,j)=posx2-posx'+co1  
+     screendy1(i,j)=posy2-posy'+si1
+     Var kx=1.01
+     screendx(i,j)*=kx 
+     screendy(i,j)*=kx 
+     screendz(i,j)*=kx 
+     screendx1(i,j)*=kx 
+     screendy1(i,j)*=kx 
+     screendz1(i,j)*=kx 
+	Next
+Next
+End Sub
 Dim Shared As Double timepiste,timercollide,timelayeroff,timeroof
 Dim Shared As Single zroof=-999999
 dim shared as Double timeclimb
@@ -14172,6 +14307,7 @@ Else
 EndIf 
 If time2<timercollide+0.1 Then Exit Sub
 timercollide=time2
+'If time2>timescreentext+0.025 And tscreentext=0 Then getscreentextz()
 Var kfps0=kfps,kfps=3.0
 Var tkeyup=0:If guitestkey(vk_up) Or testjoy2 Then tkeyup=1
 If Abs(tlayer)>0.4 Or Abs(mz-mzsol00)>30 Then timelayeroff=time2
@@ -15755,6 +15891,7 @@ EndIf 'planet
 If tsphere=0 And planet=0 Then
     
     drawtowns()
+    'If tscreentext=1 Then getscreentext()
     tupdatetown=0
     getlocktown2(0)   
     If testworld=0 Then
