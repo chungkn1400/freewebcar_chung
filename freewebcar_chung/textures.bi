@@ -317,11 +317,13 @@ For i=0 To 4
 	seagulltext(i)=guiloadtexture(ExePath+"/media/seagull/seagull"+Str(i+1)+".jpg",250)
 Next
 initseagull()
-For i=-screen20 To screen20
-	For j=-screen10 To screen10
-	  screentext(i,j)=guiloadtexture(ExePath+"/media/spot.jpg")		
-	Next
-Next
+If ymax>1024 Then
+	screentext=guiloadtexture(ExePath+"/media/screen2048.jpg")		
+ElseIf xmax>1024 Then  
+   screentext=guiloadtexture(ExePath+"/media/screen1024.jpg")		
+Else    
+   screentext=guiloadtexture(ExePath+"/media/screen1024x1024.jpg")		
+EndIf
 End Sub 
 Sub loadtextures(itext As uint Ptr)
 If itext=@webtext Then *(itext)=guiloadtexture("media/road.jpg") 
@@ -10807,8 +10809,8 @@ Dim As Integer i,j,k,n,p
            	  trunway=1
            ElseIf r>2.5*30 Then
            	  tmainway=1
-           ElseIf mz>mzsol00+600 And fpsmoy<15 Then
-           	  Continue For 
+           'ElseIf mz>mzsol00+600 And fpsmoy<15 Then
+           '	  Continue For 
            EndIf 	  
            Var hhh=0.0
            If mz>mzsol00+7000 then hhh=1.7*30

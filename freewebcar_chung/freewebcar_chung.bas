@@ -5167,7 +5167,7 @@ Sub drawtowns
 If (Timer>tdistterrain+max(0.1,min(0.5,0.15*kfps))) Then
 	tdistterrain=Timer
 	kdistterrain=kdistterrain0
-	If fps<fpsmoy-4 Then fpsmoy=fps+1
+	If fps<fpsmoy-4 Then fpsmoy+=(fps+1-fpsmoy)*0.8
 	Var kk=6.0/max(3.0,minfps) 
 	If fpsmoy<6+dfps And time2>tkdistterrain Then 
 		kdistterrain=max(kk*0.050,kdistterrain*0.4)
@@ -5405,7 +5405,7 @@ Sub drawgrillon
 	EndIf
 End Sub
 Dim Shared As uint drawbuildtext0
-dim shared as integer tscreentext
+dim shared as integer tscreentext,tscreentext2,tscreentext3,tdrawscreen
 Declare Sub drawscreentext()
 Sub drawtownnodes()
 Dim As Integer i,ii,jj,ix,jx
@@ -5616,9 +5616,15 @@ EndIf
 If taglcompile2=1 Then
 	tcompile=1
 	If taglcompile20=0 Then
-		tcompile=2
-      glnewlist agllist,gl_compile_and_execute
-      'tscreentext=0
+		'tcompile=2
+      If tscreentext>=2 Then
+      	glnewlist agllist,gl_compile
+      Else 
+		   tcompile=2
+      	glnewlist agllist,gl_compile_and_execute
+      EndIf
+      tscreentext3=1
+      tscreentext2=min2(-1,tscreentext2)
 	Else
 		taglcompile20=0
       glnewlist agllist2,gl_compile
@@ -5744,15 +5750,21 @@ Next irepeat
 
 EndIf 'tagl
 
+tdrawscreen=0
 If taglcompile2=1 Or tcompile>0 Then
 	glendlist()
-EndIf 
-If agllist<>0 And tcompile<>2 Then'taglcompile2<>1 Then
-	'If tscreentext=2 Then
-	'	drawscreentext()
-	'Else 	
+	If tscreentext>=2 Then tdrawscreen=1:drawscreentext()
+ElseIf agllist<>0 And tcompile<>2 Then'taglcompile2<>1 Then
+	If tscreentext>=2 And tscreentext3<1 Then'And tscreentext<=3 Then
+		drawscreentext()
+		tdrawscreen=1
+		tscreentext+=1
+	Else
+		tscreentext2+=1
+		tscreentext3=0
+		tdrawscreen=2
 		glcalllist(agllist)    
-	'EndIf
+	EndIf
 EndIf
 
 /'If taglcompile=19999 then
@@ -14147,10 +14159,13 @@ Next
 If teststenciltop<xmax*0.02 Then teststenciltop=0
 auxvar6=teststenciltop+0.1:auxtest=0.8
 End Sub
-'Const As Integer screen20=16,screen10=8
-Const As Integer screen20=1,screen10=1
+Const As Integer screen20=50,screen10=25
+'Const As Integer screen20=1,screen10=1
 Dim Shared As Double timescreentext
-Dim Shared As uint screentext(-screen20 To screen20,-screen10 To screen10)
+Dim Shared As Single screenmx,screenmy,screenmz,screendmx,screendmy,screendmz
+Dim Shared As Single screenmx0,screenmy0,screenmz0,distscreen
+Dim Shared As Single screeno10,screeno20,screeno30,screendo1,screendo2,screendo3
+Dim Shared As uint screentext'(-screen20 To screen20,-screen10 To screen10)
 Dim Shared As Single screenz(-screen20 To screen20,-screen10 To screen10)
 Dim Shared As Single screenx(-screen20 To screen20,-screen10 To screen10)
 Dim Shared As Single screeny(-screen20 To screen20,-screen10 To screen10)
@@ -14162,8 +14177,8 @@ Dim Shared As Single screendx1(-screen20 To screen20,-screen10 To screen10)
 Dim Shared As Single screendy1(-screen20 To screen20,-screen10 To screen10)
 Sub drawscreentext()
 Dim As Integer i,j,k,s64=128\2
-Dim As Single x0,y0,z0,dx1,dy1,dz1,dx0,dy0,dz0,tx=1
-If tscreentext<>2 Then Exit Sub
+Dim As Single x0,y0,z0,dx1,dy1,dz1,dx0,dy0,dz0,tx=1,tx0,ty=1,ty0
+If tscreentext<2 Then Exit Sub
 'gldisable gl_depth_test
 gldisable gl_lighting
 gldisable gl_fog
@@ -14171,16 +14186,26 @@ gldisable gl_blend
 glpushmatrix 
 'Var sc=0.999
 'glscalef(sc,sc,sc)
+'gltranslatef(screendmx,screendmy,screendmz)
+glrotatef(screendo1,0,0,1)
+glrotatef(screendo2,0,-1,0)
+glrotatef(screendo3,-1,0,0)
+Var kx=xmax/2048
+Var ky=ymax/2048
+Var x2048=1024,y2048=1024
+If xmax>1024 Then x2048=2048
+If ymax>1024 Then y2048=2048
+glbindtexture(gl_texture_2d,screentext)
 For i=-screen20 To screen20-1
 	For j=-screen10 To screen10-1
-      'Var winx = xmax*(0.5-0.5*i/screen20)
-      'Var winy = ymax*(0.5+0.5*j/screen10)
+      Var winx = xmax*(0.5+0.5*i/screen20)
+      Var winy = ymax*(0.5+0.5*j/screen10)
       'x0=winx'-s64
       'y0=winy'-s64
-      glbindtexture(gl_texture_2d,screentext(i,j))
+      'glbindtexture(gl_texture_2d,screentext(i,j))
       'glplacecursor(x0,y0*0.99,-40)
       'gltexcarre4(dx0,dy0)
-      x0=screenx(i,j)
+      /'x0=screenx(i,j)
       y0=screeny(i,j)
       z0=screenz(i,j)
       dx0=screendx(i,j)
@@ -14188,16 +14213,20 @@ For i=-screen20 To screen20-1
       dz0=screendz(i,j)
       dx1=screendx1(i,j)
       dy1=screendy1(i,j)
-      dz1=screendz1(i,j)
+      dz1=screendz1(i,j)'/
+      tx0=winx/x2048
+      tx=(winx+xmax*0.5/screen20)/x2048
+      ty0=winy/y2048
+      ty=(winy+ymax*0.5/screen10)/y2048
 	   glbegin(gl_quads)
-	   glTexCoord2f(0,0)
-	   glvertex3f(x0,y0,z0)
-	   gltexcoord2f(tx,0)
-	   glvertex3f(x0+dx0,y0+dy0,z0+dz0)
-	   glTexCoord2f(tx,tx)
-	   glvertex3f(x0+dx0+dx1,y0+dy0+dy1,z0+dz0+dz1)
-	   gltexcoord2f(0,tx)
-	   glvertex3f(x0+dx1,y0+dy1,z0+dz1)
+	   glTexCoord2f(tx0,ty0)
+	   glvertex3f(screenx(i,j),screeny(i,j),screenz(i,j))
+	   gltexcoord2f(tx,ty0)
+	   glvertex3f(screenx(i+1,j),screeny(i+1,j),screenz(i+1,j))
+	   glTexCoord2f(tx,ty)
+	   glvertex3f(screenx(i+1,j+1),screeny(i+1,j+1),screenz(i+1,j+1))
+	   gltexcoord2f(tx0,ty)
+	   glvertex3f(screenx(i,j+1),screeny(i,j+1),screenz(i,j+1))
 	   glend()     
 	Next
 Next
@@ -14211,22 +14240,45 @@ Dim As Integer i,j,k,s64=128\2
 Dim As Integer x0,y0,dx0,dy0
 If tscreentext<>1 Then Exit Sub
 tscreentext=2
-For i=-screen20 To screen20-1
-	For j=-screen10 To screen10-1
+screendmx=mx-screenmx0:screendmy=my-screenmy0:screendmz=mz-screenmz0
+screendo1=o1-screeno10:screendo2=o2-screeno20:screendo3=o3-screeno30
+Var do1=max(Abs(screendo1),Abs(screendo2))
+If max(do1,Abs(screendo3))>2 Then
+     	  timescreentext=time2+3
+     	  tscreentext=0:tscreentext2=-10:tscreentext3=1:Exit sub
+EndIf
+'For i=-screen20 To screen20-1
+'	For j=-screen10 To screen10-1
       Var winx = xmax*(0.5+0.5*i/screen20)
       Var winy = ymax*(0.5+0.5*j/screen10)
-      x0=winx'-s64
-      y0=winy'-s64
-      dx0=128
-      dy0=128
-      glbindtexture(gl_texture_2d,screentext(i,j))
+      x0=0'winx'-s64
+      y0=0'winy'-s64
+      dx0=xmax'128
+      dy0=ymax'128
+      glbindtexture(gl_texture_2d,screentext)
       'gltexparameteri(gl_texture_2d,GL_GENERATE_MIPMAP,gl_true)
-      'glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_linear)
-      'glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_linear)'NEAREST)'nomipmap
+      glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_linear)
+      glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_linear)'NEAREST)'nomipmap
       'glcopyTexImage2D(GL_TEXTURE_2D, 0, gl_rgba,0,0,bmpx,bmpx, 0)   
+      'glcopyTexSubImage2D(GL_TEXTURE_2D, 0, 0,0, x0,y0,dx0,dy0)
       glcopyTexSubImage2D(GL_TEXTURE_2D, 0, 0,0, x0,y0,dx0,dy0)
+Var kx=0.1
+For i=-screen20 To screen20
+	For j=-screen10 To screen10
+     screenz(i,j)+=screendmz*kx  
+     screenx(i,j)+=screendmx*kx  
+     screeny(i,j)+=screendmy*kx
 	Next
-Next 	
+Next
+While screendo1>180:screendo1-=360:Wend
+While screendo1<-180:screendo1+=360:Wend
+While screendo2>180:screendo2-=360:Wend
+While screendo2<-180:screendo2+=360:Wend
+While screendo3>180:screendo3-=360:Wend
+While screendo3<-180:screendo3+=360:Wend
+screendo1*=kx
+screendo2*=kx
+screendo3*=kx
 End Sub
 Sub getscreentextz()
 Dim As Integer i,j,k,s128=128
@@ -14239,41 +14291,60 @@ Dim As GLdouble posx20,posy20,posz20,posx21,posy21,posz21
 glGetDoublev( GL_MODELVIEW_MATRIX, @modelview(0) )
 glGetDoublev( GL_PROJECTION_MATRIX, @projection(0) )
 glGetIntegerv( GL_VIEWPORT, @viewport(0) )
-tscreentext=1
+'tscreentext=1
 timescreentext=time2
-Var si2=sin2,co1=cos1,si1=sin1
-If tourelle=1 Then
-	si2=tsin2:co1=tcos1:si1=tsin1
-EndIf
-For i=-screen20 To screen20-1
-	For j=-screen10 To screen10-1
+'auxvar2=distscreen:auxtest=0.2
+distscreen=20000
+screenmx0=mx:screenmy0=my:screenmz0=mz
+screeno10=o1:screeno20=o2:screeno30=o3
+Var dwinx = xmax*(0.5/screen20)
+Var dwiny = ymax*(0.5/screen10)
+Var dist=0.0
+Var kv=1/(max(1.0,vkm*0.015))
+For i=-screen20 To screen20
+	For j=-screen10 To screen10
      winx = xmax*(0.5+0.5*i/screen20)
      winy = ymax*(0.5+0.5*j/screen10)
      glReadPixels( winx,winy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, @winZ )
      gluUnProject(winX,winY,winz,@modelview(0),@projection(0),@viewport(0),@posX,@posY,@posZ) 
      screenz(i,j)=posz  
      screenx(i,j)=posx  
-     screeny(i,j)=posy 
-     winx+=128
+     screeny(i,j)=posy
+     dist=max(Abs(posx-mx),Abs(posy-my))*kv
+     dist=max(dist,abs(posz-mz))
+     If posz>mz-dist*0.1 Then dist*=0.2
+     distscreen=min(dist,distscreen)
+     If distscreen<2500 Then
+     	  timescreentext=time2+3
+     	  tscreentext=0:tscreentext2=-10:tscreentext3=1:Exit sub
+     EndIf
+     /'winx+=dwinx'128
      gluUnProject(winX,winY,winz,@modelview(0),@projection(0),@viewport(0),@posX2,@posY2,@posZ2) 
      screendz(i,j)=posz2-posz'+si2  
      screendx(i,j)=posx2-posx'+co1  
      screendy(i,j)=posy2-posy'+si1
-     winx-=128
-     winy+=128 
+     dist=max(Abs(posx2-mx),Abs(posy2-my))
+     dist=max(dist,abs(posz2-mz))
+     distscreen=min(dist,distscreen)
+     winx-=dwinx'128
+     winy+=dwiny'128 
      gluUnProject(winX,winY,winz,@modelview(0),@projection(0),@viewport(0),@posX2,@posY2,@posZ2) 
      screendz1(i,j)=posz2-posz'+si2  
      screendx1(i,j)=posx2-posx'+co1  
      screendy1(i,j)=posy2-posy'+si1
+     dist=max(Abs(posx2-mx),Abs(posy2-my))
+     dist=max(dist,abs(posz2-mz))
+     distscreen=min(dist,distscreen)
      Var kx=1.01
      screendx(i,j)*=kx 
      screendy(i,j)*=kx 
      screendz(i,j)*=kx 
      screendx1(i,j)*=kx 
      screendy1(i,j)*=kx 
-     screendz1(i,j)*=kx 
+     screendz1(i,j)*=kx '/
 	Next
 Next
+tscreentext=1
 End Sub
 Dim Shared As Double timepiste,timercollide,timelayeroff,timeroof
 Dim Shared As Single zroof=-999999
@@ -14305,9 +14376,17 @@ If zroof>mzsol00+30 Then
 Else
 	zroof=-999999
 EndIf 
-If time2<timercollide+0.1 Then Exit Sub
-timercollide=time2
-'If time2>timescreentext+0.025 And tscreentext=0 Then getscreentextz()
+If time2<timercollide+0.1 And tscreentext2<=9 Then Exit Sub
+timercollide=max(time2-0.1,min(time2,timercollide+0.11))
+If xmax<=2048 And mz>mzsol00+1500 Then 
+ If time2>timescreentext+min(4.0,max(0.95,distscreen*distscreen*0.5/(1990*1990))) Or tscreentext2>9 Then
+	If tscreentext2>=1 Then 
+		tscreentext2=0:getscreentextz()
+	Else
+	   tscreentext3=1
+	EndIf    
+ EndIf
+EndIf  
 Var kfps0=kfps,kfps=3.0
 Var tkeyup=0:If guitestkey(vk_up) Or testjoy2 Then tkeyup=1
 If Abs(tlayer)>0.4 Or Abs(mz-mzsol00)>30 Then timelayeroff=time2
@@ -15891,7 +15970,6 @@ EndIf 'planet
 If tsphere=0 And planet=0 Then
     
     drawtowns()
-    'If tscreentext=1 Then getscreentext()
     tupdatetown=0
     getlocktown2(0)   
     If testworld=0 Then
@@ -15909,6 +15987,11 @@ If tsphere=0 And planet=0 Then
     	EndIf 	
     EndIf
     freelocktown(0)
+    If tscreentext=1 Then
+    	If tdrawscreen=2 Then
+    		getscreentext()
+    	EndIf
+    EndIf 
     
     drawballoon()
     drawboeing()
