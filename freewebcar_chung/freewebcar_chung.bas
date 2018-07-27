@@ -14386,6 +14386,8 @@ If xmax<=2048 And mz>mzsol00+1500 Then
 	   tscreentext3=1
 	EndIf    
  EndIf
+Else
+	tscreentext=0
 EndIf  
 Var kfps0=kfps,kfps=3.0
 Var tkeyup=0:If guitestkey(vk_up) Or testjoy2 Then tkeyup=1
