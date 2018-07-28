@@ -4391,6 +4391,9 @@ Sub getways2(text0 As String)'getways
  	     	 			If wayheight(i)<h30 Or myiaskway>naskwayid-5 Or plane=0 Or car>0 Then test=1 
  	     	 		EndIf
  	     	 		If test=1 Then 
+ 	     	 	      If myiaskway<naskwayid Then
+ 	     	 		      myiaskway+=1:myaskwayid(myiaskway)=wayid
+ 	     	 	      EndIf
  	     	 			iwaynode(i)=0:waynodeid(i)=0
  	     	 			Continue For,For
  	     	 		Else
@@ -10773,7 +10776,7 @@ Dim As Integer i,j,k,n,p
  		  Else 
  		  	  d50000*=kdistterrain*max(1.0,90/(15+Abs(vkm)))
  		  EndIf
- 		  Var hh1=hh-(avgbuildh0)*2.5
+ 		  Var hh1=max(0.0,hh-(avgbuildh0)*2.5)
  		  If hh1>500 And waynodebuild<>100 Then
  		  	  If hh1>1000 Then
  		  	  	 d50000+=min(70000.0,40*hh1)
@@ -10884,7 +10887,7 @@ Dim As Integer i,j,k,n,p
         'If InStr(townwayname(ij,i)," Henri")>0 And troad=0 Then auxvar+=1:auxtest=0.8
  		  'If x2>(0.9*Abs(y2)-(kxx+sizei+sizei)) And troad=0 Then
  		  Var sizeii=sizei*cos2*0.7+kxx*0.1'kxx*0.1'+sizei':If mz>mzsol00+100 Then sizeii+=hh
- 		  If x2>(0.9*(Abs(y2)+Abs(z2))-(sizeii)-hh) And troad=0 Then
+ 		  If (x2>(0.9*(Abs(y2)+Abs(z2))-(sizeii)-hh)) And troad=0 Then
  		  	  test=1
  		  EndIf 	  
  		  If troad=1 Then 'road
@@ -12799,6 +12802,14 @@ worldxytomxy(750,750/2,mxx,myy)
 End Sub
 'Dim Shared As Integer nbridge=500,ibridge=0
 'Dim Shared As Single bridgelat(nbridge),bridgelon(nbridge),bridgelat2(nbridge),bridgelon2(nbridge)
+Sub resetbridgei(i As Integer)
+	bridgelat(i)=-89.5
+	bridgelon(i)=-179.5
+	bridgelat2(i)=-89.5
+	bridgelon2(i)=-179.5
+	bridgename(i)=""
+	bridgeo1(i)=0	
+End Sub
 Sub resetbridge()
 Dim As Integer i  	
 For i=0 To nbridge
@@ -12828,6 +12839,7 @@ For i=0 To nbridge
 			blon=bridgelon(i)
 			dlat=bridgelat2(i)-blat
 			dlon=(bridgelon2(i)-blon)/klon
+			If max(dlat,dlon)>360/4000.0 Then resetbridgei(i):Continue For 
 			dxy0=dlat*dlat+dlon*dlon
 			dx=(lngx-blon)/klon
 			dy=latx-blat
