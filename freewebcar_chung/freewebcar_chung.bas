@@ -5623,13 +5623,17 @@ If taglcompile2=1 Then
 		   tcompile=2
       	glnewlist agllist,gl_compile_and_execute
       EndIf
-      tscreentext3=1
-      tscreentext2=min2(-1,tscreentext2)
-      If taskscreen=0 Then
-      	taskscreen=1
+      If tscreentext>=0 Then 
+       tscreentext3=1
+       tscreentext2=min2(-1,tscreentext2)
+       If taskscreen=0 Then
+       	 taskscreen=1
+       Else
+      	 taskscreen=0
+       EndIf
       Else
-      	taskscreen=0
-      EndIf
+      	 taskscreen=0
+      EndIf  
 	Else
 		taglcompile20=0
       glnewlist agllist2,gl_compile
@@ -5758,16 +5762,19 @@ EndIf 'tagl
 tdrawscreen=0
 If taglcompile2=1 Or tcompile>0 Then
 	glendlist()
-	If tscreentext>=2 Then tdrawscreen=1:drawscreentext()
-ElseIf agllist<>0 And tcompile<>2 Then'taglcompile2<>1 Then
+	'If tscreentext>=2 Then tdrawscreen=1:drawscreentext()
+Endif 
+If agllist<>0 And tcompile<>2 Then'taglcompile2<>1 Then
 	If tscreentext>=2 And tscreentext3<1 Then'And tscreentext<=3 Then
 		drawscreentext()
 		tdrawscreen=1
-		tscreentext+=1
+		'tscreentext+=1
 	Else
-		tscreentext2+=1
-		tscreentext3=0
-		tdrawscreen=2
+		If tscreentext>=0 Then
+		 tscreentext2+=1
+		 tscreentext3=0
+		 tdrawscreen=2
+		EndIf  
 		glcalllist(agllist)    
 	EndIf
 EndIf
@@ -14188,13 +14195,15 @@ If tscreentext<2 Then Exit Sub
 gldisable gl_lighting
 gldisable gl_fog
 gldisable gl_blend
-glpushmatrix 
-'Var sc=0.999
-'glscalef(sc,sc,sc)
+glpushmatrix
+gltranslatef(mx,my,mz) 
 'gltranslatef(screendmx,screendmy,screendmz)
 glrotatef(screendo1,0,0,1)
 glrotatef(screendo2,0,-1,0)
 glrotatef(screendo3,-1,0,0)
+Var sc=0.995
+glscalef(sc,sc,sc)
+gltranslatef(-mx,-my,-mz)
 Var kx=xmax/2048
 Var ky=ymax/2048
 Var x2048=1024,y2048=1024
@@ -14251,7 +14260,7 @@ If tourelle=1 Then
    screendo1=to1-screeno10:screendo2=to2-screeno20:screendo3=to3-screeno30	
 EndIf
 Var do1=max(Abs(screendo1),Abs(screendo2))
-If max(do1,Abs(screendo3))>2 Then
+If max(do1,Abs(screendo3))>1 Then
      	  timescreentext=time2+3
      	  tscreentext=0:tscreentext2=-10:tscreentext3=1:Exit sub
 EndIf
@@ -14286,7 +14295,7 @@ While screendo3>180:screendo3-=360:Wend
 While screendo3<-180:screendo3+=360:Wend
 screendo1*=kx
 screendo2*=kx
-screendo3*=kx
+screendo3*=kx 
 End Sub
 Sub getscreentextz()
 Dim As Integer i,j,k,s128=128
@@ -14401,7 +14410,7 @@ If xmax<=2048 And mz>mzsol00+1500 Then
 	EndIf    
  EndIf
 Else
-	tscreentext=0
+	tscreentext=-1
 	taskscreen=0
 EndIf  
 If tourelle=1 Then Exit Sub 
