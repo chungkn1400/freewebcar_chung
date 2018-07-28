@@ -8351,7 +8351,8 @@ Dim Shared As Single ncarx(ncar),ncary(ncar),ncarz(ncar),ncaro1(ncar),ncaro2(nca
 Dim Shared As Single nncarx(ncar),nncary(ncar),nncarz(ncar),nncaro1(ncar),nncaro2(ncar),nncaro3(ncar)
 Dim Shared As Single ncarv(ncar),ncarco1(ncar),ncarsi1(ncar),nncarv(ncar),loganwheelrot(ncar),volantrots(ncar)
 Dim Shared As Single ncarvv(ncar),ncarxx0(ncar),ncaryy0(ncar),nvmx2,nvmy2
-Dim Shared As Double ncartimeroad(ncar)
+Dim Shared As Single ncaravgx(ncar),ncaravgy(ncar)
+Dim Shared As Double ncartimeroad(ncar),ncaravgtime(ncar)
 Dim Shared As uint ncartext,logantext,wheellist,ncarlist,ncarpolicelist,ncarpolicetext,ncargreentext,ncarbluetext
 Dim Shared As uint ncarredtext,ncarbuslist,ncarbustext
 Sub setmyroadlatlon()
@@ -8931,10 +8932,10 @@ For i=i1 To ncar
 	If i>0 Then
 		Var kv1=1.1*0.63/0.8
 		Var co1=ncarco1(i),si1=ncarsi1(i)
-		If time2<thorn+10 Then'120 Then
+		If time2<thorn+4 Then'120 Then
 			If ncarv(i)>v-7 And ncarv(i)>2 And co1*cos1+si1*sin1>0.7 Then
-				nncarv(i)=max(v+1.095,nncarv(i))
-				ncarv(i)=max(v+1.095,ncarv(i))
+				nncarv(i)=max(v+0.5,nncarv(i))
+				ncarv(i)=max(v+0.5,ncarv(i))
 			EndIf
 		ElseIf max(Abs(x-mx),Abs(y-my))>70 Then  	
 			nncarv(i)=max(0.3,min(9.0,nncarv(i)))
@@ -9088,16 +9089,26 @@ For i=i1 To ncar
    EndIf
    'Var kx=min(0.7,0.03*kfps)
    Var kx=min(0.7,0.03*kfps)
-	If i>0 And ncarv(i)<2 And Rnd<0.01 Then'And Rnd<0.5 Then 
-	  ncarv(i)=5
-	  nncarv(i)=5
+	'ncaravgx(i)+=(ncarx(i)-ncaravgx(i))*0.007*kfps
+	'ncaravgy(i)+=(ncary(i)-ncaravgy(i))*0.007*kfps
+	If Abs(ncaravgx(i)-ncarx(i))>19 or Abs(ncaravgy(i)-ncary(i))>19 Then
+		ncaravgtime(i)=time2
+	   ncaravgx(i)=ncarx(i)
+	   ncaravgy(i)=ncary(i)
+	EndIf
+	If i>0 And ncaravgtime(i)<time2-5 Then'And ncarv(i)<2 And Rnd<0.01 Then'And Rnd<0.5 Then  
+	  ncarv(i)=max(5.0,ncarv(i))
+	  nncarv(i)=max(5.0,nncarv(i))
 	  ncarx(i)+=28*kfps*ncarco1(i)
      ncary(i)+=28*kfps*ncarsi1(i)		
 	  nncarx(i)+=28*kfps*ncarco1(i)
      nncary(i)+=28*kfps*ncarsi1(i)		
 	  'ncarx(i)+=ncarvv(i)*kfps*ncarco1(i)*0.3
-     'ncary(i)+=ncarvv(i)*kfps*ncarsi1(i)*0.3		
-   EndIf 
+     'ncary(i)+=ncarvv(i)*kfps*ncarsi1(i)*0.3
+	ElseIf Rnd<0.002*kfps Then   		
+	  ncarv(i)=max(5.0,ncarv(i))
+	  nncarv(i)=max(5.0,nncarv(i))
+	EndIf 
    Var dcarx=nncarx(i)-ncarx(i)
    Var dcary=nncary(i)-ncary(i)
    Var dcarxy=max(Abs(dcarx),Abs(dcary))
@@ -19011,6 +19022,7 @@ For i=0 To ntown40
 Next
 Close #file
 End Sub 
+Declare Sub addtownxy3(fic0 As String="")
 Dim Shared As Integer nshop=155,nshop0=155
 Sub loadtownxy3(fic0 As String="")
 timeinit=Timer 
@@ -21798,6 +21810,8 @@ EndIf
 tloadwebtext2=0
 ret=ChDir(dir0)
 End Sub
+Dim Shared As Integer taddtownxy3
+Dim Shared As String ficaddtownxy3
 Sub subload
 Dim As String fic,dir0
 Dim As Integer ret 
@@ -21825,6 +21839,8 @@ If Right(fic,5)=".save" Then
 		itownp=0
 		inittownfic0(fic0)
 		'loadtownxy3(fic0)
+      taddtownxy3=1   
+      ficaddtownxy3=fic0
 		'copytown00()
 		'reverselocation=""
 		If car>0 Then volume=1500
@@ -21837,10 +21853,9 @@ If Right(fic,5)=".save" Then
 	EndIf
 EndIf
 ret=ChDir(dir0)
-tloadwebtext2=0
+If taddtownxy3=0 Then tloadwebtext2=0
 Sleep 300
 End Sub
-Declare Sub addtownxy3(fic0 As String="")
 Sub subadd
 Dim As String fic,dir0
 Dim As Integer ret 
@@ -23113,6 +23128,18 @@ mz11=-999999
            	If mapdisplay<>0 Then mx=mx0:my=my0:mz=mz0:mz1=mz 
             If time2<tcrashz+1 Then mz=mzcrash:mz1=mz
            	
+           	If taddtownxy3>0 And (Timer>timeinit+15 Or quit=1)  Then
+           		taddtownxy3+=1
+           		If quit=1 Then taddtownxy3=0:tloadwebtext2=0
+           		If taddtownxy3>30 Then
+           			taddtownxy3=0
+           			If FileExists(ficaddtownxy3) Then
+           				addtownxy3(ficaddtownxy3)
+           				guinotice ficaddtownxy3+" added !"
+           			EndIf
+           			tloadwebtext2=0
+           		EndIf 	
+           	EndIf 	
            	
 If Timer>tupdate+0.2 And (planet=0 And orbit=1)And topview=0 And mapdisplay<>4 And mapdisplay<>6 And (tinternet>=1 Or quit=1) Then
 	tupdate=timer
