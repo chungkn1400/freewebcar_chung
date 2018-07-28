@@ -6744,7 +6744,7 @@ If testmygltexquad=1 And h0>46 Then
  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
  	glvertex3f(x,y,z)
  EndIf
- For j=2 To n
+ For j=2 To min2(n,nwaynode-1)
  	'xx=x:yy=y
  	x=townwaynodex(ij,i,j)-dmx0
  	y=townwaynodey(ij,i,j)-dmy0
@@ -7162,7 +7162,7 @@ If testmygltexquad=1 And h0>46 Then
  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
  	glvertex3f(x,y,z)
  EndIf
- For j=2 To n
+ For j=2 To min2(n,nwaynode-1)
  	'xx=x:yy=y
  	x=townx40(i40,j)-dmx0
  	y=towny40(i40,j)-dmy0
@@ -7510,7 +7510,7 @@ If testmygltexquad=1 And h0>46 Then
  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
  	glvertex3f(x,y,z)
  EndIf
- For jj=2 To n
+ For jj=2 To min2(n,nwaynode-1)
  	'jx+=di
  	'j=Int(jx)
  	'If j>n+0.99 Then Exit For 
