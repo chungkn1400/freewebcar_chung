@@ -12952,7 +12952,7 @@ For i=0 To nbridge
 			y+=(yy-y)*kx/2
          'x=341400*kscalex/500:y=1885900*kscalex/500:do1=-34:size=34000
          'z=waterz-50
-         size=dxy*kx'*500/kscalex
+         size=min(25000.0,dxy*kx)'*500/kscalex
 			bridgex(i)=x
 			bridgey(i)=y
 		   rotavion(x-mx-dmx0,y-my-dmy0,z-mz)

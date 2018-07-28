@@ -128,9 +128,9 @@ If avion="737" then
    altmax=150000'10000
 End If	
 If avion="c150" then
-   kpitch=0.7:kroll=0.7:kqueue=0.7:kprop=1.5
-   poids=1.2
-   vcruise=32
+   kpitch=0.7:kroll=0.7:kqueue=0.7:kprop=1.25'1.5
+   poids=0.85'1.2
+   vcruise=22'32
    altmax=70000'10000
 End If	
 If avion="car" Then
@@ -196,9 +196,9 @@ if avion="avion5" then
    altmax=70000
 end if
 if avion="zero" Then'zero
-   kpitch=0.9:kroll=0.9:kqueue=1:kprop=1.5
+   kpitch=0.9:kroll=0.9:kqueue=1:kprop=1.25'1.5
    poids=0.9
-   vcruise=30'22
+   vcruise=22'30'22
    altmax=70000
 end if
 If avion="jet2" then
@@ -487,7 +487,11 @@ Dim Shared As Single suspension
 Dim Shared As Double tdecelere
 Sub decelere
 If volume>=550 Then volume=max2(550,volume-30*kfps)
-suspension=3
+If piste=1 Then
+	suspension=2.5
+Else
+	suspension=1.5
+EndIf
 if mz<=mzsol0 Then
 	If car>0 Then
 		v=v-v*0.1*0.5*kfps+0.000001-0.03*kfps
@@ -513,7 +517,11 @@ EndIf
 setvol
 End Sub 
 Sub brakes
-suspension=3
+If piste=1 Then
+	suspension=2.5
+Else
+	suspension=1.5
+EndIf
 If v>12 Then suspension=2
 If mz<=mzsol0+0.01 Then
 	If car=0 Then

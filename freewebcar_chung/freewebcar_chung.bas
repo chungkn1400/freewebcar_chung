@@ -5405,7 +5405,7 @@ Sub drawgrillon
 	EndIf
 End Sub
 Dim Shared As uint drawbuildtext0
-dim shared as integer tscreentext,tscreentext2,tscreentext3,tdrawscreen
+dim shared as integer tscreentext,tscreentext2,tscreentext3,tdrawscreen,taskscreen
 Declare Sub drawscreentext()
 Sub drawtownnodes()
 Dim As Integer i,ii,jj,ix,jx
@@ -5625,6 +5625,11 @@ If taglcompile2=1 Then
       EndIf
       tscreentext3=1
       tscreentext2=min2(-1,tscreentext2)
+      If taskscreen=0 Then
+      	taskscreen=1
+      Else
+      	taskscreen=0
+      EndIf
 	Else
 		taglcompile20=0
       glnewlist agllist2,gl_compile
@@ -14242,6 +14247,9 @@ If tscreentext<>1 Then Exit Sub
 tscreentext=2
 screendmx=mx-screenmx0:screendmy=my-screenmy0:screendmz=mz-screenmz0
 screendo1=o1-screeno10:screendo2=o2-screeno20:screendo3=o3-screeno30
+If tourelle=1 Then
+   screendo1=to1-screeno10:screendo2=to2-screeno20:screendo3=to3-screeno30	
+EndIf
 Var do1=max(Abs(screendo1),Abs(screendo2))
 If max(do1,Abs(screendo3))>2 Then
      	  timescreentext=time2+3
@@ -14297,6 +14305,9 @@ timescreentext=time2
 distscreen=20000
 screenmx0=mx:screenmy0=my:screenmz0=mz
 screeno10=o1:screeno20=o2:screeno30=o3
+If tourelle=1 Then
+	screeno10=to1:screeno20=to2:screeno30=to3
+EndIf
 Var dwinx = xmax*(0.5/screen20)
 Var dwiny = ymax*(0.5/screen10)
 Var dist=0.0
@@ -14376,19 +14387,24 @@ If zroof>mzsol00+30 Then
 Else
 	zroof=-999999
 EndIf 
-If time2<timercollide+0.1 And tscreentext2<=9 Then Exit Sub
+If time2<timercollide+0.1 And taskscreen=0 Then
+	Exit Sub
+EndIf
 timercollide=max(time2-0.1,min(time2,timercollide+0.11))
 If xmax<=2048 And mz>mzsol00+1500 Then 
- If time2>timescreentext+min(4.0,max(0.95,distscreen*distscreen*0.5/(1990*1990))) Or tscreentext2>9 Then
+ If time2>timescreentext+min(4.0,max(0.95,distscreen*distscreen*0.5/(1990*1990))) Or taskscreen=1 Then
 	If tscreentext2>=1 Then 
 		tscreentext2=0:getscreentextz()
+		taskscreen=0
 	Else
 	   tscreentext3=1
 	EndIf    
  EndIf
 Else
 	tscreentext=0
+	taskscreen=0
 EndIf  
+If tourelle=1 Then Exit Sub 
 Var kfps0=kfps,kfps=3.0
 Var tkeyup=0:If guitestkey(vk_up) Or testjoy2 Then tkeyup=1
 If Abs(tlayer)>0.4 Or Abs(mz-mzsol00)>30 Then timelayeroff=time2
@@ -16048,7 +16064,9 @@ If planet=0 Then
     drawrocs()
     tupdateroc=0
     
-    If tourelle=0 Then testcollideforward()
+    'If tourelle=0 Then
+    	testcollideforward()
+    'EndIf
 
     drawladys()
     tupdatelady=0
