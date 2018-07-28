@@ -22772,6 +22772,9 @@ mz11=-999999
         	    Else 
          	   setficok("notok")
         	      load("save/startup.save0")
+        	      taddtownxy3=1
+        	      ficaddtownxy3="save/map4.townxy3"
+        	      tloadwebtext2=2
         	    EndIf   
         	  EndIf   
      	     'setficok("ok")
