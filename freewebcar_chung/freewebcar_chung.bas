@@ -5177,13 +5177,16 @@ If (Timer>tdistterrain+max(0.1,min(0.5,0.15*kfps))) Then
 		kdistterrain=max(kk*0.10,kdistterrain*0.95)'0.85)
 	ElseIf fpsmoy<17+dfps And time2>tkdistterrain Then 
 		kdistterrain=max(kk*0.15,kdistterrain*0.97)
-	ElseIf fpsmoy>21+dfps And (mz-mzsol0)>200 Then
-		tkdistterrain=time2+3
-		kdistterrain=min(kk*0.69,kdistterrain*1.015)'0.69
-   ElseIf fpsmoy>21+dfps And (mz-mzsol0)<=200 Then 
+	ElseIf fpsmoy>21+dfps And (mz-mzsol00)>200 Then
+		tkdistterrain=time2+2'3
+		kdistterrain=min(kk*0.69,kdistterrain*1.030)'1.015)'0.69
+		If fpsmoy>40+dfps Then
+			kdistterrain=min(kk*0.69,kdistterrain*1.020)'1.015)'0.69
+		EndIf
+	ElseIf fpsmoy>21+dfps And (mz-mzsol00)<=200 Then 
 		tkdistterrain=time2+3
 		kdistterrain=min(kk*0.25,kdistterrain*1.015)'0.5
-   ElseIf fpsmoy>30+dfps And (mz-mzsol0)<=200 Then 
+	ElseIf fpsmoy>30+dfps And (mz-mzsol00)<=200 Then 
 		tkdistterrain=time2+3
 		kdistterrain=min(kk*0.69,kdistterrain*1.015)'0.5
 	EndIf
@@ -5193,7 +5196,7 @@ If (Timer>tdistterrain+max(0.1,min(0.5,0.15*kfps))) Then
 		Else
 			dfps=minfps-6-6
 		EndIf
-		dfps=minfps-7.5
+		dfps=(minfps-7.5)
 		'If Abs(dfps-minfps+6)>0.001 Then dfps=0+minfps-6 Else dfps=1+minfps-6
 	   If (kdistterrain-kdistterrain0)*(kdistterrain0-kdistterrain00)<0.00001 Then
 	   	'kdistterrain+=(kdistterrain0-kdistterrain)*0.8
@@ -23139,6 +23142,7 @@ mz11=-999999
            			If FileExists(ficaddtownxy3) Then
            				addtownxy3(ficaddtownxy3)
            				notice ficaddtownxy3+" added !"
+           				kdistterrain0=max(0.1,kdistterrain0)
            			EndIf
            			tloadwebtext2=0
            		EndIf 	

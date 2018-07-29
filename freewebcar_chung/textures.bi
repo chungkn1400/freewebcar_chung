@@ -7167,7 +7167,7 @@ If testmygltexquad=1 And h0>46 Then
  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
  	glvertex3f(x,y,z)
  EndIf
- For j=2 To min2(n,nwaynode-1)
+ For j=2 To n'min2(n,nwaynode-1) i40
  	'xx=x:yy=y
  	x=townx40(i40,j)-dmx0
  	y=towny40(i40,j)-dmy0
@@ -10775,6 +10775,7 @@ Dim As Integer i,j,k,n,p
         'If InStr(townwayname(ij,i),"ge Henri")>0 Then auxvar=sizei+0.1:auxtest=0.8
  		  If plane>0 And car=0 Then
  		  	  d50000*=kdistterrain*max(2.0,200/(10+Abs(vkm)))
+ 		  	  d50000+=(mz-mzsol00)
  		  Else 
  		  	  d50000*=kdistterrain*max(1.0,90/(15+Abs(vkm)))
  		  EndIf
@@ -10949,7 +10950,10 @@ Dim As Integer i,j,k,n,p
            h=setbuildh(h)
         EndIf 
  		  thmin=0:If waynodebuild=4 Then thmin=1':h=400
-        Var kh=kh0:If h>600 And thmin=0 Then kh=2
+        Var kh=kh0
+        If h>600 And thmin=0 Then
+        	  kh=2
+        EndIf
         If plane=0 Or car>0 Then kh*=0.31*scaleview
         'h*=scalexyh
  		  Var dyy=0.9*Abs(y2)-h*1.4-1400'-400-1800 		  
@@ -11042,7 +11046,7 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           	  Var xx2=1800.0:If mz<mzsol00+900 Then xx2=max(1800.0,Abs(x2))
           	  If hh<200+(itown-6)*200*0.3*kfpsmoy*(xx2+xx2)/(1800+xx2) Then Exit Sub 
             EndIf 
-           Else'If itown>2 Then  
+           ElseIf itown>1 Then  
           	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
           	kfpsmoy2=max(1.0,kfpsmoy2)
