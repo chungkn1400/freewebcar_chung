@@ -11036,14 +11036,19 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
           	kfpsmoy2=max(1.0,kfpsmoy2)
-          	Var xx2=1800.0:If mz<mzsol00+200 Then xx2=max(1800.0,Abs(x2))
-          	if hh<200+(itown-6)*200*0.3*kfpsmoy*(xx2+xx2)/(1800+xx2) Then Exit Sub 
+          	Var h200=200.0
+          	If kfpsmoy>2.3 And fpsmoy<13 Then 
+          	  Var xx2=1800.0:If mz<mzsol00+900 Then xx2=max(1800.0,Abs(x2))
+          	  If hh<200+(itown-6)*200*0.3*kfpsmoy*(xx2+xx2)/(1800+xx2) Then Exit Sub 
+            EndIf 
            Else'If itown>2 Then  
           	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
           	kfpsmoy2=max(1.0,kfpsmoy2)
-          	Var xx2=1800.0:If mz<mzsol00+200 Then xx2=max(1800.0,Abs(x2))
-          	if hh<(itown)*200*0.3*kfpsmoy*(xx2+xx2)/(1800+xx2) Then Exit Sub 
+          	If kfpsmoy>2.3 And fpsmoy<13 Then 
+          	  Var xx2=1800.0:If mz<mzsol00+900 Then xx2=max(1800.0,Abs(x2))
+          	  If hh<(itown)*200*0.3*kfpsmoy*(xx2+xx2)/(1800+xx2) Then Exit Sub 
+            EndIf 
            EndIf
           EndIf  
           drawbuildtext=building3text
@@ -12964,7 +12969,8 @@ For i=0 To nbridge
 			y+=(yy-y)*kx/2
          'x=341400*kscalex/500:y=1885900*kscalex/500:do1=-34:size=34000
          'z=waterz-50
-         size=min(25000.0,dxy*kx)'*500/kscalex
+         size=dxy*kx'*500/kscalex
+         If size>25000 Then resetbridgei(i):Continue For 
 			bridgex(i)=x
 			bridgey(i)=y
 		   rotavion(x-mx-dmx0,y-my-dmy0,z-mz)

@@ -23138,7 +23138,7 @@ mz11=-999999
            			taddtownxy3=0
            			If FileExists(ficaddtownxy3) Then
            				addtownxy3(ficaddtownxy3)
-           				guinotice ficaddtownxy3+" added !"
+           				notice ficaddtownxy3+" added !"
            			EndIf
            			tloadwebtext2=0
            		EndIf 	
