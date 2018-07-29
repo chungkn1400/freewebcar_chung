@@ -5316,10 +5316,12 @@ if p>0 then i=p
 'j=Int(iwaynode(k)*0.51)
 Var latweb=(waynodey(k,1))'+waynodey(k,j))/2
 Var lngweb=(waynodex(k,1))'+waynodex(k,j))/2
-if testbridge(latweb,lngweb)=1 Then
+If waytheight(k)<>100 Then'not road 
+ If testbridge(latweb,lngweb)=1 Then'remove bridges towers
 	townwaynodeid(ij,i)=0
 	towniwaynode(ij,i)=0
 	Exit Sub 
+ EndIf  	
 EndIf
 'mxweb=mx+dmx0:myweb=my+dmy0
 'mxweb=xweb:myweb=yweb
@@ -11036,7 +11038,6 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           	kfpsmoy2+=(kfps-kfpsmoy2)*0.001
           	kfpsmoy+=(kfpsmoy2-kfpsmoy)*0.01
           	kfpsmoy2=max(1.0,kfpsmoy2)
-          	Var h200=200.0
           	If kfpsmoy>2.3 And fpsmoy<13 Then 
           	  Var xx2=1800.0:If mz<mzsol00+900 Then xx2=max(1800.0,Abs(x2))
           	  If hh<200+(itown-6)*200*0.3*kfpsmoy*(xx2+xx2)/(1800+xx2) Then Exit Sub 
