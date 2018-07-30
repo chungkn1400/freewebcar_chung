@@ -18283,10 +18283,10 @@ For i=0 To min2(10000,ntowp2)
 		Next
 	Next
 Next
-Var dlatx=1000*360/40000.0,dlonx=dlatx*1.4
+Var dlatx=30*360/40000.0,dlonx=dlatx*1.4
 For i=0 To min2(500,nbridge)
 	If Abs(bridgelat(i)-lat)>dlatx Or Abs(bridgelon(i)-lng)>dlonx Then
-		bridgelat(i)=-89:bridgelon(i)=-179:bridgelat2(i)=-88:bridgelon2(i)=-178
+		bridgelat(i)=-89:bridgelon(i)=-179:bridgelat2(i)=-89:bridgelon2(i)=-179
 	EndIf
 	Put #file,,bridgelat(i)
 	Put #file,,bridgelon(i)
@@ -18345,10 +18345,10 @@ For i=0 To min2(10000,ntown2)
 		Next
 	Next
 Next
-Var dlatx=1000*360/40000.0,dlonx=dlatx*1.4
+Var dlatx=30*360/40000.0,dlonx=dlatx*1.4
 For i=0 To min2(500,nbridge)
 	If Abs(bridgelat(i)-lat)>dlatx Or Abs(bridgelon(i)-lng)>dlonx Then
-		bridgelat(i)=-89:bridgelon(i)=-179:bridgelat2(i)=-88:bridgelon2(i)=-178
+		bridgelat(i)=-89:bridgelon(i)=-179:bridgelat2(i)=-89:bridgelon2(i)=-179
 	EndIf
 	Put #file,,bridgelat(i)
 	Put #file,,bridgelon(i)
@@ -18848,10 +18848,10 @@ Var ntownnodex=ntownnode
 Put #file,,nwaynodex
 Put #file,,ntownnodex
 Put #file,,nbridge
-Var dlatx=1000*360/40000.0,dlonx=dlatx*1.4
+Var dlatx=30*360/40000.0,dlonx=dlatx*1.4
 For i=0 To min2(500,nbridge)
 	If Abs(bridgelat(i)-lat)>dlatx Or Abs(bridgelon(i)-lng)>dlonx Then
-		bridgelat(i)=-89:bridgelon(i)=-179:bridgelat2(i)=-88:bridgelon2(i)=-178
+		bridgelat(i)=-89:bridgelon(i)=-179:bridgelat2(i)=-89:bridgelon2(i)=-179
 	EndIf
 	Put #file,,bridgelat(i)
 	Put #file,,bridgelon(i)
@@ -18958,10 +18958,10 @@ Var ntownnodex=ntownnode
 Put #file,,nwaynodex
 Put #file,,ntownnodex
 Put #file,,nbridge
-Var dlatx=1000*360/40000.0,dlonx=dlatx*1.4
+Var dlatx=30*360/40000.0,dlonx=dlatx*1.4
 For i=0 To min2(500,nbridge)
 	If Abs(bridgelat(i)-lat)>dlatx Or Abs(bridgelon(i)-lng)>dlonx Then
-		bridgelat(i)=-89:bridgelon(i)=-179:bridgelat2(i)=-88:bridgelon2(i)=-178
+		bridgelat(i)=-89:bridgelon(i)=-179:bridgelat2(i)=-89:bridgelon2(i)=-179
 	EndIf
 	Put #file,,bridgelat(i)
 	Put #file,,bridgelon(i)

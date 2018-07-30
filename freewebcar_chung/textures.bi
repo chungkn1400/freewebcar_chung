@@ -12819,6 +12819,7 @@ Sub resetbridgei(i As Integer)
 	bridgelon2(i)=-179.5
 	bridgename(i)=""
 	bridgeo1(i)=0	
+	bridgex(i)=-999999
 End Sub
 Sub resetbridge()
 Dim As Integer i  	
@@ -12829,6 +12830,7 @@ For i=0 To nbridge
 	bridgelon2(i)=-179.5
 	bridgename(i)=""
 	bridgeo1(i)=0
+	bridgex(i)=-999999
 Next
 For i=0 To nfuel
 	fuelid(i)=0
@@ -12900,7 +12902,7 @@ Dim As Integer i,j
 			Next i 
 				
 End Sub
-dim shared as single kscalehbridge=1
+dim shared as single kscalehbridge=1,hbridge
 Function setbridgecolor(x As Single,y As Single,xx As Single,yy As Single,z0 As Single,z1 As Single)As Integer 
 'Var z=(getterrainheightfast(x-dmx0,y-dmy0)+getterrainheightfast(xx-dmx0,yy-dmy0))*0.5
 Dim As Integer twater=0,j,di=9
@@ -12909,6 +12911,7 @@ Dim As Single dz=(z1-z0)/di,h=0,hh=0,dx=(xx-x)/di,dy=(yy-y)/di
 Var xxx=x-dy-dy-dy,yyy=y+dx+dx+dx
 Var xxxx=x+dy+dy+dy,yyyy=y-dx-dx-dx
 kscalehbridge=1
+hbridge=0
 For j=1 To di-1
 	xxx+=dx:yyy+=dy
 	If max(Abs(mx-xxx),Abs(my-yyy))>20000 Then Continue For 
@@ -12925,6 +12928,7 @@ For j=1 To di-1
 	'If dzzz<z-20 And twater>=0 And twater<=1 Then twater=1
 Next
 'If hh<-50*scalez Then Return 0
+hbridge=h
 var hii=min2(99,32*Int(1+3*h/(10*scalez)))
 'kscalehbridge=hii/99
 Return hii
@@ -12947,7 +12951,7 @@ EndIf
 gldisable gl_fog
 myibridge=0
 For i=0 To nbridge
-	bridgex(i)=-9999999
+	bridgex(i)=-999999
 	'If InStr(LCase(bridgename(i)),"garigli")>0 Then auxvar+=1:auxtest=0.2
 	If Abs(bridgelat(i)-latmx)<dlatx Then
 		If Abs(bridgelon(i)-lngmx)<dlonx Then
@@ -12960,9 +12964,10 @@ For i=0 To nbridge
         If bridgecolor(i)>0 Then  
 			dx=xx-x
 			dy=yy-y
-			If Abs(bridgeo1(i))<0.00001 Then
+			If Abs(bridgeo1(i))<0.0001 Then
 				do1=diro1(dx,dy)+90
-				bridgeo1(i)=do1+0.00002
+				If Abs(do1)<0.0002 Then do1=0.0002
+				bridgeo1(i)=do1
 			Else
 				do1=bridgeo1(i)
 			EndIf
@@ -12976,6 +12981,7 @@ For i=0 To nbridge
          'z=waterz-50
          size=dxy*kx'*500/kscalex
          If size>40000 Then resetbridgei(i):Continue For 
+         If size>900+hbridge*30 And bridgecolor(i)<99 Then resetbridgei(i):Continue For 
 			bridgex(i)=x
 			bridgey(i)=y
 		   rotavion(x-mx-dmx0,y-my-dmy0,z-mz)
