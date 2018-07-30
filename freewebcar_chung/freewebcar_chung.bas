@@ -14211,7 +14211,7 @@ gldisable gl_fog
 gldisable gl_blend
 glpushmatrix
 gltranslatef(mx,my,mz) 
-'gltranslatef(screendmx,screendmy,screendmz)
+gltranslatef(screendmx,screendmy,screendmz)
 glrotatef(screendo1,0,0,1)
 glrotatef(screendo2,0,-1,0)
 glrotatef(screendo3,-1,0,0)
@@ -14294,13 +14294,13 @@ EndIf
       'glcopyTexSubImage2D(GL_TEXTURE_2D, 0, 0,0, x0,y0,dx0,dy0)
       glcopyTexSubImage2D(GL_TEXTURE_2D, 0, 0,0, x0,y0,dx0,dy0)
 Var kx=0.1
-For i=-screen20 To screen20
+/'For i=-screen20 To screen20
 	For j=-screen10 To screen10
      screenz(i,j)+=screendmz*kx  
      screenx(i,j)+=screendmx*kx  
      screeny(i,j)+=screendmy*kx
 	Next
-Next
+Next'/
 While screendo1>180:screendo1-=360:Wend
 While screendo1<-180:screendo1+=360:Wend
 While screendo2>180:screendo2-=360:Wend
@@ -16012,6 +16012,7 @@ If tsphere=0 And planet=0 Then
     
     drawtowns()
     tupdatetown=0
+  If tdrawscreen<>1 Then 
     getlocktown2(0)   
     If testworld=0 Then
     	drawtownobjects()
@@ -16028,6 +16029,19 @@ If tsphere=0 And planet=0 Then
     	EndIf 	
     EndIf
     freelocktown(0)
+
+	 glnormal3f(-cos1,-sin1,0.3)
+	 drawarbres()
+    tupdatearbre=0
+
+    gldisable gl_alpha_test
+    drawcows()
+    tupdatecow=0
+    
+    drawrocs()
+    tupdateroc=0    
+  EndIf'tdrawscreen   
+
     If tscreentext=1 Then
     	If tdrawscreen=2 Then
     		getscreentext()
@@ -16076,7 +16090,7 @@ EndIf
     EndIf
 
 If planet=0 Then
-	 glnormal3f(-cos1,-sin1,0.3)
+	 /'glnormal3f(-cos1,-sin1,0.3)
 	 drawarbres()
     tupdatearbre=0
 
@@ -16086,7 +16100,7 @@ If planet=0 Then
     
     drawrocs()
     tupdateroc=0
-    
+    '/
     'If tourelle=0 Then
     	testcollideforward()
     'EndIf

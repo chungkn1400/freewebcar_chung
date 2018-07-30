@@ -12975,7 +12975,7 @@ For i=0 To nbridge
          'x=341400*kscalex/500:y=1885900*kscalex/500:do1=-34:size=34000
          'z=waterz-50
          size=dxy*kx'*500/kscalex
-         If size>25000 Then resetbridgei(i):Continue For 
+         If size>40000 Then resetbridgei(i):Continue For 
 			bridgex(i)=x
 			bridgey(i)=y
 		   rotavion(x-mx-dmx0,y-my-dmy0,z-mz)
