@@ -14185,6 +14185,7 @@ Next
 If teststenciltop<xmax*0.02 Then teststenciltop=0
 auxvar6=teststenciltop+0.1:auxtest=0.8
 End Sub
+'Const As Integer screen20=34,screen10=18
 Const As Integer screen20=50,screen10=25
 'Const As Integer screen20=1,screen10=1
 Dim Shared As Double timescreentext
@@ -14224,6 +14225,7 @@ Var x2048=1024,y2048=1024
 If xmax>1024 Then x2048=2048
 If ymax>1024 Then y2048=2048
 glbindtexture(gl_texture_2d,screentext)
+glbegin(gl_quads)
 For i=-screen20 To screen20-1
 	For j=-screen10 To screen10-1
       Var winx = xmax*(0.5+0.5*i/screen20)
@@ -14246,7 +14248,6 @@ For i=-screen20 To screen20-1
       tx=(winx+xmax*0.5/screen20)/x2048
       ty0=winy/y2048
       ty=(winy+ymax*0.5/screen10)/y2048
-	   glbegin(gl_quads)
 	   glTexCoord2f(tx0,ty0)
 	   glvertex3f(screenx(i,j),screeny(i,j),screenz(i,j))
 	   gltexcoord2f(tx,ty0)
@@ -14255,9 +14256,9 @@ For i=-screen20 To screen20-1
 	   glvertex3f(screenx(i+1,j+1),screeny(i+1,j+1),screenz(i+1,j+1))
 	   gltexcoord2f(tx0,ty)
 	   glvertex3f(screenx(i,j+1),screeny(i,j+1),screenz(i,j+1))
-	   glend()     
 	Next
 Next
+glend()     
 glpopmatrix
 glenable gl_depth_test
 If tdark=1 Then glenable gl_lighting
@@ -14311,6 +14312,7 @@ screendo1*=kx
 screendo2*=kx
 screendo3*=kx 
 End Sub
+'Dim Shared As Single winztab(2048*2048)
 Sub getscreentextz()
 Dim As Integer i,j,k,s128=128
 Dim As integer viewport(4)
@@ -14335,11 +14337,17 @@ Var dwinx = xmax*(0.5/screen20)
 Var dwiny = ymax*(0.5/screen10)
 Var dist=0.0
 Var kv=1/(max(1.0,vkm*0.015))
+'glReadPixels( 0,0, xmax, ymax, GL_DEPTH_COMPONENT, GL_FLOAT, @winZtab(0) )
+'auxvar2=winztab((xmax)*(ymax)+ymax-1)
+'auxvar3=winztab(ymax+1)
 For i=-screen20 To screen20
+   winx = xmax*(0.5+0.5*i/screen20)
+   'glReadPixels( winx,0, 1, ymax+1, GL_DEPTH_COMPONENT, GL_FLOAT, @winZtab(0) )
 	For j=-screen10 To screen10
-     winx = xmax*(0.5+0.5*i/screen20)
+     'winx = xmax*(0.5+0.5*i/screen20)
      winy = ymax*(0.5+0.5*j/screen10)
      glReadPixels( winx,winy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, @winZ )
+     'winz=winztab(Int(max2(0,Int(winx+0.01))*(ymax-1)+max2(0,Int(winy+0.01))))
      gluUnProject(winX,winY,winz,@modelview(0),@projection(0),@viewport(0),@posX,@posY,@posZ) 
      screenz(i,j)=posz  
      screenx(i,j)=posx  
@@ -14348,7 +14356,7 @@ For i=-screen20 To screen20
      dist=max(dist,abs(posz-mz))
      If posz>mz-dist*0.1 Then dist*=0.2
      distscreen=min(dist,distscreen)
-     If distscreen<2500 Then
+     If distscreen<2500 And 0 Then
      	  timescreentext=time2+3
      	  tscreentext=0:tscreentext2=-10:tscreentext3=1:Exit sub
      EndIf
@@ -15280,7 +15288,7 @@ Sub displayback(tdraw As integer=1)
     drawsol
     If planet=0 And (mz-mzsol0)>=1400 Then
     	gldisable gl_fog
-    	drawclouds
+    	'drawclouds
       If ifog>0 And tdark=0 Then glEnable(GL_FOG)
     EndIf
     glcolor3f(1,1,1)
@@ -15779,7 +15787,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
       gldisable gl_blend
     EndIf
     drawsun
-    If planet=0 And (mz-mzsol0)<1400 Then drawclouds
+    'If planet=0 And (mz-mzsol0)<1400 Then drawclouds
     If ifog>0 And planet=0 And tdark=0 Then glEnable(GL_FOG)
    EndIf 
     If tdark=1 Then
@@ -15799,7 +15807,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     drawsol
     If planet=0 And (mz-mzsol0)>=1400 Then
     	gldisable gl_fog
-    	drawclouds
+    	'drawclouds
       If ifog>0 And tdark=0 Then glEnable(GL_FOG)
     EndIf
     If tsphere=1 Or (planet=1 And mz>(mzsol0+3000)) Then drawdusts
@@ -16048,6 +16056,11 @@ If tsphere=0 And planet=0 Then
     	EndIf
     EndIf 
     
+    'drawsun
+    'If planet=0 And (mz-mzsol0)<1400 Then
+    	drawclouds
+    'EndIf
+
     drawballoon()
     drawboeing()
     If nboeing2>0 Then drawnboeings()
