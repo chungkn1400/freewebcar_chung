@@ -128,7 +128,7 @@ If avion="737" then
    altmax=150000'10000
 End If	
 If avion="c150" then
-   kpitch=0.7:kroll=0.7:kqueue=0.7:kprop=1.25'1.5
+   kpitch=0.7:kroll=0.7:kqueue=0.7:kprop=1.5'1.5
    poids=0.85'1.2
    vcruise=22'32
    altmax=70000'10000
@@ -170,7 +170,7 @@ If avion="avion1" Then
    altmax=70000
 end if
 if avion="corsair" then
-   kpitch=0.95:kroll=1:kqueue=1:kprop=1.25
+   kpitch=0.95:kroll=1:kqueue=1:kprop=1.5
    poids=0.9
    vcruise=22
    altmax=70000
@@ -196,7 +196,7 @@ if avion="avion5" then
    altmax=70000
 end if
 if avion="zero" Then'zero
-   kpitch=0.9:kroll=0.9:kqueue=1:kprop=1.25'1.5
+   kpitch=0.9:kroll=0.9:kqueue=1:kprop=1.5'1.5
    poids=0.9
    vcruise=22'30'22
    altmax=70000

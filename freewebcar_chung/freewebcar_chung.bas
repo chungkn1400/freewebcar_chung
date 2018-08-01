@@ -14277,7 +14277,7 @@ EndIf
 Var do1=max(Abs(screendo1),Abs(screendo2))
 If max(do1,Abs(screendo3))>1 Then
      	  timescreentext=time2+3
-     	  tscreentext=0:tscreentext2=-10:tscreentext3=1:Exit sub
+     	  tscreentext=0:tscreentext2=-10:tscreentext3=0:Exit sub
 EndIf
 'For i=-screen20 To screen20-1
 '	For j=-screen10 To screen10-1
@@ -14356,9 +14356,9 @@ For i=-screen20 To screen20
      dist=max(dist,abs(posz-mz))
      If posz>mz-dist*0.1 Then dist*=0.2
      distscreen=min(dist,distscreen)
-     If distscreen<2500 And 0 Then
+     If distscreen<2500 Then
      	  timescreentext=time2+3
-     	  tscreentext=0:tscreentext2=-10:tscreentext3=1:Exit sub
+     	  tscreentext=0:tscreentext2=-10:tscreentext3=0:Exit sub
      EndIf
      /'winx+=dwinx'128
      gluUnProject(winX,winY,winz,@modelview(0),@projection(0),@viewport(0),@posX2,@posY2,@posZ2) 
