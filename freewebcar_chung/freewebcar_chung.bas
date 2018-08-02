@@ -9211,12 +9211,17 @@ If tautopilot>=1 And time2>timeautopilot+3 And plane>0 And car>0 Then'And scalev
     o1=ncaro1(0):ncaro10=o1
     If ncariroad(0)>0 Then
     	Var i=ncariroad(0)
-    	k25o1=sin1*(xnearroad(i)-mx)-cos1*(ynearroad(i)-my)
+    	If cos1*(xnearroad(i)-mx)+sin1*(ynearroad(i)-my)>0 Then
+    		k25o1=sin1*(xnearroad(i)-mx)-cos1*(ynearroad(i)-my)
+    	Else
+    		k25o1=1
+    	EndIf
     Else 	
     	Var k25=45.0*Sgn(k25o1+0.1)
     	'If (Int(Timer/40)Mod 2)>=0 Then k25=-55
     	'volantrots(0)=-25*(2+ncarco1(0)*ncarcos100+ncarsi1(0)*ncarsin100)
-      volantrots(0)=-k25*(2+ncarco1(0)*(ncarcos100+0.25*ncarsin100)+ncarsi1(0)*(ncarsin100-0.25*ncarcos100))
+     'volantrots(0)=-k25*(2+ncarco1(0)*(ncarcos100+0.25*ncarsin100)+ncarsi1(0)*(ncarsin100-0.25*ncarcos100))
+      volantrots(0)=-k25*2.75
       'If (Int((Timer-timerrot)/40)Mod 3)=0 Then volantrots(0)=-volantrots(0)
       'If timer>timerrot+80 Then timerrot=timer+Int(Rnd*2)*40
     EndIf 
