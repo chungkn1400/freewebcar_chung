@@ -1316,6 +1316,8 @@ nboeing2=10
 If Not Eof(file) Then Line Input #file,ficin:nboeing2=Val(ficin)
 tinternet=3
 If Not Eof(file) Then Line Input #file,ficin:tinternet=Val(ficin)
+kfps30=1.0
+If Not Eof(file) Then Line Input #file,ficin:kfps30=Val(ficin)
 Close #file
 carb=max(1000.0,min(carb+1000.0,carb0))
 kscalex=500:kscalex00=500
@@ -8955,8 +8957,8 @@ For i=i1 To ncar
 		   ncarvv(i)=min(ncarvv(i),v8)
 	   EndIf
 		ncarvv(i)+=(ncarv(i)-ncarvv(i))*kfps*0.03
-	   x+=ncarvv(i)*kfps*co1*kv1
-	   y+=ncarvv(i)*kfps*si1*kv1		
+	   x+=ncarvv(i)*kfps*co1*kv1*kfps30
+	   y+=ncarvv(i)*kfps*si1*kv1*kfps30		
 	Else
 		ncarvv(i)+=(ncarv(i)-ncarvv(i))*kfps*0.1
       vautopilot0=2
@@ -8966,8 +8968,8 @@ For i=i1 To ncar
       nvmx2=kaux*nvmx2+(1-kaux)*ncarvv(i)*ncarco1(i)
       nvmy2=kaux*nvmy2+(1-kaux)*ncarvv(i)*ncarsi1(i)
       'vmz2=kaux*vmz2+(1-kaux)*dvmz2	
-		x+=nvmx2*kfps*0.2'0.63
-		y+=nvmy2*kfps*0.2'0.63
+		x+=nvmx2*kfps*0.2*kfps30'0.63
+		y+=nvmy2*kfps*0.2*kfps30'0.63
 	   'x+=ncarvv(i)*kfps*ncarco1(i)*0.63'0.8
 	   'y+=ncarvv(i)*kfps*ncarsi1(i)*0.63'0.8		
 	EndIf
@@ -14336,7 +14338,7 @@ EndIf
 Var dwinx = xmax*(0.5/screen20)
 Var dwiny = ymax*(0.5/screen10)
 Var dist=0.0
-Var kv=1/(max(1.0,vkm*0.015))
+Var kv=1/(max(1.0,vkm*0.015)*kfps30)
 'glReadPixels( 0,0, xmax, ymax, GL_DEPTH_COMPONENT, GL_FLOAT, @winZtab(0) )
 'auxvar2=winztab((xmax)*(ymax)+ymax-1)
 'auxvar3=winztab(ymax+1)
@@ -16490,6 +16492,7 @@ EndIf 'planet
         Var vv=min(v*3,Sqr((xkm-mx)*(xkm-mx)+(ykm-my)*(ykm-my)+(zkm-mz)*(zkm-mz))*fps/15)'/25
         If (xkm-mx)*cos1+(ykm-my)*sin1>0 Then vv=-vv
         xkm=mx:ykm=my:zkm=mz
+        vv=vv/kfps30
         If car>0 Then vkm+=(vv*4.75-vkm)*0.07*kfps Else vkm+=(vv*7-vkm)*0.03*kfps'v*17
         gldrawtext("prop= "+Str(Int(prop))+"  v= "+Str(Int(vkm))+"."+Str(Int(vkm*10+1000)Mod 10),15,ymax-35,1.2)
         gldrawtext("x= "+Str(Int((mx)*500/kscalex))+ _'"+"+Str(Int(dmx0))+ _  
@@ -17054,6 +17057,15 @@ Dim As Single x
 	x=max2(5,min2(12,x))
 	If x<>minfps Then
 		minfps=x
+	EndIf
+	Sleep 300:guiscan
+	resp=Str(kfps30)
+	msg="speedscale kfps : enter a number (0.3 .. 1.5)  last="+Str(kfps30)+"   initial=1.0"
+	prompt(msg,resp)
+	x=Val(resp)
+	x=max(0.3,min(1.5,x))
+	If x<>kfps30 Then
+		kfps30=x
 	EndIf
 End Sub
 Sub subshadow
@@ -21865,7 +21877,9 @@ If Right(fic,5)=".save" Then
       'resettownwaynode2()
       resetfuel()
       subreset(1)
+      Var kfps300=kfps30
 		load(fic)
+		kfps30=kfps300
 		itownp=0
 		inittownfic0(fic0)
 		'loadtownxy3(fic0)
@@ -22182,7 +22196,7 @@ msg+="R  => repair,radio  / shift+,M  => map,zoom map"+cr
 msg+="ctrl+T => number of trees   /   shift+T => set retro view"+cr
 msg+="ctrl+D => distmax  /  shift,ctrl,mousewheel => gaz (hand mode)"+cr
 msg+="ctrl+N => number of cars/planes/boeings"+cr
-msg+="ctrl+F => max/min fps"+cr
+msg+="ctrl+F => max/min fps , fps speedscale"+cr
 msg+="ctrl+I => internet on/towers only/off"+cr
 msg+="ctrl+C => number of clouds"+cr
 'msg+="ctrl+W => water wave height"+cr
@@ -23877,6 +23891,7 @@ Print #file,typeautopilot0
 Print #file,detail40
 Print #file,nboeing2
 Print #file,tinternet
+Print #file,kfps30
 Close #file
 ''If townchanged=1 Or Rnd<0.2 Then savetownvie()
 If (planet=0 And orbit=1) And topentown=1 And tinittown0<=0 Then
@@ -24157,6 +24172,7 @@ cos222=Cos(o222*degtorad):sin222=Sin(o222*degtorad)
         If auxtext<>"" Then gldrawtext(auxtext,15,ymax-199,1.2)
        EndIf  
         If car>=1 Then vkm=v*4.5 Else vkm=v*17
+        vkm=vkm/kfps30
         gldrawtext("prop= "+Str(Int(prop))+"  v= "+Str(Int(vkm))+"."+Str(Int(vkm*10+1000)Mod 10),15,ymax-35,1.2)
         gldrawtext("x= "+Str(Int(mx+smx0))+"  y= "+Str(Int(my+smy0))+"  z= "+Str(Int(mz)),15,ymax-10,1.2)
         If carb<carb0*0.1 Then glcolor3f(1,0,0) Else glcolor3f(0,1,1)

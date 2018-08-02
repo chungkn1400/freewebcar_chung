@@ -507,8 +507,8 @@ order0=order
 order=1
 If klevel2(i)>0.01 Then klevel2(i)=max(0.0,klevel2(i)-0.03*kfps)
 kfps3=kfps*airshipmove(i)
-airshipx(i)+=airshipv(i)*airshipco2(i)*airshipco1(i)*kfps*kvaux
-airshipy(i)+=airshipv(i)*airshipco2(i)*airshipsi1(i)*kfps*kvaux
+airshipx(i)+=airshipv(i)*airshipco2(i)*airshipco1(i)*kfps*kvaux*kfps30
+airshipy(i)+=airshipv(i)*airshipco2(i)*airshipsi1(i)*kfps*kvaux*kfps30
 If airshipwar(i)<0.1 Then
  /'If ((i-3) Mod 4)=0 Or i=1 Then
 	If i=11 Then

@@ -650,7 +650,7 @@ If tdrawwind=1 Then
    EndIf 
 EndIf	
 End Sub
-Dim Shared As Double timemove0,timemove
+Dim Shared As Double timemove0,timemove,kfps30=20/30
 Sub movespace
 'If carb<=0.1 then prop=0:volume=550 else carb=max(0.01,carb-0.000003*prop*v*kfps)
 If carb<=0.1 Then
@@ -712,7 +712,7 @@ vmx2=vmx1*cos2:vmy2=vmy1*cos2:vmz2=v*sin2
 'kvaux=0.05
 timemove0=timemove
 timemove=Timer
-Var dkfps=min(6.0,(timemove-timemove0)*30)'kfps
+Var dkfps=min(6.0,(timemove-timemove0)*30*kfps30)'kfps
 mx+=vmx2*dkfps*kvaux:my+=vmy2*dkfps*kvaux:mz1+=vmz2*dkfps*kvaux
 End Sub
 Dim Shared As Integer ntownnear,ntownnear0
@@ -942,7 +942,7 @@ vmz2=vmz2+vmz3
 kvaux=1.0'5.9
 timemove0=timemove
 timemove=Timer
-Var dkfps=min(6.0,(timemove-timemove0)*30)*0.4'0.6'kfps
+Var dkfps=min(6.0,(timemove-timemove0)*30*kfps30)*0.4'0.6'kfps
 If tautopilot=0 Then dkfps*=1.2
 
 mx+=vmx2*dkfps*kvaux:my+=vmy2*dkfps*kvaux:mz1+=vmz2*dkfps*kvaux
@@ -1163,7 +1163,7 @@ Var kvaux2=kvaux*0.4'0.8
 If tautopilot=0 Then kvaux2*=1.7
 timemove0=timemove
 timemove=Timer
-Var dkfps=min(6.0,(timemove-timemove0)*30)'kfps
+Var dkfps=min(6.0,(timemove-timemove0)*30*kfps30)'kfps
 mx=mx+vmx2*dkfps*kvaux2:my=my+vmy2*dkfps*kvaux2:mz1=mz1+vmz2*dkfps*kvaux2 
 EndIf 
 End Sub
