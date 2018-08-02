@@ -6531,7 +6531,10 @@ If mapdisplay>0 Then Exit Sub'Or volant=2 Then Exit Sub
 If (tvideo=0 And time2>timegps+130 And tgps=1) Or time2<timeinit+11 Then timegps=timer+Rnd*3  
 If (tvideo=0 And time2>timegps+190 And tgps=0) Or time2<timeinit+11 Then timegps=timer+Rnd*3  
 If time2<timegps+10 Then
-	If tvideo=0 Then ipersovideo=Int(Rnd*2.9)
+	If tvideo=0 Then
+		ipersovideo=Int(Rnd*2.9)
+		If ipersovideo=1 Then textspeak="   you are so beautifull Nathalie"
+	EndIf
    tvideo=1	
 Else
    If tvideo=1 Then timegps=time2-13
@@ -9096,7 +9099,7 @@ For i=i1 To ncar
    Var kx=min(0.7,0.03*kfps)
 	'ncaravgx(i)+=(ncarx(i)-ncaravgx(i))*0.007*kfps
 	'ncaravgy(i)+=(ncary(i)-ncaravgy(i))*0.007*kfps
-	If Abs(ncaravgx(i)-ncarx(i))>19 or Abs(ncaravgy(i)-ncary(i))>19 Then
+	If max(Abs(ncaravgx(i)-ncarx(i)),Abs(ncaravgy(i)-ncary(i)))>19*kfps30 Then
 		ncaravgtime(i)=time2
 	   ncaravgx(i)=ncarx(i)
 	   ncaravgy(i)=ncary(i)
@@ -15616,7 +15619,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     		If plane=0 Then d180=80
     		Var k01=0.05*kfps
     		avgv+=(vkm-avgv)*k01:avgmx+=(mx-avgmx)*k01:avgmy+=(my-avgmy)*k01
-    		If Abs(mxmove-avgmx)>d180 Or Abs(mymove-avgmy)>d180 Or Abs(o1move-o1)>130 Or (prop<500*(1+sin2) And plane>0) Or _  
+    		If Abs(mxmove-avgmx)>d180*kfps30 Or Abs(mymove-avgmy)>d180*kfps30 Or Abs(o1move-o1)>130 Or (prop<500*(1+sin2) And plane>0) Or _  
     		   mapdisplay>0 Then
     			tmxmove=Timer
     			mxmove=mx:mymove=my:o1move=o1 
