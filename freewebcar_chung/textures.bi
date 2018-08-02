@@ -6702,6 +6702,27 @@ EndIf
  EndIf 
  xmid=(xmin+xmax)/2
  ymid=(ymin+ymax)/2
+ If ((itime+i) Mod 30)=1 Then 
+  If max(Abs(xmid-mx),Abs(ymid-my))<1200 Then
+ 	 Var testroad=gettestroad(xmid,ymid)
+ 	 If testroad>0 Then
+ 		  	  townwaynodeid(ij,i)=0
+ 		  	  towniwaynode(ij,i)=0
+ 		  	  townwaynodesize(ij,i)=0
+           Var i40=0
+           If kmxlat>10 Then i40=towni40(ij,i)
+           If i40>0 Then
+              resettown40i(i40) 	
+           EndIf 
+           glcolor3f(1,1,1)
+           glenable(gl_texture_2d)
+           If tnight1=1 Then
+	           gldisable gl_alpha_test
+           EndIf
+           Exit Sub 
+ 	 EndIf
+  EndIf 	 
+ EndIf
  If i40>0 And ixy40<n40-1.1 Then
  	townixy40(i40)=ixy40
  	If ixy40>nwaynode Then
@@ -7124,6 +7145,27 @@ EndIf
  EndIf 
  xmid=(xmin+xmax)/2
  ymid=(ymin+ymax)/2
+ If ((itime+i) Mod 30)=1 Then 
+  If max(Abs(xmid-mx),Abs(ymid-my))<1200 Then
+ 	 Var testroad=gettestroad(xmid,ymid)
+ 	 If testroad>0 Then
+ 		  	  townwaynodeid(ij,i)=0
+ 		  	  towniwaynode(ij,i)=0
+ 		  	  townwaynodesize(ij,i)=0
+           Var i40=0
+           If kmxlat>10 Then i40=towni40(ij,i)
+           If i40>0 Then
+              resettown40i(i40) 	
+           EndIf 
+           glcolor3f(1,1,1)
+           glenable(gl_texture_2d)
+           If tnight1=1 Then
+	           gldisable gl_alpha_test
+           EndIf
+           Exit Sub 
+ 	 EndIf
+  EndIf 	 
+ EndIf
  Var dxy=max(xmax-xmin,ymax-ymin)
  If dxy<300 Then
  	'If h>dxy*1.75 Then townwaynodeh(ij,i)=dxy*1.75+4000*Int(hmin+0.5)
