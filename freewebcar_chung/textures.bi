@@ -5107,6 +5107,7 @@ Sub addtownwaynode(ij As Integer,k As Integer)
 Dim As Integer i,j,n,p
 Dim As Single mxweb,myweb',mxweb2,myweb2,mxweb3,myweb3
 Dim As int64 id,id0
+tenablecompile=max(Timer+1,tenablecompile) 
 n=townnwaynode(ij)
 If n>=ntownnode Then
 	n=ntownnode
@@ -8097,6 +8098,7 @@ For i=-100 To 612
 	Next
 Next
 taglcompile20=1
+tenablecompile=max(Timer,tenablecompile) 
 End Sub
 Dim Shared As Single distrunway4000
 Sub drawroadnode(ij As Integer,i As Integer)
