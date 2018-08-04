@@ -5268,6 +5268,7 @@ Dim Shared As Double train,timeaddshadowtree,timeishadow,train2,tdrawroad
 Dim Shared As uint agllist,agllist2
 Dim Shared As Single avgbuildh,navgbuildh,avgbuildh0
 Dim Shared As Integer taglcompile2,taglcompile20,tcompiledummy
+Dim Shared As Double tenablecompile
 Declare Sub subcopyshadow()
 Declare Sub drawcigale()
 Dim Shared As uint sauterelletext,sauterelletext2
@@ -5618,7 +5619,7 @@ If taglcompile20=1 Then
 	taglcompile20=2
 	taglcompile2=1
 EndIf
-If taglcompile2=1 Then
+If taglcompile2=1 And (Timer>tenablecompile+0.3 Or tscreentext>=1) Then
 	tcompile=1
 	If taglcompile20=0 Then
 		'tcompile=2
@@ -23505,6 +23506,7 @@ ElseIf tloadwebtext2=4 Then
       	'y+=(yweb-y)*0.5
       EndIf
       loadwebtext2()
+      tenablecompile=Timer+60
       threaddetach(ThreadCreate(@subsetmapautotextures))
       /'loadwebtextzoom2()
       auxvar=Timer
@@ -23517,7 +23519,8 @@ ElseIf tloadwebtext2=4 Then
       taglcompile20=2
       setmapautotextures2()
       taglcompile20=1
-      drawtownnodes()
+      tenablecompile=Timer 
+      'drawtownnodes()
       tupdateterrain=0
       If (Abs(worldx-worldx000)+Abs(worldy-worldy000))>0.0001 Or (topentown=1 And tinittown0>=1) Then 
         initairport
