@@ -5619,7 +5619,7 @@ If taglcompile20=1 Then
 	taglcompile20=2
 	taglcompile2=1
 EndIf
-If taglcompile2=1 And (Timer>tenablecompile+0.3 Or tscreentext>=1) Then
+If taglcompile2=1 And (Timer>tenablecompile+0.5 Or tscreentext>=1) Then
 	tcompile=1
 	If taglcompile20=0 Then
 		'tcompile=2
@@ -5652,6 +5652,8 @@ If taglcompile=1 Or taglcompile2=1 Or scaleview<0.9 Then
 Var irepeat=1,nrepeat=1:If tcompiledummy=1 Then nrepeat=3
 
 For irepeat=1 To nrepeat
+
+If irepeat=nrepeat And tcompiledummy=0 Then drawsol()
 	
 avgbuildh0=avgbuildh
 avgbuildh=0:navgbuildh=1
@@ -15815,7 +15817,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     	'scalexy=1
     	gltranslatef(-mx,-my,-mz-yh)
     EndIf '/
-    drawsol
+    'drawsol
     If planet=0 And (mz-mzsol0)>=1400 Then
     	gldisable gl_fog
     	'drawclouds
