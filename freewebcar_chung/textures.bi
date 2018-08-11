@@ -4432,7 +4432,7 @@ Sub getways2(text0 As String)'getways
  	     	 		'If Str(wayid)="79152373" Then auxvar+=1:auxtest=0.8
  	     	 		j40=iwaynodei
  	     	 		If j40>0 And j40<=n40 Then
- 	     	 		 k40=(k0+k)*0.5+0.01
+ 	     	 		 k40=(k0+k)*0.5+0.001
  	     	 		 If j40=1 Or k40<k0+1.0011 Or k40>k-0.0011 or k40>nsplit2-0.0011 Then
  	     	 			knode40(i40,j40)=0
  	     	 		   townnodelat40(i40,j40)=-99

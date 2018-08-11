@@ -1,4 +1,4 @@
-'freewebcar_chung.bas by NGUYEN.Chung freeware (2011-2017)    
+'freewebcar_chung.bas by NGUYEN.Chung freeware (2011-2018)    
 '
 '#Define guinogfx 'dont use freebasic gfx 
 Dim Shared As double auxvar,auxvar2,auxvar3,auxvar4,auxvar5,auxvar6,auxtest=0,auxtest0=1
@@ -212,13 +212,13 @@ Sub setsoundarcade()
 	If trikku<0 Then
 		'trikku=Int(Rnd*4)
 		trikku=0
-      If Rnd<0.75*0.6 Then trikku=1:soundfic="sounds/rikku.mp3"
-      If Rnd<0.6*0.6 Then trikku=2:soundfic="sounds/luck.mp3"
+      If Rnd<0.75*0.41 Then trikku=1:soundfic="sounds/rikku.mp3"
+      If Rnd<0.6*0.41 Then trikku=2:soundfic="sounds/luck.mp3"
 	Else  
    	trikku=(trikku+1)Mod 3
    endif 	
 	'trikku=0
-   soundfic="sounds/arcade.mp3"
+   soundfic="sounds/arcade.mp3"'merry
    If trikku=1 Then soundfic="sounds/rikku.mp3"
    If trikku=2 Then soundfic="sounds/luck.mp3"
    'If trikku=3 Then soundfic="sounds/bird.mp3"
@@ -9050,7 +9050,7 @@ For i=i1 To ncar
     	 If dxxx<0 Then distback=60
     EndIf 	
     tinverse=0
-    If dxx<0 And onewaynearroad(n) And (i>0 Or inear0road>10) And (i>0 Or typeautopilot=1) Then
+    If dxx<0 And onewaynearroad(n)=1 And (i>0 Or inear0road>10) And (i>0 Or typeautopilot=1) Then
     	tinverse=1
       If time2>timeinverse(i)+12 Then timeinverse(i)=time2
     	If time2>timeinverse(i)+4 Then tinverse=0 
@@ -9059,15 +9059,17 @@ For i=i1 To ncar
 	 Var xx=xnearroad(n)+si1*0.5*r
 	 Var yy=ynearroad(n)-co1*0.5*r
     Var dx=x-xx,dy=y-yy
+    'Var dxy=max(-8.0,min(8.0,((dx*si1-dy*co1)+(i And 3)*1.4)))
     Var dxy=max(-8.0,min(8.0,((dx*si1-dy*co1)+(i And 3)*1.4)))
-    nncarx(i)=x-dxy*si1+co1
-    nncary(i)=y+dxy*co1+si1
   	 ncarco1(i)=Cos(degtorad*ncaro1(i))
     ncarsi1(i)=Sin(degtorad*ncaro1(i))
+    nncarx(i)=x-dxy*si1+co1+ncarco1(i)
+    nncary(i)=y+dxy*co1+si1+ncarsi1(i)
     nncaro1(i)=diro1(co1,si1)
-    If tinverse Then 
-  	   	   If Rnd<0.5 Then nncaro1(i)=nncaro1(i)-160+(Rnd-0.5)*40
-    EndIf
+    'nncaro1(i)=ncaro1(i)
+    'If tinverse Then 
+  	 '  	   If Rnd<0.5 Then nncaro1(i)=nncaro1(i)-160+(Rnd-0.5)*40
+    'EndIf
     If i=0 And (tinverse=0 Or typeautopilot=0) Then
     	If avgco1*co1+avgsi1*si1<0 And time2>timeinverse(i)+4 Then
     	   If Rnd<0.03*kfps Then
@@ -9096,7 +9098,7 @@ For i=i1 To ncar
    EndIf
    If ncariroad(i)<>n Then
    	ncariroad(i)=n:ncartimeroad(i)=time2
-   	If Abs(ncarv(i))>1 And tautopilot>0 then ncarv(i)*=0.7:nncarv(i)*=0.7
+   	If Abs(ncarv(i))>4 And tautopilot>0 then ncarv(i)*=0.7:nncarv(i)*=0.7
    EndIf
    'Var kx=min(0.7,0.03*kfps)
    Var kx=min(0.7,0.03*kfps)
@@ -16105,7 +16107,6 @@ If tsphere=0 And planet=0 Then
     EndIf 
     
     'If tourelle=0 And tautopilot=1 Then testcollideforward()
-    
 EndIf 
 
     'gldisable(gl_normalize)
