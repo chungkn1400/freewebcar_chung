@@ -8122,7 +8122,11 @@ Dim As Integer layer=0
 Var zlayer=0.0
 tcolor=0
 'If (i Mod 4)=0 Then tcolor=1
-If auxtest>0.0071 And tcolor=1 Then rcolor=1:gcolor=0:bcolor=0
+If auxtest>0.0071 Then
+	if tcolor=1 Then rcolor=1:gcolor=0:bcolor=0
+Else
+   If tcolor=1 Then tcolor=1:rcolor=0.8:gcolor=1:bcolor=0.8 	
+EndIf
 If townwaynoder(ij,i)>0.91 and Abs(towniwaynode(ij,i))>2 Then
 	layer=1:If townwaynodeg(ij,i)<-0.5 Then layer=-1'$$
 	If layer<-0.9 Then
@@ -13624,6 +13628,21 @@ lat=lat0:lng=lng0
 url="https://www.instantstreetview.com/@"+Str(latmx)+","+Str(lngmx)+","+Str(Int(90-o1))+"h,5p,1z" 
 url="https://chungkn1400.github.io/mystreetview/mystreetview.html?49.35777825513241&0.06468733507165325&34.51200000000002"
 url="https://chungkn1400.github.io/mystreetview/mystreetview.html?"+Str(latmx)+"&"+Str(lngmx)+"&"+Str(o1)
+ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOWmaximized)
+'ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
+sleep 1000	
+guisetfocus("win.graph")
+End Sub
+Sub subOSMmap()
+Sleep 300
+Var hwin0=getforegroundwindow()
+If hwin0<>getguih("win") Then Exit Sub 
+Var lat0=lat,lng0=lng
+mxytolatlng(mx,my)
+Var latmx=lat,lngmx=lng
+lat=lat0:lng=lng0
+Var url="https://www.openstreetmap.org/search?query=#map=19/"+Left(Str(latmx),8)+"/"+Left(Str(lngmx),8)
+url="https://www.openstreetmap.org/query?lat="+Left(Str(latmx),8)+"&lng="+Left(Str(lngmx),8)+"&zoom=15"
 ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOWmaximized)
 'ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
 sleep 1000	

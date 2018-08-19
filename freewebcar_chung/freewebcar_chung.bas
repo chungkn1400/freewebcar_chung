@@ -22549,17 +22549,19 @@ mz11=-999999
         'combobox("win.mapsol",@submapsol,589,ymax+24,60,400)
         combobox("win.scalez",@subscalez,743,ymax+24,50,400)
         button("win.flyto","flyto",@subgeocoding,808,ymax+24,60,24) 
-        button("win.autopilot","autopilot",@subautopilot,882,ymax+24,75,24) 
+        button("win.autopilot","autopilot",@subautopilot,872,ymax+24,70,24) 
+        button("win.osmview","OSMview",@subOSMmap,947,ymax+24,67,24) 
         If wx>=1215 Then
           button("win.streetview","streetview",@Subgooglemap,1040-20,ymax+24,85,24) 
           button("win.radio","radio",@subradio,1174-20,ymax+24,56,24) 
           edittext("win.hour","0.00",@subhour,1134-20,ymax+26,35,20) 
         Else
           button("win.streetview","streetview",@Subgooglemap,1040-1030,ymax-10,85,24) 
+          button("win.streetview","streetview",@Subgooglemap,1040-1030,ymax-10,85,24) 
           button("win.radio","radio",@subradio,1174-1030,ymax-10,56,24) 
           edittext("win.hour","0.00",@subhour,1134-1030,ymax+2-10,35,20) 
         EndIf 
-        statictext("win.bing","google",965,ymax+26,60,20)
+        statictext("win.bing","google",960,ymax+26,60,20)
         graphicbox("win.graph",10,10,xmax,ymax,"opengl")
         'openwindow("win","my window",100,70,xmax+30,ymax+100)
         openwindow("win","freewebcar_chung",winx,winy,xmax+30,ymax+92)
