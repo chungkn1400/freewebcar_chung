@@ -13641,8 +13641,8 @@ Var lat0=lat,lng0=lng
 mxytolatlng(mx,my)
 Var latmx=lat,lngmx=lng
 lat=lat0:lng=lng0
-Var url="https://www.openstreetmap.org/search?query=#map=19/"+Left(Str(latmx),8)+"/"+Left(Str(lngmx),8)
-url="https://www.openstreetmap.org/query?lat="+Left(Str(latmx),8)+"&lng="+Left(Str(lngmx),8)+"&zoom=15"
+Var url="https://www.openstreetmap.org/search?query=#map=19/"+Left(Str(latmx),9)+"/"+Left(Str(lngmx),9)
+url="https://www.openstreetmap.org/query?lat="+Str(latmx)+"&lon="+Str(lngmx)+"#map=19/"+Str(latmx)+"/"+Str(lngmx)
 ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOWmaximized)
 'ShellExecute(NULL,"open","iexplore.exe",url,NULL,SW_SHOWmaximized)
 sleep 1000	
