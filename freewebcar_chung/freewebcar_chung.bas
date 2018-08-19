@@ -858,6 +858,7 @@ Function testivoyage() As Integer
 Return ivoyage	
 End Function
 Dim Shared As Double tsoundvoyage0,timegps
+Dim Shared As Integer optsoundvoyage
 Sub soundvoyage(isong As Integer=0,text As String="")
 	Var ttimer=Timer
 	If tTimer<max(timeinit+20,tsoundvoyage0+0.2) Then Exit Sub
@@ -867,6 +868,7 @@ Sub soundvoyage(isong As Integer=0,text As String="")
 	If tradio=2 And ivoyage>0 Then
 		ivoyage0=ivoyage
 	EndIf 
+	Var opt=optsoundvoyage
 	If tTimer>tsoundvoyage1+223-0.0001 And ivoyage=1 Then ivoyage=0
 	If tTimer>tsoundvoyage2+252-0.0001 And ivoyage=2 Then ivoyage=0
 	If tTimer>tsounddebby+81-0.0001 And ivoyage=3 Then ivoyage=0
@@ -917,14 +919,14 @@ Sub soundvoyage(isong As Integer=0,text As String="")
 			If Rnd<0.5 Then    
 			   ivoyage=1
 			Else
-				If oceansound=1 Or Rnd<0.3 Then
+				If oceansound=1 Or Rnd<0.3 Or opt=1 Then
 					ivoyage=8
 				Else   	
 					ivoyage=2
 				EndIf
 			EndIf 	
 		ElseIf isong=1 Then
-		   If Rnd<0.3 Then
+		   If Rnd<0.3 Or opt=1 Then
 		   	ivoyage=10
 		   Else 	
 		   	ivoyage=4
@@ -932,7 +934,7 @@ Sub soundvoyage(isong As Integer=0,text As String="")
 		ElseIf isong=2 Then 
 			ivoyage=5
 		ElseIf isong=3 Then 
-			If Rnd<0.35 Then
+			If Rnd<0.35 Or opt=1 Then
 				ivoyage=11
 			ElseIf Rnd<0.65 Then
 				ivoyage=3
@@ -940,7 +942,7 @@ Sub soundvoyage(isong As Integer=0,text As String="")
 				ivoyage=6
 			EndIf
 		Else
-			If Rnd<0.5 Then    
+			If Rnd<0.5 Or opt=1 Then    
    			ivoyage=7
 			ElseIf oceansound=1 Or InStr(text,"bar")>0 Or InStr(text,"cafe")>0 Or InStr(text,"pub") Or _  
 				    InStr(text,"restaurant")>0 Or InStr(text,"hotel")>0 Or Rnd<0.25 Then
@@ -15618,7 +15620,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     	yh=5.7'9
     	dyh=-9.4
     	If plane>0 And car>0 Then dyh+=dyh0
-    	If plane=0 And tfoothorse=1 Then dyh=-4
+    	If plane=0 And tfoothorse=1 Then dyh=-5.7'-4
     	If (car>0 And plane>0) Or (plane=0 And (trun=1 Or guitestkey(vk_up))) Then
     		If plane>0 Then
     			yh=1'5'-4'17/ksc
@@ -16323,6 +16325,7 @@ EndIf 'planet
 
     drawrain()
     
+    glClear (GL_DEPTH_BUFFER_BIT)
     If plane=0 Then
        If guitestkey(vk_h) Then tfoothorse=(tfoothorse+1)Mod 2:Sleep 300
        If tfoothorse=1 Then
@@ -16344,7 +16347,7 @@ EndIf 'planet
        EndIf
     EndIf
 	 If (mz<(mzsol0+500) And (mzsol0-mzh)<waterz+1+dhseashore)Then'And tseashore=1 and webtext=0 Then
-		If ntownnear<1 And plane=0 Then drawseashore()
+		If ntownnear<1 And plane=0 And piste=0 Then drawseashore()
 	 EndIf
     'drawbullets()
     'freelockterrain()
@@ -24105,6 +24108,7 @@ cos222=Cos(o222*degtorad):sin222=Sin(o222*degtorad)
     tstation=1
     drawstation()
     
+    glClear (GL_DEPTH_BUFFER_BIT)
     If plane=0 Then
        'tfoothorse=1
        If tfoothorse=1 Then drawhorse()

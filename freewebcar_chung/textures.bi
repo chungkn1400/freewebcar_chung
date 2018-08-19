@@ -11150,6 +11150,7 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
    			Else 
       			townwaynodebuild(ij,i)=1+Int(Rnd*3)
       		EndIf '/
+      		   optsoundvoyage=(Abs(Int(x*0.1)+Int(y*0.1)))And 1
       		   If plane=0 Then timesoundarcade0=0
            	   If waynodebuild=100 Then'highway
            	      If roadtext=0 Then glbindtexture(gl_texture_2d,roadtext)
