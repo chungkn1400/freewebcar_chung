@@ -6538,7 +6538,7 @@ If (tvideo=0 And time2>timegps+190 And tgps=0) Or time2<timeinit+11 Then timegps
 If time2<timegps+10 Then
 	If tvideo=0 Then
 		ipersovideo=Int(Rnd*2.9)
-		If ipersovideo=1 Then textspeak="   you are so beautifull Nathalie"
+		If ipersovideo=1 Then textspeak="   you are so beautifull, i love you Nathalie"
 	EndIf
    tvideo=1	
 Else
@@ -10902,7 +10902,7 @@ if tsun<0 Or time2<timeinit+10 Then
      Var sb3=0.9
      gllightfv(gl_light0,GL_ambient,glparam4f(a,a,a, 1)) 'GL_AMBIENT GL_DIFFUSE GL_SPECULAR GL_POSITION
      'gllightfv(gl_light0,GL_diffuse,glparam4f(1,1,1, 1)) 'GL_AMBIENT GL_DIFFUSE GL_SPECULAR GL_POSITION
-     gllightfv(gl_light0,GL_diffuse,glparam4f(b,b,c, 1)) 'GL_AMBIENT GL_DIFFUSE GL_SPECULAR GL_POSITION
+     gllightfv(gl_light0,GL_diffuse,glparam4f(b,b,c*0.5, 1)) 'GL_AMBIENT GL_DIFFUSE GL_SPECULAR GL_POSITION
      gllightfv(gl_light0,GL_specular,glparam4f(sb,sb,sb,1)) 'GL_AMBIENT GL_DIFFUSE GL_SPECULAR GL_POSITION
      gllightfv(gl_light3,GL_specular,glparam4f(sb3,sb3,sb3,1)) 'GL_AMBIENT GL_DIFFUSE GL_SPECULAR GL_POSITION
      Var dxyz=Sqr(kxsoleil*kxsoleil+kysoleil*kysoleil+kzsoleil*kzsoleil)
@@ -15444,7 +15444,8 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     		'	prompt(resp0,resp0)
     		EndIf
          'If tautopilot=0 And v>10 And car>0 Then volume=min(volume,2200.0)
-    		If plane>0 And car>0 And tautopilot=1 And mapdisplay<>1 Then'And tourelle=0 Then
+    		'If plane>0 And car>0 And tautopilot=1 And mapdisplay<>1 Then'And tourelle=0 Then
+    		If ((plane>0 And car>0)Or trun=1) And tautopilot=1 And mapdisplay<>1 Then'And tourelle=0 Then
     		 If tourelle=0 Then 
     		  If guitestkey(vk_left) And guitestkey(vk_space)=0 Then
     		  	  timeautopilot=time2-2
@@ -16638,11 +16639,11 @@ EndIf 'planet
 	   	If n=0 Then
 	   		drr=100
 	   		If time2>timeautopilot+2 Then timeautopilot=0 
-	   	ElseIf timeautopilot<fpsmoy Then
-	   		timeautopilot+=0.5
-	   		drr=70
+	   	'ElseIf timeautopilot<fpsmoy Then
+	   	'	timeautopilot+=0.5
+	   	'	drr=70
 	   	EndIf
-	   	avgo1=o1
+	   	'avgo1=o1
 	   EndIf
 	   n=getrandomnearroad(mx,my,n,cos1,sin1,drr,1)
 	   myncari=1
