@@ -8984,10 +8984,21 @@ For i=i1 To ncar
 	Var n=ncariroad(i)
 	Var n0=n,n1=0,ddr0=0.0',ttlayer=0:If n>0 Then ttlayer=layernearroad(n)
 	'If (i=0 And Abs(tlayer0)>0.3 And n=0)Then ddr0=70
-	If (i=0 And n=0)Then ddr0=70
+	If (i=0 And n=0)Then
+		ddr0=70
+		If time2>ncartimeroad(i)+4 Then ddr0=500
+	EndIf
 	If time2>ncartimeroad(i)+4 And i=0 And Rnd<0.1*kfps Then n1=1:n=0
-	If time2>ncartimeroad(i) Then n=getrandomnearroad(x,y,n,ncarco1(i),ncarsi1(i),ddr0)
-	If n1=0 And n0=0 And n>0 And i=0 Then ncartimeroad(i)=time2+5
+	If (time2>ncartimeroad(i) Or n1=1) And (i>0 Or n>0 Or time2<ncartimeroad(i)+8) Then
+		n=getrandomnearroad(x,y,n,ncarco1(i),ncarsi1(i),ddr0)
+	EndIf
+	If n1=0 And n0=0 And n>0 And i=0 Then
+		ncartimeroad(i)=time2+5+5
+	EndIf
+	'If i=0 Then
+	'	auxvar2=n+0.1
+	'	auxvar5=ncartimeroad(i)-time2
+	'EndIf
 	If n=0 And n0<>0 And i=0 Then
 		'If asktownlat<-90 Then
 			Var lat0=lat,lng0=lng
@@ -9098,9 +9109,9 @@ For i=i1 To ncar
    	 ncarsi1(i)=Sin(degtorad*nncaro1(i))
    	EndIf   
    EndIf
-   If ncariroad(i)<>n Then
-   	ncariroad(i)=n:ncartimeroad(i)=time2
-   	If Abs(ncarv(i))>4 And tautopilot>0 then ncarv(i)*=0.7:nncarv(i)*=0.7
+   If ncariroad(i)<>n and (n>0 or time2>ncartimeroad(i)+4) Then
+   	ncariroad(i)=n:If n>0 Then ncartimeroad(i)=max(ncartimeroad(i),time2)
+   	If Abs(ncarv(i))>4 And (tautopilot>0 Or i>0) then ncarv(i)*=0.7:nncarv(i)*=0.7
    EndIf
    'Var kx=min(0.7,0.03*kfps)
    Var kx=min(0.7,0.03*kfps)
@@ -16075,7 +16086,16 @@ If tsphere=0 And planet=0 Then
     tupdateroc=0    
   EndIf'tdrawscreen   
 
-    glpopmatrix'scale klon
+    glenable gl_alpha_test
+    If igrass>=2 And mz<(mzsol0+290) Then
+    	drawgrass
+    	tupdategrass=0
+    EndIf
+    drawsauterelle()
+    drawgrillon()
+
+    gldisable gl_alpha_test
+
 
     If tscreentext=1 Then
     	If tdrawscreen=2 Then
@@ -16147,13 +16167,13 @@ If planet=0 Then
     drawladys()
     tupdatelady=0
 
-    glenable gl_alpha_test
+    /'glenable gl_alpha_test
     If igrass>=2 And mz<(mzsol0+290) Then
     	drawgrass
     	tupdategrass=0
     EndIf
     drawsauterelle()
-    drawgrillon()
+    drawgrillon() '/
 
     gldisable gl_alpha_test
     'gldisable(gl_normalize)
@@ -16300,6 +16320,10 @@ EndIf 'planet
     setvolcar()
     If volumecar>50 Then setspeedcar()
     volumecar=0
+
+
+    glpopmatrix'scale klon
+
     
    If auxtest>1.86 Then 
     glpushmatrix

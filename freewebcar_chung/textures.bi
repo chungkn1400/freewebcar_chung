@@ -4338,8 +4338,16 @@ Sub getways2(text0 As String)'getways
 	   If layer<>0 And testhighway=1 Then 
 	   	testcolor=1:wayred=1:waygreen=layer:wayblue=0
 	   ElseIf testhighway=1 Then 
-	   	wayred=min(0.9,wayred)
+	   	wayred=min(0.9,wayred)	
 	   Else 
+	  		wtext5=nextwords(wtext2,"""layer"":")
+	  		If wtext5<>"" Then
+	 	      layer=Val(nextdata0(wtext5,"""",""""))
+	 	      If layer<>0 Then
+   	         iwaynode(i)=0:waynodeid(i)=0 
+	 	      	Continue For 
+	 	      EndIf
+	  		EndIf
 	   	layer=0
 	   EndIf
 	   wayr(i)=wayred:wayg(i)=waygreen:wayb(i)=wayblue
@@ -7770,7 +7778,7 @@ ElseIf myncari=0 Then
  EndIf  
 EndIf
 If ddr0>0.001 And ddr<ddr0 Then ddr=ddr0
-If myncari=0 Then
+If myncari=0 And n0>0 Then
 	if time2<mytimenrand0(myncari)+0.5 Then ddr+=distback
    If tback=1 Then ddr=ddr0
 EndIf
