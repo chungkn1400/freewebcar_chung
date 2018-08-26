@@ -585,7 +585,7 @@ Sub latlngtomxy(ByVal latxx As single,ByVal lngxx As Single ,ByRef mxx As Single
 	If kmxlat<10 Then mxx=0:myy=0:Exit Sub 
 	If Abs(xweb0-xweb)<0.01 And Abs(yweb0-yweb)<0.01 Then		
    	myy=yweb0+(latxx-latweb0)*kmxlat'latmx
-	   mxx=xweb0+(lngxx-lngweb0)*kmxlat/klonlat(latweb0)'klon'lngmx
+	   mxx=xweb0+(lngxx-lngweb0)*kmylng'kmxlat/klonlat(latweb0)'klon'lngmx
 	   'mxx=max(-9999999.0,min(9999999.0,mxx))
 	   'myy=max(-9999999.0,min(9999999.0,myy))
 	   Exit Sub
@@ -593,7 +593,7 @@ Sub latlngtomxy(ByVal latxx As single,ByVal lngxx As Single ,ByRef mxx As Single
 	Var lat0=lat,lng0=lng
 	mxytolatlng(xweb,yweb)
 	myy=yweb+(latxx-lat)*kmxlat'latmx
-	mxx=xweb+(lngxx-lng)*kmxlat/klonlat(lat)'klon'lngmx
+	mxx=xweb+(lngxx-lng)*kmylng'kmxlat/klonlat(lat)'klon'lngmx
    'mxx=max(-9999999.0,min(9999999.0,mxx))
    'myy=max(-9999999.0,min(9999999.0,myy))
 	xweb0=xweb:yweb0=yweb
@@ -618,7 +618,7 @@ Sub latlngtomxy2(ByVal latxx As single,ByVal lngxx As Single ,ByRef mxx As Singl
 	Var lat0=lat,lng0=lng
 	mxytolatlng(xweb,yweb)'mxmap,mymap)
 	myy=yweb+(latxx-lat)*kmxlat'-440*kscalex/500'latmx
-	mxx=xweb+(lngxx-lng)*kmxlat/klonlat(lat)'klon'+920*kscalex/500'lngmx
+	mxx=xweb+(lngxx-lng)*kmylng'kmxlat/klonlat(lat)'klon'+920*kscalex/500'lngmx
 	'myy=(myyy-535+my)/2
 	'mxx=(mxxx+mx)/2
 	lat=lat0:lng=lng0 
@@ -800,6 +800,7 @@ Sub loadwebtext(ByVal userdata As Any Ptr)
   	Var latmx0=lat,lngmy0=lng
   	mxytolatlng(mx+dmx0+10000,my+dmy0+10000)
   	kmxlat=10000/max(0.0000001,Abs(lat-latmx0))
+  	kmylng=10000/max(0.0000001,Abs(lng-lngmy0))
   	lat=lat0:lng=lng0
   	'kmxlat=dyweb1*2/max(0.000001,dlat)
 	'auxvar=worldmx0-worldmx
@@ -3219,7 +3220,7 @@ Dim As Single r=1.0
    ElseIf (waytype="primary")then
      r=2.4
    ElseIf (waytype="secondary")then
-     r=1.8
+     r=1.6'1.8
    ElseIf (waytype="tertiary")then
      r=1.2
    ElseIf (waytype="residential")then
@@ -4056,7 +4057,7 @@ Sub getways2(text0 As String)'getways
  	  	     	addmynode(id,glatnode(j),glonnode(j))
  	  	    	If k>=0 Then
  	  	    	 Var dy=(waylat(i)-glatnode(j))*kmxlat
- 	  	  	    Var dx=(waylon(i)-glonnode(j))*kmxlat/(klon)
+ 	  	  	    Var dx=(waylon(i)-glonnode(j))*kmylng'kmxlat/(klon)
  	  	  	    dxy=Sqr(dx*dx+dy*dy)
  	  	    	 If dxy>dxy0 Then
  	  	    		dxy0=dxy
@@ -4069,7 +4070,7 @@ Sub getways2(text0 As String)'getways
  	  	     	If j>0 Then
  	  	     	  If k>=0 Then 	
  	  	    	   Var dy=(waylat(i)-mylat(j))*kmxlat
- 	  	  	      Var dx=(waylon(i)-mylon(j))*kmxlat/(klon)
+ 	  	  	      Var dx=(waylon(i)-mylon(j))*kmylng'kmxlat/(klon)
  	  	  	      dxy=Sqr(dx*dx+dy*dy)
  	  	    	   If dxy>dxy0 Then
  	  	    		  dxy0=dxy
@@ -4647,7 +4648,7 @@ Sub getways2bridge(text0 As String)'getways
  	  	     	'addmynode(id,glatnode(j),glonnode(j))
  	  	    	If k>=0 Then
  	  	    	 Var dy=(waylat(i)-glatnode(j))*kmxlat
- 	  	  	    Var dx=(waylon(i)-glonnode(j))*kmxlat/(klon)
+ 	  	  	    Var dx=(waylon(i)-glonnode(j))*kmylng'kmxlat/(klon)
  	  	  	    dxy=Sqr(dx*dx+dy*dy)
  	  	    	 If dxy>dxy0 Then
  	  	    		dxy0=dxy
@@ -4660,7 +4661,7 @@ Sub getways2bridge(text0 As String)'getways
  	  	     	If j>0 Then
  	  	     	  If k>=0 Then 	
  	  	    	   Var dy=(waylat(i)-mylat(j))*kmxlat
- 	  	  	      Var dx=(waylon(i)-mylon(j))*kmxlat/(klon)
+ 	  	  	      Var dx=(waylon(i)-mylon(j))*kmylng'kmxlat/(klon)
  	  	  	      dxy=Sqr(dx*dx+dy*dy)
  	  	    	   If dxy>dxy0 Then
  	  	    		  dxy0=dxy
@@ -5105,7 +5106,7 @@ End Sub
 Declare Function testbridge(latx As Single,lngx As Single)As Integer
 Sub addtownwaynode(ij As Integer,k As Integer)
 Dim As Integer i,j,n,p
-Dim As Single mxweb,myweb',mxweb2,myweb2,mxweb3,myweb3
+Dim As Single mmxweb,mmyweb',mxweb2,myweb2,mxweb3,myweb3
 Dim As int64 id,id0
 tenablecompile=max(Timer+1,tenablecompile) 
 n=townnwaynode(ij)
@@ -5117,7 +5118,7 @@ EndIf
 'If InStr(LCase(wayname(k)),"ge henri")>0 Then auxvar+=1000:auxtest=0.72
 id=waynodeid(k)
 If id=0 Then Exit Sub 
-If  tmassload=1 Or waytheight(k)=100 Then'road
+If  tmassload=1 Then'Or waytheight(k)=100 Then'road
 	If testrecentid(id) Then Exit Sub 
    'addrecentid(id)
 endif 
@@ -5140,9 +5141,9 @@ For i=1 To n
      p=i
              'If Str(id)="79152373" Then auxvar+=1000:auxtest=0.8
    			 If waytheight(k)=100 Then 
-                if Not(waytype(k)<>"aerodrome" And waytype(k)<>"runway" And waytype(k)<>"taxiway") Then	
+                'if Not(waytype(k)<>"aerodrome" And waytype(k)<>"runway" And waytype(k)<>"taxiway") Then	
                 	ttsetterrain(ij,i)=0
-                EndIf
+                'EndIf
              EndIf  
    			 Var i40=towni40(ij,i)
    			 towni40(ij,i)=max2(0,i40)
@@ -5328,12 +5329,12 @@ EndIf
 'mxweb=xweb:myweb=yweb
 'mxytolatlng(mxweb,myweb)
 'latweb=lat:lngweb=lng
-latlngtomxy(latweb,lngweb,mxweb,myweb)
+latlngtomxy(latweb,lngweb,mmxweb,mmyweb)
 'latlngtomxy(latweb+0.001,lngweb+0.001,mxweb2,myweb2)
 'lat=lat0:lng=lng0
 If i>ntownnode Then
 	Var co1=cos1,si1=sin1
-	Var dxx=co1*(mxweb-mx-dmx0)+si1*(myweb-my-dmy0)
+	Var dxx=co1*(mmxweb-mx-dmx0)+si1*(mmyweb-my-dmy0)
 	Var d400=-400,d2000=500
 	If waytheight(k)=100 Or addwaynodebuild(k)=100 Then d400=-5000:d2000=0
 	If dxx>d400 Then
@@ -5430,8 +5431,8 @@ For j=1 To Abs(iwaynode(k))
 	'latlngtomxy(waynodey(k,j),waynodex(k,j),mxx,myy)
 	''townwaynodex(ij,i,j)=mxweb+(waynodex(k,j)-lngweb)*(mxweb2-mxweb)/0.00114
 	''townwaynodey(ij,i,j)=myweb+(waynodey(k,j)-latweb)*(myweb2-myweb)/0.00114
-	townwaynodex(ij,i,j)=mxweb+(waynodex(k,j)-lngweb)*kmxlat/klon
-	townwaynodey(ij,i,j)=myweb+(waynodey(k,j)-latweb)*kmxlat
+	townwaynodex(ij,i,j)=mmxweb+(waynodex(k,j)-lngweb)*kmylng'kmxlat/klon
+	townwaynodey(ij,i,j)=mmyweb+(waynodey(k,j)-latweb)*kmxlat
 Next
 townwaynodesize40(ij,i)=0   
 i40=0
@@ -8176,8 +8177,13 @@ Else
    'gldisable gl_normalize
 End If   
 h-=max(0.0,(2.8*30-r)*0.005)
-Var ttsetterrainij=ttsetterrain(ij,i)
-ttsetterrain(ij,i)=1 
+Var ttsetterrainij=1
+If Abs(townwaynodex(ij,i,1)-mx)<2000 Then
+ If Abs(townwaynodey(ij,i,1)-my)<2000 Then
+   ttsetterrainij=ttsetterrain(ij,i)
+   ttsetterrain(ij,i)=1 
+ EndIf  
+EndIf  
 Var taddtree=0,taddlamp=0,taddbarriere=0,taddhaie=0,taddnathalie=0,taddcity=0,cityname1="",cityname2=""
 Var taddcitykm=0,taddcross=0,taddcross2=0,taddoneway=0,taddrail=0,taddrail2=0,taddoneway2=0,taddstop=0,taddstop2=0
 If t40=0 Then 
@@ -8801,10 +8807,10 @@ EndIf
       z1=z0
       If trunway=1 And (jj And 1)=0 Then
       	settestroad(pxx,pyy,9)'4)
-      ElseIf r>1.7*30 Then  	
+      ElseIf r>1.15*30 Then  	
       	settestroad(pxx,pyy,1)
       Else 	
-      	settestroad(pxx,pyy,0)
+      	'settestroad(pxx,pyy,0)
       EndIf
      EndIf
      If layer<>0 Then
@@ -11271,16 +11277,37 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
  		    	drawroadnode(ij,i)
  		    ElseIf (x2>d2500-300+sizei And (plane=0 Or car>0)) Then
  		    	If Abs(x-mx)<1200 And Abs(y-my)<1200 Then ntownnear+=1
+           	Var n=Abs(towniwaynode(ij,i))
+          	Var xx=(x+townwaynodex(ij,i,Int(n*0.5)))*0.5
+          	Var yy=(y+townwaynodey(ij,i,Int(n*0.5)))*0.5
+          	Var sc=1/(1.33*klon)
+ 		    	gltranslatef(xx,yy,0)
+ 		    	glscalef(sc,sc,1)'sc,sc,1)
+ 		    	gltranslatef(-xx,-yy,0)
  		    	drawbuildingnodefast(ij,i,1,r,g,b)
  		    'ElseIf x2>5000+sizei*5 And (plane=1 And car=0) Then 	
  		    ElseIf x2>d5000-300+sizei*2 And (plane=1 And car=0) Then 	
  		    	If Abs(x-mx)<1200 And Abs(y-my)<1200 Then ntownnear+=1
  		    	'r=1:g=0:b=0
+           	Var n=Abs(towniwaynode(ij,i))
+          	Var xx=(x+townwaynodex(ij,i,Int(n*0.5)))*0.5
+          	Var yy=(y+townwaynodey(ij,i,Int(n*0.5)))*0.5
+          	Var sc=1/(1.33*klon)
+ 		    	gltranslatef(xx,yy,0)
+ 		    	glscalef(sc,sc,1)'sc,sc,1)
+ 		    	gltranslatef(-xx,-yy,0)
  		    	drawbuildingnodefast(ij,i,1,r,g,b)
  		    Else
  		    	'If x2>-200 And x2<700 And Abs(y2)<700 Then ntownnear+=1
  		    	'If x2>-600 And x2<1200 And Abs(y2)<1200 Then ntownnear+=1
  		    	If Abs(x-mx)<1200 And Abs(y-my)<1200 Then ntownnear+=1
+           	Var n=Abs(towniwaynode(ij,i))
+          	Var xx=(x+townwaynodex(ij,i,Int(n*0.5)))*0.5
+          	Var yy=(y+townwaynodey(ij,i,Int(n*0.5)))*0.5
+          	Var sc=1/(1.33*klon)
+ 		    	gltranslatef(xx,yy,0)
+ 		    	glscalef(sc,sc,1)'sc,sc,1)
+ 		    	gltranslatef(-xx,-yy,0)
  		    	drawbuildingnode(ij,i,1,r,g,b)
  		    EndIf
  		   EndIf   

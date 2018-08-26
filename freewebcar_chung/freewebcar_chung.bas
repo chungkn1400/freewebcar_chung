@@ -4825,7 +4825,7 @@ Dim As Integer j
 	Next
 End Sub
 Declare Sub latlngtomxy(ByVal latxx As single,ByVal lngxx As Single ,ByRef mxx As Single,ByRef myy As Single)
-Dim Shared As Single kmxlat=1
+Dim Shared As Single kmxlat=1,kmylng=1
 Function gettownnodex40(ij As Integer,i As Integer)As Single
 	If knode40(ij,i)<>i Then Return 0
 	Var x=townnodex40(ij,i),y=x
@@ -15770,7 +15770,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     		guiscan:sleep 300
     	Wend
     EndIf
-    
+        
     yh=yhlayer0
 
 'getlockterrain()
@@ -15789,6 +15789,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
       EndIf
       glbindtexture(GL_TEXTURE_2D,skydometext)
       gltranslatef(0.98*mx,0.98*my,0)
+      'glscalef(1/klon,1,1)
       o1sky-=Rnd*0.0159
       glrotatef(o1sky,0,0,1)
       'glcolor3f(1,1,1)
@@ -16035,9 +16036,15 @@ EndIf 'planet
 'If tsphere=0 Then drawairports()
 
 If tsphere=0 And planet=0 Then
+
+    glpushmatrix
+    gltranslatef(mx,my,mz)
+    glscalef(klon,1,1)
+    gltranslatef(-mx,-my,-mz)
     
     drawtowns()
     tupdatetown=0
+        
   If tdrawscreen<>1 Then 
     getlocktown2(0)   
     If testworld=0 Then
@@ -16067,6 +16074,8 @@ If tsphere=0 And planet=0 Then
     drawrocs()
     tupdateroc=0    
   EndIf'tdrawscreen   
+
+    glpopmatrix'scale klon
 
     If tscreentext=1 Then
     	If tdrawscreen=2 Then
@@ -23675,6 +23684,7 @@ ElseIf tloadwebtext2=4 Then
   	   	lat=lat0:lng=lng0
   	   	mxytolatlng(mx+dmx0+10000,my+dmy0+10000)
   	   	kmxlat=10000/max(0.0000001,Abs(lat-latmx0))
+      	kmylng=10000/max(0.0000001,Abs(lng-lngmx0))
   	   	'lat=lat0:lng=lng0
   	   	'mxytolatlng(mx+dmx0-10000,my+dmy0-10000)
   	   	'Var kmxlat2=10000/max(0.0000001,Abs(lat-latmx0))
