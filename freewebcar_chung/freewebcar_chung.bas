@@ -14418,7 +14418,7 @@ tscreentext=1
 End Sub
 Dim Shared As Double timepiste,timercollide,timelayeroff,timeroof
 Dim Shared As Single zroof=-999999
-dim shared as Double timeclimb
+dim shared as Double timeclimb,fpsmoymin
 Sub testcollideforward()
 'tpiste=piste
 If (tlayer0)<-0.4 Then exit Sub
@@ -14450,7 +14450,9 @@ If time2<timercollide+0.1 And taskscreen=0 Then
 	Exit Sub
 EndIf
 timercollide=max(time2-0.1,min(time2,timercollide+0.11))
-If xmax<=2048 And mz>mzsol00+1500 Then 
+fpsmoymin+=(fps-fpsmoymin)*0.01*kfps
+fpsmoymin=min(fpsmoymin,fps)
+If xmax<=2048 And mz>mzsol00+1500 And fpsmoymin<14 Then 
  If time2>timescreentext+min(4.0,max(0.95,distscreen*distscreen*0.5/(1990*1990))) Or taskscreen=1 Then
 	If tscreentext2>=1 Then 
 		tscreentext2=0:getscreentextz()
