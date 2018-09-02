@@ -15274,10 +15274,10 @@ Sub displayback(tdraw As integer=1)
     If tdraw=0 Then Exit Sub
     'getlockterrain()
    If mapdisplay<4 Then  
+    gldisable(GL_FOG)				
     If iciel<=8 Or planet=1 or tsphere=1 Then
     	drawciel
     Else 
-      gldisable(GL_FOG)				
       glpushmatrix
       gldisable(gl_lighting)
       glbindtexture(GL_TEXTURE_2D,skydometext)
@@ -15317,9 +15317,9 @@ Sub displayback(tdraw As integer=1)
     EndIf '/
     drawsol
     If planet=0 And (mz-mzsol0)>=1400 Then
-    	gldisable gl_fog
+    	'gldisable gl_fog
     	'drawclouds
-      If ifog>0 And tdark=0 Then glEnable(GL_FOG)
+      'If ifog>0 And tdark=0 Then glEnable(GL_FOG)
     EndIf
     glcolor3f(1,1,1)
     glenable(gl_texture_2d)
@@ -15790,10 +15790,10 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
 
     setrangeGL(10000)
    If mapdisplay<4 Then  
+    gldisable(GL_FOG)				
     If iciel<=8 Or planet=1 or tsphere=1 Then
     	drawciel
     Else 
-      gldisable(GL_FOG)				
       glpushmatrix
       If tdark=1 Then
       	glenable gl_lighting
@@ -15839,7 +15839,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     'drawsol
     If planet=0 And (mz-mzsol0)>=1400 Then
     	gldisable gl_fog
-    	'drawclouds
+    	drawclouds
       If ifog>0 And tdark=0 Then glEnable(GL_FOG)
     EndIf
     If tsphere=1 Or (planet=1 And mz>(mzsol0+3000)) Then drawdusts
@@ -16107,7 +16107,9 @@ If tsphere=0 And planet=0 Then
     
     'drawsun
     'If planet=0 And (mz-mzsol0)<1400 Then
-    	drawclouds
+    	'gldisable gl_fog 
+    	'drawclouds
+      'If ifog>0 And planet=0 And tdark=0 Then glEnable(GL_FOG)
     'EndIf
 
     drawballoon()
