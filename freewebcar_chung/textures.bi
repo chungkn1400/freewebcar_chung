@@ -485,7 +485,8 @@ If itext=@snowtext then *(itext)=guiloadtexture("media/grass_snow.jpg")
 If itext=@spottext then *(itext)=guiloadtexture("media/spot.jpg",100,0,3)
 If itext=@mywomantext Then 
 	If FileExists("woman/chateau22.jpg") Then
-		*(itext)=guiloadtexture("woman/chateau22.jpg")
+		'*(itext)=guiloadtexture("woman/chateau22.jpg")
+		*(itext)=guiloadtexture("media/girl.jpg")'nathalie.jpg")
 	Else 
 		*(itext)=guiloadtexture("media/girl.jpg")'nathalie.jpg")
 	EndIf
@@ -9243,12 +9244,12 @@ EndIf
    	   gltranslatef(0,0,5)
    	   glenable gl_texture_2d
    	   If dist<distnathalie Then nathaliex=px1:nathaliey=py1
-         If Int(px1/100)And 1 Then 
-          If Int(py1/100)And 1 Then
-          	if do1woman<350 And (Int(px1/40)Mod 3)=2 Then 
+         If (Int(px1/100)Mod 3)>0 Then'And 1 Then 
+          If (Int(py1/100)Mod 3)>0 Then'And 1 Then
+          	if do1woman<350 And (Int(px1/40)Mod 3)>0 Then'=2 Then 
                drawbuildtext=mywomantext
                glbindtexture(gl_texture_2d,mywomantext)
-               If dist<distnathalie Then distnathalie=dist:namenathalie="christine"
+               If dist<distnathalie Then distnathalie=dist:namenathalie="helene"'christine"
           	Else
                drawbuildtext=marisoltext
                glbindtexture(gl_texture_2d,marisoltext)
@@ -9277,7 +9278,8 @@ EndIf
          'glenable gl_alpha_test
          'glAlphaFunc(gl_less,10/254)
          If drawbuildtext=mywomantext Then
-         	gltexrotcarre2(35,41,do1woman)
+         	'gltexrotcarre2(35,41,do1woman)
+         	gltexcarre2(32,41)
          Else 	
          	gltexcarre2(35,41)
          	If drawbuildtext=cocacolatext Then
@@ -11285,37 +11287,37 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
  		    	drawroadnode(ij,i)
  		    ElseIf (x2>d2500-300+sizei And (plane=0 Or car>0)) Then
  		    	If Abs(x-mx)<1200 And Abs(y-my)<1200 Then ntownnear+=1
-           	Var n=Abs(towniwaynode(ij,i))
-          	Var xx=(x+townwaynodex(ij,i,Int(n*0.5)))*0.5
-          	Var yy=(y+townwaynodey(ij,i,Int(n*0.5)))*0.5
-          	Var sc=1/(1.33*klon)
- 		    	gltranslatef(xx,yy,0)
- 		    	glscalef(sc,sc,1)'sc,sc,1)
- 		    	gltranslatef(-xx,-yy,0)
+           	'Var n=Abs(towniwaynode(ij,i))
+          	'Var xx=(x+townwaynodex(ij,i,Int(n*0.5)))*0.5
+          	'Var yy=(y+townwaynodey(ij,i,Int(n*0.5)))*0.5
+          	'Var sc=1/(1.33*klon)
+ 		    	'gltranslatef(xx,yy,0)
+ 		    	'glscalef(sc,sc,1)'sc,sc,1)
+ 		    	'gltranslatef(-xx,-yy,0)
  		    	drawbuildingnodefast(ij,i,1,r,g,b)
  		    'ElseIf x2>5000+sizei*5 And (plane=1 And car=0) Then 	
  		    ElseIf x2>d5000-300+sizei*2 And (plane=1 And car=0) Then 	
  		    	If Abs(x-mx)<1200 And Abs(y-my)<1200 Then ntownnear+=1
  		    	'r=1:g=0:b=0
-           	Var n=Abs(towniwaynode(ij,i))
-          	Var xx=(x+townwaynodex(ij,i,Int(n*0.5)))*0.5
-          	Var yy=(y+townwaynodey(ij,i,Int(n*0.5)))*0.5
-          	Var sc=1/(1.33*klon)
- 		    	gltranslatef(xx,yy,0)
- 		    	glscalef(sc,sc,1)'sc,sc,1)
- 		    	gltranslatef(-xx,-yy,0)
+           	'Var n=Abs(towniwaynode(ij,i))
+          	'Var xx=(x+townwaynodex(ij,i,Int(n*0.5)))*0.5
+          	'Var yy=(y+townwaynodey(ij,i,Int(n*0.5)))*0.5
+          	'Var sc=1/(1.33*klon)
+ 		    	'gltranslatef(xx,yy,0)
+ 		    	'glscalef(sc,sc,1)'sc,sc,1)
+ 		    	'gltranslatef(-xx,-yy,0)
  		    	drawbuildingnodefast(ij,i,1,r,g,b)
  		    Else
  		    	'If x2>-200 And x2<700 And Abs(y2)<700 Then ntownnear+=1
  		    	'If x2>-600 And x2<1200 And Abs(y2)<1200 Then ntownnear+=1
  		    	If Abs(x-mx)<1200 And Abs(y-my)<1200 Then ntownnear+=1
-           	Var n=Abs(towniwaynode(ij,i))
-          	Var xx=(x+townwaynodex(ij,i,Int(n*0.5)))*0.5
-          	Var yy=(y+townwaynodey(ij,i,Int(n*0.5)))*0.5
-          	Var sc=1/(1.33*klon)
- 		    	gltranslatef(xx,yy,0)
- 		    	glscalef(sc,sc,1)'sc,sc,1)
- 		    	gltranslatef(-xx,-yy,0)
+           	'Var n=Abs(towniwaynode(ij,i))
+          	'Var xx=(x+townwaynodex(ij,i,Int(n*0.5)))*0.5
+          	'Var yy=(y+townwaynodey(ij,i,Int(n*0.5)))*0.5
+          	'Var sc=1/(1.33*klon)
+ 		    	'gltranslatef(xx,yy,0)
+ 		    	'glscalef(sc,sc,1)'sc,sc,1)
+ 		    	'gltranslatef(-xx,-yy,0)
  		    	drawbuildingnode(ij,i,1,r,g,b)
  		    EndIf
  		   EndIf   
