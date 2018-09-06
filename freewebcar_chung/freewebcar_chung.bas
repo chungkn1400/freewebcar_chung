@@ -8986,7 +8986,7 @@ For i=i1 To ncar
 	'If (i=0 And Abs(tlayer0)>0.3 And n=0)Then ddr0=70
 	If (i=0 And n=0)Then
 		ddr0=70
-		If time2>ncartimeroad(i)+4 Then ddr0=500
+		If time2>ncartimeroad(i)+4 Then ddr0=300
 	EndIf
 	If time2>ncartimeroad(i)+4 And i=0 And Rnd<0.1*kfps Then n1=1:n=0
 	If (time2>ncartimeroad(i) Or n1=1) And (i>0 Or n>0 Or time2<ncartimeroad(i)+8) Then
@@ -15855,6 +15855,8 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
      	gldisable(gl_lighting)
     EndIf
                     	
+    drawtest()
+
     time1=Timer*1000
     If time1<time0 Or pause=1 Then time0=time1 'midnight
     glcolor3f(1,1,1)
@@ -16487,7 +16489,7 @@ EndIf 'planet
     	drawcitynear()
     	setrangeGL(0)
     EndIf '/
-    drawtest()
+    'drawtest()
 
         glLoadIdentity ()
 	     gldisable GL_DEPTH_TEST

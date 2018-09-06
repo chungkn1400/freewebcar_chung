@@ -4043,7 +4043,7 @@ Sub getways2(text0 As String)'getways
      Var testrail=0,testbuilding=0
      Var testbound=0	
 	  wtext2=nextwords(wtext1,"""tags"":")
-	  If wtext2<>"" And InStr(wtext2,"""bridge""")>1 Then
+	  If wtext2<>"" And InStr(wtext2,"""bridge"":")>1 Then
 	  	  wayheight(i)=0
 	  	  taddbridge=0
  	     wtext3=nextdata(wtext4,"[","]")
@@ -13067,7 +13067,7 @@ For i=0 To nbridge
          'z=waterz-50
          size=dxy*kx'*500/kscalex
          If size>40000 Then resetbridgei(i):Continue For 
-         If size>900+hbridge*30 And bridgecolor(i)<99 Then resetbridgei(i):Continue For 
+         If size>2600+hbridge*30 And bridgecolor(i)<99 Then resetbridgei(i):Continue For 
 			bridgex(i)=x
 			bridgey(i)=y
 		   rotavion(x-mx-dmx0,y-my-dmy0,z-mz)
