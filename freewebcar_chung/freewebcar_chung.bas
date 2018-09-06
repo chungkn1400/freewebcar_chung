@@ -16054,7 +16054,7 @@ If tsphere=0 And planet=0 Then
 
     glpushmatrix
     gltranslatef(mx,my,mz)
-    glscalef(klon,1,1)
+    glscalef(min(1.5,klon),1,1)
     gltranslatef(-mx,-my,-mz)
     
     drawtowns()

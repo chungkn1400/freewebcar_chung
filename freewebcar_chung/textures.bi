@@ -7815,7 +7815,7 @@ For i=1 To inearroad
 				  If dcos1>0 Then dcos1+=0.1 Else dcos1-=0.5
 			     If (nco1*dx+nsi1*dy)<0 Then dcos1+=0.2 
 				  If myncari=0 Then dcos1+=(avgco1*co1+avgsi1*si1-dcos1)*0.3	
-				  If n=0 Or (onewaynearroad(i)=0 Or typeautopilot=0) Or (dcos1)>0.1 Then  	
+				  If n=0 Or (onewaynearroad(i)=0 Or typeautopilot=0) Or (dcos1)>0.1 Or ddr>100 Then  	
 					irandomnearroad(n)=i
 					n+=1:If n>=400 Then Exit For
 					If i=n0 Then
