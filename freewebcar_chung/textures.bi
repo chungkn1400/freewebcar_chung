@@ -5661,8 +5661,8 @@ Sub mygltexquad (ByVal x1 As Single,ByVal y1 As Single,ByVal z1 As Single,_
              ByVal x4 As Single,ByVal y4 As Single,ByVal z4 As Single,_ 
              ByVal tx As Single=1,ByVal ty As Single=1,ByVal tx0 As Single=0,ByVal tagl As Integer=0)
 Dim As Integer i,j,k,i1,i2,j1,j2,test=0
-If testposx0=1 Then 
-rotavionpx((x1)-mx,(y1)-my,max(0.0,z1-mz))
+If testposx0=1 And tshadow=1 Then 
+/'rotavionpx((x1)-mx,(y1)-my,max(0.0,z1-mz))
 'If px2+Abs(py2)>1400 Then Exit sub  
 Var zz1=px2
 If testposx=1 And max(z4-mz,pz2)<min(400.0,px2*0.295) Then 
@@ -5693,8 +5693,8 @@ If testposx=1 And max(z4-mz,pz2)<min(400.0,px2*0.295) Then
  	  EndIf  
  	EndIf
  EndIf
-EndIf
-If taddshadowquad=1 And thmin=0 Then 'scaleview>0.9 And testtownshow=1 And tishadow=0 Then
+EndIf '/
+If taddshadowquad=1 And thmin=0 And tshadow=1 Then 'scaleview>0.9 And testtownshow=1 And tishadow=0 Then
  rotavionpx((x1+x2)*0.5-mx,(y1+y2)*0.5-my,0)
  'If px2+Abs(py2)>1400 Then Exit sub  
  Var kzshadow=max(0.2,dxyshadow)/max(0.2,dzshadow)

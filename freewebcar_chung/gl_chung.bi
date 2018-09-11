@@ -303,6 +303,28 @@ glTexCoord2f tx0,ty0+ty
 glVertex3f x4,y4,z4
 glEnd
 End Sub
+Dim Shared As Integer tquad=0
+Sub gltexquadtri (ByVal x1 As Single,ByVal y1 As Single,ByVal z1 As Single,_ 
+             ByVal x2 As Single,ByVal y2 As Single,ByVal z2 As Single,_
+             ByVal x3 As Single,ByVal y3 As Single,ByVal z3 As Single,_
+             ByVal x4 As Single,ByVal y4 As Single,ByVal z4 As Single,_ 
+             ByVal tx As Single=1,ByVal ty As Single=1,ByVal tx0 As Single=0,ByVal ty0 As Single=0)
+glBegin GL_triangles
+glTexCoord2f tx0,ty0
+glVertex3f x1,y1,z1
+glTexCoord2f tx0+tx,ty0
+glVertex3f x2,y2,z2
+glTexCoord2f tx0+tx,ty0+ty
+glVertex3f x3,y3,z3
+
+glTexCoord2f tx0,ty0
+glVertex3f x1,y1,z1
+glTexCoord2f tx0+tx,ty0+ty
+glVertex3f x3,y3,z3
+glTexCoord2f tx0,ty0+ty
+glVertex3f x4,y4,z4
+glEnd
+End Sub
 Sub gltriangle (ByVal x1 As Single,ByVal y1 As Single,ByVal z1 As Single,_ 
                 ByVal x2 As Single,ByVal y2 As Single,ByVal z2 As Single,_
                 ByVal x3 As Single,ByVal y3 As Single,ByVal z3 As Single )
