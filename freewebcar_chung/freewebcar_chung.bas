@@ -8989,7 +8989,7 @@ For i=i1 To ncar
 		If time2>ncartimeroad(i)+4 Then ddr0=300
 	EndIf
 	If time2>ncartimeroad(i)+4 And i=0 And Rnd<0.1*kfps Then n1=1:n=0
-	If (time2>ncartimeroad(i) Or n1=1) And (i>0 Or n>0 Or time2<ncartimeroad(i)+8) Then
+	If (time2>ncartimeroad(i) Or n1=1) And (i>0 Or n>0 Or time2<ncartimeroad(i)+8 or time2>ncartimeroad(i)+24) Then
 		n=getrandomnearroad(x,y,n,ncarco1(i),ncarsi1(i),ddr0)
 	EndIf
 	If n1=0 And n0=0 And n>0 And i=0 Then
@@ -14433,6 +14433,7 @@ If zroof>mzsol00+30 Then
    	 mz=max(mz,mz0)
    	 mz=max(mz,mzsol00)
    	 mz=max(mz,mz1)
+   	 If mz>zroof+30 Then zroof=-999999
    	 If plane=0 Then
    	 	o2=max(-21.0,min(8.0,o2))
    	 Else 	
@@ -22856,6 +22857,7 @@ mz11=-999999
         	  If getficok()<>"ok" Then
         	  	  testok=0
         	  	  subload()
+        	  	  If ficload<>"" Then plane=0
         	  EndIf
         	  If ficload="" Then
         	  	 If testok=0 Then
@@ -22869,7 +22871,8 @@ mz11=-999999
         	         load("backup/startup_backup.save")
         	    	Else
          	    	subreset()
-         	   EndIf  	
+        	    	EndIf  	
+        	    	plane=0
         	    Else 
          	   setficok("notok")
         	      load("save/startup.save0")
@@ -23858,7 +23861,9 @@ If tradio<>3 and tradio<>1 Then tradio=0
 'guinotice "bye"
 
 setnearaeroway()
-If startoption=1 And guierror=0 Then save("save/startup.save0")
+setficok("notok")
+Var testsave=0
+If startoption=1 And guierror=0 Then testsave=1':save("save/startup.save0")
 If guierror=1 Then guinotice "bye !"
 file=freefile
 Open ficini For Output As #file
@@ -23954,7 +23959,7 @@ Print #file,tinternet
 Print #file,kfps30
 Close #file
 ''If townchanged=1 Or Rnd<0.2 Then savetownvie()
-If (planet=0 And orbit=1) And topentown=1 And tinittown0<=0 Then
+If testsave=1 And (planet=0 And orbit=1) And topentown=1 And tinittown0<=0 Then
   Var testmsg=0
   For i=1 To 30
   	tquitweb=1
@@ -23983,13 +23988,15 @@ If (planet=0 And orbit=1) And topentown=1 And tinittown0<=0 Then
   Next i 
   If ((tloadwebtext2<>0 And tloadwebtext2<>99)Or(tinittown<>0 And tinittown<>99)) Then
      guinotice "could not save towns"
-  Else    
+  Else 
+  	  save("save/startup.save0")
   	  savetownxy3()
+  	  testsave=2
      If testmsg=1 Then guinotice("thanks for waiting")
   EndIf
 EndIf
 
-setficok("ok")
+If testsave=0 Or testsave=2 Then setficok("ok")
 
 'substat()
 Sleep 1000
