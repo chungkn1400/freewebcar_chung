@@ -5414,6 +5414,7 @@ Sub drawgrillon
 End Sub
 Dim Shared As uint drawbuildtext0
 dim shared as integer tscreentext,tscreentext2,tscreentext3,tdrawscreen,taskscreen
+Dim Shared As Double timecalllist,o2screen
 Declare Sub drawscreentext()
 Sub drawtownnodes()
 Dim As Integer i,ii,jj,ix,jx
@@ -5772,10 +5773,11 @@ EndIf 'tagl
 tdrawscreen=0
 If taglcompile2=1 Or tcompile>0 Then
 	glendlist()
+	o2screen=o2+to2
 	'If tscreentext>=2 Then tdrawscreen=1:drawscreentext()
 Endif 
 If agllist<>0 And tcompile<>2 Then'taglcompile2<>1 Then
-	If tscreentext>=2 And tscreentext3<1 Then'And tscreentext<=3 Then
+	If tscreentext>=2 And tscreentext3<1 And timecalllist>0.07 And Abs(o2+to2-o2screen)<9 Then'And tscreentext<=3 Then
 		drawscreentext()
 		tdrawscreen=1
 		'tscreentext+=1
@@ -5785,7 +5787,9 @@ If agllist<>0 And tcompile<>2 Then'taglcompile2<>1 Then
 		 tscreentext3=0
 		 tdrawscreen=2
 		EndIf  
-		glcalllist(agllist)    
+		timecalllist=Timer
+		glcalllist(agllist)
+		timecalllist=Timer-timecalllist    
 	EndIf
 EndIf
 
@@ -14213,8 +14217,8 @@ Next
 If teststenciltop<xmax*0.02 Then teststenciltop=0
 auxvar6=teststenciltop+0.1:auxtest=0.8
 End Sub
-'Const As Integer screen20=34,screen10=18
-Const As Integer screen20=50,screen10=25
+Const As Integer screen20=28,screen10=14
+'Const As Integer screen20=50,screen10=25
 'Const As Integer screen20=1,screen10=1
 Dim Shared As Double timescreentext
 Dim Shared As Single screenmx,screenmy,screenmz,screendmx,screendmy,screendmz
