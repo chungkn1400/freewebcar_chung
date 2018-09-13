@@ -13549,7 +13549,9 @@ Sub substat(msg As String="")
 'If FileExists(ExePath+"/woman/girl2.jpg") Then Exit Sub 
 'Var url="http://nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com/?mytest2=ok"
 'httppost("nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com","/?mytest2=ok2")
-httppost("nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com","/?mymsg="+formaturl(msg+"&"+timetext0))
+'httppost("nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com","/?mymsg="+formaturl(msg+"&"+timetext0))
+httppost("mynodejs-chung.1d35.starter-us-east-1.openshiftapps.com","/?mymsg="+formaturl(msg+"&"+timetext0))
+'http://mynodejs-chung.1d35.starter-us-east-1.openshiftapps.com/
 'guinotice "substat"
 Exit sub
 Dim As Integer i
