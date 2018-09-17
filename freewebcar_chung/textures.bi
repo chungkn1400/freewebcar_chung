@@ -3,6 +3,7 @@ Dim Shared As uint fueltext,roadtext,roadbandtext,roadarrowtext,roadarrow2text,l
 Dim Shared As uint nathalietext,veroniquetext,christinetext,mywomantext,crosstext,onewaytext,parkingtext
 Dim Shared As uint railtext,crossrailtext,housetext,retrotext,roadlefttext,roadarrowlefttext,roadarrow2lefttext
 Dim Shared As uint cocacolatext,marisoltext,lamplist2,lamplist3,oneway2text,tunneltext,stoptext
+Dim Shared As uint tower1text,tower1nighttext,tower2text,tower2nighttext,tower3text,tower3nighttext
 Dim Shared As uint mygltext(11),mygltext2(11),mygltext3(11)
 Sub resettextures()
 aviontext=0'("objects/c150.jpg")
@@ -154,6 +155,12 @@ coptertext=0
         cigaletext2=0
         grillontext=0
         grillontext2=0
+        tower1text=0
+        tower1nighttext=0
+        tower2text=0
+        tower2nighttext=0
+        tower3text=0
+        tower3nighttext=0
 
 Dim As Integer i
 For i=0 To 11
@@ -293,6 +300,12 @@ cigaletext=guiloadtexture("media/cigale.jpg",248)
 cigaletext2=guiloadtexture("media/cigale2.jpg",248)
 grillontext=guiloadtexture("media/grillon_1.jpg",250)
 grillontext2=guiloadtexture("media/grillon_2.jpg",250)
+tower1text=guiloadtexture("media/tower1.bmp")
+tower1nighttext=guiloadtexture("media/tower1night.bmp")
+'tower2text=guiloadtexture("media/tower2.bmp")
+'tower2nighttext=guiloadtexture("media/tower2night.bmp")
+tower3text=guiloadtexture("media/tower3.bmp")
+tower3nighttext=guiloadtexture("media/tower3night.bmp")
 
            glbindtexture(gl_texture_2d,mywomantext)
            glbindtexture(gl_texture_2d,marisoltext)
@@ -11172,6 +11185,7 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
    			Else 
       			townwaynodebuild(ij,i)=1+Int(Rnd*3)
       		EndIf '/
+      		   Var irnd=Int(x)Mod 3
       		   optsoundvoyage=(Abs(Int(x*0.1)+Int(y*0.1)))And 1
       		   If plane=0 Then timesoundarcade0=0
            	   If waynodebuild=100 Then'highway
@@ -11237,10 +11251,20 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
            	   ElseIf waynodebuild>=4 Then
             	   glcolor3f(0.85,1,1)
             	   r=0.85:g=1:b=1
-            	ElseIf waynodebuild=3 And h>200 Then
+           	   ElseIf waynodebuild>=3 And h>200 And irnd=1 Then
+            	   drawbuildtext=tower1text
+            	   drawbuildtx=5:drawbuildty=2
+            	   glcolor3f(0.85,1,1)
+            	   r=0.85:g=1:b=1
+           	   ElseIf waynodebuild=3 And h>200 Then
             	   glcolor3f(0,1,1)
             	   r=0:g=1:b=1
-            	Else	
+           	   ElseIf waynodebuild>=2 And h>200 Then
+            	   drawbuildtext=tower3text
+            	   drawbuildtx=5:drawbuildty=2
+            	   glcolor3f(1,1,1)
+            	   r=1:g=1:b=1
+           	   Else	
             		glcolor3f(0.85,0.85,0.85)
             		r=0.85:g=0.85:b=0.85
             	EndIf
