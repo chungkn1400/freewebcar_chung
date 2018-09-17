@@ -38,6 +38,7 @@ auxtest=1
 #Include Once "freeimage.bi"
 #Undef char
 #Define char UByte
+#Define getterrainheightfast(x,y) getterrainheight(x,y)
 
 /'On Error GoTo suberror
 GoTo start 
@@ -1003,7 +1004,7 @@ myTTSinit()
 
 Declare Function getterrainheight(ByVal x As Single,ByVal y As Single) As Single
 Declare Function getterrainheight2(ByVal x As Single,ByVal y As Single) As Single
-Declare Function getterrainheightfast(ByVal x As Single,ByVal y As Single) As Single
+'Declare Function getterrainheightfast(ByVal x As Single,ByVal y As Single) As Single
 Declare Sub initterrain2
 Declare Sub initterrain3
 Declare Sub movehorses
@@ -15374,7 +15375,7 @@ End Sub
 Declare Sub resetmxy0()
 Declare Sub testresetmz0()
 Dim shared as double tmxmove,tupdate,dtweb=60,ddtweb,dtwebnode=60
-dim shared as single avgv,avgmx,avgmy,mxmove,mymove,o1move,avgdo1,avgo10,tkzoom=0,mzbridge=-999999
+dim shared as single avgv,avgmx,avgmy,mxmove,mymove,o1move,avgdo1,avgo10,tkzoom=0,mzbridge=-999999,invscalex=1
 Dim Shared As Single o333,cos333,sin333,do333,o100,latmx,lngmx
 dim shared as double timehelp,timelayer0
 Dim Shared As Integer tfootmove,mytinittown,nnode2,nway2,mynnodes,mynways,nnode2000
@@ -15388,6 +15389,14 @@ Sub display ()
 Dim As Single x,y,z,aux,r,g,b
 Dim As Integer changearbre,changebuisson,changehouse,changehouse2,changedome
 Dim As Integer i,j,k,test
+
+   invscalex=1/scalex
+   
+	'auxvar=Timer:auxtest=0.2
+	'For i=1 To 100000
+	'	Var xx=getterrainheight(mx,my)
+	'Next
+	'auxvar=Int((Timer-auxvar)*1000)
 	
 'If time2<timeinit+10 Then Exit sub
 
@@ -20217,19 +20226,22 @@ z=waterz-0.1+dhseashore-2
         glpopmatrix
 End Sub
 Function getterrainheight(ByVal x As Single,ByVal y As Single) As Single
-Dim As Single h,dx,dy,z00,z10,z01,z11 
+Dim As Single h,dx,dy,z00,z10,z01,z11,xx,yy
 Dim As Integer i,j,i1,j1
-If orbit=0 And planet=1 Then Return -99999
-	i=Int(x/scalex+100000)-100000
+'If orbit=0 And planet=1 Then Return -99999
+	'i=Int(x/scalex+100000)-100000
+	xx=x*invscalex
+	i=Int(xx)'+100000)-100000
 	If i<=-100-256 Or i>=612-256-2 Then
 		Return -99999
 	EndIf
-	j=Int(y/scalex+100000)-100000
+	yy=y*invscalex
+	j=Int(yy)'+100000)-100000
 	If j<=-100-256 Or j>=612-256-2 Then
 		Return -99999
 	EndIf
-	dx=x/scalex-i
-	dy=y/scalex-j
+	dx=xx-i
+	dy=yy-j
 	i+=256
 	j+=256
 	'while i<-100:i+=512+200:Wend 
@@ -20240,13 +20252,17 @@ If orbit=0 And planet=1 Then Return -99999
 	j1=j+1
 	'While i1>=612:i1-=512+200:Wend
 	'While j1>=612:j1-=512+200:Wend 
+If dx<=(1.0-dy) Then 
 z00=terrain(i,j)
 z10=terrain(i1,j)
 z01=terrain(i,j1)
-z11=terrain(i1,j1)
-If dx<=(1.0-dy) Then 
+'z11=terrain(i1,j1)
      h=( dx*(z10-z00) +dy*(z01-z00) +z00)
 Else 
+'z00=terrain(i,j)
+z10=terrain(i1,j)
+z01=terrain(i,j1)
+z11=terrain(i1,j1)
      h=( (1-dx)*(z01-z11) +(1-dy)*(z10-z11) +z11 )
 EndIf 
 'Var hmax=max(Abs(x-mx),Abs(y-my))+mzsol0'+mz-mz0
@@ -20255,15 +20271,17 @@ Return h*scalez
 End Function
 Dim Shared As Integer testrunway
 Function setterrainheight(ByVal x As Single,ByVal y As Single,xco11 As Single,xsi11 As Single,trunway As Integer=0) As Single
-Dim As Single h,dx,dy,z00,z10,z01,z11 
+Dim As Single h,dx,dy,z00,z10,z01,z11,xx,yy
 Dim As Integer i,j,i1,j1
-If orbit=0 And planet=1 Then Return -99999
-	i=Int(x/scalex+100000)-100000
+'If orbit=0 And planet=1 Then Return -99999
+	xx=x*invscalex
+	i=Int(xx)'+100000)-100000
 	If i<=-100-256 Or i>=612-256-2 Then Return -99999
-	j=Int(y/scalex+100000)-100000
+	yy=y*invscalex
+	j=Int(yy)'+100000)-100000
 	If j<=-100-256 Or j>=612-256-2 Then Return -99999
-	dx=x/scalex-i
-	dy=y/scalex-j
+	dx=xx-i
+	dy=yy-j
 	i+=256
 	j+=256
 	'while i<-100:i+=512+200:Wend 
@@ -20406,15 +20424,17 @@ freelockterrain()
 Return h*scalez
 End Function
 Function getterrainheight2 (ByVal x As Single,ByVal y As Single) As Single
-Dim As Single h,dx,dy,z00,z10,z01,z11 
+Dim As Single h,dx,dy,z00,z10,z01,z11,xx,yy 
 Dim As Integer i,j,i1,j1
-If orbit=0 And planet=1 Then Return -999999
-	i=Int(x/scalex+1000000)-1000000
+'If orbit=0 And planet=1 Then Return -999999
+	xx=x*invscalex
+	i=Int(xx)'+1000000)-1000000
 	If i<=-100-256 Or i>=612-256-2 Then Return -999999
-	j=Int(y/scalex+1000000)-1000000
+	yy=y*invscalex
+	j=Int(yy)'+1000000)-1000000
 	If j<=-100-256 Or j>=612-256-2 Then Return -999999
-	dx=x/scalex-i
-	dy=y/scalex-j
+	dx=xx-i
+	dy=yy-j
 	i+=256
 	j+=256
 	'while i<-100:i+=512+200:Wend 
@@ -20425,20 +20445,24 @@ If orbit=0 And planet=1 Then Return -999999
 	j1=j+1
 	'While i1>=612:i1-=512+200:Wend
 	'While j1>=612:j1-=512+200:Wend 
+If dx<=(1.0-dy) Then 
 z00=terrain22(i,j)
 z10=terrain22(i1,j)
 z01=terrain22(i,j1)
-z11=terrain22(i1,j1)
-If dx<=(1.0-dy) Then 
+'z11=terrain22(i1,j1)
      h=( dx*(z10-z00) +dy*(z01-z00) +z00)
 Else 
+'z00=terrain22(i,j)
+z10=terrain22(i1,j)
+z01=terrain22(i,j1)
+z11=terrain22(i1,j1)
      h=( (1-dx)*(z01-z11) +(1-dy)*(z10-z11) +z11 )
 EndIf 
 'Var hmax=max(Abs(x-mx),Abs(y-my))+mzsol0'+mz-mz0
 'Return min(h*scalez,hmax)
 Return h*scalez
 End Function
-Function getterrainheightfast(ByVal x As Single,ByVal y As Single) As Single
+Function getterrainheightfast_old(ByVal x As Single,ByVal y As Single) As Single
 'Dim As Single h,dx,dy,z00,z10,z01,z11 
 Dim As Integer i,j,i1,j1
 'If orbit=0 And planet=1 Then Return -999999
@@ -20447,9 +20471,9 @@ Dim As Integer i,j,i1,j1
 	'dx=x/scalex-i
 	'j=Int(y/scalex+1000000.5)-1000000+256
 	'dy=y/scalex-j
-	i=Int(x/scalex+256.5)
+	i=Int(x*invscalex+256.5)
 	If i<=-100 Or i>=612 Then Return -999999
-	j=Int(y/scalex+256.5)
+	j=Int(y*invscalex+256.5)
 	If j<=-100 Or j>=612 Then Return -999999
 	'i+=256
 	'j+=256
