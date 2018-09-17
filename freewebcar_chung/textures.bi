@@ -301,11 +301,11 @@ cigaletext2=guiloadtexture("media/cigale2.jpg",248)
 grillontext=guiloadtexture("media/grillon_1.jpg",250)
 grillontext2=guiloadtexture("media/grillon_2.jpg",250)
 tower1text=guiloadtexture("media/tower1.bmp")
-tower1nighttext=guiloadtexture("media/tower1night.bmp")
+'tower1nighttext=guiloadtexture("media/tower1night.bmp")
 'tower2text=guiloadtexture("media/tower2.bmp")
 'tower2nighttext=guiloadtexture("media/tower2night.bmp")
 tower3text=guiloadtexture("media/tower3.bmp")
-tower3nighttext=guiloadtexture("media/tower3night.bmp")
+'tower3nighttext=guiloadtexture("media/tower3night.bmp")
 
            glbindtexture(gl_texture_2d,mywomantext)
            glbindtexture(gl_texture_2d,marisoltext)
@@ -524,12 +524,15 @@ If itext=@cocacolatext Then
 EndIf
 If itext=@marisoltext then *(itext)=guiloadtexture("media/marisol.jpg")
 End Sub
-Dim Shared As uint dummytext
+Dim Shared As uint dummytext,prevtext
 Sub myglbindtexture(gltexture2d As uint,itext As uint Ptr)
 If *(itext)=0 Then
 	If gllist=0 Then loadtextures(itext)
    If *(itext)=0 Then *(itext)=dummytext 
+   prevtext=0
 EndIf
+If *(itext)=prevtext Then Exit Sub
+prevtext=*(itext)
 glbindtexture0(gltexture2d,*(itext))
 End Sub
 
@@ -10794,7 +10797,17 @@ Dim As Integer i,j,k,n,p
  	getlocktown2(ij)
  	nshowtown+=1
  	'If taglcompile2<>2 Then testtownshow=0:testtownshow2=0
+ 	Dim As Integer kway,irnd
+    For kway=0 To 20
+     Var i2=2:If kway>5 Then i2=0	
+     For irnd=0 To i2
+
  	For i=1 To townnwaynode(ij)
+     If townwaynodebuild(ij,i)<>kway And kway<>20 Then Continue For
+      If i2>0 Then
+      	If irnd<>(Int(townwaynodex(ij,i,1))Mod 3) Then Continue For 
+      EndIf
+
  		Var testshow=0
       If testtownshow=0 And scaleview>0.9 Then
 	        testshow=1
@@ -11078,6 +11091,10 @@ Dim As Integer i,j,k,n,p
    EndIf 
    
  	Next i
+
+     Next irnd
+    Next kway 
+
  	thmin=0
  	freelocktown(ij)
    If scaleview>0.9 Then 
