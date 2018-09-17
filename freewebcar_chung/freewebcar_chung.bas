@@ -39,6 +39,7 @@ auxtest=1
 #Undef char
 #Define char UByte
 #Define getterrainheightfast(x,y) getterrainheight(x,y)
+'#Define adshadowquad :
 
 /'On Error GoTo suberror
 GoTo start 
@@ -14858,10 +14859,10 @@ i=ishadowtree2
 shadowtreetype(i)=treetype
 shadowtreex(i)=x:shadowtreey(i)=y:shadowtreez(i)=z
 Var z0=getterrainheight(x,y)
-Var z1=getterrainheight(x+30*dxshadow,y+30*dyshadow)
+Var z1=getterrainheight(x+70*dxshadow,y+70*dyshadow)
 Var z2=getterrainheight(x-30*dyshadow,y+30*dxshadow)
 'shadowtreeo1(i)=o1shadow
-shadowtreeo2(i)=diro1(30*dxyshadow,z1-z0)
+shadowtreeo2(i)=diro1(70*dxyshadow,z1-z0)
 shadowtreeo3(i)=diro1(30*dxyshadow,z2-z0)
 shadowtreez0(i)=z0
 shadowtreez1(i)=z1
@@ -14922,8 +14923,8 @@ Dim As Integer i,j,k
      	   Else'If testairport(arbrex(i),arbrey(i))=0 Then
      	     If testroadtree=-2 Then tbusharbre(i)=1+(i And 1)
      	  	  arbrez(i)=getterrainheight(arbrex(i),arbrey(i))
-     	  	  arbrezshadow(i)=getterrainheight(arbrex(i)+dxshadow*30,arbrey(i)+dyshadow*30)
-     	  	  arbredo2shadow(i)=diro1(30*dxyshadow,arbrezshadow(i)-arbrez(i))
+     	  	  arbrezshadow(i)=getterrainheight(arbrex(i)+dxshadow*70,arbrey(i)+dyshadow*70)
+     	  	  arbredo2shadow(i)=diro1(70*dxyshadow,arbrezshadow(i)-arbrez(i))
      	  	  arbrezshadow3(i)=getterrainheight(arbrex(i)-dyshadow*30,arbrey(i)+dxshadow*30)
      	  	  arbredo3shadow(i)=diro1(30*dxyshadow,arbrezshadow3(i)-arbrez(i))
      	  	  setarbreh(i)
@@ -15100,7 +15101,7 @@ For j=1 To ishadowtree
      	 	glbindtexture(gl_texture_2d,buissontext(2+tbusharbre(i)))
      EndIf
      glpushmatrix
-     gltranslatef(arbrex(i),arbrey(i),arbrez(i)+9+max(0.0,(arbrezshadow(i)-arbrez(i))*0.3))
+     gltranslatef(arbrex(i),arbrey(i),arbrez(i)+9-6+max(0.0,(arbrezshadow(i)-arbrez(i))*0.3))
      Var auxyy=auxy*arbrescalex(i)*h/scalexy
      Var auxzz=auxz*arbrescalez(i)*h*min(2.0,dxyshadow/max(0.001,Abs(dzshadow)))
      'Var dr=auxyy*0.7
@@ -16342,6 +16343,11 @@ EndIf 'planet
     volumecar=0
 
 
+    If tnight=0 And tshadow=1 Then
+    	drawcloudshadows()
+    EndIf
+    If tshadow0=1 Then drawshadow()
+
     glpopmatrix'scale klon
 
     
@@ -16372,10 +16378,10 @@ EndIf 'planet
     glcolor3f(1,1,1)
    EndIf  
     
-    If tnight=0 And tshadow=1 Then
-    	drawcloudshadows()
-    EndIf
-    If tshadow0=1 Then drawshadow()
+    'If tnight=0 And tshadow=1 Then
+    '	drawcloudshadows()
+    'EndIf
+    'If tshadow0=1 Then drawshadow()
 
     drawrain()
     

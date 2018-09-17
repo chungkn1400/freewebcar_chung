@@ -5471,8 +5471,8 @@ Dim Shared As uint shadowtexture(nshadow),myshadowtext
 Dim Shared As Single shadowtx1(nshadow),shadowty1(nshadow),shadowtx2(nshadow),shadowty2(nshadow),myshadowtx=1
 'Dim Shared As Single myshadowz1,myshadowz2,myshadowz3,myshadowz4,myirank1
 Dim Shared As Integer testmygltexquad,testmygltexquad0,buildrottype
-Sub addshadowquad(ByVal x10 As Single,ByVal y10 As Single,ByVal z10 As Single, _ 
-	                ByVal x20 As Single,ByVal y20 As Single,ByVal z20 As Single,ByVal dr As Single,ByVal rank As Integer=0)
+Sub addshadowquad(ByVal x10 As Single,ByVal y10 As Single,ByVal zz10 As Single, _ 
+	                ByVal x20 As Single,ByVal y20 As Single,ByVal zz20 As Single,ByVal dr As Single,ByVal rank As Integer=0)
 Dim As Integer i,j,k
 If ishadow>=nshadow Or tdark<>0 Then Exit Sub
 'ishadow+=1
@@ -5490,9 +5490,11 @@ If ishadow>=nshadow Or tdark<>0 Then Exit Sub
     'shadownz(ishadow)=normz
     '/
     'myshadowtext=bridgeredtext
+    Var z10=getterrainheight(x10,y10)
+    Var z20=getterrainheight(x20,y20)
     Dim As Integer di,dj
     Var kshadow=min(2500.0,dr*(dxyshadow)/max(0.2,Abs(dzshadow)))
-    Var z9=5.0
+    Var z9=3.0'5.0
  	 di=max2(1,Int(kshadow/200.0))
  	 kshadow=kshadow/di
  	 dj=max2(1,Int(max(Abs(x20-x10),Abs(y20-y10))/200.0))
@@ -5661,7 +5663,7 @@ Sub mygltexquad (ByVal x1 As Single,ByVal y1 As Single,ByVal z1 As Single,_
              ByVal x4 As Single,ByVal y4 As Single,ByVal z4 As Single,_ 
              ByVal tx As Single=1,ByVal ty As Single=1,ByVal tx0 As Single=0,ByVal tagl As Integer=0)
 Dim As Integer i,j,k,i1,i2,j1,j2,test=0
-If testposx0=1 And tshadow=1 Then 
+If testposx0=1 And tshadow=1 And tdark=0 Then 
 /'rotavionpx((x1)-mx,(y1)-my,max(0.0,z1-mz))
 'If px2+Abs(py2)>1400 Then Exit sub  
 Var zz1=px2
