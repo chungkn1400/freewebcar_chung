@@ -10797,7 +10797,7 @@ Dim As Integer i,j,k,n,p
  	getlocktown2(ij)
  	nshowtown+=1
  	'If taglcompile2<>2 Then testtownshow=0:testtownshow2=0
- 	Dim As Integer kway,irnd
+ 	Dim As Integer kway,irnd,iprev
     For kway=0 To 20
      Var i2=2:If kway>5 Then i2=0	
      For irnd=0 To i2
@@ -10807,7 +10807,7 @@ Dim As Integer i,j,k,n,p
       If i2>0 Then
       	If irnd<>(Int(townwaynodex(ij,i,1))Mod 3) Then Continue For 
       EndIf
-
+      
  		Var testshow=0
       If testtownshow=0 And scaleview>0.9 Then
 	        testshow=1
@@ -10817,17 +10817,20 @@ Dim As Integer i,j,k,n,p
 	        If townwaynodeshow2(ij,i)=0 Then Continue For
       ElseIf testtownshow=1 And scaleview>0.9 Then	
          townwaynodeshow(ij,i)=0
-         If i>1 And testmygltexquad0=1 Then
-       	    townwaynodeshow(ij,i-1)=1
+         'If i>1 And testmygltexquad0=1 Then
+       	'    townwaynodeshow(ij,i-1)=1
+         If iprev>0 And testmygltexquad0=1 Then
+       	    townwaynodeshow(ij,iprev)=1
       	    townshow(ij)=1
          EndIf 
       ElseIf testtownshow2=1 And scaleview<0.9 Then
          townwaynodeshow2(ij,i)=0
-         If i>1 And testmygltexquad0=1 Then
-       	    townwaynodeshow2(ij,i-1)=1
+         If iprev>0 And testmygltexquad0=1 Then
+       	    townwaynodeshow2(ij,iprev)=1
       	    townshow2(ij)=1
          EndIf 
       EndIf
+      iprev=i
       
   	nshowbuild+=1
    If testshow=0 Then  

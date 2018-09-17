@@ -8440,6 +8440,7 @@ gldisable gl_texture_2d
 glenable gl_lighting
 glenable gl_light0
 glenable gl_light3
+'glnormal3f(-cos1,-sin1,0.72)
 'glbindtexture(gl_texture_2d,ncarbustext)
 glcolor3f(0.7,0.5,0)
 'gltexsphere(500)
