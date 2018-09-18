@@ -10776,7 +10776,7 @@ EndIf
 'agldisable(gl_lighting)
 End Sub '/
 Declare Sub drawwaynodebuild(ij As Integer,i As Integer)
-Dim Shared As Integer tupdateterrain
+Dim Shared As Byte tupdateterrain,testkway(ntownnode)
 Sub drawtownnode(ij As Integer)
 Dim As Integer i,j,k,n,p
 'If taglcompile<>1 Then Exit sub
@@ -10797,16 +10797,31 @@ Dim As Integer i,j,k,n,p
  	getlocktown2(ij)
  	nshowtown+=1
  	'If taglcompile2<>2 Then testtownshow=0:testtownshow2=0
- 	Dim As Integer kway,irnd,iprev
-    For kway=0 To 20
-     Var i2=2:If kway>5 Then i2=0	
-     For irnd=0 To i2
+ 	Dim As Integer iprev=0
+ 	For i=1 To townnwaynode(ij)
+ 		testkway(i)=0
+ 	Next
+
+    For kway=1 To 20
+     Var wayirndh2=0':If kway<=5 Then wayirndh2=1	
+  	  For wayirndh=0 To wayirndh2
+      wayirnd2=0:If kway=3 Or kway=6 Then wayirnd2=2	
+      For wayirnd=0 To wayirnd2
 
  	For i=1 To townnwaynode(ij)
-     If townwaynodebuild(ij,i)<>kway And kway<>20 Then Continue For
-      If i2>0 Then
-      	If irnd<>(Int(townwaynodex(ij,i,1))Mod 3) Then Continue For 
+      If testkway(i)=1 Then Continue For 
+      If townwaynodebuild(ij,i)<>kway And kway<>20 Then Continue For
+      If wayirnd2>0 Then
+      	If wayirnd<>(Int(Abs(townwaynodex(ij,i,1)*0.1))Mod 3) Then Continue For 
       EndIf
+      If wayirndh2>0 Then
+       If wayirndh=0 Then
+      	If townwaynodeh(ij,i)>200 Then Continue For 
+       Else 	
+      	If townwaynodeh(ij,i)<=200 Then Continue For 
+       EndIf 
+      EndIf
+      testkway(i)=1
       
  		Var testshow=0
       If testtownshow=0 And scaleview>0.9 Then
@@ -11087,30 +11102,33 @@ Dim As Integer i,j,k,n,p
           waynodebuildx2(ij,i)=x2
           waynodebuildy2(ij,i)=y2
           drawwaynodebuild(ij,i)
+          nshowbuild2+=1
          EndIf  
  		EndIf
    Else
    	drawwaynodebuild(ij,i)
+   	nshowbuild2+=1
    EndIf 
    
  	Next i
-
-     Next irnd
+ 	
+     	Next wayirnd
+     Next wayirndh
     Next kway 
 
  	thmin=0
  	freelocktown(ij)
    If scaleview>0.9 Then 
     If testtownshow=1 Then 
-     If i>1 And testmygltexquad0=1 Then
-    	    townwaynodeshow(ij,i-1)=1
+     If iprev>0 And testmygltexquad0=1 Then
+    	    townwaynodeshow(ij,iprev)=1
     	    townshow(ij)=1
      EndIf 
     EndIf
    Else
     If testtownshow2=1 Then
-     If i>1 And testmygltexquad0=1 Then 
-    	    townwaynodeshow2(ij,i-1)=1
+     If iprev>0 And testmygltexquad0=1 Then 
+    	    townwaynodeshow2(ij,iprev)=1
     	    townshow2(ij)=1	
      EndIf
     EndIf  
@@ -11205,7 +11223,7 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
    			Else 
       			townwaynodebuild(ij,i)=1+Int(Rnd*3)
       		EndIf '/
-      		   Var irnd=Int(x)Mod 3
+      		   Var irnd=wayirnd'Int(Abs(x*0.1))Mod 3
       		   optsoundvoyage=(Abs(Int(x*0.1)+Int(y*0.1)))And 1
       		   If plane=0 Then timesoundarcade0=0
            	   If waynodebuild=100 Then'highway
@@ -11222,10 +11240,15 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
             	ElseIf waynodebuild=11 Then
             	   glcolor3f(0,0.6,1)
             	   r=0:g=0.6:b=1
-            	ElseIf waynodebuild=6 And h>200 Then
+           	   ElseIf waynodebuild=6 And h>200 And irnd=2 Then
+            	   drawbuildtext=tower1text
+            	   drawbuildtx=5:drawbuildty=2
+            	   glcolor3f(0.2,1,0.6)
+            	   r=0.2:g=1:b=0.6
+           	   ElseIf waynodebuild=6 And h>200 Then
             	   glcolor3f(0.2,1,0.7)
             	   r=0.2:g=1:b=0.7
-            	ElseIf waynodebuild=11 Then'terminal
+           	   ElseIf waynodebuild=11 Then'terminal
             	   glcolor3f(0.5,1,0.5)
            	   ElseIf waynodebuild=12 Then'church
             	   If churchtext=0 Then glbindtexture(gl_texture_2d,churchtext)
@@ -11271,7 +11294,7 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
            	   ElseIf waynodebuild>=4 Then
             	   glcolor3f(0.85,1,1)
             	   r=0.85:g=1:b=1
-           	   ElseIf waynodebuild>=3 And h>200 And irnd=1 Then
+           	   ElseIf waynodebuild=3 And h>200 And irnd=2 Then
             	   drawbuildtext=tower1text
             	   drawbuildtx=5:drawbuildty=2
             	   glcolor3f(0.85,1,1)

@@ -4529,11 +4529,11 @@ Dim Shared As Single townwaynodeh2(ntown,ntownnode),townwaynodez2(ntown,ntownnod
 Dim Shared As Single townwaynodevie2(ntown,ntownnode),townwaynodesize2(ntown,ntownnode)
 Dim Shared As Integer townwaynodebuild2(ntown,ntownnode)
 Dim Shared As Single townwaynoder2(ntown,ntownnode),townwaynodeg2(ntown,ntownnode),townwaynodeb2(ntown,ntownnode)
-Dim Shared As Integer townshow(ntown),townwaynodeshow(ntown,ntownnode)
-Dim Shared As Integer townshow2(ntown),townwaynodeshow2(ntown,ntownnode),townnametype(ntown,ntownnode)
+Dim Shared As Byte townshow(ntown),townwaynodeshow(ntown,ntownnode),towntestkway2(ntown,ntownnode)
+Dim Shared As Byte townshow2(ntown),townwaynodeshow2(ntown,ntownnode),townnametype(ntown,ntownnode)
 Dim Shared As Integer i50=50,i101=101
 Dim Shared As Byte townlock(ntown),lockterrain,lockterrainbmp,lockterrain22
-Dim Shared As Integer ttsetterrain(ntown,ntownnode),ttsetterrain2(ntown,ntownnode) 
+Dim Shared As Byte ttsetterrain(ntown,ntownnode),ttsetterrain2(ntown,ntownnode) 
 Dim Shared As String  townwayname(ntown,ntownnode),townwayname2(ntown,ntownnode)
 Dim Shared As Single waynodebuildh(ntown,ntownnode),waynodebuildx(ntown,ntownnode),waynodebuildy(ntown,ntownnode)
 Dim Shared As Single waynodebuildx2(ntown,ntownnode),waynodebuildy2(ntown,ntownnode)
@@ -5163,9 +5163,9 @@ Sub addradar(ByVal x As Single,ByVal y As Single,ByVal itype As Integer,testshow
 	EndIf
 End Sub
 Declare Sub copynearroad0()
-Dim Shared As Integer itownij,jtownij
+Dim Shared As Integer itownij,jtownij,nshowbuild,nshowbuild2
 Dim Shared As Single scaleview=1,kdistterrain0=1,kdistterrain00=1,dfps=0,asktownlat=-99,asktownlon,kdistroad=1
-Dim Shared As Single asktownlat2=-99,asktownlon2
+Dim Shared As Single asktownlat2=-99,asktownlon2,dfps0=0
 Dim Shared As Double timesearchroad,timeautopilot
 Sub drawtowns
 'iradar=0
@@ -5183,16 +5183,16 @@ If (Timer>tdistterrain+max(0.1,min(0.5,0.15*kfps))) Then
 		kdistterrain=max(kk*0.10,kdistterrain*0.95)'0.85)
 	ElseIf fpsmoy<17+dfps And time2>tkdistterrain Then 
 		kdistterrain=max(kk*0.15,kdistterrain*0.97)
-	ElseIf fpsmoy>21+dfps And (mz-mzsol00)>200 Then
+	ElseIf fpsmoy>21+dfps0 And (mz-mzsol00)>200 Then
 		tkdistterrain=time2+2'3
 		kdistterrain=min(kk*0.69,kdistterrain*1.030)'1.015)'0.69
-		If fpsmoy>40+dfps Then
+		If fpsmoy>40+dfps0 Then
 			kdistterrain=min(kk*0.69,kdistterrain*1.020)'1.015)'0.69
 		EndIf
-	ElseIf fpsmoy>21+dfps And (mz-mzsol00)<=200 Then 
+	ElseIf fpsmoy>21+dfps0 And (mz-mzsol00)<=200 Then 
 		tkdistterrain=time2+3
 		kdistterrain=min(kk*0.25,kdistterrain*1.015)'0.5
-	ElseIf fpsmoy>30+dfps And (mz-mzsol00)<=200 Then 
+	ElseIf fpsmoy>30+dfps0 And (mz-mzsol00)<=200 Then 
 		tkdistterrain=time2+3
 		kdistterrain=min(kk*0.69,kdistterrain*1.015)'0.5
 	EndIf
@@ -5216,10 +5216,22 @@ If (Timer>tdistterrain+max(0.1,min(0.5,0.15*kfps))) Then
 	   'auxvar=dkdistterrain:auxtest=0.2:auxvar2=kdistterrain	   
 		kdistterrain00=kdistterrain0
 	EndIf
+	dfps=(minfps-7.5)
+	If mz<mzsol00+200 Then 
+	 If nshowbuild>25000 Then dfps=(minfps-7.5)+3
+	 If nshowbuild>45000 Then dfps=(minfps-7.5)+5
+	 If nshowbuild>65000 Then dfps=(minfps-7.5)+7
+	EndIf 
+	dfps0=dfps
 	kdistterrain0=kdistterrain
 	kdistroad=Sqr(kdistterrain/0.050)
 EndIf
 kdistterrain=scaleview*kdistterrain0
+'If mz<mzsol00+200 Then 
+' If nshowbuild2>400 Then kdistterrain*=0.7
+' If nshowbuild2>800 Then kdistterrain*=0.7
+' If nshowbuild2>1600 Then kdistterrain*=0.7
+'EndIf
 kdistterrainsave=kdistterrain
 copynearroad0()
 Var i60=60:If mz<mzsol00+100 Then i60=30
@@ -5262,9 +5274,11 @@ Sub addsauterelle(x As Single,y As Single,z As Single,iarbre As Integer=0)
 	EndIf
 End Sub
 Dim Shared As Single o1show,xshow,yshow,wtempmin,sauterellex,sauterelley,sauterellez,cigalex,cigaley,cigalez
-Dim Shared As Double to1show,dtsoundsauterelle,dttestcross
+Dim Shared As Single xkway,ykway
+Dim Shared As Integer testkway2
+Dim Shared As Double to1show,dtsoundsauterelle,dttestcross,ttestkway
 Dim Shared As Integer testposx0,tdttestcross,ishadow,ishadow0,tishadow,taddshadowtree,ishadowtree2,taddshadowquad
-Dim Shared As Integer ishadowpanel,taddshadowpanel,taddshadowroc,trun,nshowtown,nshowbuild,nshowbuild0,nshowbuild1
+Dim Shared As Integer ishadowpanel,taddshadowpanel,taddshadowroc,trun,nshowtown,nshowbuild0,nshowbuild1
 Dim Shared As Single  shadowmx0,shadowmy0,shadowmz0
 Dim Shared As String namenathalie,namenathalie0 
 Dim Shared As Single distnathalie,nathaliex0,nathaliey0,nathaliex,nathaliey
@@ -5417,6 +5431,7 @@ End Sub
 Dim Shared As uint drawbuildtext0
 dim shared as integer tscreentext,tscreentext2,tscreentext3,tdrawscreen,taskscreen
 Dim Shared As Double timecalllist,o2screen
+Dim Shared As Integer kway,wayirnd2,wayirnd,wayirndh
 Declare Sub drawscreentext()
 Sub drawtownnodes()
 Dim As Integer i,ii,jj,ix,jx
@@ -5508,7 +5523,7 @@ Else
 EndIf
 If (time2>ttownshow Or Abs(xshow-mx)>180 Or Abs(yshow-my)>180)And scaleview>0.9 Then
 	xshow=mx:yshow=my
-	ttownshow=time2+5.5'0.195
+	ttownshow=time2+4.5'5.5'0.195
 	testtownshow=1
 	If tretroviseur=1 Then testtownshow2=1
 'ElseIf testtownshow=1 And (scaleview<0.9 Or tretroviseur=0)Then 
@@ -5516,6 +5531,22 @@ If (time2>ttownshow Or Abs(xshow-mx)>180 Or Abs(yshow-my)>180)And scaleview>0.9 
 'ElseIf testtownshow2=1 And (scaleview>0.9 Or tretroviseur=0)Then  
 '	testtownshow2=0
 EndIf
+/'
+If (time2>ttestkway Or Abs(xkway-mx)>800 Or Abs(ykway-my)>800)And scaleview>0.9 Then
+	xkway=mx:ykway=my
+	ttestkway=time2+30.5'5.5'0.195
+	testkway2=1
+	Var i=0,j=0
+	For i=1 To ntown2
+		For j=1 To townnwaynode(i)
+			towntestkway2(i,j)=1
+		Next
+	Next
+EndIf '/ 
+'auxvar=testtownshow+0.1:auxtest=0.2
+'auxvar2=nshowtown
+'auxvar3=nshowbuild
+'auxvar4=nshowbuild2
 Var d50000=50000.0
 If plane=0 Or car>0 Then
 	'd50000=min(120000.0,35000*kdistroad*kdistroad*kdistroad)
@@ -5529,8 +5560,7 @@ EndIf
 'If nshowbuild0>30000 Then d50000*=0.7
 'If nshowbuild0>10000 Then d50000*=0.7
 'If nshowbuild0>3000 Then d50000*=0.7
-nshowtown=0
-nshowbuild=0
+'nshowtown=0
 Var ij0=gettownij(mx+dmx0-d50000,my+dmy0-d50000)
 Var i0=max2(-i50,min2(i50,itownij)),j0=max2(-i50,min2(i50,jtownij))
 Var ij1=gettownij(mx+dmx0+d50000,my+dmy0+d50000)
@@ -5653,6 +5683,10 @@ If taglcompile2=1 And (Timer>tenablecompile+0.5 Or tscreentext>=1) Then
 EndIf
 
 If taglcompile=1 Or taglcompile2=1 Or scaleview<0.9 Then
+	
+nshowtown=0
+nshowbuild=0
+nshowbuild2=0
 
 Var irepeat=1,nrepeat=1:If tcompiledummy=1 Then nrepeat=3
 
@@ -5770,6 +5804,24 @@ avgbuildh=avgbuildh/navgbuildh
 
 Next irepeat
 
+
+If testtownshow=1 And scaleview>0.9 Then
+	nshowbuild0+=(nshowbuild-nshowbuild0)*0.3
+EndIf
+If testtownshow=0 And scaleview>0.9 Then
+	nshowbuild1+=(nshowbuild-nshowbuild1)*0.3
+EndIf
+
+If testtownshow=1 And (scaleview>0.9)Then 
+	testtownshow=0
+ElseIf testtownshow2=1 And (scaleview<0.9)Then  
+	testtownshow2=0
+EndIf
+If testkway2=1 And (scaleview>0.9)Then 
+	testkway2=0
+EndIf 	
+
+
 EndIf 'tagl
 
 tdrawscreen=0
@@ -5812,7 +5864,7 @@ EndIf
 'gldisable gl_fog
 'gldisable gl_alpha_test      
  
-If testtownshow=1 And scaleview>0.9 Then
+/'If testtownshow=1 And scaleview>0.9 Then
 	nshowbuild0+=(nshowbuild-nshowbuild0)*0.3
 EndIf
 If testtownshow=0 And scaleview>0.9 Then
@@ -5824,6 +5876,9 @@ If testtownshow=1 And (scaleview>0.9)Then
 ElseIf testtownshow2=1 And (scaleview<0.9)Then  
 	testtownshow2=0
 EndIf
+If testkway2=1 And (scaleview>0.9)Then 
+	testkway2=0
+EndIf '/ 	
  
  
 /'If 0 And tmaptown(i)>0 Then 	
