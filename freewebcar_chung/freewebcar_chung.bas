@@ -23043,6 +23043,7 @@ mz11=-999999
         testinit=0
         'mzinit=mz
         'guinotice "ok"
+        display()
         
         Var tquit=Timer,tframe=tquit-5,tactive=Timer
         quit2=0
@@ -23219,9 +23220,9 @@ mz11=-999999
            	glviewport(0,0,xmax,ymax)
             gldisable gl_lighting
             gldisable gl_alpha_test
-           	'If time2>timeinit+10 Then
+           	If time2>timeinit+10 Then
            		display()
-           	'EndIf 	
+           	EndIf 	
            	
            If mapdisplay=4 Then
            	  drawtexture(webtext)

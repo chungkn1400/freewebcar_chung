@@ -4,6 +4,7 @@ Dim Shared As uint nathalietext,veroniquetext,christinetext,mywomantext,crosstex
 Dim Shared As uint railtext,crossrailtext,housetext,retrotext,roadlefttext,roadarrowlefttext,roadarrow2lefttext
 Dim Shared As uint cocacolatext,marisoltext,lamplist2,lamplist3,oneway2text,tunneltext,stoptext
 Dim Shared As uint tower1text,tower1nighttext,tower2text,tower2nighttext,tower3text,tower3nighttext
+Dim Shared As uint croptext,crop2text
 Dim Shared As uint mygltext(11),mygltext2(11),mygltext3(11)
 Sub resettextures()
 aviontext=0'("objects/c150.jpg")
@@ -161,6 +162,8 @@ coptertext=0
         tower2nighttext=0
         tower3text=0
         tower3nighttext=0
+        croptext=0
+        crop2text=0
 
 Dim As Integer i
 For i=0 To 11
@@ -306,6 +309,8 @@ tower1text=guiloadtexture("media/tower1.bmp")
 'tower2nighttext=guiloadtexture("media/tower2night.bmp")
 tower3text=guiloadtexture("media/tower3.bmp")
 'tower3nighttext=guiloadtexture("media/tower3night.bmp")
+croptext=guiloadtexture("media/champ.jpg")
+crop2text=guiloadtexture("media/champ_ble.jpg")
 
            glbindtexture(gl_texture_2d,mywomantext)
            glbindtexture(gl_texture_2d,marisoltext)
@@ -4054,7 +4059,8 @@ Sub getways2(text0 As String)'getways
      Var testschool=0
      Var testparking=0
      Var testrail=0,testbuilding=0
-     Var testbound=0	
+     Var testbound=0
+     Var testcrop=0	
 	  wtext2=nextwords(wtext1,"""tags"":")
 	  If wtext2<>"" And InStr(wtext2,"""bridge"":")>1 Then
 	  	  wayheight(i)=0
@@ -4166,6 +4172,9 @@ Sub getways2(text0 As String)'getways
 	   ElseIf InStr(wtext2,"""shop""")>0 Then
 	   	testshop=1
 	   	nshop+=1
+	   	testbuilding=1 
+	   ElseIf InStr(wtext2,"""crop""")>0 Then
+	   	testcrop=1
 	   	testbuilding=1 
 	  	ElseIf InStr(wtext2,"""railway""")>0 Then
 	   	testrailstation=1
@@ -4341,6 +4350,7 @@ Sub getways2(text0 As String)'getways
 	    EndIf 	
 	   Var testtype=0
 	   if testhighway=1 Then waytheight(i)=100:testtype=1
+	   if testcrop=1 Then waytheight(i)=110:testtype=1
 	   if testchurch=1 Then waytheight(i)=4:testtype=1
 	   if testshop=1 Then waytheight(i)=5:testtype=1
 	   if testofficial=1 Then waytheight(i)=6:testtype=1
@@ -5153,7 +5163,7 @@ For i=1 To n
 		'If id=id0 Then p=i:Exit For 
 	EndIf
    If id=id0 Then  
-     If (townwaynodevie(ij,i)<14 Or auxtest>0.1) And kmxlat>10 Then
+     If (townwaynodevie(ij,i)<14+99) And kmxlat>10 Then
    	  townwaynodevie(ij,i)+=1'15
    	  p=i:Exit For
      EndIf    	
@@ -5207,6 +5217,8 @@ For i=1 To n
    				townwaynoder(ij,i)=wayr(k)
    				townwaynodeg(ij,i)=wayg(k)
    				townwaynodeb(ij,i)=wayb(k)
+   			ElseIf waytheight(k)=110 Then
+   				townwaynodebuild(ij,i)=110'crop
             ElseIf waytheight(k)=4 Then
    				townwaynodebuild(ij,i)=12'church
    			ElseIf waytheight(k)=5 Then
@@ -5425,6 +5437,8 @@ townwayname(ij,i)=wayname(k)
    				townwaynoder(ij,i)=wayr(k)
    				townwaynodeg(ij,i)=wayg(k)
    				townwaynodeb(ij,i)=wayb(k)
+            ElseIf waytheight(k)=110 Then
+   				townwaynodebuild(ij,i)=110'church
             ElseIf waytheight(k)=4 Then
    				townwaynodebuild(ij,i)=12'church
    			ElseIf waytheight(k)=5 Then
@@ -5668,7 +5682,7 @@ For j=0 To dj-0.9
  EndIf
 Next j 
 End Sub
-Dim Shared As Integer mytnormal,thmin
+Dim Shared As Integer mytnormal,thmin,testcrops
 Dim Shared As Single mynormalx,mynormaly,mynormalz
 Sub mygltexquad (ByVal x1 As Single,ByVal y1 As Single,ByVal z1 As Single,_ 
              ByVal x2 As Single,ByVal y2 As Single,ByVal z2 As Single,_
@@ -5676,7 +5690,7 @@ Sub mygltexquad (ByVal x1 As Single,ByVal y1 As Single,ByVal z1 As Single,_
              ByVal x4 As Single,ByVal y4 As Single,ByVal z4 As Single,_ 
              ByVal tx As Single=1,ByVal ty As Single=1,ByVal tx0 As Single=0,ByVal tagl As Integer=0)
 Dim As Integer i,j,k,i1,i2,j1,j2,test=0
-If testposx0=1 And tshadow=1 And tdark=0 Then 
+If testposx0=1 And tshadow=1 And tdark=0 And testcrops=0 Then 
 /'rotavionpx((x1)-mx,(y1)-my,max(0.0,z1-mz))
 'If px2+Abs(py2)>1400 Then Exit sub  
 Var zz1=px2
@@ -6258,7 +6272,7 @@ glcolor3f(1,1,1)
 End Sub '/  
 Dim Shared As String drawbuildname
 'Dim Shared As uint drawbuildtext
-Dim Shared As Single drawbuildtx=1,drawbuildty=1,dr30000=15000
+Dim Shared As Single drawbuildtx=1,drawbuildty=1,dr30000=15000,hcrop=14
 Dim Shared As Integer hlight3=2
 Declare Sub drawbuildingnode40(ij As Integer,i As Integer,dist As Single=1,r As Single=-1,g As Single=0,b As Single=0)
 Sub drawbuildingnode(ij As Integer,i As Integer,dist As Single=1,r As Single=-1,g As Single=0,b As Single=0)
@@ -6290,6 +6304,7 @@ If h>4000 Then
 EndIf
 avgbuildh+=h:navgbuildh+=1
 Var h0=setbuildh(h)
+If testcrops=1 Then h0=hcrop
 'If InStr(townwayname(ij,i)," Henri")>0 Then auxvar+=0:h0=3000:auxtest=0.8:auxtext=townwayname(ij,i)
 'If townwaynodeid(ij,i)=265932618 Then h0=4990
 h=h0'*scalexyh
@@ -6336,7 +6351,7 @@ If i40>0 Then
 EndIf
 Var tterminal=0:If townwaynodebuild(ij,i)=11 Then tterminal=1
 Var sizei=townwaynodesize(ij,i)
-If sizei>3900*(100+h)/140 And tterminal=0 Then h0=45:h=42
+If sizei>3900*(100+h)/140 And tterminal=0 And testcrops=0 Then h0=45:h=42
 If tterminal=1 Then h0=max(h0,100)
 x=200:y=200
 Var t800=min(800.0,sizei*0.5)'0.35)
@@ -6765,10 +6780,14 @@ EndIf
  		If (h-hmin0)>dxy*5 Then townwaynodeh(ij,i)=pack(dxy*5+hmin0-1)+4000*pack(Int(hmin0+0.5))
  	EndIf
  EndIf 
-If testmygltexquad=1 And h0>46 Then  
+If testmygltexquad=1 And (h0>46 Or testcrops=1) Then  
  Var dz=max(0.0,z),troof=1,h200=200.0
  If itown>5 Then h200=350
- If h<h200*(1-dz/(700+dz)) And sizei<1500 Then'z<200 Then
+ z1=z
+ If testcrops=1 Then
+ 	troof=1
+ 	glcolor4f(1,1,1,talpha)
+ ElseIf h<h200*(1-dz/(700+dz)) And sizei<1500 Then'z<200 Then
  	'z1=z+24+(max(0,Abs(xmax-xmin)-200)+max(0,(ymax-ymin)-200))*0.051:glcolor4f(0.9,0.3,0.4,talpha)
  	z1=z+24+min(max(0,Abs(xmax-xmin)-200),max(0,abs(ymax-ymin)-200))*0.1:glcolor4f(0.9,0.3,0.4,talpha)
  Else
@@ -6776,7 +6795,11 @@ If testmygltexquad=1 And h0>46 Then
    glcolor4f( 0.4,0.35,0.4,talpha)
  EndIf 
  gldisable GL_alpha_test
- gldisable(gl_texture_2d)
+ If testcrops=0 Then
+ 	gldisable(gl_texture_2d)
+ Else
+ 	glbindtexture(gl_texture_2d,crop2text)
+ EndIf
  If tdark=1 Then
    glenable(gl_lighting)
    glenable gl_normalize
@@ -6787,13 +6810,16 @@ If testmygltexquad=1 And h0>46 Then
  x=x0'townwaynodex(ij,i,1)
  y=y0'townwaynodey(ij,i,1)
 'If troof=1 Or mz>z Then 
- If troof=1 Then  
+ Var tx=0.025
+ 'If troof=1 Then  
    glbegin(gl_triangle_fan)
+ 	If testcrops=1 Then gltexcoord2f(xmid*tx,ymid*tx)
    glvertex3f(xmid,ymid,z1)
- Else
- 	glbegin(gl_polygon)
- EndIf 	
+ 'Else
+ '	glbegin(gl_polygon)
+ 'EndIf 
  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	If testcrops=1 Then gltexcoord2f(x*tx,y*tx)
  	glvertex3f(x,y,z)
  EndIf
  For j=2 To min2(n,nwaynode-1)
@@ -6802,6 +6828,7 @@ If testmygltexquad=1 And h0>46 Then
  	y=townwaynodey(ij,i,j)-dmy0
  	'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
  	If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+    	If testcrops=1 Then gltexcoord2f(x*tx,y*tx)
  		glvertex3f(x,y,z)
  	EndIf
  Next
@@ -6809,6 +6836,7 @@ If testmygltexquad=1 And h0>46 Then
  x=x0:y=y0
  'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	If testcrops=1 Then gltexcoord2f(x*tx,y*tx)
  	glvertex3f(x,y,z)
  EndIf
  glend()
@@ -6889,6 +6917,7 @@ If h>4000 Then
 EndIf
 avgbuildh+=h:navgbuildh+=1
 Var h0=setbuildh(h)
+If testcrops=1 Then h0=hcrop
 h=h0'*scalexyh
 Var hmin0=setbuildh(hmin)
 hmin=min(500.0,hmin0)
@@ -6931,7 +6960,7 @@ If ixy<2 Then Exit Sub
 n=ixy
 Var tterminal=0:If townwaynodebuild(ij,i)=11 Then tterminal=1
 Var sizei=townwaynodesize(ij,i)
-If sizei>3900*(100+h)/140 And tterminal=0 Then h0=45:h=42
+If sizei>3900*(100+h)/140 And tterminal=0 And testcrops=0 Then h0=45:h=42
 If tterminal=1 Then h0=max(h0,100)
 x=200:y=200
 Var t800=min(800.0,sizei*0.5)'0.35)
@@ -7204,7 +7233,11 @@ EndIf
 If testmygltexquad=1 And h0>46 Then  
  Var dz=max(0.0,z),troof=1,h200=200.0
  If itown>5 Then h200=350
- If h<h200*(1-dz/(700+dz)) And sizei<1500 Then'z<200 Then
+ z1=z
+ If testcrops=1 Then
+ 	troof=0
+ 	glcolor4f(1,1,1,talpha)
+ ElseIf h<h200*(1-dz/(700+dz)) And sizei<1500 Then'z<200 Then
  	'z1=z+24+(max(0,Abs(xmax-xmin)-200)+max(0,(ymax-ymin)-200))*0.051:glcolor4f(0.9,0.3,0.4,talpha)
  	z1=z+24+min(max(0,Abs(xmax-xmin)-200),max(0,abs(ymax-ymin)-200))*0.1
  	glcolor4f(1,0.2,0.23,talpha)
@@ -7215,7 +7248,11 @@ If testmygltexquad=1 And h0>46 Then
  EndIf 
  If auxtest>0.0051 Then glcolor4f(1,0,0,talpha)
  gldisable GL_alpha_test
- gldisable(gl_texture_2d)
+ If testcrops=0 Then
+ 	gldisable(gl_texture_2d)
+ Else
+ 	glbindtexture(gl_texture_2d,crop2text)
+ EndIf
  If tdark=1 Then
    glenable(gl_lighting)
    glenable gl_normalize
@@ -7226,13 +7263,16 @@ If testmygltexquad=1 And h0>46 Then
  x=x0'townwaynodex(ij,i,1)
  y=y0'townwaynodey(ij,i,1)
 'If troof=1 Or mz>z Then  
- If troof=1 Then  
+ Var tx=0.025
+ 'If troof=1 Then  
    glbegin(gl_triangle_fan)
+ 	If testcrops=1 Then gltexcoord2f(xmid*tx,ymid*tx)
    glvertex3f(xmid,ymid,z1)
- Else
- 	glbegin(gl_polygon)
- EndIf 	
+ 'Else
+ '	glbegin(gl_polygon)
+ 'EndIf 	
  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	If testcrops=1 Then gltexcoord2f(x*tx,y*tx)
  	glvertex3f(x,y,z)
  EndIf
  For j=2 To n'min2(n,nwaynode-1) i40
@@ -7241,6 +7281,7 @@ If testmygltexquad=1 And h0>46 Then
  	y=towny40(i40,j)-dmy0
  	'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
    If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+   	If testcrops=1 Then gltexcoord2f(x*tx,y*tx)
    	glvertex3f(x,y,z)
    EndIf
  Next
@@ -7249,6 +7290,7 @@ If testmygltexquad=1 And h0>46 Then
   x=x0:y=y0
   'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
   If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	 If testcrops=1 Then gltexcoord2f(x*tx,y*tx)
   	 glvertex3f(x,y,z)
   EndIf
  EndIf  
@@ -7309,6 +7351,7 @@ If h>4000 Then
 	EndIf
 EndIf
 Var h0=setbuildh(h)
+If testcrops=1 Then h0=hcrop
 h=h0'*scalexyh
 Var hmin0=setbuildh(hmin)
 hmin=min(500.0,hmin0)
@@ -7331,7 +7374,7 @@ If (Int(i+time2) Mod 10)=1 Then
 EndIf
 Var tterminal=0:If townwaynodebuild(ij,i)=11 Then tterminal=1
 Var sizei=townwaynodesize(ij,i)
-If sizei>3900*(100+h)/140 And tterminal=0 Then h0=45:h=42
+If sizei>3900*(100+h)/140 And tterminal=0 And testcrops=0 Then h0=45:h=42
 If tterminal=1 Then h0=max(h0,100)
 x=200:y=200
 Var t800=min(800.0,sizei*0.5)'0.35)
@@ -10931,6 +10974,8 @@ Dim As Integer i,j,k,n,p
            If mz>mzsol00+10000 Then hhh=2.7*30
            if r<hhh then continue for 
         EndIf
+        testcrops=0
+        If waynodebuild=110 Then testcrops=1
  		  If plane=0 Or car>0 Then kxx*=0.7'0.5
  		  If (sizei<0.5 Or townwaynodesize40(ij,i)<0.5) And troad=0 Then
  		  	  Var xmin=x,ymin=y,xxmax=x,yymax=y
@@ -10959,7 +11004,7 @@ Dim As Integer i,j,k,n,p
  		  	  townwaynodesize40(ij,i)=1
            'If InStr(townwayname(ij,i),"ge Henri")>0 Then auxvar2=sizei+0.1:auxtest=0.8
  		  ElseIf troad=1 Then 
- 		  	  sizei=0	  
+ 		  	  sizei=0
  		  EndIf
  		  If sizei>4000 Then'2000 Then
    	  	  dr30000=min(15000.0,sizei*0.7)'*0.5)
@@ -10992,15 +11037,15 @@ Dim As Integer i,j,k,n,p
  		  Var test=0
  		  rotavion(x-mx,y-my,min(0.0,max(z-mz,z+hh-mz)))'*0.5)
         If scaleview<0.9 Then
-        	  If x2>1000 and troad=0 Then Continue For 
+        	  If x2>1000 and troad=0 and testcrops=0 Then Continue For 
         EndIf
         'If InStr(townwayname(ij,i)," Henri")>0 And troad=0 Then auxvar+=1:auxtest=0.8
  		  'If x2>(0.9*Abs(y2)-(kxx+sizei+sizei)) And troad=0 Then
  		  Var sizeii=sizei*cos2*0.7+kxx*0.1'kxx*0.1'+sizei':If mz>mzsol00+100 Then sizeii+=hh
- 		  If (x2>(0.9*(Abs(y2)+Abs(z2))-(sizeii)-hh)) And troad=0 Then
+ 		  If (x2>(0.9*(Abs(y2)+Abs(z2))-(sizeii)-hh)) And troad=0 And testcrops=0 Then
  		  	  test=1
  		  EndIf 	  
- 		  If troad=1 Then 'road
+ 		  If troad=1 Or testcrops=1 Then 'road
  		     n=Abs(towniwaynode(ij,i))
 		     Var xx=x,yy=y,dk=1
  		     For j=2 To n
@@ -11184,7 +11229,11 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
           	 EndIf 	
           	EndIf
           EndIf
-          drawbuildname=townwayname(ij,i)
+          If testcrops=0 Then
+          	drawbuildname=townwayname(ij,i)
+          Else
+          	drawbuildname=""
+          EndIf
           drawbuildtx=1:drawbuildty=1
       	 Var r=-1.0,g=0.0,b=0.0
           If 0 then'townwaynodevie(ij,i)<-1 Then 
@@ -11207,6 +11256,8 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
    				'townwaynodeh(ij,i)=h
    			ElseIf waytheight(k)=100 Then
    				townwaynodebuild(ij,i)=100'highway
+   			ElseIf waytheight(k)=110 Then
+   				townwaynodebuild(ij,i)=110'crop
    			ElseIf waytheight(k)=4 Then
    				townwaynodebuild(ij,i)=12'church
    			ElseIf waytheight(k)=5 Then
@@ -11234,7 +11285,11 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
            	      If railtext=0 Then glbindtexture(gl_texture_2d,railtext)
             	   drawbuildtext=roadtext
             	   glcolor3f(1,1,1)
-            	ElseIf waynodebuild=11 Then
+           	   ElseIf waynodebuild=110 Then
+            	   drawbuildtext=croptext
+            	   drawbuildtx=7:drawbuildty=5
+            	   glcolor3f(1,1,1)
+           	   ElseIf waynodebuild=11 Then
             	   glcolor3f(0,0.6,1)
             	   r=0:g=0.6:b=1
            	   ElseIf waynodebuild=6 And h>200 And irnd=2 Then
@@ -11328,7 +11383,10 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
  		    	b=townwaynodeb(ij,i)
  		    EndIf
  		    'If townwaynodeh(ij,i)>400 Then r=1:g=0:b=0
-          If waynodebuild<>100 And scaleview>0.9 Then
+ 		    testcrops=0
+          If waynodebuild=110 Then
+          	testcrops=1
+          ElseIf waynodebuild<>100 And scaleview>0.9 Then
           	Var kh=3*h/(200+h+waynodebuild)
           	If tourelle=0 Then
           		If y2>0 Then
@@ -11351,6 +11409,8 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
  		    If tinternet=4 Then d2500=1250:d5000=2500
  		    If waynodebuild=100 Then
  		    	drawroadnode(ij,i)
+ 		    ElseIf waynodebuild=110 Then 	
+ 		    	drawbuildingnode(ij,i,1,r,g,b)
  		    ElseIf (x2>d2500-300+sizei And (plane=0 Or car>0)) Then
  		    	If Abs(x-mx)<1200 And Abs(y-my)<1200 Then ntownnear+=1
            	'Var n=Abs(towniwaynode(ij,i))
@@ -12404,6 +12464,7 @@ If ((plane=0 or car>0 or avion="ballon" Or avion="copter")And tinternet<>4) Then
   keyway+=";way['building:part'~'yes']"+latlon
   keyway+=";way['railway'~'rail']"+latlon
   keyway+=";way[amenity~'school|university|hospital']"+latlon
+  keyway+=";way['crop']"+latlon
 ElseIf dtweb<30.0 Then'Or (dtweb<40.0 And tinternet=4) Then   
   Var d10=10,d50=50
   If (dtweb<15.5)Then' Or time2>tidle2+14) Then
@@ -12424,11 +12485,13 @@ ElseIf dtweb<30.0 Then'Or (dtweb<40.0 And tinternet=4) Then
   EndIf 	
   keyway+=";way['railway'~'rail']"+latlon2
   keyway+=";way[amenity~'school|university|hospital|place_of_worship']"+latlon2
+  keyway+=";way['crop']"+latlon2
 Else 
   keyway+=";way['building']"+latlon2
   keyway+=";way['building:part'~'yes']"+latlon2 	
   'keyway+=";way['railway'~'rail']"+latlon2
   keyway+=";way[amenity~'school|university|hospital|place_of_worship']"+latlon2
+  keyway+=";way['crop']"+latlon2
 EndIf 
 keyway+=";way['leaf_type']"+latlon3
 'keyway+=";way['roof:material']"+latlon
