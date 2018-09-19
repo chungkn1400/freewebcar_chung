@@ -5196,13 +5196,14 @@ If (Timer>tdistterrain+max(0.1,min(0.5,0.15*kfps))) Then
 		tkdistterrain=time2+3
 		kdistterrain=min(kk*0.69,kdistterrain*1.015)'0.5
 	EndIf
+	Var dfps1=dfps
 	If Abs(kdistterrain-kdistterrain0)>0.0001 Then
 		If kdistterrain<kdistterrain0 Then
-			dfps=minfps-6+3
+			dfps1=minfps-6+3
 		Else
-			dfps=minfps-6-6
+			dfps1=minfps-6-6
 		EndIf
-		dfps=(minfps-7.5)
+		dfps1=(minfps-7.5)
 		'If Abs(dfps-minfps+6)>0.001 Then dfps=0+minfps-6 Else dfps=1+minfps-6
 	   If (kdistterrain-kdistterrain0)*(kdistterrain0-kdistterrain00)<0.00001 Then
 	   	'kdistterrain+=(kdistterrain0-kdistterrain)*0.8
@@ -5216,14 +5217,15 @@ If (Timer>tdistterrain+max(0.1,min(0.5,0.15*kfps))) Then
 	   'auxvar=dkdistterrain:auxtest=0.2:auxvar2=kdistterrain	   
 		kdistterrain00=kdistterrain0
 	EndIf
-	dfps=(minfps-7.5)
+	dfps1=(minfps-7.5)
 	'If mz<mzsol00+200 Then 
-	 If nshowbuild>25000 Then dfps=(minfps-7.5)+3
-	 If nshowbuild>45000 Then dfps=(minfps-7.5)+5
-	 If nshowbuild>65000 Then dfps=(minfps-7.5)+7
-	 If nshowbuild>95000 Then dfps=(minfps-7.5)+9
-	 If nshowbuild>145000 Then dfps=(minfps-7.5)+11
+	 If nshowbuild>25000 Then dfps1=(minfps-7.5)+3
+	 If nshowbuild>45000 Then dfps1=(minfps-7.5)+5
+	 If nshowbuild>65000 Then dfps1=(minfps-7.5)+7
+	 If nshowbuild>95000 Then dfps1=(minfps-7.5)+9
+	 If nshowbuild>145000 Then dfps1=(minfps-7.5)+11
 	'EndIf 
+	dfps+=(dfps1-dfps)*0.2
 	dfps0=dfps
 	kdistterrain0=kdistterrain
 	kdistroad=Sqr(kdistterrain/0.050)
@@ -10054,7 +10056,7 @@ Sub drawzero0
 glenable(gl_lighting)
 glenable(gl_light3)
 glenable gl_texture_2d
-glcolor3f(0,0.95,0)
+glcolor3f(0.9,0.95,0.9)
 gldisable gl_depth_test
 'if icar=11 Then 
 	glbindtexture(gl_texture_2d,zerotext)
@@ -13108,7 +13110,7 @@ End Sub
 Sub drawzero
 glenable(gl_lighting)
 glenable(gl_light3)
-glcolor3f(0,1,0)
+glcolor3f(0.9,0.95,0.9)
 'if icar=12 Then 
 '	glbindtexture(gl_texture_2d,zero2text)
 'Else 
@@ -17479,7 +17481,10 @@ If car<>0 Then
 Else
 	icar+=1:If icar>12 Then icar=7
 	volant=6
-	If icar=9 Then volant=3:v=min(7.0,v)
+	If icar=9 Then
+		'volant=3
+		v=min(7.0,v)
+	EndIf
 	myiplane=icar
 EndIf
 selectcomboindex("win.combo1",icar)

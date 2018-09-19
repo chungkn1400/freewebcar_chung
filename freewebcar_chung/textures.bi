@@ -11404,9 +11404,10 @@ Var lat11=lat,lng11=lng
 lat=lat0:lng=lng0
 Var dij=7*100/kscalex
 i50=int(25/dij):i101=i50+i50+1
+'Var dlat=10*360/40000,dlon=dlat*klon'max 10km
 For k=1 To nway2
  If quit2=1 Or tquitweb=1 Then Exit Sub 
- If waylat(k)>-90 Then
+ If waylat(k)>-90 Then'And Abs(waylat(k)-lat)<dlat And Abs(waylon(k)-lng)<dlon Then
   Var testworldobj=0
   If waytheight(k)<>100 Then'not road
   	testworldobj=testworldobject(waylat(k),waylon(k))	
@@ -11517,9 +11518,10 @@ Var lat11=lat,lng11=lng
 lat=lat0:lng=lng0
 Var dij=7*100/kscalex
 Var i50=int(25/dij),i101=i50+i50+1
+'Var dlat=10*360/40000,dlon=dlat*klon'max 10km
 For k=1 To nway2
  If quit2=1 Or tquitweb=1 Then Exit Sub 
- If waylat(k)>-90 Then 	
+ If waylat(k)>-90 Then'And Abs(waylat(k)-lat)<dlat And Abs(waylon(k)-lng)<dlon Then
   Var testworldobj=0
   If waytheight(k)<>100 Then'not road
   	testworldobj=testworldobject(waylat(k),waylon(k))	
