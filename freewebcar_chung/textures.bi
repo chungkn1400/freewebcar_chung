@@ -524,15 +524,12 @@ If itext=@cocacolatext Then
 EndIf
 If itext=@marisoltext then *(itext)=guiloadtexture("media/marisol.jpg")
 End Sub
-Dim Shared As uint dummytext,prevtext
+Dim Shared As uint dummytext
 Sub myglbindtexture(gltexture2d As uint,itext As uint Ptr)
 If *(itext)=0 Then
 	If gllist=0 Then loadtextures(itext)
    If *(itext)=0 Then *(itext)=dummytext 
-   prevtext=0
 EndIf
-If *(itext)=prevtext Then Exit Sub
-prevtext=*(itext)
 glbindtexture0(gltexture2d,*(itext))
 End Sub
 
@@ -10820,7 +10817,7 @@ Dim As Integer i,j,k,n,p
        Else 	
       	If townwaynodeh(ij,i)<=200 Then Continue For 
        EndIf 
-      EndIf
+      EndIf 
       testkway(i)=1
       
  		Var testshow=0

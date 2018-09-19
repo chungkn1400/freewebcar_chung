@@ -961,7 +961,7 @@ Return z
 End Function
 Sub movecar 
 Dim As Single carmx,carmy,mmy1,mmy2,mmy3,mmy4,o20,o30',o33
-If time2<timeinit+10 Then Exit Sub 
+If time2<timeinit+10 Then Exit Sub
 If volume<549 Then 
 	volume=min2(550,volume+1+30*kfps)
 	setvol

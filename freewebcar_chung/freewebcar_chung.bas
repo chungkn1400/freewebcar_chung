@@ -5217,20 +5217,23 @@ If (Timer>tdistterrain+max(0.1,min(0.5,0.15*kfps))) Then
 		kdistterrain00=kdistterrain0
 	EndIf
 	dfps=(minfps-7.5)
-	If mz<mzsol00+200 Then 
+	'If mz<mzsol00+200 Then 
 	 If nshowbuild>25000 Then dfps=(minfps-7.5)+3
 	 If nshowbuild>45000 Then dfps=(minfps-7.5)+5
 	 If nshowbuild>65000 Then dfps=(minfps-7.5)+7
-	EndIf 
+	 If nshowbuild>95000 Then dfps=(minfps-7.5)+9
+	 If nshowbuild>145000 Then dfps=(minfps-7.5)+11
+	'EndIf 
 	dfps0=dfps
 	kdistterrain0=kdistterrain
 	kdistroad=Sqr(kdistterrain/0.050)
 EndIf
 kdistterrain=scaleview*kdistterrain0
 'If mz<mzsol00+200 Then 
-' If nshowbuild2>400 Then kdistterrain*=0.7
-' If nshowbuild2>800 Then kdistterrain*=0.7
-' If nshowbuild2>1600 Then kdistterrain*=0.7
+ If nshowbuild2>500 Then kdistterrain*=0.8
+ If nshowbuild2>800 Then kdistterrain*=0.8
+ If nshowbuild2>1200 Then kdistterrain*=0.8
+ If nshowbuild2>1900 Then kdistterrain*=0.8
 'EndIf
 kdistterrainsave=kdistterrain
 copynearroad0()
@@ -23211,7 +23214,9 @@ mz11=-999999
            	glviewport(0,0,xmax,ymax)
             gldisable gl_lighting
             gldisable gl_alpha_test
-           	If time2>timeinit+10 Then display()
+           	'If time2>timeinit+10 Then
+           		display()
+           	'EndIf 	
            	
            If mapdisplay=4 Then
            	  drawtexture(webtext)
@@ -23316,12 +23321,13 @@ mz11=-999999
                'glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
             	'guirefreshopenGL()
             EndIf 
-           	If timer<timeinit+14 And mzinit>-99999 Then
+           	If Time2<timeinit+24 And mzinit>-9999 Then
+           		   mzinit=min(waterz+6000,mzinit)
             		mz=mzinit:mz1=mz:piste=1:piste0=1:mz0=mz
             		zroof=mzinit:timeroof=Timer
-           	Else
+            Else            
             		mzinit=-999999
-           	EndIf 	
+           	EndIf 
            	If mapdisplay<>0 Then mx=mx0:my=my0:mz=mz0:mz1=mz 
             If time2<tcrashz+1 Then mz=mzcrash:mz1=mz
            	
