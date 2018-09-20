@@ -6516,7 +6516,7 @@ EndIf
 '	glpopmatrix
 'EndIf
  Var zz=z,zz0=z
- If testcrops=1 Then kwaynodez(1)=zz0
+ If testcrops=1 Then zz0=getterrainheight(x,y)+h:kwaynodez(1)=zz0:z=zz0
  For j=2 To min2(n,nwaynode-1)
 
 
@@ -6809,11 +6809,14 @@ If testmygltexquad=1 And (h0>46 Or testcrops=1) Then
  Else
    gldisable(gl_lighting)
    'gldisable gl_normalize
- EndIf   
+ EndIf
+If 1 Then  
  x=x0'townwaynodex(ij,i,1)
  y=y0'townwaynodey(ij,i,1)
 'If troof=1 Or mz>z Then 
  Var tx=0.025
+ 'glenable(gl_cull_face)
+ glcullface(gl_back)
  'If troof=1 Then  
    glbegin(gl_triangle_fan)
  	If testcrops=1 Then
@@ -6847,6 +6850,63 @@ If testmygltexquad=1 And (h0>46 Or testcrops=1) Then
   EndIf 
  EndIf
  glend()
+ gldisable(gl_cull_face)
+Else
+
+ x=x0'townwaynodex(ij,i,1)
+ y=y0'townwaynodey(ij,i,1)
+ z=zz0
+ Var zmid=z1:If testcrops=1 Then zmid=(kwaynodez(1)+kwaynodez(Int(n*0.5)))*0.5
+ 'zmid+=300
+ Var tx=0.025
+ Var testcull=0,testcull0=0,xcull=x,ycull=y
+ glenable(gl_cull_face)
+ glcullface(gl_back)
+ 'If troof=1 Then  
+   glbegin(gl_triangles)
+ 'Else
+ '	glbegin(gl_polygon)
+ 'EndIf 
+ For j=2 To min2(n,nwaynode-1)
+ 	xx=x:yy=y:zz=z
+ 	x=townwaynodex(ij,i,j)
+ 	y=townwaynodey(ij,i,j)
+ 	'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
+ 	/'Var dxy=(y-ymid)*(xcull-xmid)-(x-xmid)*(ycull-ymid)
+ 	testcull=0
+ 	If dxy>1 Then
+ 		testcull=1
+ 	Else 
+ 	   dxy=(yy-ymid)*(xcull-xmid)-(xx-xmid)*(ycull-ymid)
+ 	   If dxy>1 Then testcull=1
+ 	EndIf'/
+ 	If max(Abs(x-xmid),Abs(y-ymid))<dr30000 And testcull=0 Then
+ 	   'xcull=x:ycull=y
+ 	   If testcrops=1 Then gltexcoord2f(xmid*tx,ymid*tx)
+ 	   glvertex3f(xmid,ymid,zmid)
+    	If testcrops=1 Then gltexcoord2f(xx*tx,yy*tx)
+ 		glvertex3f(xx,yy,zz)
+    	If testcrops=1 Then gltexcoord2f(x*tx,y*tx):z=kwaynodez(j)
+ 		glvertex3f(x,y,z)
+ 	EndIf
+ Next
+ xx=x:yy=y:zz=z
+ If Abs(x-x0)+Abs(y-y0)>0.1 And 0 Then  
+  x=x0:y=y0:z=zz0
+  'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
+  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	   If testcrops=1 Then gltexcoord2f(xmid*tx,ymid*tx)
+ 	   glvertex3f(xmid,ymid,zmid)
+    	If testcrops=1 Then gltexcoord2f(xx*tx,yy*tx)
+ 		glvertex3f(xx,yy,zz)
+    	If testcrops=1 Then gltexcoord2f(x*tx,y*tx):z=kwaynodez(j)
+ 		glvertex3f(x,y,z)
+  EndIf 
+ EndIf
+ glend()
+ gldisable(gl_cull_face)
+
+EndIf 	
 'EndIf  
 If hmin>10 And testcrops=0 Then
  glcolor3f( 0.55,0.55,0.7)
@@ -7273,6 +7333,8 @@ If testmygltexquad=1 And (h0>46 Or testcrops=1) Then
  x=x0'townwaynodex(ij,i,1)
  y=y0'townwaynodey(ij,i,1)
 'If troof=1 Or mz>z Then  
+ 'glenable(gl_cull_face)
+ glcullface(gl_back)
  Var tx=0.025
  'If troof=1 Then  
    glbegin(gl_triangle_fan)
@@ -7305,6 +7367,7 @@ If testmygltexquad=1 And (h0>46 Or testcrops=1) Then
   EndIf
  EndIf  
  glend()
+ gldisable(gl_cull_face)
 'EndIf  
 If hmin>10 And testcrops=0 Then
  glcolor3f( 0.55,0.55,0.7)
@@ -7605,6 +7668,7 @@ EndIf
  EndIf
 If testmygltexquad=1 And h0>46 Then  
  Var dz=max(0.0,z),troof=1
+ z1=z
  If h<200*(1-dz/(700+dz)) And sizei<1500 Then'z<200 Then
  'If z<200 Then
  	'z1=z+24+(max(0,Abs(xmax-xmin)-200)+max(0,(ymax-ymin)-200))*0.051:glcolor4f(0.9,0.3,0.4,talpha)
@@ -7627,12 +7691,12 @@ If testmygltexquad=1 And h0>46 Then
  y=townwaynodey(ij,i,i1)
  jx=1.001 
 'If troof=1 Or mz>z Then  
- If troof=1 Then  
+ 'If troof=1 Then  
    glbegin(gl_triangle_fan)
    glvertex3f(xmid,ymid,z1)
- Else
- 	glbegin(gl_polygon)
- EndIf 	
+ 'Else
+ '	glbegin(gl_polygon)
+ 'EndIf 	
  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
  	glvertex3f(x,y,z)
  EndIf
