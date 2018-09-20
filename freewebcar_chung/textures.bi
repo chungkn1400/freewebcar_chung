@@ -9347,7 +9347,7 @@ EndIf
      	 EndIf        	
       EndIf
       Var testnathalie=0
-      If tcross And taddnathalie=1 Then 
+      If (tcross Or (Int(px1*0.1)And 1)) And taddnathalie=1 Then 
          If (j=Int(n/2) Or (j=Int(n*0.18)And j>2 And taddcitykm=0)) And jj=2 Then
          	testnathalie=1
          ElseIf n>12 Then 
@@ -9376,9 +9376,9 @@ EndIf
    	   gltranslatef(0,0,5)
    	   glenable gl_texture_2d
    	   If dist<distnathalie Then nathaliex=px1:nathaliey=py1
-         If (Int(px1/100)Mod 3)>0 Then'And 1 Then 
-          If (Int(py1/100)Mod 3)>0 Then'And 1 Then
-          	if do1woman<350 And (Int(px1/40)Mod 3)>0 Then'=2 Then 
+         If (Int(Abs(px1)*0.03)Mod 3)>0 Then'And 1 Then 
+          If (Int(Abs(py1)*0.03)Mod 3)>0 Then'And 1 Then
+          	if do1woman<350 And (Int(Abs(px1)*0.04)Mod 3)>0 Then'=2 Then 
                drawbuildtext=mywomantext
                glbindtexture(gl_texture_2d,mywomantext)
                If dist<distnathalie Then distnathalie=dist:namenathalie="helene"'christine"
@@ -9392,11 +9392,15 @@ EndIf
             glbindtexture(gl_texture_2d,nathalietext)
             If dist<distnathalie Then distnathalie=dist:namenathalie="nathalie"
           EndIf  
-         ElseIf (Int(px1/40)Mod 3)=1 Then  
+         ElseIf (Int(Abs(py1)*0.02)Mod 3)=2 Then  
+               drawbuildtext=mywomantext
+               glbindtexture(gl_texture_2d,mywomantext)
+               If dist<distnathalie Then distnathalie=dist:namenathalie="helene"'christine"
+         ElseIf (Int(Abs(px1)*0.02)Mod 3)=1 Then  
            drawbuildtext=veroniquetext
            glbindtexture(gl_texture_2d,veroniquetext)
            If dist<distnathalie Then distnathalie=dist:namenathalie="veronique"
-         ElseIf (Int(px1/40)And 1) Then  
+         ElseIf (Int(Abs(px1)*0.02)And 1) Then  
            drawbuildtext=christinetext
            glbindtexture(gl_texture_2d,christinetext)
            If dist<distnathalie Then distnathalie=dist:namenathalie="valerie"'"christine"
