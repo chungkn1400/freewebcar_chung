@@ -1412,6 +1412,7 @@ freeimage_closememory(mem)
 guierror=0
 	
 End Sub
+Dim Shared As Integer testroadi,testroadj
 Function gettestroad(x As Single,y As Single)As Integer
 Dim As Integer i,j,k  '0 land, 1 road, 2 mainroad, 3 water 
 If ttestroad=0 Then Return 0 
@@ -1426,6 +1427,8 @@ j=testroaddy*max(0.00001,min(0.9999,1-tyy))
 testroadrr=testroadr(i,j)
 testroadgg=testroadg(i,j)
 testroadbb=testroadb(i,j)
+testroadi=i
+testroadj=j
 Return testroad(i,j)
 End Function
 Function gettestroadtree(x As Single,y As Single)As Integer
@@ -6789,7 +6792,22 @@ If testmygltexquad=1 And (h0>46 Or testcrops=1) Then
  z1=z
  If testcrops=1 Then
  	troof=1
- 	glcolor4f(1,1,1,1)
+ 	'glcolor4f(1,1,1,1)
+ 	If ttestroad Then
+ 	  gettestroad(xmid,ymid)
+ 	  Var ii=testroadi,jj=testroadj
+ 	  Var rr=testtreer(ii,jj)
+ 	  Var gg=testtreeg(ii,jj)
+ 	  Var bb=testtreeb(ii,jj)
+ 	  Var kc=90.0
+ 	  If kc<rr Then kc=rr
+ 	  If kc<gg Then kc=gg
+ 	  If kc<bb Then kc=bb
+ 	  kc=1/kc
+ 	  glcolor4f(rr*kc,gg*kc,bb*kc,1)
+ 	Else
+ 	  glcolor4f(1,1,1,1)	
+ 	EndIf 	
  ElseIf h<h200*(1-dz/(700+dz)) And sizei<1500 Then'z<200 Then
  	'z1=z+24+(max(0,Abs(xmax-xmin)-200)+max(0,(ymax-ymin)-200))*0.051:glcolor4f(0.9,0.3,0.4,talpha)
  	z1=z+24+min(max(0,Abs(xmax-xmin)-200),max(0,abs(ymax-ymin)-200))*0.1:glcolor4f(0.9,0.3,0.4,talpha)
@@ -7306,7 +7324,22 @@ If testmygltexquad=1 And (h0>46 Or testcrops=1) Then
  z1=z
  If testcrops=1 Then
  	troof=0
- 	glcolor4f(1,1,1,talpha)
+ 	'glcolor4f(1,1,1,talpha)
+ 	If ttestroad Then
+ 	  gettestroad(xmid,ymid)
+ 	  Var ii=testroadi,jj=testroadj
+ 	  Var rr=testtreer(ii,jj)
+ 	  Var gg=testtreeg(ii,jj)
+ 	  Var bb=testtreeb(ii,jj)
+ 	  Var kc=90.0
+ 	  If kc<rr Then kc=rr
+ 	  If kc<gg Then kc=gg
+ 	  If kc<bb Then kc=bb
+ 	  kc=1/kc
+ 	  glcolor4f(rr*kc,gg*kc,bb*kc,1)
+ 	Else
+ 	  glcolor4f(1,1,1,1)	
+ 	EndIf 	
  ElseIf h<h200*(1-dz/(700+dz)) And sizei<1500 Then'z<200 Then
  	'z1=z+24+(max(0,Abs(xmax-xmin)-200)+max(0,(ymax-ymin)-200))*0.051:glcolor4f(0.9,0.3,0.4,talpha)
  	z1=z+24+min(max(0,Abs(xmax-xmin)-200),max(0,abs(ymax-ymin)-200))*0.1
