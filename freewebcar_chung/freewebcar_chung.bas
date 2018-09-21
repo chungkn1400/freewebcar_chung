@@ -15310,7 +15310,7 @@ Sub subtourelleretro()
 	EndIf
 End Sub
 Sub displayback(tdraw As integer=1)
-    glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)'  Or GL_STENCIL_BUFFER_BIT)
+    glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
     glLoadIdentity ()
     glscalef(-1,1,1)
 
@@ -15692,7 +15692,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     		'mytestroad=gettestroad(mx+dmx0,my+dmy0)+0.1
     		'auxvar=xweb1:auxvar2=yweb1:auxtest=1
 
-    glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)'  Or GL_STENCIL_BUFFER_BIT)
+    glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
     glLoadIdentity ()
     glscalef(1.325,1,1.325)
     testresetmz0()
@@ -24157,7 +24157,7 @@ Dim As Integer i,j,k
 o222=o2
 cos222=Cos(o222*degtorad):sin222=Sin(o222*degtorad)
 
-    glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
+    glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT Or GL_STENCIL_BUFFER_BIT)
     glLoadIdentity ()
     
     If tourelle=0 Or plane=0 Then

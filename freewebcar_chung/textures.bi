@@ -6829,12 +6829,31 @@ If testmygltexquad=1 And (h0>46 Or testcrops=1) Then
    'gldisable gl_normalize
  EndIf
 If 1 Then  
- x=x0'townwaynodex(ij,i,1)
- y=y0'townwaynodey(ij,i,1)
 'If troof=1 Or mz>z Then 
  Var tx=0.025
- 'glenable(gl_cull_face)
+ 'gldisable(gl_cull_face)
  glcullface(gl_back)
+ 'glClear( GL_STENCIL_BUFFER_BIT )
+ Var istencil=0,i1=1
+ If z1>zz0+1 Then i1=2
+ For istencil=i1 To 2	
+ If istencil=1 Then 
+  glEnable(GL_STENCIL_TEST)
+  glStencilMask(1)
+  glDepthMask(GL_false)
+  glColorMask( GL_FALSE,GL_FALSE,GL_FALSE,GL_FALSE )
+  glStencilOp( GL_KEEP, GL_KEEP, GL_INVERT )
+  glStencilFunc( GL_ALWAYS,1,1 )
+ Else
+  If testcrops=1 And mz<mzsol00+hcrop Then glenable(gl_cull_face)
+  glDepthMask(GL_true)
+  glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE )
+  'glStencilOp( GL_KEEP, GL_KEEP, GL_zero )
+  glStencilFunc( GL_EQUAL, 1, 1 )
+ EndIf 	
+ x=x0'townwaynodex(ij,i,1)
+ y=y0'townwaynodey(ij,i,1)
+ z=zz0
  'If troof=1 Then  
    glbegin(gl_triangle_fan)
  	If testcrops=1 Then
@@ -6868,6 +6887,8 @@ If 1 Then
   EndIf 
  EndIf
  glend()
+ Next istencil
+ gldisable( GL_STENCIL_TEST )
  gldisable(gl_cull_face)
 Else
 
@@ -7363,12 +7384,33 @@ If testmygltexquad=1 And (h0>46 Or testcrops=1) Then
    gldisable(gl_lighting)
    'gldisable gl_normalize
  EndIf   
- x=x0'townwaynodex(ij,i,1)
- y=y0'townwaynodey(ij,i,1)
 'If troof=1 Or mz>z Then  
  'glenable(gl_cull_face)
  glcullface(gl_back)
  Var tx=0.025
+ 'gldisable(gl_cull_face)
+ glcullface(gl_back)
+ 'glClear( GL_STENCIL_BUFFER_BIT )
+ Var istencil=0,i1=1
+ If z1>zz0+1 Then i1=2
+ For istencil=i1 To 2	
+ If istencil=1 Then 
+  glEnable(GL_STENCIL_TEST)
+  glStencilMask(255)
+  glDepthMask(GL_false)
+  glColorMask( GL_FALSE,GL_FALSE,GL_FALSE,GL_FALSE )
+  glStencilOp( GL_KEEP, GL_KEEP, GL_INVERT )
+  glStencilFunc( GL_ALWAYS,1,1 )
+ Else
+  If testcrops=1 And mz<mzsol00+hcrop Then glenable(gl_cull_face)
+  glDepthMask(GL_true)
+  glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE )
+  'glStencilOp( GL_KEEP, GL_KEEP, GL_zero )
+  glStencilFunc( GL_EQUAL, 1, 1 )
+ EndIf 	
+ x=x0'townwaynodex(ij,i,1)
+ y=y0'townwaynodey(ij,i,1)
+ z=zz0
  'If troof=1 Then  
    glbegin(gl_triangle_fan)
  	If testcrops=1 Then gltexcoord2f(xmid*tx,ymid*tx):z1=(kwaynodez(1)+kwaynodez(Int(n*0.5)))*0.5
@@ -7400,6 +7442,8 @@ If testmygltexquad=1 And (h0>46 Or testcrops=1) Then
   EndIf
  EndIf  
  glend()
+ Next istencil
+ gldisable( GL_STENCIL_TEST )
  gldisable(gl_cull_face)
 'EndIf  
 If hmin>10 And testcrops=0 Then
@@ -11012,12 +11056,14 @@ Dim As Integer i,j,k,n,p
         '	  EndIf
         'EndIf 
         'If waynodebuild=100 And mz>mzsol00+600 And fpsmoy<15 Then Continue For 
+        testcrops=0
+        If waynodebuild=110 Then testcrops=1
         Var hh=townwaynodeh(ij,i)
         If hh>4000 And waynodebuild<>100 Then'and waynodebuild=4
         	  Var hmin=Int(hh/4000):hh=unpack(hh-4000*hmin)':hmin=unpack(hmin)
         EndIf
  		  Var sizei=townwaynodesize(ij,i)
-        If waynodebuild<>100 Then 
+        If waynodebuild<>100 And testcrops=0 Then 
          If tinternet=4 Then
          	Var d10=20,d50=100
          	If hh<d10*14 And sizei>0.5 And sizei<1000 Then Continue For 
@@ -11034,7 +11080,7 @@ Dim As Integer i,j,k,n,p
  		  	If hh>99 And waynodebuild<>100 Then d50000+=35000
  		  EndIf
         'If InStr(townwayname(ij,i),"ge Henri")>0 Then auxvar=sizei+0.1:auxtest=0.8
- 		  If plane>0 And car=0 Then
+ 		  If plane>0 And (car=0 Or testcrops=1) Then
  		  	  d50000*=kdistterrain*max(2.0,200/(10+Abs(vkm)))
  		  	  d50000+=(mz-mzsol00)
  		  Else 
@@ -11085,8 +11131,6 @@ Dim As Integer i,j,k,n,p
            If mz>mzsol00+10000 Then hhh=2.7*30
            if r<hhh then continue for 
         EndIf
-        testcrops=0
-        If waynodebuild=110 Then testcrops=1
  		  If plane=0 Or car>0 Then kxx*=0.7'0.5
  		  If (sizei<0.5 Or townwaynodesize40(ij,i)<0.5) And troad=0 Then
  		  	  Var xmin=x,ymin=y,xxmax=x,yymax=y
