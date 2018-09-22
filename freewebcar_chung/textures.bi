@@ -5523,7 +5523,8 @@ If ishadow>=nshadow Or tdark<>0 Then Exit Sub
     Var z10=getterrainheight(x10,y10)
     Var z20=getterrainheight(x20,y20)
     Dim As Integer di,dj
-    Var kshadow=min(2500.0,dr*(dxyshadow)/max(0.2,Abs(dzshadow)))
+    'Var shadowtan2=(dxyshadow)/max(0.2,Abs(dzshadow))
+    Var kshadow=min(2500.0,dr*shadowtan2)
     Var z9=3.0'5.0
  	 di=max2(1,Int(kshadow/200.0))
  	 kshadow=kshadow/di
@@ -5630,9 +5631,9 @@ For j=0 To dj-0.9
     ishadow+=1	
     shadowrank(ishadow)=rank
     Var dr0=z10'max(0.0,z10-getterrainheight(x10,y10))
-    Var kshadow0=min(1500.0,dr0*(dxyshadow)/max(0.2,Abs(dzshadow)))
+    Var kshadow0=min(1500.0,dr0*shadowtan2)'(dxyshadow)/max(0.2,Abs(dzshadow)))
     Var dr1=z20'max(0.0,z20-getterrainheight(x20,y20))
-    Var kshadow1=min(1500.0,dr1*(dxyshadow)/max(0.2,Abs(dzshadow)))
+    Var kshadow1=min(1500.0,dr1*shadowtan2)'(dxyshadow)/max(0.2,Abs(dzshadow)))
     Var distxx=max(0.001,Sqr(dx*dx+dy*dy))
     Var dxx=dy/distxx,dyy=-dx/distxx
     kshadow=dr 
@@ -5729,7 +5730,7 @@ EndIf '/
 If taddshadowquad=1 And thmin=0 And tshadow=1 Then 'scaleview>0.9 And testtownshow=1 And tishadow=0 Then
  rotavionpx((x1+x2)*0.5-mx,(y1+y2)*0.5-my,0)
  'If px2+Abs(py2)>1400 Then Exit sub  
- Var kzshadow=max(0.2,dxyshadow)/max(0.2,dzshadow)
+ Var kzshadow=shadowtan2'max(0.2,dxyshadow)/max(0.2,dzshadow)
  If ishadow<nshadow And px2>0.9*Abs(py2)-min(4000.0,(z3-townzsol)*kzshadow+200) And px2<2400.1400  Then
   'setnorm(x3-x1,y3-y1,z3-z1, x2-x1,y2-y1,z2-z1)
   'Var dxyz=(normx*dxshadow+normy*dyshadow)/dxyshadow'+normz*dzshadow)
@@ -6301,6 +6302,7 @@ If h>4000 Then
 	If thmin=1 Then
 		hmin=Int(h/4000):h=h-4000*hmin
 	Else
+		hmin=Int(h/4000):h=h-4000*hmin
 		hmin=0
 		'Exit Sub 
 	EndIf
@@ -6815,6 +6817,7 @@ If testmygltexquad=1 And (h0>46 Or testcrops=1) Then
  	troof=0
    glcolor4f( 0.4,0.35,0.4,talpha)
  EndIf 
+If z1>z+1 Or z1<mz Then
  gldisable GL_alpha_test
  If testcrops=0 Then
  	gldisable(gl_texture_2d)
@@ -6946,7 +6949,7 @@ Else
  gldisable(gl_cull_face)
 
 EndIf 	
-'EndIf  
+EndIf' mz  
 If hmin>10 And testcrops=0 Then
  glcolor3f( 0.55,0.55,0.7)
  x=x0'townwaynodex(ij,i,1)
@@ -7017,6 +7020,7 @@ If h>4000 Then
 	If thmin=1 Then
 		hmin=Int(h/4000):h=h-4000*hmin
 	Else 
+		hmin=Int(h/4000):h=h-4000*hmin
 		hmin=0
 		'Exit Sub 
 	EndIf
@@ -7370,6 +7374,7 @@ If testmygltexquad=1 And (h0>46 Or testcrops=1) Then
    'glcolor4f( 0.4,0.35,0.4,talpha)
    glcolor4f( 0.4,0.45,0.4,talpha)
  EndIf 
+If z1>z+1 Or z1<mz Then
  If auxtest>0.0051 Then glcolor4f(1,0,0,talpha)
  gldisable GL_alpha_test
  If testcrops=0 Then
@@ -7445,7 +7450,7 @@ If testmygltexquad=1 And (h0>46 Or testcrops=1) Then
  Next istencil
  gldisable( GL_STENCIL_TEST )
  gldisable(gl_cull_face)
-'EndIf  
+EndIf 'mz  
 If hmin>10 And testcrops=0 Then
  glcolor3f( 0.55,0.55,0.7)
  x=x0'townwaynodex(ij,i,1)
@@ -7496,6 +7501,7 @@ If h>4000 Then
 	If thmin=1 Then
 		hmin=Int(h/4000):h=h-4000*hmin
 	Else 
+		hmin=Int(h/4000):h=h-4000*hmin
 		hmin=0
 		'Exit Sub 
 	EndIf
@@ -7753,7 +7759,8 @@ If testmygltexquad=1 And h0>46 Then
  Else
  	troof=0
    glcolor4f( 0.4,0.35,0.4,talpha)
- EndIf 
+ EndIf
+If z1>z+1 Or z1<mz Then
  gldisable GL_alpha_test
  gldisable(gl_texture_2d)
  If tdark=1 Then
@@ -7807,7 +7814,7 @@ If testmygltexquad=1 And h0>46 Then
   EndIf
  EndIf  
  glend()
-'EndIf 'mz 
+EndIf 'mz 
 EndIf 'testmygltexquad 
 glcolor3f(1,1,1)
 glenable(gl_texture_2d)
@@ -10996,26 +11003,27 @@ Dim As Integer i,j,k,n,p
  	For i=1 To townnwaynode(ij)
  		testkway(i)=0
  	Next
-
-    For kway=1 To 20
-     Var wayirndh2=0':If kway<=5 Then wayirndh2=1	
-  	  For wayirndh=0 To wayirndh2
+ 
+    Var wayirndh2=1':If kway<=5 Then wayirndh2=1	
+    For wayirndh=0 To wayirndh2
+     For kway=1 To 20
       wayirnd2=0:If kway=3 Or kway=6 Then wayirnd2=2	
       For wayirnd=0 To wayirnd2
 
  	For i=1 To townnwaynode(ij)
       If testkway(i)=1 Then Continue For 
+      If wayirndh2>0 Then
+       If wayirndh=0 Then
+      	If townwaynodeh(ij,i)>200 Then Continue For 
+      	If townwaynodebuild(ij,i)>=100 Then Continue For 
+       Else 	
+      	If townwaynodeh(ij,i)<=200 And townwaynodebuild(ij,i)<100 Then Continue For 
+       EndIf 
+      EndIf 
       If townwaynodebuild(ij,i)<>kway And kway<>20 Then Continue For
       If wayirnd2>0 Then
       	If wayirnd<>(Int(Abs(townwaynodex(ij,i,1)*0.1))Mod 3) Then Continue For 
       EndIf
-      If wayirndh2>0 Then
-       If wayirndh=0 Then
-      	If townwaynodeh(ij,i)>200 Then Continue For 
-       Else 	
-      	If townwaynodeh(ij,i)<=200 Then Continue For 
-       EndIf 
-      EndIf 
       testkway(i)=1
       
  		Var testshow=0
@@ -11310,8 +11318,8 @@ Dim As Integer i,j,k,n,p
  	Next i
  	
      	Next wayirnd
-     Next wayirndh
-    Next kway 
+     Next kway 
+    Next wayirndh
 
  	thmin=0
  	freelocktown(ij)
