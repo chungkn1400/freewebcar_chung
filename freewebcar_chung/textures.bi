@@ -1010,7 +1010,13 @@ EndIf
      ElseIf tgoogle=1 And g>r+20 And g>b+20 Then'forest
     	 r=0:b=0:g*=0.5
      EndIf
-    EndIf  
+    EndIf
+    'If optionred<0.999 Or optiongreen<0.999 Or optionblue<0.999 Then
+    	Var t250=optionlum*(255/200)*390,k250=(255+130)/(255+t250)
+    	r=r*(r+t250)*(k250)/(r+130)
+    	g=g*(g+t250)*(k250)/(g+130)
+    	b=b*(b+t250)*(k250)/(b+130)
+    'EndIf
 
 	 webpicbits(i)=a+(r Shl 16)+(g Shl 8)+(b)
   Next

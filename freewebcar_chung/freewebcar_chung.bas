@@ -1114,6 +1114,7 @@ Dim Shared As Single to1car,to2car,to1plane,to2plane,retroto1,retroto2,tlayer=0,
 Dim Shared As Integer tshadow=1,tfoothorse=0,typeautopilot,tbing=1,tgps=0,dyh0,tradar2,typeautopilot0,nboeing2=12
 Dim Shared As Double timelayer
 Dim Shared As int64  idlayer,idlayer0
+Dim Shared As single optionred=1,optiongreen=1,optionblue=1,optionlum=1
 #Include "./movecar.bi"
 
 Dim Shared As String ficin
@@ -1322,6 +1323,14 @@ tinternet=3
 If Not Eof(file) Then Line Input #file,ficin:tinternet=Val(ficin)
 kfps30=1.0
 If Not Eof(file) Then Line Input #file,ficin:kfps30=Val(ficin)
+optionred=1.0
+If Not Eof(file) Then Line Input #file,ficin:optionred=Val(ficin)
+optiongreen=1.0
+If Not Eof(file) Then Line Input #file,ficin:optiongreen=Val(ficin)
+optionblue=1.0
+If Not Eof(file) Then Line Input #file,ficin:optionblue=Val(ficin)
+optionlum=1.0
+If Not Eof(file) Then Line Input #file,ficin:optionlum=Val(ficin)
 Close #file
 carb=max(1000.0,min(carb+1000.0,carb0))
 kscalex=500:kscalex00=500
@@ -1475,19 +1484,22 @@ Sub myglcolor3fv(color3fv As glfloat Ptr)
 Dim As Single r1=1.0 
 If tcolorshadow Then glcolor4f(0.6,0.6,0.6,0.6):Exit sub
 If mapautotext=towntext And hsnowij>waterz Then
-	glcolor4f(r1,r1,r1,0):Exit Sub
+	'glcolor4f(r1,r1,r1,0):Exit Sub
+	glcolor4f(optionred,optiongreen,optionblue,0):Exit Sub
 ElseIf testwater=1 And (testsea2=1 Or testwater2=1) Then
 	glcolor4f(0.2,0.2,r1,0):Exit Sub 
 'ElseIf mapautotext=webtext And planet=0 Then
 '	glcolor3f(1,1,1):Exit sub
 ElseIf webtext>0 And planet=0 Then
 	'glcolor4f(r1,r1,r1,0):Exit sub
-	glcolor4f(0.97,1,0.97,0):Exit sub
+	'glcolor4f(0.97,1,0.97,0):Exit sub
+	glcolor4f(optionred,optiongreen,optionblue,0):Exit Sub
 EndIf
 'If (mapautotext<>maptexture4 Or hsnowij<hsnow) Then
 '	glcolor3fv(color3fv)
 'Else
-	glcolor4f(r1,r1,r1,0)
+	'glcolor4f(r1,r1,r1,0)
+	glcolor4f(optionred,optiongreen,optionblue,0):Exit Sub
 'EndIf
 End Sub
 Dim Shared As Single dmx0,dmy0,xtown,ytown,dxtown=-1,dytown,townbmpx,townbmpy
@@ -16654,14 +16666,14 @@ EndIf 'planet
         EndIf
      If mapdisplay=0 Then    
        If auxtest>0.01 Then  
-        If Abs(auxvar)>0.00001 Then gldrawtext("aux= "+Str(auxvar),15,ymax-79,1.2)
+        If Abs(auxvar)>0.00001 Then gldrawtext("aux= "+Left(Str(auxvar),6),15,ymax-79,1.2)
        EndIf
        If auxtest>0.1 Then 
-        If Abs(auxvar2)>0.00001 Then gldrawtext("aux2= "+Str(auxvar2),15,ymax-99,1.2)
-        If Abs(auxvar3)>0.00001 Then gldrawtext("aux3= "+Str(auxvar3),15,ymax-119,1.2)
-        If Abs(auxvar4)>0.00001 Then gldrawtext("aux4= "+Str(auxvar4),15,ymax-139,1.2)
-        If Abs(auxvar5)>0.00001 Then gldrawtext("aux5= "+Str(auxvar5),15,ymax-159,1.2)
-        If Abs(auxvar6)>0.00001 Then gldrawtext("aux6= "+Str(auxvar6),15,ymax-179,1.2)
+        If Abs(auxvar2)>0.00001 Then gldrawtext("aux2= "+Left(Str(auxvar2),6),15,ymax-99,1.2)
+        If Abs(auxvar3)>0.00001 Then gldrawtext("aux3= "+Left(Str(auxvar3),6),15,ymax-119,1.2)
+        If Abs(auxvar4)>0.00001 Then gldrawtext("aux4= "+Left(Str(auxvar4),6),15,ymax-139,1.2)
+        If Abs(auxvar5)>0.00001 Then gldrawtext("aux5= "+Left(Str(auxvar5),6),15,ymax-159,1.2)
+        If Abs(auxvar6)>0.00001 Then gldrawtext("aux6= "+Left(Str(auxvar6),6),15,ymax-179,1.2)
         If auxtext<>"" Then gldrawtext(Str(auxtext),15,ymax-199,1.2)
        EndIf
        
@@ -16947,6 +16959,26 @@ Sub subquit
 End Sub
 Sub subpause
 	If pause=0 Then pause=1 Else pause=0
+End Sub
+Dim Shared As Integer toption
+Sub suboption
+If toption=0 Then
+	toption=1
+	showgui("win.red")
+	showgui("win.green")
+	showgui("win.blue")
+	showgui("win.lum")
+	guinotice "show options (ground colors)"
+Else
+	toption=0
+	hidegui("win.red")
+	hidegui("win.green")
+	hidegui("win.blue")
+	hidegui("win.lum")
+	guinotice "hide options"
+EndIf
+Sleep 300
+guisetfocus("win.graph")
 End Sub
 Sub subhour
 Var hhour=Val(guigettext("win.hour"))
@@ -17395,6 +17427,31 @@ If i>0 Then'And i<>icartext Then
 EndIf
 guisetfocus("win.graph")
 End Sub '/
+Sub subred()
+Dim As Integer i
+getcomboindex("win.red",i)
+optionred=i*5/255
+taglcompile2=0
+End Sub
+Sub subgreen()
+Dim As Integer i
+getcomboindex("win.green",i)
+optiongreen=i*5/255
+taglcompile2=0
+End Sub
+Sub subblue()
+Dim As Integer i
+getcomboindex("win.blue",i)
+optionblue=i*5/255
+taglcompile2=0
+End Sub
+Sub sublum()
+Dim As Integer i
+getcomboindex("win.lum",i)
+optionlum=i*5/255
+'taglcompile2=0
+testweb=1
+End Sub
 Declare Sub subtypeautopilot()
 Dim Shared As Integer tgetcombo1=1
 Sub subcombo1()
@@ -22413,7 +22470,7 @@ msg+="shift+G => google maps webtext (enable/basic/disable)"+cr
 'msg+="ctrl+I => internet openstreetmap buildings"+cr
 msg+="ctrl+S => shadow (on/off)   /  shift+D => detail40 buildings"+cr'smooth terrain"+cr
 msg+="shift+T => retroviseur "+cr
-msg+="shift+O => change OSM server"+cr
+msg+="shift+O => change OSM server   /  O => options(colors)"+cr
 msg+="ctrl+shift => walk (foot mode)  / H => horse / Z => climb"+cr
 msg+="key 9 => heightmap / Q,D 1,2 or space arrow => turn left/right"+cr
 msg+="joystick and gamepad supported" 
@@ -22726,6 +22783,10 @@ mz11=-999999
         button("win.load","load",@subload,645,ymax+24,40,19) 
         button("win.save","save",@subsave,693,ymax+24,40,19) 
         'combobox("win.sol",@subsol,172,ymax+24,60,200)
+        combobox("win.red",@subred,15,ymax-230,70,500)
+        combobox("win.green",@subgreen,15,ymax-200,70,500)
+        combobox("win.blue",@subblue,15,ymax-170,70,500)
+        combobox("win.lum",@sublum,15,ymax-140,70,500)
         combobox("win.map",@submap,67,ymax+24,93+60,500)
         combobox("win.combo1",@subcombo1,368,ymax+24,77,400)
         combobox("win.ciel",@subciel,455,ymax+24,58,400)
@@ -22904,6 +22965,33 @@ mz11=-999999
         EndIf
         selectcomboindex("win.ciel",iciel)
         subciel
+        
+        For i=1 To 51
+        	addcombo("win.red","R "+Str(i*5))
+        Next
+        selectcomboindex("win.red",optionred*255\5+0.1)
+        
+        For i=1 To 51
+        	addcombo("win.green","G "+Str(i*5))
+        Next
+        selectcomboindex("win.green",optiongreen*255\5+0.1)
+        
+        For i=1 To 51
+        	addcombo("win.blue","B "+Str(i*5))
+        Next
+        selectcomboindex("win.blue",optionblue*255\5+0.1)
+ 
+        For i=1 To 51
+        	addcombo("win.lum","L "+Str(i*5))
+        Next
+        selectcomboindex("win.lum",optionlum*255\5+0.1)
+        
+        If toption=0 Then
+        	  hidegui("win.red")
+        	  hidegui("win.green")
+        	  hidegui("win.blue")
+        	  hidegui("win.lum")
+        EndIf
         'addcombo("win.grass","nograss")
         'addcombo("win.grass","grass1")
         'addcombo("win.grass","grass2")
@@ -23149,6 +23237,7 @@ mz11=-999999
         	   If guitestkey(vk_0)<>0 Then subsounds2()
         	   If guitestkey(vk_f9)<>0 Then subscreen
         	   If guitestkey(vk_f1)<>0 Then subhelp
+        	   If guitestkey(vk_o)<>0 And guitestkey(vk_shift)=0 And guitestkey(vk_control)=0 Then suboption()
         	   If guitestkey(vk_p)<>0 Then
         	    If plane>0 And car=0 Then
         	   	stopvol()
@@ -24109,6 +24198,10 @@ Print #file,detail40
 Print #file,nboeing2
 Print #file,tinternet
 Print #file,kfps30
+Print #file,optionred
+Print #file,optiongreen
+Print #file,optionblue
+Print #file,optionlum
 Close #file
 ''If townchanged=1 Or Rnd<0.2 Then savetownvie()
 If testsave=1 And (planet=0 And orbit=1) And topentown=1 And tinittown0<=0 Then
