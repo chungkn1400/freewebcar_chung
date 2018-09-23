@@ -7834,6 +7834,7 @@ Dim Shared As Single txroad
 Declare Sub drawmxy(mxx As Single,myy As Single)
 Dim Shared As Integer myibridge1
 Sub testroadautopilot(xx As Single,yy As Single,zz As Single,x As Single,y As Single,z As Single,r As Single,tbridge As Integer=0)
+ If r<9.1 Then Exit sub 'rail
  Var mx1=mx+cos1*v*7,my1=my+sin1*v*7
  Var mx2=mx+cos1*v*4,my2=my+sin1*v*4
  Var mx3=mx+cos1*v*14,my3=my+sin1*v*14
@@ -7856,9 +7857,9 @@ Sub testroadautopilot(xx As Single,yy As Single,zz As Single,x As Single,y As Si
             mytestroad2=1
             If tbridge=1 Then
             	Var dco1=(cos1*co1+sin1*si1)
-            	If Abs(dco1)>r*0.7 Then
+            	If Abs(dco1)>r*0.7 And (piste=0 Or mz>mzsol00+15)Then
                   soundvoyage(1)
-                  If ((Abs(dco1)>r*0.9 Or time2<timeclimb) And (piste=0 Or mz>mzsol00+15)) Then
+                  If (Abs(dco1)>r*0.9 Or time2<timeclimb) Then'And (piste=0 Or mz>mzsol00+15)) Then
                   	mytestbridge=1
                      'v=min(19.0,max(v,dr/400))
             		   Var dmx=mx-xx,dmy=my-yy

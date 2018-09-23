@@ -5849,7 +5849,7 @@ auxvar3=(Timer-auxvar3)*1000
 
 EndIf 'tagl
 
-auxvar4=tscreentext2+0.1:auxtest=0.2
+auxvar4=tscreentext2+0.1':auxtest=0.2
 auxvar6=tscreentext+0.1
 
 tdrawscreen=0
@@ -14402,7 +14402,6 @@ If max(do1,Abs(screendo3))>1.9 Then
 EndIf
 'For i=-screen20 To screen20-1
 '	For j=-screen10 To screen10-1
-auxvar=Timer 
       Var winx = xmax*(0.5+0.5*i/screen20)
       Var winy = ymax*(0.5+0.5*j/screen10)
       x0=0'winx'-s64
@@ -14416,8 +14415,6 @@ auxvar=Timer
       'glcopyTexImage2D(GL_TEXTURE_2D, 0, gl_rgba,0,0,bmpx,bmpx, 0)   
       'glcopyTexSubImage2D(GL_TEXTURE_2D, 0, 0,0, x0,y0,dx0,dy0)
       glcopyTexSubImage2D(GL_TEXTURE_2D, 0, 0,0, x0,y0,dx0,dy0)
-auxvar=((Timer-auxvar)*1000)
-auxtest=0.2      
 Var kx=0.1
 /'For i=-screen20 To screen20
 	For j=-screen10 To screen10
