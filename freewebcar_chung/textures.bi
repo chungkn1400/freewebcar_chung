@@ -12275,7 +12275,7 @@ Dim Shared As int64 cityid(ncity)
 Dim Shared As Integer ncity2,citycapital(ncity),citypopulation(ncity)
 Dim Shared As Single citylat(ncity),citylon(ncity)
 Dim Shared As String cityname(ncity),citycountry(ncity),citycountrycode(ncity)
-Dim Shared As Integer ncitynear2,icitynear(ncitynear)
+Dim Shared As Integer icitynear(ncitynear)
 Dim Shared As Integer cityneardist(ncitynear)
 Dim Shared As Single latcity=-90,lngcity,latcitynear=-90,lngcitynear
 Sub setcitykm1(latx As single,lngx As Single,co1 As Single,si1 As Single)
@@ -12374,7 +12374,7 @@ Var dlat=(min(mz-mzsol00,10000.0)+6000.0)*0.5*0.008*360/40000,dlon=dlat*klon,px=
 dlat*=(8+ncitynear2)/(1+ncitynear2):dlon=dlat*klon
 'auxvar=ncitynear2:auxtest=0.2
 glcolor3f(1,1,1)
-gldisable gl_depth_test
+'gldisable gl_depth_test
 For j=1 To ncitynear2
  i=icitynear(j)
  If Abs(citylat(i)-latmx)<dlat Then

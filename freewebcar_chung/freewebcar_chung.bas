@@ -15499,7 +15499,7 @@ Dim shared as double tmxmove,tupdate,dtweb=60,ddtweb,dtwebnode=60
 dim shared as single avgv,avgmx,avgmy,mxmove,mymove,o1move,avgdo1,avgo10,tkzoom=0,mzbridge=-999999,invscalex=1
 Dim Shared As Single o333,cos333,sin333,do333,o100,latmx,lngmx
 dim shared as double timehelp,timelayer0
-Dim Shared As Integer tfootmove,mytinittown,nnode2,nway2,mynnodes,mynways,nnode2000
+Dim Shared As Integer tfootmove,mytinittown,nnode2,nway2,mynnodes,mynways,nnode2000,ncitynear2
 Dim Shared As String textload,mytextload,myhttphost
 Dim Shared As Double mydtweb
 declare sub drawhelp()
@@ -16623,12 +16623,19 @@ EndIf 'planet
     	EndIf
     EndIf
     
-    /'If mz>mzsol00+5000 And mapdisplay=0 Then
-      glsetrange(36.0*14,14*2*170000.0)
+    Var d3000=3000.0:If tgps=1 Then d3000=1400
+    If mz>mzsol00+d3000 And mapdisplay=0 Then
+      If ncitynear2<=2 Then
+      	glsetrange(36.0*14,14*2*170000.0)
+      ElseIf ncitynear2<=4 Then
+      	glsetrange(36.0,3*170000.0)
+      Else 	
+      	glsetrange(18.0,1.5*170000.0)
+      EndIf 	
       gldisable gl_fog
     	drawcitynear()
     	setrangeGL(0)
-    EndIf '/
+    EndIf 
     'drawtest()
 
         glLoadIdentity ()
