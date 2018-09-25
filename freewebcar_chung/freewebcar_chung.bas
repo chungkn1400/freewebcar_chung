@@ -1341,8 +1341,8 @@ loadficini(ficini)
 Dim Shared As Single gldistmax
 Sub glsetrange(dxmin As Single=2.0,dxmax As Single=13000*10*25)
         /' init OpenGL '/        
-   Var k=1.0
-   If plane=0 And tfoothorse=0 Then k=0.5
+   Var k=1.15
+   If plane=0 And tfoothorse=0 Then k*=0.5
 	glMatrixMode GL_PROJECTION
 	glLoadIdentity
 	'              anglevue    xmax/ymax   mxmin,mxmax
@@ -1549,11 +1549,11 @@ If topview<=2 Then
 	If dtyy<k06 Then
 			'tyy=k06+(dtyy-k06)*0.2
 			'tyy=min(1,k06+k06-dtyy)
-			tyy=k06+(k06-dtyy)*0.2
+			tyy=k06+(k06-dtyy)*0.04'0.2
 	ElseIf dtyy>(1-k06) Then
 		   'tyy=(1-k06)+(dtyy-(1-k06))*0.2
 		   'tyy=max(0,1-k06-(dtyy-1+k06))
-		   tyy=1-k06-(dtyy-1+k06)*0.2
+		   tyy=1-k06-(dtyy-1+k06)*0.04'0.2
 	EndIf
 	'Var txx=max(-1,min(2.0,k06+k66*(x-xweb+dxweb-256)*0.5/dxweb))
 	Var txx=0.5+k66*(x-xweb-256.0)*0.5/dxweb
@@ -1562,11 +1562,11 @@ If topview<=2 Then
 	If dtxx<k06 Then
 		'txx=k06+(dtxx-k06)*0.2
 		'txx=min(1,k06+k06-dtxx)
-		txx=k06+(k06-dtxx)*0.2
+		txx=k06+(k06-dtxx)*0.04'0.2
 	ElseIf dtxx>(1-k06) Then
 		'txx=(1-k06)+(dtxx-(1-k06))*0.2
 		'txx=max(0,1-k06-(dtxx-1+k06))
-		txx=1-k06-(dtxx-1+k06)*0.2
+		txx=1-k06-(dtxx-1+k06)*0.04'0.2
 	EndIf
 	'gltexcoord2f(txx+0.005,tyy+0.005)
 	gltexcoord2f(txx,tyy)
@@ -2483,6 +2483,7 @@ dx=50+min(57.0,Int((mz-mzsol0)*0.01*distscale))
 dx=Int(min(190.0,dx*max(1.0, distscale*3*narbre2/(narbre2+4*2*ntree))))
 dx=Int(dx*100/kscalex)
 'dx=Int(min(120.0,dx*max(1.0, distscale*3*narbre2/(narbre2+4*2*ntree))))
+dx=max(dx,40)
 dxterrain=dx
 If tcolorshadow Then
 	dx=min(18.0,dx) 
@@ -2669,6 +2670,9 @@ If Abs(cos1)>Abs(sin1) Then
      myglcolor3fv(cast(glfloat Ptr,@terraincolor(i1,j)))
      myglTexCoord2f((i1)/texscale,j/texscale)
  	  glvertex3fx((x+abs(dxstep))*scalex,y*scalex,scalez*terrain(i1,j))
+ 	  If Abs(y-y0)>20 Or Abs(x-x0)>20 Then
+ 	  	If (Int(y) And 1) Then y+=2
+ 	  EndIf
  	  di+=1
  	  If di>=4 Then 
  	  	di=0
@@ -2811,6 +2815,9 @@ Else
      myglcolor3fv(cast(glfloat Ptr,@terraincolor(i,j1)))
      myglTexCoord2f((i)/texscale,(j1)/texscale)
  	  glvertex3fx((x)*scalex,(y+abs(dystep))*scalex,scalez*terrain(i,j1))
+ 	  If Abs(y-y0)>20 Or Abs(x-x0)>20 Then
+ 	  	If (Int(x) And 1) Then x+=2
+ 	  EndIf
  	  di+=1
  	  If di>=4 Then 
  	  	di=0
@@ -3006,6 +3013,9 @@ If Abs(cos1)>Abs(sin1) Then
      myglcolor3fv(cast(glfloat Ptr,@terraincolor(i1,j)))
      myglTexCoord2f((i1)/texscale,j/texscale)
  	  glvertex3f((x+abs(dxstep))*scalex,y*scalex,scalez*terrain(i1,j))
+ 	  If Abs(y-y0)>20 Or Abs(x-x0)>20 Then
+ 	  	If (Int(y) And 1) Then y+=2
+ 	  EndIf
  	  di+=1
  	  If di>=4 Then 
  	  	di=0
@@ -3148,6 +3158,9 @@ Else
      myglcolor3fv(cast(glfloat Ptr,@terraincolor(i,j1)))
      myglTexCoord2f((i)/texscale,(j1)/texscale)
  	  glvertex3f((x)*scalex,(y+abs(dystep))*scalex,scalez*terrain(i,j1))
+ 	  If Abs(y-y0)>20 Or Abs(x-x0)>20 Then
+ 	  	If (Int(x) And 1) Then x+=2
+ 	  EndIf
  	  di+=1
  	  If di>=4 Then 
  	  	di=0
@@ -3161,7 +3174,10 @@ EndIf
 End Sub
 Dim Shared As Single latmap=-179.5,lngmap=0,mxmap,mymap
 Sub drawterrain2 
-If testworld=0 Or plane=0 Or car>0 Or mz<(mzsol0+400) Then drawterrain20:Exit sub
+If testworld=0 Or plane=0 Or car>0 Or mz<(mzsol0+400) Then
+	drawterrain20
+	Exit sub
+EndIf
 Dim As Single x,y,x0,y0
 Dim As Single i,j,i1,dx=27,j1,dy,ii,jj,kwater1,d7000,dxy
 Dim As Integer di,nwater,dxstep,dystep,kdx,dii
@@ -3172,6 +3188,7 @@ dx=50+min(57.0,Int((mz-mzsol0)*0.01*distscale))
 dx=Int(min(190.0,dx*max(1.0, distscale*3*narbre2/(narbre2+4*2*ntree))))
 dx=Int(dx*100/kscalex)
 'dx=Int(min(120.0,dx*max(1.0, distscale*3*narbre2/(narbre2+4*2*ntree))))
+dx=min2(50,max2(dx*1.7,40))
 dxterrain=dx
 If tcolorshadow Then
 	dx=min(18.0,dx)
@@ -3354,6 +3371,9 @@ If Abs(cos1)>Abs(sin1) Then
      myglcolor3fv(cast(glfloat Ptr,@terraincolor(i1,j)))
      myglTexCoord2f((i1)/texscale,j/texscale)
  	  glvertex3f((x+abs(dxstep))*scalex,y*scalex,scalez*terrain(i1,j))
+ 	  If Abs(y-y0)>20 Or Abs(x-x0)>20 Then
+ 	  	If (Int(y) And 1) Then y+=2
+ 	  EndIf
  	  di+=1
  	  If di>=4 Then 
  	  	di=0
@@ -3496,6 +3516,9 @@ Else
      myglcolor3fv(cast(glfloat Ptr,@terraincolor(i,j1)))
      myglTexCoord2f((i)/texscale,(j1)/texscale)
  	  glvertex3f((x)*scalex,(y+abs(dystep))*scalex,scalez*terrain(i,j1))
+ 	  If Abs(y-y0)>20 Or Abs(x-x0)>20 Then
+ 	  	If (Int(x) And 1) Then x+=2
+ 	  EndIf
  	  di+=1
  	  If di>=4 Then 
  	  	di=0
@@ -5707,7 +5730,7 @@ Else
 EndIf   
 
 If taglcompile=1 Or taglcompile2=1 Or scaleview<0.9 Then
-auxvar3=Timer	
+'auxvar3=Timer	
 nshowtown=0
 nshowbuild=0
 nshowbuild2=0
@@ -5845,12 +5868,13 @@ If testkway2=1 And (scaleview>0.9)Then
 	testkway2=0
 EndIf 	
 
-auxvar3=(Timer-auxvar3)*1000
+'auxvar3=(Timer-auxvar3)*1000
 
 EndIf 'tagl
 
-auxvar4=tscreentext2+0.1':auxtest=0.2
-auxvar6=tscreentext+0.1
+'auxvar4=tscreentext2+0.1
+'auxtest=0.2
+'auxvar6=tscreentext+0.1
 
 tdrawscreen=0
 If taglcompile2=1 Or tcompile>0 Then
@@ -5858,7 +5882,7 @@ If taglcompile2=1 Or tcompile>0 Then
 	'o2screen=o2+to2
 	'If tscreentext>=2 Then tdrawscreen=1:drawscreentext()
 Endif 
-auxvar5=distscreen
+'auxvar5=distscreen
 If agllist<>0 And tcompile<>2 Then'taglcompile2<>1 Then
 	If tscreentext>=3 And tscreentext3<1 And timecalllist>0.06 And Abs(o2+to2-o2screen)<7 And distscreen>0 Then
 		drawscreentext()
@@ -11186,7 +11210,8 @@ For i=0 To ix
 		skydomeb(i,j)=max(0.0,min(1.0,kkdo2*0.7+1.2*(b0-0.7)))'*max(0.0,min(1.0,Abs(do1)/180))
    Next 		
 Next 
-glscalef(rx/rx0,rx/rx0,rx/rx0)
+Var sc=1.15*rx/rx0
+glscalef(sc,sc,sc)
 glbegin(gl_quads)
 For i=0 To ix-1
 	For j=0 To iy-1
@@ -12930,10 +12955,12 @@ Sub drawhelice0(r As Single=50,rot As Integer=1)
      glEnable GL_BLEND
      'glBlendFunc GL_SRC_color,GL_ONE_MINUS_SRC_color
      glBlendFunc GL_SRC_alpha,GL_ONE_MINUS_SRC_alpha
+     glDepthMask(GL_FALSE)
      If rot=1 Then helicerot0=helicerot0+(9+v)*1.35*kfps
      If helicerot0>10000 Then helicerot0-=10000
      glrotatef(helicerot0,1,0,0) 
      gltexcarre3(r,r)
+     glDepthMask(GL_TRUE)
      gldisable gl_blend
 End Sub 
 Sub drawhelice(ByVal i As Integer)
@@ -12941,10 +12968,12 @@ Sub drawhelice(ByVal i As Integer)
      glEnable GL_BLEND
      'glBlendFunc GL_SRC_color,GL_ONE_MINUS_SRC_color
      glBlendFunc GL_SRC_alpha,GL_ONE_MINUS_SRC_alpha
+     glDepthMask(GL_FALSE)
      airshiphelicerot(i)+=airshipv(i)*1.5
      If airshiphelicerot(i)>10000 Then airshiphelicerot(i)-=10000
      glrotatef(airshiphelicerot(i),1,0,0) 
      gltexcarre3(50,50)
+     glDepthMask(GL_TRUE)
      gldisable gl_blend
 End Sub 
 Sub drawhelice2(ByVal i As Integer)
@@ -12952,12 +12981,14 @@ Sub drawhelice2(ByVal i As Integer)
      glEnable GL_BLEND
      'glBlendFunc GL_SRC_color,GL_ONE_MINUS_SRC_color
      glBlendFunc GL_SRC_alpha,GL_ONE_MINUS_SRC_alpha
+     glDepthMask(GL_FALSE)
      airshiphelicerot(i)+=airshipv(i)*1.5
      If airshiphelicerot(i)>10000 Then airshiphelicerot(i)-=10000
      glpushmatrix
      glrotatef(airshiphelicerot(i),1,0,0) 
      gltexcarre3(70,70)
      glpopmatrix
+     glDepthMask(GL_TRUE)
      gldisable gl_blend
 End Sub 
 /'Sub drawavion
@@ -14472,7 +14503,7 @@ Var kv=1/(max(1.2,vkm*0.015)*kfps30)
 'glReadPixels( 0,0, xmax, ymax, GL_DEPTH_COMPONENT, GL_FLOAT, @winZtab(0) )
 'auxvar2=winztab((xmax)*(ymax)+ymax-1)
 'auxvar3=winztab(ymax+1)
-auxvar2=Timer
+'auxvar2=Timer
 o2screen=o2+to2
 Dim As Single posxx,posyy,poszz
 For i=-screen20 To screen20
@@ -14529,7 +14560,7 @@ For i=-screen20 To screen20
      screendz1(i,j)*=kx '/
 	Next
 Next
-auxvar2=(Timer-auxvar2)*1000
+'auxvar2=(Timer-auxvar2)*1000
 tscreentext=2
 tokscreenz=1
 End Sub
