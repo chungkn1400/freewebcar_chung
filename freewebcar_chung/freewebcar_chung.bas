@@ -2483,7 +2483,7 @@ dx=50+min(57.0,Int((mz-mzsol0)*0.01*distscale))
 dx=Int(min(190.0,dx*max(1.0, distscale*3*narbre2/(narbre2+4*2*ntree))))
 dx=Int(dx*100/kscalex)
 'dx=Int(min(120.0,dx*max(1.0, distscale*3*narbre2/(narbre2+4*2*ntree))))
-dx=max(dx,40)
+dx=max(dx,27)
 dxterrain=dx
 If tcolorshadow Then
 	dx=min(18.0,dx) 
@@ -2670,9 +2670,6 @@ If Abs(cos1)>Abs(sin1) Then
      myglcolor3fv(cast(glfloat Ptr,@terraincolor(i1,j)))
      myglTexCoord2f((i1)/texscale,j/texscale)
  	  glvertex3fx((x+abs(dxstep))*scalex,y*scalex,scalez*terrain(i1,j))
- 	  If Abs(y-y0)>20 Or Abs(x-x0)>20 Then
- 	  	If (Int(y) And 1) Then y+=2
- 	  EndIf
  	  di+=1
  	  If di>=4 Then 
  	  	di=0
@@ -2815,9 +2812,6 @@ Else
      myglcolor3fv(cast(glfloat Ptr,@terraincolor(i,j1)))
      myglTexCoord2f((i)/texscale,(j1)/texscale)
  	  glvertex3fx((x)*scalex,(y+abs(dystep))*scalex,scalez*terrain(i,j1))
- 	  If Abs(y-y0)>20 Or Abs(x-x0)>20 Then
- 	  	If (Int(x) And 1) Then x+=2
- 	  EndIf
  	  di+=1
  	  If di>=4 Then 
  	  	di=0
@@ -3013,9 +3007,6 @@ If Abs(cos1)>Abs(sin1) Then
      myglcolor3fv(cast(glfloat Ptr,@terraincolor(i1,j)))
      myglTexCoord2f((i1)/texscale,j/texscale)
  	  glvertex3f((x+abs(dxstep))*scalex,y*scalex,scalez*terrain(i1,j))
- 	  If Abs(y-y0)>20 Or Abs(x-x0)>20 Then
- 	  	If (Int(y) And 1) Then y+=2
- 	  EndIf
  	  di+=1
  	  If di>=4 Then 
  	  	di=0
@@ -3158,9 +3149,6 @@ Else
      myglcolor3fv(cast(glfloat Ptr,@terraincolor(i,j1)))
      myglTexCoord2f((i)/texscale,(j1)/texscale)
  	  glvertex3f((x)*scalex,(y+abs(dystep))*scalex,scalez*terrain(i,j1))
- 	  If Abs(y-y0)>20 Or Abs(x-x0)>20 Then
- 	  	If (Int(x) And 1) Then x+=2
- 	  EndIf
  	  di+=1
  	  If di>=4 Then 
  	  	di=0
@@ -3188,7 +3176,7 @@ dx=50+min(57.0,Int((mz-mzsol0)*0.01*distscale))
 dx=Int(min(190.0,dx*max(1.0, distscale*3*narbre2/(narbre2+4*2*ntree))))
 dx=Int(dx*100/kscalex)
 'dx=Int(min(120.0,dx*max(1.0, distscale*3*narbre2/(narbre2+4*2*ntree))))
-dx=min2(50,max2(dx*1.7,40))
+dx=max(dx,27)
 dxterrain=dx
 If tcolorshadow Then
 	dx=min(18.0,dx)
@@ -3371,9 +3359,6 @@ If Abs(cos1)>Abs(sin1) Then
      myglcolor3fv(cast(glfloat Ptr,@terraincolor(i1,j)))
      myglTexCoord2f((i1)/texscale,j/texscale)
  	  glvertex3f((x+abs(dxstep))*scalex,y*scalex,scalez*terrain(i1,j))
- 	  If Abs(y-y0)>20 Or Abs(x-x0)>20 Then
- 	  	If (Int(y) And 1) Then y+=2
- 	  EndIf
  	  di+=1
  	  If di>=4 Then 
  	  	di=0
@@ -3516,9 +3501,6 @@ Else
      myglcolor3fv(cast(glfloat Ptr,@terraincolor(i,j1)))
      myglTexCoord2f((i)/texscale,(j1)/texscale)
  	  glvertex3f((x)*scalex,(y+abs(dystep))*scalex,scalez*terrain(i,j1))
- 	  If Abs(y-y0)>20 Or Abs(x-x0)>20 Then
- 	  	If (Int(x) And 1) Then x+=2
- 	  EndIf
  	  di+=1
  	  If di>=4 Then 
  	  	di=0
@@ -3561,6 +3543,10 @@ Dim Shared As Integer tdark,tsnow
 Sub drawsol
 Dim As Single dx=2000,tx=7
 Dim As Integer i
+'glpushmatrix
+'gltranslatef(mx+27*scalex,my,mz)
+'gltexsphere(8000,8,8)
+'glpopmatrix
 If tsphere0<>tsphere Then
 	tsphere0=tsphere
 	setfog()
