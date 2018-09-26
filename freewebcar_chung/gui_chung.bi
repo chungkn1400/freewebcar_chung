@@ -2395,15 +2395,17 @@ For j=1 To Len(text)
 Next
 Return k+4
 End Function
-Sub notice(ByRef msg As string,ByRef title As String ="notice")
+Sub notice(ByRef msg0 As string,ByRef title As String ="notice")
 Dim As Integer dx,dy,x,y,depth,lmsg,hmsg
 Dim As String jpg
 jpg="media/scroll.jpg"
 ScreenInfo x,y,depth 
 dx=300
 dy=180
+Var msg=msg0
 lmsg=widthmsg(msg)'Len(Trim(msg))*8
 hmsg=heightmsg(msg)
+If lmsg>dx-10 Then msg=Right(msg,90)
 If lmsg>dx-10 Or hmsg>dy-10 Then
   If hmsg>dy-10 Then 
    	dx=500:dy=500
@@ -2434,15 +2436,17 @@ guiedittextbackcolor(255,255,255)
 guirefreshopengl
 guirefreshopengl
 End Sub
-Sub confirm(ByRef msg As string,ByRef title As String="confirm",ByRef resp As String)
+Sub confirm(ByRef msg0 As string,ByRef title As String="confirm",ByRef resp As String)
 Dim As Integer dx,dy,x,y,depth,lmsg,hmsg
 Dim As String jpg
 jpg="media/scroll.jpg"
 ScreenInfo x,y,depth 
 dx=300
 dy=180
+Var msg=msg0
 lmsg=widthmsg(msg)'Len(Trim(msg))*8
 hmsg=heightmsg(msg)
+If lmsg>dx-10 Then msg=Right(msg,90)
 If lmsg>dx-10 Or hmsg>dy-10 Then
   If hmsg>dy-10 Then 
    	dx=500:dy=500

@@ -50,14 +50,16 @@ Dim Shared As Integer tloadwebtext2=0
 Sub formatsrtmdata(ii As Integer)
 Exit Sub 	
 Dim As Integer i,j,k
-Dim As Single x,xx,xxx
+Dim As Single x,xx
+Var k100=60.0
+For k=1 To 4
 For i=0 To 600-1
 	For j=0 To 600-1
 		xx=x
 		x=srtmdata(ii,i,j)
-		If Abs(xx-x)>100 Then
+		If Abs(xx-x)>k100 Then
 			x=(xx+srtmdata(ii,i,j+1))*0.5
-			srtmdata(ii,i,j)=x
+			srtmdata(ii,i,j)=max(xx-k100+0.01,min(xx+k100-0.01,x))
 			'auxvar+=1:auxtest=0.2
 		EndIf
 	Next
@@ -66,13 +68,14 @@ For j=0 To 600-1
 	For i=0 To 600-1
 		xx=x
 		x=srtmdata(ii,i,j)
-		If Abs(xx-x)>100 Then
+		If Abs(xx-x)>k100 Then
 			x=(xx+srtmdata(ii,i+1,j))*0.5
-			srtmdata(ii,i,j)=x
+			srtmdata(ii,i,j)=max(xx-k100+0.01,min(xx+k100-0.01,x))
 			'auxvar2+=1:auxtest=0.2
 		EndIf
 	Next
 Next
+Next k
 End Sub
 Function loadwebsrtmtext(fic As String)As Integer 
 Dim As Integer i
@@ -335,6 +338,10 @@ For i=-89901 To 89901
 	klonlati(i)=1/Cos(lati*degtorad)
 Next
 Function klonlat(latx As Single)As Single
-	Var lati=Int(max(-89900.0,min(89900.0,latx*1000.0)))
-	Return klonlati(lati)
+	'Var lati=Int(max(-89900.0,min(89900.0,latx*1000.0)))
+	'Return klonlati(lati)
+	Var lati=(max(-89.900,min(89.900,latx)))
+	'Var latii=lati/1000.0
+	Var degtorad=ASin(1)/90
+	Return 1/Cos(lati*degtorad)
 End Function

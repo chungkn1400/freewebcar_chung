@@ -7857,7 +7857,7 @@ Sub testroadautopilot(xx As Single,yy As Single,zz As Single,x As Single,y As Si
             mytestroad2=1
             If tbridge=1 Then
             	Var dco1=(cos1*co1+sin1*si1)
-            	If Abs(dco1)>r*0.7 And (piste=0 Or mz>mzsol00+15)Then
+            	If Abs(dco1)>r*0.7 And (piste=0 Or mz>mzsol00+25)Then
                   soundvoyage(1)
                   If (Abs(dco1)>r*0.9 Or time2<timeclimb) Then'And (piste=0 Or mz>mzsol00+15)) Then
                   	mytestbridge=1
@@ -8315,7 +8315,7 @@ Dim Shared As Integer ttestcross(ntown,ntownnode),ttestcross2(ntown,ntownnode),t
 Dim Shared As Integer ttaddoneway(ntown,ntownnode)
 Declare Sub setcitykm1(latx As single,lngx As Single,co1 As Single,si1 As Single)
 Sub resetttsetterrain()
-Dim As Integer ij,i,j
+Dim As Integer ij,i,j,k
 taglcompile20=2
 For ij=1 To ntown2
 	getlocktown(ij)
@@ -8327,7 +8327,9 @@ For ij=1 To ntown2
 Next
 For i=-100 To 612
 	For j=-100 To 612
-		tsetterrain(i,j)=0
+		For k=0 To 3
+			tsetterrain(i,j,k)=0
+		Next
 	Next
 Next
 taglcompile20=1
@@ -12401,6 +12403,7 @@ For j=1 To ncitynear2
 Next
 glenable gl_depth_test
 End Sub
+Dim Shared As String iptext
 Sub getcity(text0 As String="") 'getcitynodes
 Dim As String fic
 Dim As Integer file
@@ -12463,6 +12466,16 @@ EndIf
 	Next
 	i=10
 	'guinotice Str(citylon(i))+" "+cityname(i)+" "+Str(citypopulation(i))+" "+citycountry(i)+" "+citycountrycode(i)
+	'https://api.ipify.org/?format=text
+   Var hostname="api.ipify.org"
+   Var path="?format=text"
+   Var idata=httppost(hostname,path)
+   For i=0 To idata-1
+   	zwebtext[i]=recvdata(i)
+   Next
+   zwebtext[idata]=0
+   'guinotice Left(zwebtext,100)
+   iptext=Left(zwebtext,20) 
 End Sub 
 Dim Shared As String latlon,latlon0,latlon1,latlon2,latlon3,latlon4,latlon30,nodeurl,wayurl,myoverpass2
 'Dim Shared As Double kdxweb=0.3',t300=2000
@@ -12473,8 +12486,8 @@ tloadcity=0
 Dim As Integer i,j,k,file
 Var hostname="overpass-api.de"
 Var path="api/interpreter?data=[out:json];%28node[place~'city|town|metropolis'][capital~'yes|1|2|3|4|5|6|7']"
-path+="%29%3Bout%20qt%2089999%3B"
-'http://overpass-api.de/api/interpreter?data=[out:json];%28node[place~'city|town|metropolis'][capital~'yes|1|2|3|4|5|6']%29%3Bout%20qt%2029999%3B
+path+=";%29%3Bout%20qt%2089999%3B"
+'http://overpass-api.de/api/interpreter?data=[out:json];%28node[place~'city|town|metropolis'][capital~'yes|1|2|3|4|5|6'];%29%3Bout%20qt%2029999%3B
 Var idata=httppost(hostname,path)
    'If idata=0 Then setioverpass()
    For i=0 To idata-1
@@ -13851,7 +13864,7 @@ Sub substat(msg As String="")
 'Var url="http://nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com/?mytest2=ok"
 'httppost("nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com","/?mytest2=ok2")
 'httppost("nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com","/?mymsg="+formaturl(msg+"&"+timetext0))
-httppost("mynodejs-chung.1d35.starter-us-east-1.openshiftapps.com","/?mymsg="+formaturl(msg+"&"+timetext0))
+httppost("mynodejs-chung.1d35.starter-us-east-1.openshiftapps.com","/?mymsg="+formaturl(msg+"&"+timetext0)+"("+iptext+")")
 'http://mynodejs-chung.1d35.starter-us-east-1.openshiftapps.com/
 'guinotice "substat"
 Exit sub

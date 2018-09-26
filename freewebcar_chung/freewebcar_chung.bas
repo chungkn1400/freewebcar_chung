@@ -1068,7 +1068,7 @@ Declare Sub inittownobject
     Dim Shared As Single terrain(-100 To 512+100,-100 To 512+100),waterz,waterz0
     Dim Shared As Single terrain2(-100 To 512+100,-100 To 512+100)
     Dim Shared As Single terrain0(-100 To 512+100,-100 To 512+100)
-    Dim Shared As Byte tsetterrain(-101 To 512+101,-101 To 512+101)
+    Dim Shared As Byte tsetterrain(-101 To 512+101,-101 To 512+101,4)
     Dim Shared As Byte water(-101 To 512+101,-101 To 512+101)
     Dim Shared As Byte forest(128,128)
     Dim Shared As vec3_t  terraincolor(-100 To 612,-100 To 612),terraincolor0(-100 To 612,-100 To 612)
@@ -2081,7 +2081,7 @@ Sub subsettupdate()
 End Sub
 Declare Sub resetttsetterrain()
 Sub setmapautotextures2()
-Dim As Integer i,j
+Dim As Integer i,j,k
 getlockterrain()
 Var dzmax=80.0,dzz=0.0,dzz0=0.0
 Var altzold=mz-mzsol00
@@ -2097,7 +2097,9 @@ For i=-100 To 612
 		dzz=terrain(i,j)
 		If i>-100 Then dzz=(terrain(i-1,j)+dzz)*0.5
 		terrain0(i,j)=terrain(i,j)
-		tsetterrain(i,j)=1
+		For k=0 To 3
+			tsetterrain(i,j,k)=1
+		Next
 	Next
 Next
 mz=getterrainheight(mx,my)+altzold
@@ -2339,6 +2341,7 @@ If testworld=1 Then
  'Var hwater0=-60+dhmareemax+0.1
  'Var dhwater=max(0.0,myzmin-hwater0)
  waterz=hwater0*scalez+4
+ Var h1256=1256.5*1.7
  For i=-100+di To 612-di
 	For j=-100+di To 612-di
 		If water(i,j)=1 Then
@@ -2362,9 +2365,9 @@ If testworld=1 Then
 				mapautotexture2(i,j)=webtext
 			  EndIf 	
 			'EndIf
-		ElseIf myzmax>1256.5+hwater0 Then'356.5 
+		ElseIf myzmax>h1256+hwater0 Then'356.5 
 			If terrain22(i,j)>hwater0+1 Then
-				terrain22(i,j)=hwater0+1+((1256.5*0.95+(myzmax-hwater0)*0.05)/(myzmax-hwater0))*(terrain22(i,j)-hwater0-1)
+				terrain22(i,j)=hwater0+1+((h1256*0.95+(myzmax-hwater0)*0.05)/(myzmax-hwater0))*(terrain22(i,j)-hwater0-1)
 			Else 
 				terrain22(i,j)=hwater0+1
 			EndIf
@@ -2413,8 +2416,8 @@ For j=-100 To 612-1
 		EndIf		
 	Next
 Next
-d120=32.0
-For k=1 To 1'ismooth
+d120=32.0*1.7
+For k=1 To 2'ismooth
 For i=-100+1 To 612
 	xx=terrain22(i,-100)
 	For j=-100 To 612
@@ -2431,6 +2434,7 @@ setterrainroadwater()
 freelockterrainbmp()
 freesrtmlock()
 freelockterrain()
+resetttsetterrain()
 End Sub
 'Sub setmapautotextures()
 '	If auxtest>0.1 Then guinotice "setmapautotextures()"
@@ -15842,6 +15846,14 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     	ncarx(0)=mx:ncary(0)=my
     	nncarx(0)=mx:nncary(0)=my
     EndIf
+    If mz<mzsol00+100 Then 
+     If Abs(mz0-mz)>max(Abs(v)+4,4.0)*max(1.0,kfps) Then
+    	 If time2>timeinit+20 Then
+    	 	mz=getterrainheight(mx,my)+(mz-mzsol00+mzh)
+    	 	mz1=mz
+    	 EndIf 
+     EndIf 
+    EndIf 
     mx0=mx:my0=my:mz0=mz:o100=o1
     
     
@@ -20488,7 +20500,6 @@ Dim As Integer i,j,i1,j1
 	'While i1>=612:i1-=512+200:Wend
 	'While j1>=612:j1-=512+200:Wend 
 getlockterrain()
-Var t4=3
 /'Var t1=0'1
 If tsetterrain(i,j)<=t1 Then
 	z00=terrain0(i,j)
@@ -20523,7 +20534,22 @@ Var hwaterz=(waterz)/scalez
 Var dr=1.0,d10=0.32,d100=100.0'1.0
 var dr0=0.32'(Abs(dx)+Abs(dy))*0.25'0.5
 'Var xsi0=0.436,xco0=0.9
-Var xsi1=xsi11,xco1=xco11
+Var xco1=xco11,xsi1=xsi11
+Var t4=5'3
+Var k=0
+If xco1<0 Then xco1=-xco1:xsi1=-xsi1
+If xco1>0.85 Then
+	k=0
+ElseIf xsi1>0.85 Then
+	k=2
+ElseIf xsi1<-0.85 Then
+	k=2
+ElseIf xsi1>0.2 Then 
+	k=1
+Else
+	k=3
+EndIf
+xco1=xco11:xsi1=xsi11
 If trunway=1 Then d100=0'dr0=0
 If testrunway=1 Then d100=0:t4=12+9999
 If dx<=(1.0-dy) Then 
@@ -20531,33 +20557,33 @@ If dx<=(1.0-dy) Then
   'If tsetterrain(i,j)<=t4 Then tsetterrain(i,j)+=1:terrain(i,j)=z00+(h-z00)*(Abs(dx*xsi1-dy*xco1)/max(0.01,Abs(dx)+Abs(dy)))'*d100/max(d10,Abs(dx)+Abs(dy))
   'If tsetterrain(i1,j)<=t4 Then tsetterrain(i1,j)+=1:terrain(i1,j)=z10+(h-z10)*(Abs((1-dx)*xsi1-dy*xco1)/max(0.01,Abs(1-dx)+Abs(dy)))'*d100/max(d10,Abs(1-dx)+Abs(dy))
   'If tsetterrain(i,j1)<=t4 Then tsetterrain(i,j1)+=1:terrain(i,j1)=z01+(h-z01)*(Abs(dx*xsi1-(1-dy)*xco1)/max(0.01,Abs(dx)+Abs(1-dy)))'*d100/max(d10,Abs(dx)+Abs(1-dy))
-  If tsetterrain(i,j)<=t4 And h<z00 Then
+  If tsetterrain(i,j,k)<=t4 And h<z00 Then
    dr0=max(0.02,Abs(dx)+Abs(dy))
   	dr=(dx*xsi1-dy*xco1)
   	If Abs(dr+dr)>dr0 Or trunway=1 Then
-  	 tsetterrain(i,j)+=1
+  	 tsetterrain(i,j,k)+=1
   	 'terrain(i,j)=h-(h-z00)*min(dr,dr0)*d100/max(d10,dr0)
   	 Var dh=d100*dr0:If dr<0 Then dh=-dh
   	 Var dh0=(h-z00)*dr 
   	 If Abs(dh)<Abs(dh0) Then terrain(i,j)=h+dh
   	EndIf  
   EndIf
-  If tsetterrain(i1,j)<=t4 And h<z10 Then
+  If tsetterrain(i1,j,k)<=t4 And h<z10 Then
    dr0=max(0.02,Abs(1-dx)+Abs(dy))
   	dr=((1-dx)*xsi1-dy*xco1)
   	If Abs(dr+dr)>dr0 Or trunway=1 Then
-  	 tsetterrain(i1,j)+=1
+  	 tsetterrain(i1,j,k)+=1
   	 'terrain(i1,j)=h-(h-z10)*min(dr,dr0)*d100/max(d10,dr0)
   	 Var dh=d100*dr0:If dr<0 Then dh=-dh
   	 Var dh0=(h-z10)*dr
   	 If Abs(dh)<Abs(dh0) Then terrain(i1,j)=h+dh
   	EndIf  
   EndIf
-  If tsetterrain(i,j1)<=t4 And h<z01 Then
+  If tsetterrain(i,j1,k)<=t4 And h<z01 Then
    dr0=max(0.02,Abs(dx)+Abs(1-dy))
   	dr=(dx*xsi1-(1-dy)*xco1)
   	If Abs(dr+dr)>dr0 Or trunway=1 Then
-  	 tsetterrain(i,j1)+=1
+  	 tsetterrain(i,j1,k)+=1
   	 'terrain(i,j1)=h-(h-z01)*min(dr,dr0)*d100/max(d10,dr0)
   	 Var dh=d100*dr0:If dr<0 Then dh=-dh
   	 Var dh0=(h-z01)*dr
@@ -20574,33 +20600,33 @@ Else
   'If tsetterrain(i1,j)<=t4 Then tsetterrain(i1,j)+=1:terrain(i1,j)=z10+(h-z10)*(Abs((1-dx)*xsi1-dy*xco1)/max(0.01,Abs(1-dx)+Abs(dy)))'*d100/max(d10,Abs(1-dx)+Abs(dy))
   'If tsetterrain(i,j1)<=t4 Then tsetterrain(i,j1)+=1:terrain(i,j1)=z01+(h-z01)*(Abs(dx*xsi1-(1-dy)*xco1)/max(0.01,Abs(dx)+Abs(1-dy)))'*d100/max(d10,Abs(dx)+Abs(1-dy))
   'If tsetterrain(i1,j1)<=t4 Then tsetterrain(i1,j1)+=1:terrain(i1,j1)=z11+(h-z11)*(Abs((1-dx)*xsi1-(1-dy)*xco1)/max(0.01,Abs(1-dx)+Abs(1-dy)))'*d100/max(d10,Abs(1-dx)+Abs(1-dy))
-  If tsetterrain(i1,j)<=t4 And h<z10 Then
+  If tsetterrain(i1,j,k)<=t4 And h<z10 Then
    dr0=max(0.02,Abs(1-dx)+Abs(dy))
   	dr=((1-dx)*xsi1-dy*xco1)
   	If Abs(dr+dr)>dr0 Or trunway=1 Then
-  	 tsetterrain(i1,j)+=1
+  	 tsetterrain(i1,j,k)+=1
   	 'terrain(i1,j)=h-(h-z10)*min(dr,dr0)*d100/max(d10,dr0)
     Var dh=d100*dr0:If dr<0 Then dh=-dh
   	 Var dh0=(h-z10)*dr
   	 If Abs(dh)<Abs(dh0) Then terrain(i1,j)=h+dh
   	EndIf  
   EndIf
-  If tsetterrain(i,j1)<=t4 And h<z01 Then
+  If tsetterrain(i,j1,k)<=t4 And h<z01 Then
    dr0=max(0.02,Abs(dx)+Abs(1-dy))
   	dr=(dx*xsi1-(1-dy)*xco1)
   	If Abs(dr+dr)>dr0 Or trunway=1 Then
-  	 tsetterrain(i,j1)+=1
+  	 tsetterrain(i,j1,k)+=1
   	 'terrain(i,j1)=h-(h-z01)*min(dr,dr0)*d100/max(d10,dr0)
   	 Var dh=d100*dr0:If dr<0 Then dh=-dh
   	 Var dh0=(h-z01)*dr
   	 If Abs(dh)<Abs(dh0) Then terrain(i,j1)=h+dh
   	EndIf  
   EndIf
-  If tsetterrain(i1,j1)<=t4 And h<z11 Then
+  If tsetterrain(i1,j1,k)<=t4 And h<z11 Then
    dr0=max(0.02,Abs(1-dx)+Abs(1-dy))
   	dr=((1-dx)*xsi1-(1-dy)*xco1)
   	If Abs(dr+dr)>dr0 Or trunway=1 Then
-  	 tsetterrain(i1,j1)+=1
+  	 tsetterrain(i1,j1,k)+=1
   	 'terrain(i1,j1)=h-(h-z11)*min(dr,dr0)*d100/max(d10,dr0)
   	 Var dh=d100*dr0:If dr<0 Then dh=-dh
   	 Var dh0=(h-z11)*dr
@@ -23203,7 +23229,8 @@ mz11=-999999
         Var tquit=Timer,tframe=tquit-5,tactive=Timer
         quit2=0
         display()
-        guirefreshopenGL()
+        'guirefreshopenGL()
+        Sleep 100
         While (quit=0 And guitestkey(vk_escape)=0)Or tframe<tquit
         	   
           	If Timer>tactive+1 then 
@@ -23481,10 +23508,11 @@ mz11=-999999
             If timer>timeinit+10 Then
             	guirefreshopenGL()
             Else 	
-               glclearcolor 0,0,0.8, 0.0
-               glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
-            	gldrawtext(Str(itime),xmax*0.45,ymax*0.5)
-            	guirefreshopenGL()
+               Sleep 200
+               'glclearcolor 0,0,0.8, 0.0
+               'glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
+            	'gldrawtext(Str(itime),xmax*0.45,ymax*0.5)
+            	'guirefreshopenGL()
             EndIf 
            	If Time2<timeinit+24 And mzinit>-9999 Then
            		   mzinit=min(waterz+6000,mzinit)
