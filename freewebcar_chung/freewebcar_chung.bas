@@ -5270,6 +5270,7 @@ If inearroad<=i60 Then
 ElseIf inearroad>i60+10 Then 
 	distnearroad=max(2000.0,distnearroad-1000)
 EndIf
+If piste=0 Then timeautopilot=min(time2-3.2,timeautopilot)	
 If time2>timesearchroad+40 And tautopilot>0 Then
  If plane>0 And car>0 And time2>timeautopilot+3 Then
    Dim As Integer i,j

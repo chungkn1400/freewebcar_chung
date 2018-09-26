@@ -6411,8 +6411,8 @@ If tnight1=1 Then'And vie>0 Then
  	xx=x:yy=y
  	x=townwaynodex(ij,i,j)-dmx0
  	y=townwaynodey(ij,i,j)-dmy0
-   x=mx+1.02*(x-mx)
-   y=my+1.02*(y-my)
+   x=mx+1.002*(x-mx)
+   y=my+1.002*(y-my)
  	If Abs(xx-x)+Abs(yy-y)<dr30000 Then 
  		mygltexquad xx,yy,z0, x,y,z0, x,y,z1, xx,yy,z1, tx,ty,tx0 ',1
  	EndIf
@@ -7103,8 +7103,8 @@ If tnight1=1 Then'And vie>0 Then
    'glscalef(0.9,0.9,0.99)
  x=townx40(i40,1)-dmx0
  y=towny40(i40,1)-dmy0
- x=mx+1.02*(x-mx)
- y=my+1.02*(y-my)
+ x=mx+1.002*(x-mx)
+ y=my+1.002*(y-my)
  x0=x:y0=y
  tx=0:tx0=0
  Var z1=z-10
