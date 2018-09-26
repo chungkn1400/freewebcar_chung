@@ -2342,6 +2342,8 @@ If testworld=1 Then
  'Var dhwater=max(0.0,myzmin-hwater0)
  waterz=hwater0*scalez+4
  Var h1256=1256.5*1.7
+ Var n4=3'4
+ di=1'2
  For i=-100+di To 612-di
 	For j=-100+di To 612-di
 		If water(i,j)=1 Then
@@ -2359,7 +2361,7 @@ If testworld=1 Then
 			Next
 			terrain22(i,j)=hwater0
 			'If mapautotexture(i,j)<>webtextzoom Then
-			  If n<=4 Then '16 Then
+			  If n<=n4 Then '16 Then
 					mapautotexture2(i,j)=soltexture0
 			  Else
 				mapautotexture2(i,j)=webtext
@@ -20538,6 +20540,7 @@ var dr0=0.32'(Abs(dx)+Abs(dy))*0.25'0.5
 Var xco1=xco11,xsi1=xsi11
 Var t4=5'3
 Var k=0
+'If Abs(xco1)<Abs(xsi1) Then k=1
 If xco1<0 Then xco1=-xco1:xsi1=-xsi1
 If xco1>0.85 Then
 	k=0
