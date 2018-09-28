@@ -2275,17 +2275,19 @@ EndIf'/
      	  'h=h+hsrtm-60+dhmareemax+0.1
      	  h=hsrtm+h'-60+dhmareemax+0.1
      	  'myzmin+=(max(-65.0,min(myzmin,h))-myzmin)*0.001
+     	  Var dist=max(Abs(xx-mx),Abs(yy-my))
      	  myzmin+=(min(myzmin,h)-myzmin)*0.0021
-     	  myzmax+=(max(myzmax,h)-myzmax)*0.0021
+     	  myzmax+=(max(myzmax,h*(40000/max(40000.0,dist)))-myzmax)*0.0021
      	  terrain22(i,j)=h'(h-60+dhmareemax+0.1)
      	  water(i,j)=0
      	Else 
      	  Var hh=hsrtm'-60+dhmareemax+0.1	
         terrain22(i,j)=hh'-65
         water(i,j)=1
+     	  Var dist=max(Abs(xx-mx),Abs(yy-my))
      	  'myzmin+=(max(-65.0,min(myzmin,hh))-myzmin)*0.001
      	  myzmin+=(min(myzmin,hh)-myzmin)*0.0021
-     	  myzmax+=(max(myzmax,hh)-myzmax)*0.0021
+     	  myzmax+=(max(myzmax,hh*(40000/max(40000.0,dist)))-myzmax)*0.0021
      	EndIf
    EndIf   	
 End Sub
