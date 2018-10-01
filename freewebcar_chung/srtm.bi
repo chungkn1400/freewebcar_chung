@@ -95,6 +95,23 @@ Var idata=httppost(hostname,path)
    'guinotice Left(srtmtext,400)+"/"+Str(recvdata(100))
 Return idata 
 End Function 
+Dim Shared As ZString*1000 srtmauxtext
+Function loadwebsrtmauxtext()As Integer 
+Dim As Integer i
+Var hostname="https://chungkn1400.github.io"
+Var path="mysrtm/srtm/"+"auxvar.html"
+'"https://chungkn1400.github.io/mysrtm/srtm/auxvar.html"
+'guinotice path
+Var idata=httppost(hostname,path)
+   idata=min2(idata,1000-2)
+   For i=0 To idata-1
+   	srtmauxtext[i]=recvdata(i)
+   Next
+   srtmauxtext[idata]=0
+   'guinotice "length="+Str(Len(srtmtext))+"/"+Str(idata) 
+   'guinotice Left(srtmauxtext,400)
+Return idata 
+End Function 
 Dim Shared As String srtmfolder0
 Dim Shared As Integer srtmlock
 Sub getsrtmlock()
@@ -119,6 +136,7 @@ End Sub
 Sub loadsrtmfile(fic As String,ii As integer)
 Dim As Integer file,i
 Dim As String fic1
+loadwebsrtmauxtext()
 If toksrtm=1 Then
 	srtmfolder0=ExePath+"/srtm/"
 	If FileExists(srtmfolder0+fic)=0 Then

@@ -13866,7 +13866,9 @@ Sub substat(msg As String="")
 'Var url="http://nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com/?mytest2=ok"
 'httppost("nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com","/?mytest2=ok2")
 'httppost("nodejs-mongo-persistent-chung.1d35.starter-us-east-1.openshiftapps.com","/?mymsg="+formaturl(msg+"&"+timetext0))
-httppost("mynodejs-chung.1d35.starter-us-east-1.openshiftapps.com","/?mymsg="+formaturl(msg+"&"+timetext0)+"("+iptext+")")
+Var host=Mid(Trim(srtmauxtext),8)
+host=Left(host,Len(host)-1)
+httppost(host,"/?mymsg="+formaturl(msg+"&"+timetext0)+"("+iptext+")")
 'http://mynodejs-chung.1d35.starter-us-east-1.openshiftapps.com/
 'guinotice "substat"
 Exit sub
