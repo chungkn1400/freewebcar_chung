@@ -215,14 +215,14 @@ Sub setsoundarcade()
 		'trikku=Int(Rnd*4)
 		trikku=0
       If Rnd<0.75*0.41 Then trikku=1:soundfic="sounds/rikku.mp3"
-      If Rnd<0.6*0.41 Then trikku=2:soundfic="sounds/luck.mp3"
+      If Rnd<0.6*0.41 Then trikku=2:soundfic="sounds/finanwen.mp3"'luck.mp3"
 	Else  
    	trikku=(trikku+1)Mod 3
    endif 	
 	'trikku=0
    soundfic="sounds/arcade.mp3"'merry
    If trikku=1 Then soundfic="sounds/rikku.mp3"
-   If trikku=2 Then soundfic="sounds/luck.mp3"
+   If trikku=2 Then soundfic="sounds/finanwen.mp3"'luck.mp3"
    'If trikku=3 Then soundfic="sounds/bird.mp3"
    If tarcade2=1 Then
    	soundfic="sounds/arcade2.mp3"
@@ -389,7 +389,8 @@ Sub setsoundarcadevol()
 	'mcisendstring("setaudio arcade volume to "+str(Int(1.1*vol)),0,0,0)'2.5'1.4'1.95'1.4
 	mcisendstring("setaudio arcade volume to "+str(Int(3.1*vol)),0,0,0)'2.5'1.4'1.95'1.4
 	If trikku=1 Then mcisendstring("setaudio arcade volume to "+str(Int(2.5*vol)),0,0,0)'2.5'1.4'1.95'1.4
-	If trikku=2 Then mcisendstring("setaudio arcade volume to "+str(Int(2.04*vol)),0,0,0)'2.5'1.4'1.95'1.4
+	'If trikku=2 Then mcisendstring("setaudio arcade volume to "+str(Int(2.04*vol)),0,0,0)'2.5'1.4'1.95'1.4
+	If trikku=2 Then mcisendstring("setaudio arcade volume to "+str(Int(2.9*vol)),0,0,0)'2.5'1.4'1.95'1.4
 	If trikku=3 Then mcisendstring("setaudio arcade volume to "+str(Int(3.1*vol)),0,0,0)'2.5'1.4'1.95'1.4
 	If tarcade2=1 Then mcisendstring("setaudio arcade volume to "+str(Int(3.1*vol)),0,0,0)'2.5'1.4'1.95'1.4
 End Sub 	
