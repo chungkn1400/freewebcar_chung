@@ -5869,6 +5869,7 @@ EndIf 'tagl
 'auxvar4=tscreentext2+0.1
 'auxtest=0.2
 'auxvar6=tscreentext+0.1
+'auxvar=fps
 
 tdrawscreen=0
 If taglcompile2=1 Or tcompile>0 Then
@@ -14521,8 +14522,9 @@ For i=-screen20 To screen20
       'screeny(i,j)=(posy+posyy)*0.5
      'EndIf  
      dist=max(Abs(posx-mx),Abs(posy-my))*kv
+     Var distxy=dist
      dist=max(dist,abs(posz-mz))
-     If posz>(mz-300-dist*0.1) And dist<18000 Then dist=-dist
+     If posz>(mz-300-distxy*0.1) And dist<18000 Then dist=-dist
      distscreen=min(dist,distscreen)
      If distscreen<2900 Then
      	  timescreentext=time2+4
@@ -14600,7 +14602,8 @@ Else
 EndIf
 fpsmoymin+=(fps-fpsmoymin)*0.025*kfps
 fpsmoymin=min(fpsmoymin,fps+0.2)
-If xmax<=2048 And mz>mzsol00+1500 And fpsmoymin<14+7 And time2>timeinit+50 Then 
+'If xmax<=2048 And mz>mzsol00+1500 And fpsmoymin<14+7 And time2>timeinit+50 Then 
+If xmax<=2048 And mz>mzsol00+1500 And fpsmoymin<21 And time2>timeinit+50 Then 
  If time2>timescreentext+min(5.0,max(0.95,distscreen*distscreen*0.5/(1990*1990))) Or taskscreen=1 Then
 	If tscreentext2>=1 Then 
 		tscreentext2=-1:getscreentextz()
@@ -16729,7 +16732,7 @@ EndIf 'planet
         gldrawtext("prop= "+Str(Int(prop))+"  v= "+Str(Int(vkm))+"."+Str(Int(vkm*10+1000)Mod 10),15,ymax-35,1.2)
         gldrawtext("x= "+Str(Int((mx)*500/kscalex))+ _'"+"+Str(Int(dmx0))+ _  
                  "  y= "+Str(Int((my)*500/kscalex))+ _'"+"+Str(Int(dmy0))+ _ 
-                 "  z= "+Str(int(mz-mzh-waterz))+"/"+Str(Int(waterz)),15,ymax-10,1.2)
+                 "  z= "+Str(int(mz-mzh-waterz))+"/"+Str(Int(mzsol00-mzh-waterz)),15,ymax-10,1.2)
                  '"  z= "+Str(Int(mz-mzsol00)),15,ymax-10,1.2)
         If plane>0 And car>0 And mapdisplay=0 And tourelle=0 Then
         	 vkm20=vkm2

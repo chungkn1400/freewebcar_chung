@@ -6874,7 +6874,7 @@ If 1 Then
  'Else
  '	glbegin(gl_polygon)
  'EndIf 
- If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 Then
  	If testcrops=1 Then gltexcoord2f(x*tx,y*tx):z=kwaynodez(1)
  	glvertex3f(x,y,z)
  EndIf
@@ -6883,7 +6883,7 @@ If 1 Then
  	x=townwaynodex(ij,i,j)-dmx0
  	y=townwaynodey(ij,i,j)-dmy0
  	'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
- 	If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ 	If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 Then
     	If testcrops=1 Then gltexcoord2f(x*tx,y*tx):z=kwaynodez(j)
  		glvertex3f(x,y,z)
  	EndIf
@@ -6892,7 +6892,7 @@ If 1 Then
  If Abs(x-x0)+Abs(y-y0)>0.1 Then  
   x=x0:y=y0:z=zz0
   'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
-  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+  If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 Then
  	 If testcrops=1 Then gltexcoord2f(x*tx,y*tx)
  	 glvertex3f(x,y,z)
   EndIf 
@@ -6930,7 +6930,7 @@ Else
  	   dxy=(yy-ymid)*(xcull-xmid)-(xx-xmid)*(ycull-ymid)
  	   If dxy>1 Then testcull=1
  	EndIf'/
- 	If max(Abs(x-xmid),Abs(y-ymid))<dr30000 And testcull=0 Then
+ 	If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 And testcull=0 Then
  	   'xcull=x:ycull=y
  	   If testcrops=1 Then gltexcoord2f(xmid*tx,ymid*tx)
  	   glvertex3f(xmid,ymid,zmid)
@@ -6944,7 +6944,7 @@ Else
  If Abs(x-x0)+Abs(y-y0)>0.1 And 0 Then  
   x=x0:y=y0:z=zz0
   'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
-  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+  If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 Then
  	   If testcrops=1 Then gltexcoord2f(xmid*tx,ymid*tx)
  	   glvertex3f(xmid,ymid,zmid)
     	If testcrops=1 Then gltexcoord2f(xx*tx,yy*tx)
@@ -6965,7 +6965,7 @@ If hmin>10 And testcrops=0 Then
  'glbegin(gl_triangle_fan)
  'glvertex3f(xmid,ymid,z0)
  glbegin(gl_polygon)
- If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 Then
  	glvertex3f(x,y,z0)
  EndIf
  For j=2 To n
@@ -6973,7 +6973,7 @@ If hmin>10 And testcrops=0 Then
  	x=townwaynodex(ij,i,j)-dmx0
  	y=townwaynodey(ij,i,j)-dmy0
  	'gltriangle xx,yy,z0, xmid,ymid,z0, x,y,z0
-   If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+   If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 Then
    	glvertex3f(x,y,z0)
    EndIf
  Next
@@ -6981,7 +6981,7 @@ If hmin>10 And testcrops=0 Then
  If Abs(x-x0)+Abs(y-y0)>0.1 Then 
   x=x0:y=y0
   'gltriangle xx,yy,z0, xmid,ymid,z0, x,y,z0
-  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+  If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 Then
  	glvertex3f(x,y,z0)
   EndIf
  EndIf  
@@ -7431,7 +7431,7 @@ If z1>z+1 Or z1<mz Then
  'Else
  '	glbegin(gl_polygon)
  'EndIf 	
- If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 Then
  	If testcrops=1 Then gltexcoord2f(x*tx,y*tx):z=kwaynodez(1)
  	glvertex3f(x,y,z)
  EndIf
@@ -7440,7 +7440,7 @@ If z1>z+1 Or z1<mz Then
  	x=townx40(i40,j)-dmx0
  	y=towny40(i40,j)-dmy0
  	'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
-   If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+   If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 Then
    	If testcrops=1 Then gltexcoord2f(x*tx,y*tx):z=kwaynodez(j)
    	glvertex3f(x,y,z)
    EndIf
@@ -7449,7 +7449,7 @@ If z1>z+1 Or z1<mz Then
  If Abs(x-x0)+Abs(y-y0)>0.01 Then 
   x=x0:y=y0:z=zz0
   'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
-  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+  If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 Then
  	 If testcrops=1 Then gltexcoord2f(x*tx,y*tx)
   	 glvertex3f(x,y,z)
   EndIf
@@ -7466,7 +7466,7 @@ If hmin>10 And testcrops=0 Then
  'glbegin(gl_triangle_fan)
  'glvertex3f(xmid,ymid,z0)
  glbegin(gl_polygon)
- If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 Then
  	glvertex3f(x,y,z0)
  EndIf
  For j=2 To n
@@ -7474,7 +7474,7 @@ If hmin>10 And testcrops=0 Then
  	x=townx40(i40,j)-dmx0
  	y=towny40(i40,j)-dmy0
  	'gltriangle xx,yy,z0, xmid,ymid,z0, x,y,z0
-   If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+   If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 Then
    	glvertex3f(x,y,z0)
    EndIf
  Next
@@ -7482,7 +7482,7 @@ If hmin>10 And testcrops=0 Then
  If Abs(x-x0)+Abs(y-y0)>0.1 Then 
   x=x0:y=y0
   'gltriangle xx,yy,z0, xmid,ymid,z0, x,y,z0
-  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+  If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 Then
  	 glvertex3f(x,y,z0)
   EndIf 
  EndIf
@@ -7789,7 +7789,7 @@ If z1>z+1 Or z1<mz Then
  'Else
  '	glbegin(gl_polygon)
  'EndIf 	
- If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+ If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 Then
  	glvertex3f(x,y,z)
  EndIf
  For jj=2 To min2(n,nwaynode-1)
@@ -7809,7 +7809,7 @@ If z1>z+1 Or z1<mz Then
  	x=townwaynodex(ij,i,j)-dmx0
  	y=townwaynodey(ij,i,j)-dmy0
  	'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
-   If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+   If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 Then
  	  glvertex3f(x,y,z)
    EndIf
  Next
@@ -7817,7 +7817,7 @@ If z1>z+1 Or z1<mz Then
  If Abs(x-x0)+Abs(y-y0)>0.1 Then 
   x=x0:y=y0
   'gltriangle xx,yy,z, xmid,ymid,z1, x,y,z
-  If max(Abs(x-xmid),Abs(y-ymid))<dr30000 Then
+  If max(Abs(x-xmid),Abs(y-ymid))<sizei Then'dr30000 Then
  	 glvertex3f(x,y,z)
   EndIf
  EndIf  
