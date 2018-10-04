@@ -2405,7 +2405,7 @@ dy=180
 Var msg=msg0
 lmsg=widthmsg(msg)'Len(Trim(msg))*8
 hmsg=heightmsg(msg)
-If lmsg>dx-10 Then msg=Right(msg,90)
+'If lmsg>dx-10 Then msg=Right(msg,90)
 If lmsg>dx-10 Or hmsg>dy-10 Then
   If hmsg>dy-10 Then 
    	dx=500:dy=500
@@ -2446,7 +2446,7 @@ dy=180
 Var msg=msg0
 lmsg=widthmsg(msg)'Len(Trim(msg))*8
 hmsg=heightmsg(msg)
-If lmsg>dx-10 Then msg=Right(msg,90)
+'If lmsg>dx-10 Then msg=Right(msg,90)
 If lmsg>dx-10 Or hmsg>dy-10 Then
   If hmsg>dy-10 Then 
    	dx=500:dy=500

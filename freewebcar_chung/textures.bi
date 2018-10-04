@@ -4948,7 +4948,7 @@ For ij=0 To ntown
 		townwaynodeb(ij,i)=0
 		townwayname(ij,i)=""
 		towni40(ij,i)=0
-		ttsetterrain(ij,i)=0
+		ttsetterrain(ij,i)=-9
 		'For j=0 To nwaynode
 		'	townwaynodex(ij,i,j)=0
 		'	townwaynodey(ij,i,j)=0
@@ -4978,7 +4978,7 @@ For ij=0 To ntown
 		townwaynodeb2(ij,i)=0
 		townwayname2(ij,i)=""
 		towni402(ij,i)=0
-		ttsetterrain2(ij,i)=0
+		ttsetterrain2(ij,i)=-9
 		'For j=0 To nwaynode
 		'	townwaynodex2(ij,i,j)=0
 		'	townwaynodey2(ij,i,j)=0
@@ -5185,7 +5185,7 @@ For i=1 To n
              'If Str(id)="79152373" Then auxvar+=1000:auxtest=0.8
    			 If waytheight(k)=100 Then 
                 'if Not(waytype(k)<>"aerodrome" And waytype(k)<>"runway" And waytype(k)<>"taxiway") Then	
-                	ttsetterrain(ij,i)=0
+                	ttsetterrain(ij,i)=-9
                 'EndIf
              EndIf  
    			 Var i40=towni40(ij,i)
@@ -5470,7 +5470,7 @@ townwayname(ij,i)=wayname(k)
       		EndIf 	
 townwaynodez(ij,i)=-999999
 'townwaynodez(ij,i)=getterrainheight(townwaynodex(ij,j,1),townwaynodey(ij,j,1))
-ttsetterrain(ij,i)=0
+ttsetterrain(ij,i)=-9
 
 'latweb=lat:lngweb=lng
 'latlngtomxy(latweb,lngweb,mxweb,myweb)
@@ -8322,7 +8322,7 @@ taglcompile20=2
 For ij=1 To ntown2
 	getlocktown(ij)
 	For i=1 To ntownnode
-		ttsetterrain(ij,i)=0
+		ttsetterrain(ij,i)=-9
  		'townwaynodez(ij,i)=-999999
 	Next
 	freelocktown(ij)
@@ -8417,7 +8417,7 @@ Var ttsetterrainij=1
 If Abs(townwaynodex(ij,i,1)-mx)<2000 Then
  If Abs(townwaynodey(ij,i,1)-my)<2000 Then
    ttsetterrainij=ttsetterrain(ij,i)
-   ttsetterrain(ij,i)=1 
+   ttsetterrain(ij,i)+=1 
  EndIf  
 EndIf  
 Var taddtree=0,taddlamp=0,taddbarriere=0,taddhaie=0,taddnathalie=0,taddcity=0,cityname1="",cityname2=""
@@ -8930,7 +8930,7 @@ EndIf
    If j<=2 Then 
     px0=xx0:px1=xx1:py0=yy0:py1=yy1
     'Var dist=max(Abs(px0-mx-dmx0),Abs(py0-my-dmy0))
-    if ttsetterrainij Then'dist<1900 Or dist>2100 Then'600 
+    if ttsetterrainij>0 Then'dist<1900 Or dist>2100 Then'600 
        z0=getterrainheight(px0,py0)+h 
        z1=getterrainheight(px1,py1)+h
     Else  
@@ -8949,7 +8949,7 @@ EndIf
      Var drr=Abs(px0-pxx0)+Abs(py0-pyy0)+Abs(px1-pxx1)+Abs(py1-pyy1)
      If drr>r*0.1 Then
      Var dist=max(Abs(xx-mx-dmx0),Abs(yy-my-dmy0))	
-     If ttsetterrainij Or layer<>0 Then'dist<1900 Or dist>2100 Then'600 
+     If ttsetterrainij>0 Or layer<>0 Then'dist<1900 Or dist>2100 Then'600 
        z0=getterrainheight(px0,py0)+h 
        z1=getterrainheight(px1,py1)+h
      Else  
@@ -9035,7 +9035,7 @@ EndIf
         pxx=(x0+x1)*0.5:pyy=(y0+y1)*0.5	
       EndIf    
      Var dist=max(Abs(pxx-mx-dmx0),Abs(pyy-my-dmy0))
-     If ttsetterrainij Or layer<>0 Then'dist<1900 Or dist>2100 Then'600 
+     If ttsetterrainij>0 Or layer<>0 Then'dist<1900 Or dist>2100 Then'600 
       z0=getterrainheight(px0,py0)+h 
       z1=getterrainheight(px1,py1)+h
      Else  
@@ -11118,9 +11118,9 @@ Dim As Integer i,j,k,n,p
  		  Var y=townwaynodey(ij,i,1)
  		  If Abs(y-my)>d50000 And waynodebuild<>100  Then Continue For
  		  Var z=townwaynodez(ij,i)
- 		  If ((z<-99990 Or ttsetterrain(ij,i)=0) And tupdateterrain=0) Or tupdatetown=1 Then
+ 		  If ((z<-99990 Or ttsetterrain(ij,i)<=0) And tupdateterrain=0) Or tupdatetown=1 Then
  		  	z=getterrainheight(x,y):townwaynodez(ij,i)=z
- 		  	ttsetterrain(ij,i)=1
+ 		  	ttsetterrain(ij,i)+=1
  		  EndIf
  		  If z<-99990 And waynodebuild<>100 Then Continue For 
  		  townzsol=z

@@ -2459,12 +2459,16 @@ gldisk(0.0,dx*scalex*1.41)
 glpopmatrix
 End Sub
 dim shared as Single dhmaree,dhmaree0
+Dim Shared As Double timevertex
 Sub glvertex3fx(x As Single,y As Single,z as Single)
 	glvertex3f(x,y,z)
 	If Abs(x-mx)<2000 Then
 		If Abs(y-my)<2000 Then
-			If Abs(z-mzsol00)>1000 Then
-				testweb=1
+			If Abs(z-mzsol00)>2000 Then
+				If time2>timevertex+15 Then
+					timevertex=time2
+					testweb=1
+				EndIf
 			EndIf
 		EndIf
 	EndIf
@@ -20542,7 +20546,7 @@ Var dr=1.0,d10=0.32,d100=100.0'1.0
 var dr0=0.32'(Abs(dx)+Abs(dy))*0.25'0.5
 'Var xsi0=0.436,xco0=0.9
 Var xco1=xco11,xsi1=xsi11
-Var t4=5'3
+Var t4=3'max(4.1,min(8.1,4+(z00+z11)*0.001*7))'5'5'3
 Var k=0
 'If Abs(xco1)<Abs(xsi1) Then k=1
 If xco1<0 Then xco1=-xco1:xsi1=-xsi1
@@ -20552,7 +20556,7 @@ ElseIf xsi1>0.85 Then
 	k=2
 ElseIf xsi1<-0.85 Then
 	k=2
-ElseIf xsi1>0.2 Then 
+ElseIf xsi1>0.16 Then 
 	k=1
 Else
 	k=3
