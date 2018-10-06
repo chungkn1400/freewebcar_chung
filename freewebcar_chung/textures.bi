@@ -204,7 +204,7 @@ glrotatef(45,-1,0,0)
 glcylindre(2,2,91,4,4)
 gltranslatef(0,0,90)
 glcolor3f(1,1,1)
-glscalef(1.32,1.2,1.2)
+glscalef(1.8,1.7,1.7)'1.32,1.2,1.2)
 glcylindre(3.9,4,22,4,4)
 glendlist
 
@@ -217,7 +217,7 @@ glrotatef(45,-1,0,0)
 'glcylindre(2,2,91,4,4)
 gltranslatef(0,0,90)
 glcolor3f(1,1,1)'200/256,200/256,200/256)
-glscalef(2.2,2,2)
+glscalef(2.8,2.5,2.5)'2.2,2,2)
 glcylindre(3.9,4,22,4,4)
 glendlist
 	
@@ -8414,12 +8414,14 @@ Else
 End If   
 h-=max(0.0,(2.8*30-r)*0.005)
 Var ttsetterrainij=1
-If Abs(townwaynodex(ij,i,1)-mx)<2000 Then
- If Abs(townwaynodey(ij,i,1)-my)<2000 Then
+Var d2000=2000
+If testrunway=1 Then d2000=15000
+If Abs(townwaynodex(ij,i,1)-mx)<d2000 Then
+ If Abs(townwaynodey(ij,i,1)-my)<d2000 Then
    ttsetterrainij=ttsetterrain(ij,i)
-   ttsetterrain(ij,i)+=1 
+   if ttsetterrainij<20 Then ttsetterrain(ij,i)+=1 
  EndIf  
-EndIf  
+EndIf
 Var taddtree=0,taddlamp=0,taddbarriere=0,taddhaie=0,taddnathalie=0,taddcity=0,cityname1="",cityname2=""
 Var taddcitykm=0,taddcross=0,taddcross2=0,taddoneway=0,taddrail=0,taddrail2=0,taddoneway2=0,taddstop=0,taddstop2=0
 If t40=0 Then 
@@ -9239,7 +9241,7 @@ EndIf
    	   glcolor4f(1,1,1,1)
    	   glpopmatrix 
      EndIf
-   EndIf   
+   EndIf  
    If testmygltexquad=1 And trail=0 And layer=0 Then 
      If taddspot=1 And j>1 And j<max2(n,3) And (jj Mod 7)=2 Then
        	Var do1=townwaynodeo1(ij,i,j)
@@ -11463,6 +11465,11 @@ Sub drawwaynodebuild(ij As Integer,i As Integer)
             	   drawbuildtext=croptext
             	   drawbuildtx=7:drawbuildty=5
             	   glcolor3f(1,1,1)
+           	   ElseIf waynodebuild=11 And irnd=2 Then
+            	   drawbuildtext=tower3text
+            	   drawbuildtx=5:drawbuildty=2
+            	   glcolor3f(1,1,1)
+            	   r=1:g=1:b=1
            	   ElseIf waynodebuild=11 Then
             	   glcolor3f(0,0.6,1)
             	   r=0:g=0.6:b=1

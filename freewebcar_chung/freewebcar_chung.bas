@@ -5237,26 +5237,26 @@ If (Timer>tdistterrain+max(0.1,min(0.5,0.15*kfps))) Then
 		EndIf
 		dfps1=(minfps-7.5)
 		'If Abs(dfps-minfps+6)>0.001 Then dfps=0+minfps-6 Else dfps=1+minfps-6
-	   If (kdistterrain-kdistterrain0)*(kdistterrain0-kdistterrain00)<0.00001 Then
+	   If (kdistterrain-kdistterrain0)*(kdistterrain0-kdistterrain00)*100<0.00001 Then
 	   	'kdistterrain+=(kdistterrain0-kdistterrain)*0.8
-	   	dkdistterrain*=0.5
-	   	If dkdistterrain<0.03 Then dkdistterrain=0.03
+	   	dkdistterrain*=0.7
+	   	If dkdistterrain<0.01 Then dkdistterrain=0.01
 	   Else 
-	   	dkdistterrain*=1.5
-	   	If dkdistterrain>1 Then dkdistterrain=1
+	   	dkdistterrain*=1.3
+	   	If dkdistterrain>0.99 Then dkdistterrain=0.99
 	   EndIf
 	   kdistterrain+=(kdistterrain0-kdistterrain)*(1-dkdistterrain)
 	   'auxvar=dkdistterrain:auxtest=0.2:auxvar2=kdistterrain	   
 		kdistterrain00=kdistterrain0
 	EndIf
 	dfps1=(minfps-7.5)
-	'If mz<mzsol00+200 Then 
+	If fpsmoy>minfps Then'mz<mzsol00+200 Then 
 	 If nshowbuild>25000 Then dfps1=(minfps-7.5)+3
 	 If nshowbuild>45000 Then dfps1=(minfps-7.5)+5
 	 If nshowbuild>65000 Then dfps1=(minfps-7.5)+7
 	 If nshowbuild>95000 Then dfps1=(minfps-7.5)+9
 	 If nshowbuild>145000 Then dfps1=(minfps-7.5)+11
-	'EndIf 
+	EndIf 
 	dfps+=(dfps1-dfps)*0.2
 	dfps0=dfps
 	kdistterrain0=kdistterrain
@@ -5549,7 +5549,7 @@ EndIf
 EndIf '/
 EndIf'itime  
 distnathalie=250
-If Abs(o1show-o1-to1)>0.3 Then
+If Abs(o1show-o1-to1)>30 Then'0.3 Then
 	o1show=o1+to1
 	xshow=mx:yshow=my
 	testposx0=0
@@ -16734,10 +16734,17 @@ EndIf 'planet
         vv=vv/kfps30
         If car>0 Then vkm+=(vv*4.75-vkm)*0.07*kfps Else vkm+=(vv*7-vkm)*0.03*kfps'v*17
         gldrawtext("prop= "+Str(Int(prop))+"  v= "+Str(Int(vkm))+"."+Str(Int(vkm*10+1000)Mod 10),15,ymax-35,1.2)
-        gldrawtext("x= "+Str(Int((mx)*500/kscalex))+ _'"+"+Str(Int(dmx0))+ _  
+        If mz>mzsol00+1 Then  
+         gldrawtext("x= "+Str(Int((mx)*500/kscalex))+ _'"+"+Str(Int(dmx0))+ _  
                  "  y= "+Str(Int((my)*500/kscalex))+ _'"+"+Str(Int(dmy0))+ _ 
                  "  z= "+Str(int(mz-mzh-waterz))+"/"+Str(Int(mzsol00-mzh-waterz)),15,ymax-10,1.2)
                  '"  z= "+Str(Int(mz-mzsol00)),15,ymax-10,1.2)
+        Else
+         gldrawtext("x= "+Str(Int((mx)*500/kscalex))+ _'"+"+Str(Int(dmx0))+ _  
+                 "  y= "+Str(Int((my)*500/kscalex))+ _'"+"+Str(Int(dmy0))+ _ 
+                 "  z= "+Str(int(mz-mzh-waterz))+"/"+Str(Int(waterz)),15,ymax-10,1.2)
+                 '"  z= "+Str(Int(mz-mzsol00)),15,ymax-10,1.2)
+        EndIf 	
         If plane>0 And car>0 And mapdisplay=0 And tourelle=0 Then
         	 vkm20=vkm2
         	 'vkm2=Int(max(0.1,0.8+prop/1100))
@@ -20602,9 +20609,9 @@ If dx<=(1.0-dy) Then
   	 If Abs(dh)<Abs(dh0) Then terrain(i,j1)=h+dh
   	EndIf  
   EndIf
-  z00=terrain0(i,j)
-  z10=terrain0(i1,j)
-  z01=terrain0(i,j1)
+  'z00=terrain0(i,j)
+  'z10=terrain0(i1,j)
+  'z01=terrain0(i,j1)
   'z11=terrain0(i1,j1)
   h=max(hwaterz,( dx*(z10-z00) +dy*(z01-z00) +z00))
 Else 
@@ -20646,9 +20653,9 @@ Else
   	EndIf  
   EndIf
   'z00=terrain0(i,j)
-  z10=terrain0(i1,j)
-  z01=terrain0(i,j1)
-  z11=terrain0(i1,j1)
+  'z10=terrain0(i1,j)
+  'z01=terrain0(i,j1)
+  'z11=terrain0(i1,j1)
   h=max(hwaterz,( (1-dx)*(z01-z11) +(1-dy)*(z10-z11) +z11 ))
 EndIf
 freelockterrain()
