@@ -999,9 +999,9 @@ End Sub
 'End Sub
 initsounds
 setsoundvol
-soundyuna'arcade
-soundboeing
-soundfokker
+'soundyuna'arcade
+'soundboeing
+'soundfokker
 myTTSinit()
 
 Declare Function getterrainheight(ByVal x As Single,ByVal y As Single) As Single
@@ -1050,7 +1050,7 @@ Declare Sub inittownobject
     Dim Shared As uint pause,ianim,glnormals,restart,fullscreen=1,compas=1,compas2=1   
     Dim Shared As uint soltexture,arbretext(10),tronctext,buissontext(8),volanttext,volanttext2,arbreflowertext
     Dim Shared As uint cartext,md2horsetext(4),md2zebratext(3),grasstext(10),arbreflower2text,arbresequoiatext
-    Dim Shared As uint arbreautumntext,arbreautumn2text,pinetext
+    Dim Shared As uint arbreautumntext,arbreautumn2text,pinetext,md2elephanttext
     Dim Shared As uint sunsettext,startext,radartext,pistetext,maptexture,avionredtext
     Dim Shared As uint aviontext,helicetext,feutext,feutext2,md2iavion,maptext,boattext,boattext2,boattext3
     Dim Shared As uint windtext,windtext2,cockpittext1,boattext4,corsairtext,firetext,sfiretext
@@ -1094,7 +1094,7 @@ Dim Shared As Single airshipo1(nship),airshipo2(nship),airshipo3(nship),aux,aux2
 Dim Shared As Single airshipx(nship),airshipy(nship),airshipz(nship),airshipwar(nship)
 Dim Shared As Integer nboat=12,typeship(nship),typeboat(nboat)
 Dim Shared As Single boatx(nboat),boaty(nboat),boatz(nboat),boato1(nboat),boato2(nboat),boato3(nboat)
-dim shared as Integer order,torder,war,ncloud2=30,ifog=0,nroc2=25,myicar=4,myiplane=8
+dim shared as Integer order,torder,war,ncloud2=30,ifog=0,nroc2=25,myicar=4,myiplane=8,icar00
 Dim Shared As Single  scalez=20
 Dim Shared As Any Ptr worldbmp,townbmp 
 Dim Shared As Integer tsphere,tsphere0,altsphere,altsphere0,tstation,istars
@@ -1116,6 +1116,7 @@ Dim Shared As Integer tshadow=1,tfoothorse=0,typeautopilot,tbing=1,tgps=0,dyh0,t
 Dim Shared As Double timelayer
 Dim Shared As int64  idlayer,idlayer0
 Dim Shared As single optionred=1,optiongreen=1,optionblue=1,optionlum=1
+Dim Shared As Integer testafrica=0
 #Include "./movecar.bi"
 
 Dim Shared As String ficin
@@ -3681,7 +3682,7 @@ Dim Shared As Integer arbretype(narbre),arbretype0(narbre)
 Dim Shared As Single arbrehousex(narbre),arbrehousey(narbre),arbrehouseh(narbre)
 Dim Shared As Single arbrehouseo1(narbre),arbrehousedx(narbre),arbrehousedy(narbre)
 Dim Shared As Single cowx(ncow),cowy(ncow),cowz(ncow),cowo1(ncow),distcow=3000
-Dim Shared As uint cowtext,cowlist
+Dim Shared As uint cowtext,cowlist,cowtext2
 Function testpixhouse(i As Integer,j As Integer)As Integer
 Dim As UInteger pix,r,g,b,k
 pix=Point(i,townbmpy-j,townbmp)
@@ -5553,16 +5554,16 @@ If Abs(o1show-o1-to1)>30 Then'0.3 Then
 	o1show=o1+to1
 	xshow=mx:yshow=my
 	testposx0=0
-	ttownshow=time2+0.45
+	ttownshow=Timer+4.5'0.45
 	testtownshow=1
 	'tishadow=1
 	If tretroviseur=1 Then testtownshow2=1
 Else
 	testposx0=1
 EndIf
-If (time2>ttownshow Or Abs(xshow-mx)>180 Or Abs(yshow-my)>180)And scaleview>0.9 Then
+If (Timer>ttownshow Or Abs(xshow-mx)>180 Or Abs(yshow-my)>180)And scaleview>0.9 Then
 	xshow=mx:yshow=my
-	ttownshow=time2+4.5'5.5'0.195
+	ttownshow=Timer+4.5'5.5'0.195
 	testtownshow=1
 	If tretroviseur=1 Then testtownshow2=1
 'ElseIf testtownshow=1 And (scaleview<0.9 Or tretroviseur=0)Then 
@@ -11773,7 +11774,8 @@ Dim As Single vtir=1000,disttir,aux
 	vtirz(itir)=(dtirz/aux)*(1+0.2*(Rnd-0.5))
 End Sub
 Dim Shared As Single avionsmoke
-Dim Shared As uint nhorse=50,nhorse0=17,nhorse2=0,md2ihorse(nhorse),testsoundshoot,ndrawmd2'nhorse=29
+Const As Integer nhorse=50
+Dim Shared As uint nhorse0=17,nhorse2=0,md2ihorse(nhorse),testsoundshoot,ndrawmd2'nhorse=29
 Dim Shared As Single horsex(nhorse),horsey(nhorse),horsez(nhorse),horseo1(nhorse),horseo2(nhorse)
 Sub testtir(ByVal itypetir As Integer=0)
 Dim As Integer i  	
@@ -12794,6 +12796,7 @@ If tsmoke=0 And avionsmoke>0.1 Then
 	addsmoke(avionx,aviony,avionz)
 EndIf
 End Sub
+Dim Shared As md2_model Ptr md2horse,md2elephant
 Sub drawMd2node(ByVal md2node As md2_node Ptr,ByVal glnormal As Integer=0)
 Dim As Integer i  	
 Dim As Single dn,dtime,dx,dy,dz,dist
@@ -12816,6 +12819,7 @@ If md2node->md2model<>0 Then
         /' draw model '/
         'glsphere 10
         dtime=80*10/(0.01+.fps)
+        If md2node->md2model=md2elephant Then dtime*=1.3
         dn=(time1-time0)/dtime
         .nframe+=dn+Rnd*0.001
         If .nframe>=.endframe Or .nframe<.startframe Then .nframe=.startframe
@@ -15376,7 +15380,11 @@ Dim As Integer i,j,k
     EndIf
     If x2>(Abs(z2)-80) Then  
      If x2<100 Then soundcow()
-     glbindtexture(gl_texture_2d,cowtext)	
+     If testafrica=0 Then
+     	 glbindtexture(gl_texture_2d,cowtext)
+     Else 	 	
+     	 glbindtexture(gl_texture_2d,cowtext2)
+     EndIf
      glpushmatrix
      gltranslatef(cowx(i),cowy(i),cowz(i))
      glrotatef(cowo1(i),0,0,1)
@@ -16043,7 +16051,12 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     	EndIf 	
     	'auxvar=ndrawmd2:auxtest=0.3
     EndIf
-    If plane=0 Or car=0 Then 
+    testafrica=0
+    If lat<15 And lat>-25 And lng>-20 And lng<50 Then
+   	 testafrica=1
+   	 nhorse0=nhorse
+    EndIf
+    If plane=0 Or car=0 Or testafrica=1 Then 
      If md2nnode>=nhorse And (mz<(mzsol0+9000)) Then'And planet=0 And plane>0 And car=0 Then 
       'For md2inode=1 To nmd2'md2nnode
       '   drawMd2node(md2_nodes(md2inode))
@@ -16065,7 +16078,7 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
 
 If planet=0 Then 
 
-    If pause=0 And (plane=0 Or car=0) Then
+    If pause=0 And (plane=0 Or car=0 Or testafrica=1) Then
        movehorses
     EndIf    
     
@@ -20863,6 +20876,7 @@ Sub initcow
 	Randomize((imap-1)*100)
    If cowtext=0 Then 
    	cowtext=guiloadtexture("objects/cow.jpg")
+   	cowtext2=guiloadtexture("objects/cow2.jpg")
       cowlist=glgenlists(1)
       glnewlist cowlist,gl_compile 
       loadobjsize("objects/cowlowpoly.obj",@"",@"",31)'40)
@@ -21056,8 +21070,7 @@ x=50:y=110
 	Next
 End Sub
 'Dim Shared As uint nhorse=29,md2ihorse(nhorse)
-Dim Shared As uint disthorse=20000'12000
-Dim Shared As md2_model Ptr md2horse
+Dim Shared As Single disthorse=20000*0.7'12000
 'Dim Shared As Single horsex(nhorse),horsey(nhorse),horsez(nhorse),horseo1(nhorse),horseo2(nhorse)
 Dim Shared As Integer inithorse=0
 Sub inithorses
@@ -21070,6 +21083,7 @@ Next
 For i=1 To 3
 	md2zebratext(i)=guiloadtexture("objects/zebra"+Str(i)+".jpg")	
 Next
+md2elephanttext=guiloadtexture("objects/elephant1.jpg")	
 /'aviontext=guiloadtexture("objects/c150.jpg")
 corsairtext=guiloadtexture("objects/f4u.jpg")
 vg33text=guiloadtexture("objects/vg33.jpg")
@@ -21085,18 +21099,22 @@ f14text=guiloadtexture("objects/f14_2.jpg")
 eurofightertext=guiloadtexture("objects/eurofighter.jpg")
 '/
 For i=1 To nhorse
-  md2inode=addmd2node(md2horse)
+  If i<=24 Or i>30 Then
+  	 md2inode=addmd2node(md2horse)
+  Else 	 
+  	 md2inode=addmd2node(md2elephant)
+  EndIf
   If i<=12 Then 
   	setnodetexture(md2_nodes(md2inode),md2horsetext((i Mod 4)+1))
    setnodescale(md2_nodes(md2inode),0.85,0.85,0.85)
    x=-190+Rnd*700:y=-100+Rnd*700
-  ElseIf i<=24 Then 
+  ElseIf i<=24 Or i>30 Then 
   	setnodetexture(md2_nodes(md2inode),md2zebratext((i Mod 3)+1))
    setnodescale(md2_nodes(md2inode),0.77,0.77,0.65)
    x=Rnd*700:y=-100+Rnd*700
-  Else  
-  	setnodetexture(md2_nodes(md2inode),md2horsetext((i Mod 4)+1))
-   setnodescale(md2_nodes(md2inode),0.85,0.85,0.85)
+  Else '(25-30)
+  	setnodetexture(md2_nodes(md2inode),md2elephanttext)'md2horsetext((i Mod 4)+1))
+   setnodescale(md2_nodes(md2inode),0.95,0.95,0.95)
    x=190+Rnd*700:y=-100+Rnd*700
   EndIf
   If inithorse=1 Then 
@@ -21164,11 +21182,11 @@ For i=1 To nhorse2
   	        vhorse=5.7
           EndIf
     	  Else
-    	  	 If i<=30 Then 
+    	  	 If i<=30 Then 'elephant
             If max(Abs(horsex(25)-md2node->x),Abs(horsey(25)-md2node->y-(i-24)*50))<500 Then
-   	       vhorse=4.5
+   	       vhorse=3
             Else 
-  	          vhorse=5.7
+  	          vhorse=3.4
             EndIf
     	  	 Else 
             If max(Abs(horsex(31)-md2node->x),Abs(horsey(31)-md2node->y-(i-30)*50))<400 Then
@@ -21181,12 +21199,16 @@ For i=1 To nhorse2
     	EndIf 	
     EndIf 
   EndIf
-  If plane=0 Or car>0 Then vhorse*=0.69
+  If plane=0 Or car>0 Then
+  	  vhorse*=0.69
+  Else
+  	  vhorse*=1.15
+  EndIf
   horsex0=horsex(i)
   horsey0=horsey(i)
   horsez0=horsez(i)
-  horsex(i)=md2node->x+vhorse*co1*co2*(1+si2)*kfps*2	
-  horsey(i)=md2node->y+vhorse*si1*co2*(1+si2)*kfps*2	
+  horsex(i)=md2node->x+vhorse*co1*co2*(1+si2)*kfps'*2	
+  horsey(i)=md2node->y+vhorse*si1*co2*(1+si2)*kfps'*2	
   horsez(i)=getterrainheight(horsex(i),horsey(i))
   dmz=GetTerrainHeight(horsex(i)+40*co1,horsey(i)+40*si1)-horsez(i)
   horseo2(i)=-Atn(dmz/40)*radtodeg
@@ -22138,7 +22160,12 @@ Else
 EndIf
 If icar<>icar0 Then 
   icar=icar0 
+  'If plane=1 And car=0 Then
+  	  'icar=5'chevy
+  	  car=-1
+  'EndIf 	  
   selectcomboindex("win.combo1",icar)
+  tgetcombo1=1
   subcombo1
 EndIf
 
@@ -22752,7 +22779,7 @@ End Sub
 Sub main
 End Sub
         
-Dim As String filename4="objects/horse.md2"
+        
 Dim As String fic
 Dim As Single x,y,z,dist',tfps
 Randomize(imap) 
@@ -22818,7 +22845,7 @@ mz11=-999999
         eurofighterlist=0:eurofighter0list=0:c150list=0:c1500list=0:ballonlist=0:c150grplist=0
         fighterlist=0:fighter0list=0:spaceshiplist=0:spaceship0list=0:copterlist=0:coptercockpitlist=0
         boeing737list=0:boeing737lowlist=0:boeing737lowlist2=0
-        cowtext=0:soltexture=0:cartext=0:cieltext=0:maptexture=0:maptexture2=0
+        cowtext=0:soltexture=0:cartext=0:cieltext=0:maptexture=0:maptexture2=0:cowtext2=0
         maptexture3=0:maptexture4=0:maptexture5=0:towntext=0:webtext=0:webtextzoom=0
         orbit=1
         For i=1 To 10:solautotext(i)=0:Next 
@@ -22932,6 +22959,7 @@ mz11=-999999
         'addcombo("win.combo1","space2")
         'addcombo("win.combo1","tour")
         selectcomboindex("win.combo1",icar)
+        tgetcombo1=1
         subcombo1
         'addcombo("win.map","map1")
         'addcombo("win.map","map2")
@@ -23144,7 +23172,8 @@ mz11=-999999
         inittownobject
         initlist
         setfog
-        md2horse=loadmd2model(filename4,0,0,-2)
+        md2horse=loadmd2model("objects/horse.md2",0,0,-2)
+        md2elephant=loadmd2model("objects/elephant.md2",0,0,-2)
 
         Randomize()        
         inithorses
@@ -23250,6 +23279,7 @@ mz11=-999999
         display()
         'guirefreshopenGL()
         Sleep 100
+        icar00=icar
         While (quit=0 And guitestkey(vk_escape)=0)Or tframe<tquit
         	   
           	If Timer>tactive+1 then 
@@ -23386,7 +23416,7 @@ mz11=-999999
          	'mx0=mx:my0=my:mz0=mz
          	distmax=scalex*256
          	Var dist=Sqr(mx*mx+my*my)
-         	If dist>distmax*0.9 Then
+         	If dist>distmax*0.9 And Timer>timeinit+20 Then
          	 mx=-mx*0.98*distmax*0.9/dist
          	 my=-my*0.98*distmax*0.9/dist
 			    mx=mx0+Int(mx-mx0):my=my0+Int(my-my0)
@@ -23424,15 +23454,13 @@ mz11=-999999
            	glviewport(0,0,xmax,ymax)
             gldisable gl_lighting
             gldisable gl_alpha_test
-           	If time2>timeinit+10 Then
-           		display()
-           	EndIf 	
-           	
+           	display() 	
+          	
            If mapdisplay=4 Then
            	  drawtexture(webtext)
            	  Var xx=(mx-xweb)/dxweb,yy=(my-yweb)/dyweb
            	  gldrawtext("x",xmax*(0.5+xx*0.27),ymax*(0.5-yy*0.5))
-           ElseIf mapdisplay=0 And tretroviseur=1 And plane>0 And car>0 Then 
+           ElseIf mapdisplay=0 And tretroviseur=1 And plane>0 And car>0 And Timer>timeinit+20 Then 
            	Var dvx=0.0183,dvy=0.5*dvx*xmax/ymax
            	glviewport(xmax*(0.4-dvx),ymax*(0.8-dvy),xmax*(0.2+dvx+dvx),ymax*(0.2+dvy+dvy)) 
           	glplacecursor(xmax*0.5,ymax*0.5,-40)
@@ -23524,15 +23552,15 @@ mz11=-999999
            	'	EndIf
            	'Next
 
-            If timer>timeinit+10 Then
+            'f timer>timeinit+15 Then
             	guirefreshopenGL()
-            Else 	
-               Sleep 200
+            'else 	
+            '   Sleep 200
                'glclearcolor 0,0,0.8, 0.0
                'glClear (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT  Or GL_STENCIL_BUFFER_BIT)
             	'gldrawtext(Str(itime),xmax*0.45,ymax*0.5)
             	'guirefreshopenGL()
-            EndIf 
+            'EndIf 
            	If Time2<timeinit+24 And mzinit>-9999 Then
            		   mzinit=min(waterz+6000,mzinit)
             		mz=mzinit:mz1=mz:piste=1:piste0=1:mz0=mz
@@ -24146,6 +24174,7 @@ EndIf
         
         guicloseOpenGL()
         deleteMD2model(md2horse)
+        deleteMD2model(md2elephant)
         For i=1 To md2nnode
         	 If md2_nodes(i)<>0 Then
         	 	DeAllocate(md2_nodes(i))
