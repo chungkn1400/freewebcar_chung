@@ -249,6 +249,8 @@ Sub initsounds
    mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias moteur2",0,0,0)
    soundfic="sounds/horse.mp3"
    mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias horse",0,0,0)
+   soundfic="sounds/elephant.mp3"
+   mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias elephant",0,0,0)
    soundfic="sounds/explosion_1.mp3"
    mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias explosion1",0,0,0)
    soundfic="sounds/waterwave.mp3"
@@ -339,6 +341,7 @@ Sub closesounds
 	mcisendstring("close moteur",0,0,0)
 	mcisendstring("close moteur2",0,0,0)
 	mcisendstring("close horse",0,0,0)
+	mcisendstring("close elephant",0,0,0)
 	mcisendstring("close explosion1",0,0,0)
 	mcisendstring("close waterwave",0,0,0)
 	mcisendstring("close ocean",0,0,0)
@@ -406,7 +409,8 @@ Sub setsoundvol
 	mcisendstring("setaudio pneu2 volume to "+str(vol),0,0,0)
 	mcisendstring("setaudio moteur volume to "+str(vol),0,0,0)
 	mcisendstring("setaudio moteur2 volume to "+str(vol),0,0,0)
-	mcisendstring("setaudio horse volume to "+str(vol),0,0,0)
+	mcisendstring("setaudio horse volume to "+str(Int(1.4*vol)),0,0,0)
+	mcisendstring("setaudio elephant volume to "+str(Int(1.9*vol)),0,0,0)
 	mcisendstring("setaudio explosion1 volume to "+str(vol),0,0,0)
 	mcisendstring("setaudio waterwave volume to "+str(Int(1.5*vol)),0,0,0)
 	mcisendstring("setaudio ocean volume to "+str(Int(1.4*vol)),0,0,0)
@@ -584,6 +588,9 @@ Dim As Double ttime
 End Sub
 Sub soundhorse
    mcisendstring("play horse from 0",0,0,0)
+End Sub
+Sub soundelephant
+   mcisendstring("play elephant from 0",0,0,0)
 End Sub
 Sub soundexplosion1
    mcisendstring("play explosion1 from 0",0,0,0)
@@ -15380,7 +15387,7 @@ Dim As Integer i,j,k
     EndIf
     If x2>(Abs(z2)-80) Then  
      If x2<100 Then soundcow()
-     If testafrica=0 Then
+     If lat<-25 or lat>15 Then'testafrica
      	 glbindtexture(gl_texture_2d,cowtext)
      Else 	 	
      	 glbindtexture(gl_texture_2d,cowtext2)
@@ -16055,6 +16062,8 @@ If v>4 Then suspension=max(0.1,suspension-0.08*kfps)
     If lat<15 And lat>-25 And lng>-20 And lng<50 Then
    	 testafrica=1
    	 nhorse0=nhorse
+    Else
+    	 nhorse0=min2(24,nhorse0)
     EndIf
     If plane=0 Or car=0 Or testafrica=1 Then 
      If md2nnode>=nhorse And (mz<(mzsol0+9000)) Then'And planet=0 And plane>0 And car=0 Then 
@@ -21273,12 +21282,14 @@ For i=1 To nhorse2
   	  EndIf 
      If max(Abs(horsex(i)-mx),Abs(horsey(i)-my))<300 And horsez(i)>(waterz) Then
      	  horsesound=1
+     	  If i>24 And i<=30 Then horsesound=2
      EndIf
   EndIf
   setnodeposition(md2node,horsex(i),horsey(i),horsez(i))	
   setnoderotation(md2node,0,horseo2(i),horseo1(i))	
 Next i
   If horsesound=1 And Rnd<0.1 Then soundhorse
+  If horsesound=2 And Rnd<0.1 Then soundelephant
   horsesound=0
   changehorse=0:i=1
   horsex0=horsex(i):horsey0=horsey(i) 
@@ -21472,7 +21483,11 @@ Next i
   	 If Abs(horsex(i)-mx-40*cos1)<40 Then
   	 	If Abs(horsey(i)-my-40*sin1)<40 Then
    	 If Abs(horsez(i)-mz)<100 And horsez(i)>(waterz) Then
-     	   soundhorse
+     	   If i<=24 Or i>30 Then
+     	   	soundhorse
+     	   Else
+     	   	soundelephant
+     	   EndIf
   	 		soundcrash
   	 		horsex(i)+=40*cos1
   	 		horsey(i)+=40*sin1
