@@ -230,7 +230,8 @@ Sub setsoundarcade()
    mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias arcade",0,0,0)	
    setsoundarcadevol()
 End Sub
-Sub initsounds
+Dim Shared As Integer tinitsound=0
+Sub initsounds0
 	Dim As String soundfic
    soundfic="sounds/yuna.mp3"
    mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias yuna",0,0,0)
@@ -239,6 +240,9 @@ Sub initsounds
    'If Rnd<0.5 Then trikku=1:soundfic="sounds/luck.mp3"
    'mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias arcade",0,0,0)
    setsoundarcade()
+End Sub
+Sub initsounds 
+	Dim As String soundfic
    soundfic="sounds/crash.mp3"
    mcisendstring("open "+chr$(34)+soundfic+chr$(34)+" shareable alias crash",0,0,0)
    soundfic="sounds/pneu.mp3"
@@ -1004,8 +1008,9 @@ End Sub
 'Sub soundmidi
 '   mcisendstring("play midi",0,0,0)
 'End Sub
-initsounds
-setsoundvol
+initsounds0()
+'initsounds
+'setsoundvol
 'soundyuna'arcade
 'soundboeing
 'soundfokker
@@ -23304,7 +23309,12 @@ mz11=-999999
          	  If tok=0 Then
          	  	  If Timer>timeinit+20 Then
          	  	  	 tok=1:setficok("ok")
-         	  	  EndIf
+         	  	  	 If tinitsound=0 Then
+         	  	  	 	tinitsound=1
+         	  	  	 	initsounds
+                     setsoundvol
+         	  	  	 EndIf
+         	  	  EndIf 	 
          	  EndIf 	  
           	EndIf
           	
